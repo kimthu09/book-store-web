@@ -9,27 +9,38 @@ export type Book = {
   status: boolean;
   category: string;
 };
-export interface ImportNote {
+export type ImportNote = {
   id: string;
   supplierId: string;
   totalPrice: number;
-  status: StatusString;
+  status: StatusNote;
   createBy: string;
   closeBy?: string;
   createAt: Date;
   closeAt?: Date;
-}
+};
+
+export type ImportDetail = {
+  book: Book;
+  idNote: string;
+  quantity: number;
+  price: number;
+};
+
 export type Supplier = {
   id: string;
   name: string;
 };
 
-export enum StatusString {
+export enum StatusNote {
   Inprogress = "Đang xử lý",
   Done = "Đã nhập",
   Cancel = "Đã huỷ",
 }
-
+export enum StatusActive {
+  Active = "Đang giao dịch",
+  InActive = "Ngừng giao dịch",
+}
 export type Category = {
   id: string;
   name: string;

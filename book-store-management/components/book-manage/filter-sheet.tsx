@@ -27,7 +27,7 @@ import {
 } from "../ui/command";
 import { LuCheck, LuChevronsUpDown } from "react-icons/lu";
 import { cn } from "@/lib/utils";
-import RangeSlider from "./range-slider";
+import RangeSlider from "../range-slider";
 import { FiFilter } from "react-icons/fi";
 import CategoryList from "../category-list";
 import { statuses } from "@/constants";
@@ -46,10 +46,7 @@ const FilterSheet = () => {
           <FiFilter className="ml-4 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </SheetTrigger>
-      <SheetContent
-        side={"right"}
-        className="w-[480px] sm:w-[540px] m-auto bg-white"
-      >
+      <SheetContent side={"right"} className="w-[480px] m-auto bg-white">
         <SheetHeader>
           <SheetTitle>Lọc danh sách sách</SheetTitle>
         </SheetHeader>
@@ -67,19 +64,19 @@ const FilterSheet = () => {
             </Label>
             <Input id="name" className="col-span-2" />
           </div>
-          <div className="flex items-center">
+          <div className="grid grid-cols-3 items-center gap-6">
             <Label htmlFor="cate" className="text-right ml-auto p-0">
               Danh mục
             </Label>
-            <div className="ml-auto w-[13.5rem]">
+            <div className="col-span-2 w-full">
               <CategoryList category={category} setCategory={setCategory} />
             </div>
           </div>
-          <div className="flex items-center">
-            <Label htmlFor="sta" className="text-right ml-auto p-0">
+          <div className="grid grid-cols-3 items-center gap-6">
+            <Label htmlFor="sta" className="text-right p-0">
               Trạng thái
             </Label>
-            <div className="ml-auto">
+            <div className="w-full col-span-2">
               <DropdownMenu open={openStatus} onOpenChange={setOpenStatus}>
                 <DropdownMenuTrigger asChild>
                   <Button
@@ -87,7 +84,7 @@ const FilterSheet = () => {
                     variant="outline"
                     role="combobox"
                     aria-expanded={openStatus}
-                    className="justify-between w-[13.5rem]"
+                    className="justify-between w-full"
                   >
                     {status
                       ? statuses.find((item) => item.label === status)?.label
