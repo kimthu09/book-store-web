@@ -39,7 +39,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Book } from "@/types";
-import Image from "next/image";
 import { books } from "@/constants";
 import FilterSheet from "./filter-sheet";
 import {
@@ -53,6 +52,7 @@ import {
 import { useState } from "react";
 import CategoryList from "../category-list";
 import Link from "next/link";
+import { ExportBookList } from "../excel-export";
 
 const data: Book[] = books;
 
@@ -94,7 +94,7 @@ export const columns: ColumnDef<Book>[] = [
         >
           <span className="font-semibold">Tên sản phẩm</span>
 
-          <CaretSortIcon className="ml-2 h-4 w-4" />
+          <CaretSortIcon className="ml-1 h-4 w-4" />
         </Button>
       );
     },
@@ -111,12 +111,13 @@ export const columns: ColumnDef<Book>[] = [
     accessorKey: "price",
     header: ({ column }) => (
       <Button
+        className="p-2"
         variant={"ghost"}
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         <span className="font-semibold">Giá</span>
 
-        <CaretSortIcon className="ml-2 h-4 w-4" />
+        <CaretSortIcon className="ml-1 h-4 w-4" />
       </Button>
     ),
     cell: ({ row }) => {
@@ -149,7 +150,7 @@ export const columns: ColumnDef<Book>[] = [
       const status = row.getValue("status");
       return (
         <div
-          className={`${
+          className={`lg:max-w-[16rem] max-w-[3rem] truncate ${
             status ? "text-green-600" : "text-red-600"
           } text-center`}
         >
@@ -226,10 +227,6 @@ export function BookTable() {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [filterSelection, setFilterSelection] = useState("name");
-  const [openFilter, setOpenFilter] = useState(false);
-
-  const [openCategory, setOpenCategory] = useState(false);
   const [category, setCategory] = useState("");
   const table = useReactTable({
     data,
@@ -261,6 +258,20 @@ export function BookTable() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="max-h-44 w-40">
+              <DropdownMenuItem
+                onSelect={() => {
+                  if (table.getFilteredSelectedRowModel().rows.length < 1) {
+                    //TODO: show notification
+                  } else {
+                    const values = table
+                      .getFilteredSelectedRowModel()
+                      .rows.map((row) => row.original);
+                    ExportBookList(values, "BookList.xlsx");
+                  }
+                }}
+              >
+                Xuất danh sách
+              </DropdownMenuItem>
               <Dialog>
                 <DialogTrigger asChild>
                   <DropdownMenuItem onSelect={(e) => e.preventDefault()}>

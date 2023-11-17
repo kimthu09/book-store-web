@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
 import { AiOutlinePlus } from "react-icons/ai";
-import { FiDownload } from "react-icons/fi";
 
 const BookManagement = () => {
   return (
@@ -11,12 +10,6 @@ const BookManagement = () => {
       <div className="flex flex-row justify-between items-center">
         <h1>Tất cả sách</h1>
         <div className="flex gap-4">
-          <Button className="p-2 hover:bg-blue-100" variant={"ghost"}>
-            <div className="flex flex-wrap gap-1 items-center">
-              <FiDownload />
-              Xuất danh sách
-            </div>
-          </Button>
           <Link href="/books/insert">
             <Button className="p-2">
               <div className="flex flex-wrap gap-1 items-center">
