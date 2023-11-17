@@ -1,0 +1,73 @@
+package ginimportnote
+
+import (
+	"book-store-management-backend/common"
+	"book-store-management-backend/component/appctx"
+	"book-store-management-backend/component/generator"
+	"book-store-management-backend/middleware"
+	"book-store-management-backend/module/book/bookstore"
+	"book-store-management-backend/module/importnote/importnotebiz"
+	"book-store-management-backend/module/importnote/importnotemodel"
+	"book-store-management-backend/module/importnote/importnoterepo"
+	"book-store-management-backend/module/importnote/importnotestore"
+	"book-store-management-backend/module/importnotedetail/importnotedetailstore"
+	"book-store-management-backend/module/supplier/supplierstore"
+	"book-store-management-backend/module/supplierdebt/supplierdebtstore"
+	"errors"
+	"github.com/gin-gonic/gin"
+	"net/http"
+)
+
+func ChangeStatusImportNote(appCtx appctx.AppContext) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		idImportNote := c.Param("id")
+		if idImportNote == "" {
+			panic(common.ErrInvalidRequest(errors.New("param id not exist")))
+		}
+
+		var data importnotemodel.ImportNoteUpdate
+
+		if err := c.ShouldBind(&data); err != nil {
+			panic(common.ErrInvalidRequest(err))
+		}
+
+		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
+		data.CloseBy = requester.GetUserId()
+
+		db := appCtx.GetMainDBConnection().Begin()
+
+		importNoteStore := importnotestore.NewSQLStore(db)
+		importNoteDetailStore := importnotedetailstore.NewSQLStore(db)
+		bookStore := bookstore.NewSQLStore(db)
+		supplierStore := supplierstore.NewSQLStore(db)
+		supplierDebtStore := supplierdebtstore.NewSQLStore(db)
+
+		repo := importnoterepo.NewChangeStatusImportNoteRepo(
+			importNoteStore,
+			importNoteDetailStore,
+			bookStore,
+			supplierStore,
+			supplierDebtStore,
+		)
+
+		gen := generator.NewShortIdGenerator()
+
+		business := importnotebiz.NewChangeStatusImportNoteBiz(gen, repo, requester)
+
+		if err := business.ChangeStatusImportNote(
+			c.Request.Context(),
+			idImportNote,
+			&data,
+		); err != nil {
+			db.Rollback()
+			panic(err)
+		}
+
+		if err := db.Commit().Error; err != nil {
+			db.Rollback()
+			panic(err)
+		}
+
+		c.JSON(http.StatusOK, common.SimpleSuccessResponse(true))
+	}
+}
