@@ -3,8 +3,9 @@ import {
   Book,
   SidebarItem,
   ImportNote,
-  StatusString,
+  StatusNote,
   Supplier,
+  ImportDetail,
 } from "@/types";
 import { GrBook } from "react-icons/gr";
 import { MdOutlineWarehouse } from "react-icons/md";
@@ -99,7 +100,7 @@ export const importNotes: ImportNote[] = [
     id: "NGAY1",
     supplierId: "DT01",
     totalPrice: 5060000,
-    status: StatusString.Inprogress,
+    status: StatusNote.Inprogress,
     createAt: new Date(),
     createBy: "NV002",
   },
@@ -107,7 +108,7 @@ export const importNotes: ImportNote[] = [
     id: "NGAY2",
     supplierId: "DT01",
     totalPrice: 3720000,
-    status: StatusString.Done,
+    status: StatusNote.Done,
     createAt: new Date(2023, 9, 8),
     createBy: "NV002",
   },
@@ -115,9 +116,54 @@ export const importNotes: ImportNote[] = [
     id: "NGAY3",
     supplierId: "DT01",
     totalPrice: 4660000,
-    status: StatusString.Cancel,
+    status: StatusNote.Cancel,
     createAt: new Date(2023, 10, 1),
     createBy: "NV002",
+  },
+];
+
+export const importDetails: ImportDetail[] = [
+  {
+    book: books[0],
+    idNote: "NGAY1",
+    quantity: 20,
+    price: 21000,
+  },
+  {
+    book: books[1],
+    idNote: "NGAY1",
+    quantity: 30,
+    price: 52000,
+  },
+  {
+    book: books[2],
+    idNote: "NGAY1",
+    quantity: 10,
+    price: 23000,
+  },
+  {
+    book: books[3],
+    idNote: "NGAY2",
+    quantity: 30,
+    price: 46000,
+  },
+  {
+    book: books[4],
+    idNote: "NGAY2",
+    quantity: 15,
+    price: 18000,
+  },
+  {
+    book: books[5],
+    idNote: "NGAY3",
+    quantity: 20,
+    price: 73000,
+  },
+  {
+    book: books[6],
+    idNote: "NGAY3",
+    quantity: 30,
+    price: 53000,
   },
 ];
 export const suppliers: Supplier[] = [
@@ -148,6 +194,18 @@ export const statuses = [
     label: "Ngừng giao dịch",
   },
 ];
+
+export const noteStatus = [
+  {
+    label: "Đang xử lý",
+  },
+  {
+    label: "Đã nhập",
+  },
+  {
+    label: "Đã huỷ",
+  },
+];
 export const sidebarItems: SidebarItem[] = [
   {
     title: "Quản lý sách",
@@ -161,9 +219,9 @@ export const sidebarItems: SidebarItem[] = [
     submenu: true,
     subMenuItems: [{ title: "Nhập kho", href: "/stock/import" }],
   },
-  {
-    title: "Quản lý nhân viên",
-    href: "/",
-    icon: GoPeople,
-  },
+  // {
+  //   title: "Quản lý nhân viên",
+  //   href: "/",
+  //   icon: GoPeople,
+  // },
 ];
