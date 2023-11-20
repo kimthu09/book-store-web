@@ -1,21 +1,49 @@
 package main
 
+import (
+	"book-store-management-backend/component/appctx"
+	"book-store-management-backend/middleware"
+	"fmt"
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+	_ "github.com/joho/godotenv/autoload"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"log"
+)
+
 func main() {
-	//dsn := "root:025020@tcp(127.0.0.1:3307)/book_store_management?charset=utf8mb4&parseTime=True&loc=Local"
-	//secretKey := "123456789"
-	//
-	//db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-	//
-	//db = db.Debug()
-	//
-	//appCtx := appctx.NewAppContext(db, secretKey)
-	//
-	//r := gin.Default()
-	//r.Use(middleware.Recover(appCtx))
-	//
+	env, err := godotenv.Read()
+
+	if err != nil {
+		log.Fatalln("Error when loading .env", err)
+	}
+
+	dbUserName := env["DB_USERNAME"]
+	dbPassword := env["DB_PASSWORD"]
+	dbHost := env["DB_HOST"]
+	dbDatabase := env["DB_DATABASE"]
+	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUserName, dbPassword, dbHost, dbDatabase)
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatalln(err)
+	}
+	db = db.Debug()
+
+	secretKey := env["SECRET_KEY"]
+
+	fmt.Println("DB connected", db)
+	appCtx := appctx.NewAppContext(db, secretKey)
+
+	r := gin.Default()
+	r.Use(middleware.Recover(appCtx))
+
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
+
 	//v1 := r.Group("/v1")
 	//{
 	//	v1.POST("/login", ginuser.Login(appCtx))
@@ -49,9 +77,9 @@ func main() {
 	//	inventoryCheckNotes.GET("/:id", gininventorychecknote.SeeDetailInventoryCheckNote(appCtx))
 	//	inventoryCheckNotes.POST("", gininventorychecknote.CreateInventoryCheckNote(appCtx))
 	//}
-	//
-	//err = r.Run(":8080")
-	//if err != nil {
-	//	return
-	//}
+
+	err = r.Run(":8080")
+	if err != nil {
+		return
+	}
 }
