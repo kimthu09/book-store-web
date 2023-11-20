@@ -12,24 +12,35 @@ import (
 	"log"
 )
 
+type appConfig struct {
+	Port string
+	Env  string
+
+	DBUsername string
+	DBPassword string
+	DBHost     string
+	DBDatabase string
+
+	SecretKey string
+}
+
 func main() {
-	env, err := godotenv.Read()
-
+	cfg, err := loadConfig()
 	if err != nil {
-		log.Fatalln("Error when loading .env", err)
+		log.Fatalln("Error when loading config:", err)
 	}
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", env["DB_USERNAME"], env["DB_PASSWORD"], env["DB_HOST"], env["DB_DATABASE"])
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	fmt.Println(cfg)
+
+	db, err := connectDatabase(cfg)
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatalln("Error when connecting to database:", err)
 	}
-	db = db.Debug()
+	if cfg.Env == "dev" {
+		db = db.Debug()
+	}
 
-	secretKey := env["SECRET_KEY"]
-
-	fmt.Println("DB connected", db)
-	appCtx := appctx.NewAppContext(db, secretKey)
+	appCtx := appctx.NewAppContext(db, cfg.SecretKey)
 
 	r := gin.Default()
 	r.Use(middleware.Recover(appCtx))
@@ -74,8 +85,33 @@ func main() {
 	//	inventoryCheckNotes.POST("", gininventorychecknote.CreateInventoryCheckNote(appCtx))
 	//}
 
-	err = r.Run(":8080")
-	if err != nil {
-		return
+	if err := r.Run(fmt.Sprintf(":%s", cfg.Port)); err != nil {
+		log.Fatalln("Error running server:", err)
 	}
+}
+
+func loadConfig() (*appConfig, error) {
+	env, err := godotenv.Read()
+	if err != nil {
+		log.Fatalln("Error when loading .env", err)
+	}
+
+	return &appConfig{
+		Port:       env["PORT"],
+		Env:        env["ENVIRONMENT"],
+		DBUsername: env["DB_USERNAME"],
+		DBPassword: env["DB_PASSWORD"],
+		DBHost:     env["DB_HOST"],
+		DBDatabase: env["DB_DATABASE"],
+		SecretKey:  env["SECRET_KEY"],
+	}, nil
+}
+
+func connectDatabase(cfg *appConfig) (*gorm.DB, error) {
+	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", cfg.DBUsername, cfg.DBPassword, cfg.DBHost, cfg.DBDatabase)
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		return nil, fmt.Errorf("failed to connect to database: %w", err)
+	}
+	return db.Debug(), nil
 }
