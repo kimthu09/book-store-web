@@ -1,3 +1,5 @@
+use bookstoremanagement;
+
 create table Author
 (
     id   varchar(12) not null
