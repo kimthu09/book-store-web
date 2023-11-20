@@ -27,7 +27,7 @@ services:
     volumes:
       - ../book-store-management-backend:/data
       - ./gin:/usr/bin/gin
-      - $HOME/.aws:/root/.aws
+    #  - $HOME/.aws:/root/.aws
     working_dir: /data
     environment:
       - GOMEMLIMIT=5120MiB
