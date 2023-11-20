@@ -30,8 +30,6 @@ func main() {
 		log.Fatalln("Error when loading config:", err)
 	}
 
-	fmt.Println(cfg)
-
 	db, err := connectDatabase(cfg)
 	if err != nil {
 		log.Fatalln("Error when connecting to database:", err)
