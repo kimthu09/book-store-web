@@ -19,11 +19,7 @@ func main() {
 		log.Fatalln("Error when loading .env", err)
 	}
 
-	dbUserName := env["DB_USERNAME"]
-	dbPassword := env["DB_PASSWORD"]
-	dbHost := env["DB_HOST"]
-	dbDatabase := env["DB_DATABASE"]
-	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUserName, dbPassword, dbHost, dbDatabase)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", env["DB_USERNAME"], env["DB_PASSWORD"], env["DB_HOST"], env["DB_DATABASE"])
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalln(err)
