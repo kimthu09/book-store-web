@@ -25,8 +25,11 @@ docker-compose up
 #### a. Connect to database
 
 Host: `127.0.0.1:39062`
+
 User: `root`
+
 Password: `123456`
+
 DB Name: `bookstoremanagement`
 
 #### b. Execute script
