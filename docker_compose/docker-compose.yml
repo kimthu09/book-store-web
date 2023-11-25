@@ -32,7 +32,7 @@ services:
     working_dir: /data
     environment:
       - GOMEMLIMIT=5120MiB
-    entrypoint: "bash -c ./go-server.sh"
+    entrypoint: "bash -c /data/go-server.sh"
     ports:
       - 8080:8080
     depends_on:

@@ -12,7 +12,7 @@ create table Book
     id         varchar(12)          not null,
     bookInfoId varchar(12)          not null,
     edition    int                  not null,
-    qty        float      default 0 null,
+    qty        int      default 0 null,
     price      float                not null,
     salePrice  float                not null,
     isActive   tinyint(1) default 1 not null,
