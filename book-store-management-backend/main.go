@@ -3,6 +3,10 @@ package main
 import (
 	"book-store-management-backend/component/appctx"
 	"book-store-management-backend/middleware"
+	"book-store-management-backend/module/author/authortransport"
+	"book-store-management-backend/module/book/booktransport"
+	"book-store-management-backend/module/category/categorytransport"
+	"book-store-management-backend/module/user/usertransport/ginuser"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -49,15 +53,38 @@ func main() {
 		})
 	})
 
-	//v1 := r.Group("/v1")
-	//{
-	//	v1.POST("/login", ginuser.Login(appCtx))
-	//}
-	//
-	//users := v1.Group("/users", middleware.RequireAuth(appCtx))
-	//{
-	//	users.PATCH("", ginuser.CreateUser(appCtx))
-	//}
+	v1 := r.Group("/v1")
+	{
+		v1.POST("/login", ginuser.Login(appCtx))
+	}
+
+	users := v1.Group("/users", middleware.RequireAuth(appCtx))
+	{
+		users.PATCH("", ginuser.CreateUser(appCtx))
+	}
+
+	authors := v1.Group("/authors", middleware.RequireAuth(appCtx))
+	{
+		authors.GET("", authortransport.ListAuthor(appCtx))
+		authors.POST("", authortransport.CreateAuthor(appCtx))
+	}
+
+	categories := v1.Group("/categories", middleware.RequireAuth(appCtx))
+	{
+		categories.GET("", categorytransport.ListCategory(appCtx))
+		categories.POST("", categorytransport.CreateCategory(appCtx))
+	}
+
+	books := v1.Group("/books", middleware.RequireAuth(appCtx))
+	{
+		books.GET("", func(c *gin.Context) {
+			c.JSON(200, gin.H{
+				"message": "get all books",
+			})
+		})
+		books.POST("", booktransport.CreateBook(appCtx))
+	}
+
 	//
 	//suppliers := v1.Group("/suppliers", middleware.RequireAuth(appCtx))
 	//{
