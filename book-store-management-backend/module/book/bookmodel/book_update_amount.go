@@ -13,8 +13,8 @@ func (*BookUpdateAmount) TableName() string {
 }
 
 func (data *BookUpdateAmount) Validate() *common.AppError {
-	if data.AmountUpdate == 0 {
-		return ErrBookAmountUpdateInvalid
-	}
+	//if data.AmountUpdate == 0 {
+	//	return ErrBookAmountUpdateInvalid
+	//}
 	return nil
 }

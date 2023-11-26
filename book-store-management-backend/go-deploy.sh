@@ -1,4 +1,5 @@
 #!/bin/bash
+
 echo "Building application"
 go build
 kill -15 $(pidof propq-search-service-v3-gin)

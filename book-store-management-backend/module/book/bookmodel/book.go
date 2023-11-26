@@ -6,8 +6,12 @@ import (
 )
 
 type Book struct {
-	Id     string  `json:"id" json:"column:id;"`
-	Amount float32 `json:"amount" json:"column:amount;"`
+	Id        string  `json:"id" json:"column:id;"`
+	Quantity  int     `json:"quantity" json:"column:qty;"`
+	Edition   int     `json:"edition" json:"column:edition;"`
+	Price     float64 `json:"price" json:"column:price;"`
+	SalePrice float64 `json:"salePrice" json:"column:salePrice;"`
+	IsActive  bool    `json:"isActive" json:"column:isActive;"`
 }
 
 func (*Book) TableName() string {
@@ -30,21 +34,13 @@ var (
 		"price of Book is negative number",
 		"ErrBookPriceIsNegativeNumber",
 	)
-	ErrBookMeasureTypeEmpty = common.NewCustomError(
-		errors.New("measure type of Book is empty"),
-		"measure type of Book is empty",
-		"ErrBookMeasureTypeEmpty",
-	)
-	ErrBookAmountUpdateInvalid = common.NewCustomError(
-		errors.New("amount need to update for the Book is invalid"),
-		"amount need to update for the Book is invalid",
-		"ErrBookAmountUpdateInvalid",
+	ErrBookQtyUpdateInvalid = common.NewCustomError(
+		errors.New("quantity need to update for the Book is invalid"),
+		"quantity need to update for the Book is invalid",
+		"ErrBookQtyUpdateInvalid",
 	)
 	ErrBookIdDuplicate = common.ErrDuplicateKey(
 		errors.New("id of Book is duplicate"),
-	)
-	ErrBookNameDuplicate = common.ErrDuplicateKey(
-		errors.New("name of Book is duplicate"),
 	)
 	ErrBookCreateNoPermission = common.ErrNoPermission(
 		errors.New("you have no permission to create Book"),

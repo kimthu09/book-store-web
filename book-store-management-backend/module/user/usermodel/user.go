@@ -4,6 +4,7 @@ import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/module/role/rolemodel"
 	"errors"
+	"fmt"
 )
 
 type User struct {
@@ -30,6 +31,7 @@ func (u *User) GetRole() rolemodel.Role {
 }
 
 func (u *User) IsHasFeature(featureCode string) bool {
+	fmt.Println(featureCode)
 	for _, v := range u.Role.RoleFeatures {
 		if v.FeatureId == featureCode {
 			return true

@@ -1,5 +1,6 @@
 package common
 
+// TABLE NAME
 const (
 	TableUser                     string = "MUser"
 	TableBook                     string = "Book"
@@ -14,6 +15,8 @@ const (
 )
 
 const (
+	BookViewFeatureCode                 = "BOOK_VIEW"
+	BookCreateFeatureCode               = "BOOK_CREATE"
 	ImportNoteViewFeatureCode           = "IMP_VIEW"
 	ImportNoteCreateFeatureCode         = "IMP_CREATE"
 	ImportNoteChangeStatusFeatureCode   = "IMP_UP_STATE"

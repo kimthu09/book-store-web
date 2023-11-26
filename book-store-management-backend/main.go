@@ -3,6 +3,8 @@ package main
 import (
 	"book-store-management-backend/component/appctx"
 	"book-store-management-backend/middleware"
+	"book-store-management-backend/module/book/booktransport"
+	"book-store-management-backend/module/user/usertransport/ginuser"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -49,15 +51,26 @@ func main() {
 		})
 	})
 
-	//v1 := r.Group("/v1")
-	//{
-	//	v1.POST("/login", ginuser.Login(appCtx))
-	//}
-	//
-	//users := v1.Group("/users", middleware.RequireAuth(appCtx))
-	//{
-	//	users.PATCH("", ginuser.CreateUser(appCtx))
-	//}
+	v1 := r.Group("/v1")
+	{
+		v1.POST("/login", ginuser.Login(appCtx))
+	}
+
+	users := v1.Group("/users", middleware.RequireAuth(appCtx))
+	{
+		users.PATCH("", ginuser.CreateUser(appCtx))
+	}
+
+	books := v1.Group("/books", middleware.RequireAuth(appCtx))
+	{
+		books.GET("", func(c *gin.Context) {
+			c.JSON(200, gin.H{
+				"message": "get all books",
+			})
+		})
+		books.POST("", booktransport.CreateBook(appCtx))
+	}
+
 	//
 	//suppliers := v1.Group("/suppliers", middleware.RequireAuth(appCtx))
 	//{
