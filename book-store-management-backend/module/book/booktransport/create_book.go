@@ -34,9 +34,9 @@ func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		gen := generator.NewShortIdGenerator()
 
-		bussness := bookbiz.NewCreateBookBiz(gen, repo, requester)
+		business := bookbiz.NewCreateBookBiz(gen, repo, requester)
 
-		if err := bussness.CreateBook(c.Request.Context(), &data); err != nil {
+		if err := business.CreateBook(c.Request.Context(), &data); err != nil {
 			db.Rollback()
 			panic(err)
 		}

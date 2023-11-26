@@ -3,6 +3,7 @@ package main
 import (
 	"book-store-management-backend/component/appctx"
 	"book-store-management-backend/middleware"
+	"book-store-management-backend/module/author/authortransport"
 	"book-store-management-backend/module/book/booktransport"
 	"book-store-management-backend/module/user/usertransport/ginuser"
 	"fmt"
@@ -59,6 +60,11 @@ func main() {
 	users := v1.Group("/users", middleware.RequireAuth(appCtx))
 	{
 		users.PATCH("", ginuser.CreateUser(appCtx))
+	}
+
+	authors := v1.Group("/authors", middleware.RequireAuth(appCtx))
+	{
+		authors.POST("", authortransport.CreateAuthor(appCtx))
 	}
 
 	books := v1.Group("/books", middleware.RequireAuth(appCtx))

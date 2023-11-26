@@ -2,6 +2,7 @@ package common
 
 // TABLE NAME
 const (
+	TableAuthor                   string = "Author"
 	TableUser                     string = "MUser"
 	TableBook                     string = "Book"
 	TableSupplier                 string = "Supplier"
@@ -14,9 +15,16 @@ const (
 	TableRoleFeature              string = "RoleFeature"
 )
 
+// FEATURE CODE
 const (
-	BookViewFeatureCode                 = "BOOK_VIEW"
-	BookCreateFeatureCode               = "BOOK_CREATE"
+	AuthorCreateFeatureCode = "AUTHOR_CREATE"
+	AuthorViewFeatureCode   = "AUTHOR_VIEW"
+	AuthorUpdateFeatureCode = "AUTHOR_UPDATE"
+	AuthorDeleteFeatureCode = "AUTHOR_DELETE"
+
+	BookCreateFeatureCode = "BOOK_CREATE"
+	BookViewFeatureCode   = "BOOK_VIEW"
+
 	ImportNoteViewFeatureCode           = "IMP_VIEW"
 	ImportNoteCreateFeatureCode         = "IMP_CREATE"
 	ImportNoteChangeStatusFeatureCode   = "IMP_UP_STATE"
