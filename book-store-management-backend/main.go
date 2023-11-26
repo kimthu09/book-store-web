@@ -64,6 +64,7 @@ func main() {
 
 	authors := v1.Group("/authors", middleware.RequireAuth(appCtx))
 	{
+		authors.GET("", authortransport.ListAuthor(appCtx))
 		authors.POST("", authortransport.CreateAuthor(appCtx))
 	}
 
