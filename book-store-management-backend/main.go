@@ -5,6 +5,7 @@ import (
 	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/author/authortransport"
 	"book-store-management-backend/module/book/booktransport"
+	"book-store-management-backend/module/category/categorytransport"
 	"book-store-management-backend/module/user/usertransport/ginuser"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -66,6 +67,12 @@ func main() {
 	{
 		authors.GET("", authortransport.ListAuthor(appCtx))
 		authors.POST("", authortransport.CreateAuthor(appCtx))
+	}
+
+	categories := v1.Group("/categories", middleware.RequireAuth(appCtx))
+	{
+		categories.GET("", categorytransport.ListCategory(appCtx))
+		categories.POST("", categorytransport.CreateCategory(appCtx))
 	}
 
 	books := v1.Group("/books", middleware.RequireAuth(appCtx))

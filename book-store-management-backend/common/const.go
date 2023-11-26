@@ -3,6 +3,7 @@ package common
 // TABLE NAME
 const (
 	TableAuthor                   string = "Author"
+	TableCategory                 string = "Category"
 	TableUser                     string = "MUser"
 	TableBook                     string = "Book"
 	TableSupplier                 string = "Supplier"
@@ -21,6 +22,11 @@ const (
 	AuthorViewFeatureCode   = "AUTHOR_VIEW"
 	AuthorUpdateFeatureCode = "AUTHOR_UPDATE"
 	AuthorDeleteFeatureCode = "AUTHOR_DELETE"
+
+	CategoryCreateFeatureCode = "CATEGORY_CREATE"
+	CategoryViewFeatureCode   = "CATEGORY_VIEW"
+	CategoryUpdateFeatureCode = "CATEGORY_UPDATE"
+	CategoryDeleteFeatureCode = "CATEGORY_DELETE"
 
 	BookCreateFeatureCode = "BOOK_CREATE"
 	BookViewFeatureCode   = "BOOK_VIEW"
