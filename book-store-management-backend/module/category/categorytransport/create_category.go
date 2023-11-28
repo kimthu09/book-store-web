@@ -14,9 +14,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @BasePath /v1
+// @Security BearerAuth
+// @Summary Create category with name
+// @Tags categories
+// @Accept json
+// @Produce json
+// @Param category body categorymodel.ReqCreateCategory true "Create category"
+// @Response 200 {object} categorymodel.ResCreateCategory "category id"
+// @Router /categories [post]
 func CreateCategory(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var data categorymodel.CreateCategoryRequest
+		var data categorymodel.ReqCreateCategory
 		if err := c.ShouldBind(&data); err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
@@ -43,6 +52,6 @@ func CreateCategory(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse(tmpData.Id))
+		c.JSON(http.StatusOK, categorymodel.ResCreateCategory{Id: tmpData.Id})
 	}
 }

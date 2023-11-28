@@ -34,6 +34,40 @@ definitions:
       paging:
         $ref: '#/definitions/common.Paging'
     type: object
+  categorymodel.Category:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  categorymodel.Filter:
+    properties:
+      searchKey:
+        type: string
+    type: object
+  categorymodel.ReqCreateCategory:
+    properties:
+      name:
+        example: Trinh thám
+        type: string
+    type: object
+  categorymodel.ResCreateCategory:
+    properties:
+      id:
+        type: string
+    type: object
+  categorymodel.ResListCategory:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/categorymodel.Category'
+        type: array
+      filter:
+        $ref: '#/definitions/categorymodel.Filter'
+      paging:
+        $ref: '#/definitions/common.Paging'
+    type: object
   common.Paging:
     properties:
       limit:
@@ -90,6 +124,44 @@ paths:
       summary: Create author with name
       tags:
       - authors
+  /categories:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/categorymodel.ResListCategory'
+      security:
+      - BearerAuth: []
+      summary: Get all categories
+      tags:
+      - categories
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create category
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/categorymodel.ReqCreateCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: category id
+          schema:
+            $ref: '#/definitions/categorymodel.ResCreateCategory'
+      security:
+      - BearerAuth: []
+      summary: Create category with name
+      tags:
+      - categories
 securityDefinitions:
   BearerAuth:
     in: header

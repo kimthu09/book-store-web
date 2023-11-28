@@ -81,6 +81,69 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/categories": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "Get all categories",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/categorymodel.ResListCategory"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "Create category with name",
+                "parameters": [
+                    {
+                        "description": "Create category",
+                        "name": "category",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/categorymodel.ReqCreateCategory"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "category id",
+                        "schema": {
+                            "$ref": "#/definitions/categorymodel.ResCreateCategory"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -131,6 +194,59 @@ const docTemplate = `{
                 },
                 "filter": {
                     "$ref": "#/definitions/authormodel.Filter"
+                },
+                "paging": {
+                    "$ref": "#/definitions/common.Paging"
+                }
+            }
+        },
+        "categorymodel.Category": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "categorymodel.Filter": {
+            "type": "object",
+            "properties": {
+                "searchKey": {
+                    "type": "string"
+                }
+            }
+        },
+        "categorymodel.ReqCreateCategory": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Trinh thám"
+                }
+            }
+        },
+        "categorymodel.ResCreateCategory": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "categorymodel.ResListCategory": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/categorymodel.Category"
+                    }
+                },
+                "filter": {
+                    "$ref": "#/definitions/categorymodel.Filter"
                 },
                 "paging": {
                     "$ref": "#/definitions/common.Paging"
