@@ -2,6 +2,7 @@ package main
 
 import (
 	"book-store-management-backend/component/appctx"
+	docs "book-store-management-backend/docs"
 	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/author/authortransport"
 	"book-store-management-backend/module/book/booktransport"
@@ -11,6 +12,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	_ "github.com/joho/godotenv/autoload"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
@@ -28,6 +31,25 @@ type appConfig struct {
 	SecretKey string
 }
 
+// @title           Swagger Example API
+// @version         1.0
+// @description     This is a sample server celler server.
+// @termsOfService  http://swagger.io/terms/
+
+// @contact.name   API Support
+// @contact.url    http://www.swagger.io/support
+// @contact.email  support@swagger.io
+
+// @license.name  Apache 2.0
+// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host      localhost:8080
+// @BasePath  /api/v1
+
+// @securityDefinitions.basic  BasicAuth
+
+// @externalDocs.description  OpenAPI
+// @externalDocs.url          https://swagger.io/resources/open-api/
 func main() {
 	cfg, err := loadConfig()
 	if err != nil {
@@ -53,8 +75,11 @@ func main() {
 		})
 	})
 
+	docs.SwaggerInfo.BasePath = "/api/v1"
+
 	v1 := r.Group("/v1")
 	{
+		v1.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 		v1.POST("/login", ginuser.Login(appCtx))
 	}
 
