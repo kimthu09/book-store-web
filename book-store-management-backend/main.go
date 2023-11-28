@@ -31,23 +31,19 @@ type appConfig struct {
 	SecretKey string
 }
 
-// @title           Swagger Example API
+// @title           Book Store Management API
 // @version         1.0
-// @description     This is a sample server celler server.
-// @termsOfService  http://swagger.io/terms/
 
-// @contact.name   API Support
-// @contact.url    http://www.swagger.io/support
-// @contact.email  support@swagger.io
-
-// @license.name  Apache 2.0
-// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+// @contact.name   Bui Vi Quoc
+// @contact.url    https://www.facebook.com/bviquoc/
+// @contact.email  21520095@gm.uit.edu.vn
 
 // @host      localhost:8080
-// @BasePath  /api/v1
+// @BasePath  /v1
 
-// @securityDefinitions.basic  BasicAuth
-
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 // @externalDocs.description  OpenAPI
 // @externalDocs.url          https://swagger.io/resources/open-api/
 func main() {
@@ -75,7 +71,7 @@ func main() {
 		})
 	})
 
-	docs.SwaggerInfo.BasePath = "/api/v1"
+	docs.SwaggerInfo.BasePath = "/v1"
 
 	v1 := r.Group("/v1")
 	{

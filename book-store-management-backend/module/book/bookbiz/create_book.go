@@ -9,7 +9,7 @@ import (
 )
 
 type CreateBookRepo interface {
-	CreateBook(ctx context.Context, data *bookmodel.BookCreate) error
+	CreateBook(ctx context.Context, data *bookmodel.CreateBookRequest) error
 }
 
 type createBookBiz struct {
@@ -31,7 +31,7 @@ func NewCreateBookBiz(
 
 func (biz *createBookBiz) CreateBook(
 	ctx context.Context,
-	data *bookmodel.BookCreate) error {
+	data *bookmodel.CreateBookRequest) error {
 	if !biz.requester.IsHasFeature(common.BookCreateFeatureCode) {
 		return bookmodel.ErrBookCreateNoPermission
 	}
@@ -50,7 +50,7 @@ func (biz *createBookBiz) CreateBook(
 	return nil
 }
 
-func handleBookId(gen generator.IdGenerator, data *bookmodel.BookCreate) error {
+func handleBookId(gen generator.IdGenerator, data *bookmodel.CreateBookRequest) error {
 	id, err := gen.IdProcess(data.Id)
 	if err != nil {
 		return err

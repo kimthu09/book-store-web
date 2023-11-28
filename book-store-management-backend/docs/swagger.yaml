@@ -1,22 +1,98 @@
-basePath: /api/v1
-externalDocs:
-  description: OpenAPI
-  url: https://swagger.io/resources/open-api/
+basePath: /v1
+definitions:
+  authormodel.Author:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  authormodel.Filter:
+    properties:
+      searchKey:
+        type: string
+    type: object
+  authormodel.ReqCreateAuthor:
+    properties:
+      name:
+        example: Nguyễn Nhật Ánh
+        type: string
+    type: object
+  authormodel.ResCreateAuthor:
+    properties:
+      id:
+        type: string
+    type: object
+  authormodel.ResListAuthor:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/authormodel.Author'
+        type: array
+      filter:
+        $ref: '#/definitions/authormodel.Filter'
+      paging:
+        $ref: '#/definitions/common.Paging'
+    type: object
+  common.Paging:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
 host: localhost:8080
 info:
   contact:
-    email: support@swagger.io
-    name: API Support
-    url: http://www.swagger.io/support
-  description: This is a sample server celler server.
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: http://swagger.io/terms/
-  title: Swagger Example API
+    email: 21520095@gm.uit.edu.vn
+    name: Bui Vi Quoc
+    url: https://www.facebook.com/bviquoc/
+  title: Book Store Management API
   version: "1.0"
-paths: {}
+paths:
+  /authors:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/authormodel.ResListAuthor'
+      security:
+      - BearerAuth: []
+      summary: Get all authors
+      tags:
+      - authors
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create author
+        in: body
+        name: author
+        required: true
+        schema:
+          $ref: '#/definitions/authormodel.ReqCreateAuthor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: author id
+          schema:
+            $ref: '#/definitions/authormodel.ResCreateAuthor'
+      security:
+      - BearerAuth: []
+      summary: Create author with name
+      tags:
+      - authors
 securityDefinitions:
-  BasicAuth:
-    type: basic
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"
