@@ -2,10 +2,10 @@ package categorymodel
 
 import "book-store-management-backend/common"
 
-type CreateCategoryRequest struct {
-	Name string `json:"name" json:"column:name;"`
+type ReqCreateCategory struct {
+	Name string `json:"name" json:"column:name;" example:"Trinh thám"`
 }
 
-func (*CreateCategoryRequest) TableName() string {
+func (*ReqCreateCategory) TableName() string {
 	return common.TableCategory
 }

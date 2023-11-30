@@ -13,9 +13,18 @@ import (
 	"net/http"
 )
 
+// @BasePath /v1
+// @Security BearerAuth
+// @Summary Create author with name
+// @Tags authors
+// @Accept json
+// @Produce json
+// @Param author body authormodel.ReqCreateAuthor true "Create author"
+// @Response 200 {object} authormodel.ResCreateAuthor "author id"
+// @Router /authors [post]
 func CreateAuthor(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var data authormodel.CreateAuthorRequest
+		var data authormodel.ReqCreateAuthor
 		if err := c.ShouldBind(&data); err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
@@ -42,6 +51,6 @@ func CreateAuthor(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse(tmpData.Id))
+		c.JSON(http.StatusOK, authormodel.ResCreateAuthor{Id: tmpData.Id})
 	}
 }

@@ -1,0 +1,170 @@
+basePath: /v1
+definitions:
+  authormodel.Author:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  authormodel.Filter:
+    properties:
+      searchKey:
+        type: string
+    type: object
+  authormodel.ReqCreateAuthor:
+    properties:
+      name:
+        example: Nguyễn Nhật Ánh
+        type: string
+    type: object
+  authormodel.ResCreateAuthor:
+    properties:
+      id:
+        type: string
+    type: object
+  authormodel.ResListAuthor:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/authormodel.Author'
+        type: array
+      filter:
+        $ref: '#/definitions/authormodel.Filter'
+      paging:
+        $ref: '#/definitions/common.Paging'
+    type: object
+  categorymodel.Category:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  categorymodel.Filter:
+    properties:
+      searchKey:
+        type: string
+    type: object
+  categorymodel.ReqCreateCategory:
+    properties:
+      name:
+        example: Trinh thám
+        type: string
+    type: object
+  categorymodel.ResCreateCategory:
+    properties:
+      id:
+        type: string
+    type: object
+  categorymodel.ResListCategory:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/categorymodel.Category'
+        type: array
+      filter:
+        $ref: '#/definitions/categorymodel.Filter'
+      paging:
+        $ref: '#/definitions/common.Paging'
+    type: object
+  common.Paging:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: 21520095@gm.uit.edu.vn
+    name: Bui Vi Quoc
+    url: https://www.facebook.com/bviquoc/
+  title: Book Store Management API
+  version: "1.0"
+paths:
+  /authors:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/authormodel.ResListAuthor'
+      security:
+      - BearerAuth: []
+      summary: Get all authors
+      tags:
+      - authors
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create author
+        in: body
+        name: author
+        required: true
+        schema:
+          $ref: '#/definitions/authormodel.ReqCreateAuthor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: author id
+          schema:
+            $ref: '#/definitions/authormodel.ResCreateAuthor'
+      security:
+      - BearerAuth: []
+      summary: Create author with name
+      tags:
+      - authors
+  /categories:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/categorymodel.ResListCategory'
+      security:
+      - BearerAuth: []
+      summary: Get all categories
+      tags:
+      - categories
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create category
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/categorymodel.ReqCreateCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: category id
+          schema:
+            $ref: '#/definitions/categorymodel.ResCreateCategory'
+      security:
+      - BearerAuth: []
+      summary: Create category with name
+      tags:
+      - categories
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

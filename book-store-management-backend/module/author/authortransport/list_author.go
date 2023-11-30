@@ -12,6 +12,14 @@ import (
 	"net/http"
 )
 
+// @BasePath /v1
+// @Security BearerAuth
+// @Summary Get all authors
+// @Tags authors
+// @Accept json
+// @Produce json
+// @Response 200 {object} authormodel.ResListAuthor
+// @Router /authors [get]
 func ListAuthor(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var filter authormodel.Filter

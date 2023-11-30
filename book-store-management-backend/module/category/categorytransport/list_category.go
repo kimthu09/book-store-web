@@ -13,6 +13,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @BasePath /v1
+// @Security BearerAuth
+// @Summary Get all categories
+// @Tags categories
+// @Accept json
+// @Produce json
+// @Response 200 {object} categorymodel.ResListCategory
+// @Router /categories [get]
 func ListCategory(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var filter categorymodel.Filter

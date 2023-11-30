@@ -16,7 +16,7 @@ import (
 
 func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var data bookmodel.BookCreate
+		var data bookmodel.CreateBookRequest
 		//c.JSON(http.StatusOK, common.SimpleSuccessResponse(data))
 
 		if err := c.ShouldBind(&data); err != nil {
