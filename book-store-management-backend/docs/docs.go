@@ -82,6 +82,33 @@ const docTemplate = `{
                 }
             }
         },
+        "/books": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "books"
+                ],
+                "summary": "Get all books",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/bookmodel.Book"
+                        }
+                    }
+                }
+            }
+        },
         "/categories": {
             "get": {
                 "security": [
@@ -199,6 +226,9 @@ const docTemplate = `{
                     "$ref": "#/definitions/common.Paging"
                 }
             }
+        },
+        "bookmodel.Book": {
+            "type": "object"
         },
         "categorymodel.Category": {
             "type": "object",

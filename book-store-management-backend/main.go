@@ -73,17 +73,16 @@ func main() {
 	})
 
 	docs.SwaggerInfo.BasePath = "/v1"
-
 	v1 := r.Group("/v1")
 	{
 		v1.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-		v1.POST("/login", ginuser.Login(appCtx))
 
 		authortransport.SetupRoutes(v1, appCtx)
 		categorytransport.SetupRoutes(v1, appCtx)
 		booktransport.SetupRoutes(v1, appCtx)
 	}
 
+	v1.POST("/login", ginuser.Login(appCtx))
 	users := v1.Group("/users", middleware.RequireAuth(appCtx))
 	{
 		users.PATCH("", ginuser.CreateUser(appCtx))

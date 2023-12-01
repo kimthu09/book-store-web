@@ -18,7 +18,7 @@ type BookDBModel struct {
 }
 
 func (*BookDBModel) TableName() string {
-	return "Book"
+	return common.TableBook
 }
 
 func (s *sqlStore) CreateBook(ctx context.Context, data *bookmodel.ReqCreateBook) error {

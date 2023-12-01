@@ -37,6 +37,7 @@ func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		business := bookbiz.NewCreateBookBiz(gen, repo, requester)
 
+		fmt.Print(data)
 		if err := business.CreateBook(c.Request.Context(), &data); err != nil {
 			db.Rollback()
 			panic(err)

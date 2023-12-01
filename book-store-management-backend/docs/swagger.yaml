@@ -34,6 +34,8 @@ definitions:
       paging:
         $ref: '#/definitions/common.Paging'
     type: object
+  bookmodel.Book:
+    type: object
   categorymodel.Category:
     properties:
       id:
@@ -124,6 +126,22 @@ paths:
       summary: Create author with name
       tags:
       - authors
+  /books:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/bookmodel.Book'
+      security:
+      - BearerAuth: []
+      summary: Get all books
+      tags:
+      - books
   /categories:
     get:
       consumes:
