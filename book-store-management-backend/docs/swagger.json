@@ -164,6 +164,69 @@
                     }
                 }
             }
+        },
+        "/publishers": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "publishers"
+                ],
+                "summary": "Get all publishers",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/publishermodel.ResListPublisher"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "publishers"
+                ],
+                "summary": "Create publisher with name",
+                "parameters": [
+                    {
+                        "description": "Create publisher",
+                        "name": "publisher",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/publishermodel.ReqCreatePublisher"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "publisher id",
+                        "schema": {
+                            "$ref": "#/definitions/publishermodel.ResCreatePublisher"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -221,7 +284,42 @@
             }
         },
         "bookmodel.Book": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "authorIds": {
+                    "type": "string"
+                },
+                "categoryIds": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "edition": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "publisherId": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "salePrice": {
+                    "type": "number"
+                }
+            }
         },
         "categorymodel.Category": {
             "type": "object",
@@ -287,6 +385,59 @@
                 },
                 "total": {
                     "type": "integer"
+                }
+            }
+        },
+        "publishermodel.Filter": {
+            "type": "object",
+            "properties": {
+                "searchKey": {
+                    "type": "string"
+                }
+            }
+        },
+        "publishermodel.Publisher": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "publishermodel.ReqCreatePublisher": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Kim Đồng"
+                }
+            }
+        },
+        "publishermodel.ResCreatePublisher": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "publishermodel.ResListPublisher": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/publishermodel.Publisher"
+                    }
+                },
+                "filter": {
+                    "$ref": "#/definitions/publishermodel.Filter"
+                },
+                "paging": {
+                    "$ref": "#/definitions/common.Paging"
                 }
             }
         }

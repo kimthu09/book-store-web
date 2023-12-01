@@ -6,6 +6,7 @@ const (
 	TableCategory                 string = "Category"
 	TableUser                     string = "MUser"
 	TableBook                     string = "Book"
+	TablePublisher                string = "Publisher"
 	TableSupplier                 string = "Supplier"
 	TableSupplierDebt             string = "SupplierDebt"
 	TableImportNote               string = "ImportNote"
@@ -30,6 +31,9 @@ const (
 
 	BookCreateFeatureCode = "BOOK_CREATE"
 	BookViewFeatureCode   = "BOOK_VIEW"
+
+	PublisherCreateFeatureCode = "PUBLISHER_CREATE"
+	PublisherViewFeatureCode   = "PUBLISHER_VIEW"
 
 	ImportNoteViewFeatureCode           = "IMP_VIEW"
 	ImportNoteCreateFeatureCode         = "IMP_CREATE"
