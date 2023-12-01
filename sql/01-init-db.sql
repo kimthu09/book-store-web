@@ -1,28 +1,30 @@
 use bookstoremanagement;
-
-create table Author
+create table if not exists Author
 (
     id   varchar(12) not null
         primary key,
     name text        not null
 );
 
-create table Book
+create table if not exists Book
 (
-    id         varchar(12)          not null,
-    bookInfoId varchar(12)          not null,
-    edition    int                  not null,
-    qty        int      default 0 null,
-    price      float                not null,
-    salePrice  float                not null,
-    isActive   tinyint(1) default 1 not null,
-    primary key (id, bookInfoId)
+    id          varchar(12)          not null
+        primary key,
+    name        varchar(100)         not null,
+    `desc`      text                 null,
+    edition     int                  not null,
+    qty         int        default 0 null,
+    price       float                not null,
+    salePrice   float                not null,
+    publisherId varchar(12)          null,
+    authorIds   text                 not null,
+    categoryIds text                 not null,
+    isActive    tinyint(1) default 1 not null,
+    constraint Book_pk2
+        unique (id)
 );
 
-create index bookInfoId
-    on Book (bookInfoId);
-
-create table BookChangeHistory
+create table if not exists BookChangeHistory
 (
     id         varchar(12)                       not null,
     bookId     varchar(12)                       not null,
@@ -32,37 +34,21 @@ create table BookChangeHistory
     primary key (id, bookId)
 );
 
-create table BookInfo
-(
-    bookId      varchar(12) not null,
-    name        text        not null,
-    authorIds   text        not null,
-    categoryIds text        not null,
-    publisherId varchar(12) not null,
-    `desc`      text        null,
-    primary key (bookId, publisherId),
-    constraint BookInfo_ibfk_1
-        foreign key (bookId) references Book (bookInfoId)
-);
-
-create index publisherId
-    on BookInfo (publisherId);
-
-create table Category
+create table if not exists Category
 (
     id   varchar(12) not null
         primary key,
     name varchar(50) not null
 );
 
-create table Feature
+create table if not exists Feature
 (
     id          varchar(12) not null
         primary key,
     description text        null
 );
 
-create table ImportNote
+create table if not exists ImportNote
 (
     id         varchar(12)                                                not null
         primary key,
@@ -75,7 +61,7 @@ create table ImportNote
     closeAt    datetime                                                   null
 );
 
-create table ImportNoteDetail
+create table if not exists ImportNoteDetail
 (
     importNoteId varchar(12)     not null,
     bookId       varchar(12)     not null,
@@ -84,7 +70,7 @@ create table ImportNoteDetail
     primary key (importNoteId, bookId)
 );
 
-create table InventoryCheckNote
+create table if not exists InventoryCheckNote
 (
     id             varchar(12)              not null
         primary key,
@@ -94,7 +80,7 @@ create table InventoryCheckNote
     createAt       datetime default (now()) null
 );
 
-create table InventoryCheckNoteDetail
+create table if not exists InventoryCheckNoteDetail
 (
     inventoryCheckNoteId varchar(12) not null,
     bookId               varchar(12) not null,
@@ -104,7 +90,7 @@ create table InventoryCheckNoteDetail
     primary key (inventoryCheckNoteId, bookId)
 );
 
-create table Invoice
+create table if not exists Invoice
 (
     id          varchar(13)              not null
         primary key,
@@ -114,7 +100,7 @@ create table Invoice
     createBy    varchar(13)              not null
 );
 
-create table InvoiceDetail
+create table if not exists InvoiceDetail
 (
     invoiceId varchar(13) not null,
     bookId    varchar(13) not null,
@@ -123,7 +109,7 @@ create table InvoiceDetail
     primary key (invoiceId, bookId)
 );
 
-create table MUser
+create table if not exists MUser
 (
     id       varchar(12)          not null
         primary key,
@@ -137,31 +123,28 @@ create table MUser
     isActive tinyint(1) default 1 not null
 );
 
-create table Publisher
+create table if not exists Publisher
 (
-    id     varchar(12) not null,
-    bookId varchar(12) not null,
-    name   varchar(50) not null,
-    primary key (id, bookId),
-    constraint Publisher_ibfk_1
-        foreign key (id) references BookInfo (publisherId)
+    id   varchar(12) not null
+        primary key,
+    name varchar(50) not null
 );
 
-create table Role
+create table if not exists Role
 (
     id   varchar(13) not null
         primary key,
     name text        null
 );
 
-create table RoleFeature
+create table if not exists RoleFeature
 (
     roleId    varchar(12) not null,
-    featureId varchar(12) not null,
+    featureId varchar(30) not null,
     primary key (roleId, featureId)
 );
 
-create table ShopGeneral
+create table if not exists ShopGeneral
 (
     id      varchar(12) not null
         primary key,
@@ -171,7 +154,7 @@ create table ShopGeneral
     address text        null
 );
 
-create table StockReport
+create table if not exists StockReport
 (
     id    varchar(12) not null
         primary key,
@@ -179,7 +162,7 @@ create table StockReport
     month int         not null
 );
 
-create table StockReportDetail
+create table if not exists StockReportDetail
 (
     reportId varchar(12) not null,
     bookId   varchar(12) not null,
@@ -191,7 +174,7 @@ create table StockReportDetail
     primary key (reportId, bookId)
 );
 
-create table Supplier
+create table if not exists Supplier
 (
     id    varchar(12)     not null
         primary key,
@@ -203,7 +186,7 @@ create table Supplier
         unique (phone)
 );
 
-create table SupplierDebt
+create table if not exists SupplierDebt
 (
     id         varchar(12)              not null,
     supplierId varchar(12)              not null,
@@ -215,7 +198,7 @@ create table SupplierDebt
     primary key (id, supplierId)
 );
 
-create table SupplierDebtDetail
+create table if not exists SupplierDebtDetail
 (
     reportId   varchar(12) not null,
     supplierId varchar(12) not null,
@@ -225,11 +208,10 @@ create table SupplierDebtDetail
     primary key (reportId, supplierId)
 );
 
-create table SupplierDebtReport
+create table if not exists SupplierDebtReport
 (
     id    varchar(12) not null
         primary key,
     year  int         not null,
     month int         not null
 );
-
