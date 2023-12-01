@@ -10,13 +10,14 @@ import (
 	"book-store-management-backend/module/book/bookrepo"
 	"book-store-management-backend/module/book/bookstore"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var data bookmodel.CreateBookRequest
+		var data bookmodel.ReqCreateBook
 		//c.JSON(http.StatusOK, common.SimpleSuccessResponse(data))
 
 		if err := c.ShouldBind(&data); err != nil {
@@ -36,6 +37,7 @@ func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		business := bookbiz.NewCreateBookBiz(gen, repo, requester)
 
+		fmt.Print(data)
 		if err := business.CreateBook(c.Request.Context(), &data); err != nil {
 			db.Rollback()
 			panic(err)

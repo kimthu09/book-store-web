@@ -3,6 +3,7 @@ package bookstore
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/module/book/bookmodel"
+
 	"golang.org/x/net/context"
 )
 
@@ -17,10 +18,10 @@ type BookDBModel struct {
 }
 
 func (*BookDBModel) TableName() string {
-	return "Book"
+	return common.TableBook
 }
 
-func (s *sqlStore) CreateBook(ctx context.Context, data *bookmodel.CreateBookRequest) error {
+func (s *sqlStore) CreateBook(ctx context.Context, data *bookmodel.ReqCreateBook) error {
 	db := s.db
 
 	var tmpData BookDBModel = BookDBModel{
