@@ -9,6 +9,8 @@ import (
 	"book-store-management-backend/module/category/categorytransport"
 	"book-store-management-backend/module/user/usertransport/ginuser"
 	"fmt"
+	"log"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	_ "github.com/joho/godotenv/autoload"
@@ -16,7 +18,6 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"log"
 )
 
 type appConfig struct {
@@ -77,33 +78,15 @@ func main() {
 	{
 		v1.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 		v1.POST("/login", ginuser.Login(appCtx))
+
+		authortransport.SetupRoutes(v1, appCtx)
+		categorytransport.SetupRoutes(v1, appCtx)
+		booktransport.SetupRoutes(v1, appCtx)
 	}
 
 	users := v1.Group("/users", middleware.RequireAuth(appCtx))
 	{
 		users.PATCH("", ginuser.CreateUser(appCtx))
-	}
-
-	authors := v1.Group("/authors", middleware.RequireAuth(appCtx))
-	{
-		authors.GET("", authortransport.ListAuthor(appCtx))
-		authors.POST("", authortransport.CreateAuthor(appCtx))
-	}
-
-	categories := v1.Group("/categories", middleware.RequireAuth(appCtx))
-	{
-		categories.GET("", categorytransport.ListCategory(appCtx))
-		categories.POST("", categorytransport.CreateCategory(appCtx))
-	}
-
-	books := v1.Group("/books", middleware.RequireAuth(appCtx))
-	{
-		books.GET("", func(c *gin.Context) {
-			c.JSON(200, gin.H{
-				"message": "get all books",
-			})
-		})
-		books.POST("", booktransport.CreateBook(appCtx))
 	}
 
 	//

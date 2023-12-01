@@ -6,7 +6,7 @@ import (
 )
 
 type CreateBookStore interface {
-	CreateBook(ctx context.Context, data *bookmodel.CreateBookRequest) error
+	CreateBook(ctx context.Context, data *bookmodel.ReqCreateBook) error
 }
 
 type createBookRepo struct {
@@ -17,7 +17,7 @@ func NewCreateBookRepo(store CreateBookStore) *createBookRepo {
 	return &createBookRepo{store: store}
 }
 
-func (biz *createBookRepo) CreateBook(ctx context.Context, data *bookmodel.CreateBookRequest) error {
+func (biz *createBookRepo) CreateBook(ctx context.Context, data *bookmodel.ReqCreateBook) error {
 	if err := biz.store.CreateBook(ctx, data); err != nil {
 		return err
 	}
