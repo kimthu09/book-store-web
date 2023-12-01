@@ -5,22 +5,20 @@ import (
 )
 
 type ReqCreateBook struct {
-	Id          *string  `json:"id" gorm:"column:id"`
 	Name        string   `json:"name" gorm:"column:name"`
-	Quantity    int      `json:"quantity" gorm:"column:qty"`
+	Description string   `json:"desc" gorm:"column:desc"`
 	Edition     int      `json:"edition" gorm:"column:edition"`
+	Quantity    int      `json:"quantity" gorm:"column:qty"`
 	Price       float64  `json:"price" gorm:"column:price"`
 	SalePrice   float64  `json:"salePrice" gorm:"column:salePrice"`
-	AuthorIds   []string `json:"authorIds" gorm:"column:authorIds"`
-	CategoryIds []string `json:"categoryIds" gorm:"column:categoryIds"`
-	PublisherId string   `json:"publisherId" gorm:"column:publisherId"`
-	Desc        string   `json:"desc" gorm:"column:desc"`
-	IsActive    bool     `json:"isActive" gorm:"column:isActive"`
+	PublisherID string   `json:"publisherId" gorm:"column:publisherId"`
+	AuthorIDs   []string `json:"authorIds" gorm:"column:authorIds"`
+	CategoryIDs []string `json:"categoryIds" gorm:"column:categoryIds"`
 }
 
-// func (*CreateBookRequest) TableName() string {
-// 	return common.TableBook
-// }
+//func (*ReqCreateBook) TableName() string {
+//	return common.TableBook
+//}
 
 func (data *ReqCreateBook) Validate() *common.AppError {
 	if common.ValidateEmptyString(data.Name) {
@@ -43,15 +41,15 @@ func (data *ReqCreateBook) Validate() *common.AppError {
 		return ErrBookEditionIsNegativeNumber
 	}
 
-	if common.ValidateEmptyString(data.PublisherId) {
+	if common.ValidateEmptyString(data.PublisherID) {
 		return ErrBookPublisherIdEmpty
 	}
 
-	if len(data.AuthorIds) == 0 {
+	if len(data.AuthorIDs) == 0 {
 		return ErrBookAuthorIdsEmpty
 	}
 
-	if len(data.CategoryIds) == 0 {
+	if len(data.CategoryIDs) == 0 {
 		return ErrBookCategoryIdsEmpty
 	}
 

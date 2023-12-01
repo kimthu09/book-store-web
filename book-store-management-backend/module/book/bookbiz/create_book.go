@@ -1,7 +1,6 @@
 package bookbiz
 
 import (
-	"book-store-management-backend/common"
 	"book-store-management-backend/component/generator"
 	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/book/bookmodel"
@@ -9,7 +8,7 @@ import (
 )
 
 type CreateBookRepo interface {
-	CreateBook(ctx context.Context, data *bookmodel.ReqCreateBook) error
+	CreateBook(ctx context.Context, data *bookmodel.Book) error
 }
 
 type createBookBiz struct {
@@ -29,32 +28,30 @@ func NewCreateBookBiz(
 	}
 }
 
-func (biz *createBookBiz) CreateBook(
-	ctx context.Context,
-	data *bookmodel.ReqCreateBook) error {
-	if !biz.requester.IsHasFeature(common.BookCreateFeatureCode) {
-		return bookmodel.ErrBookCreateNoPermission
-	}
-
-	if err := data.Validate(); err != nil {
-		return err
-	}
-
-	if err := handleBookId(biz.gen, data); err != nil {
-		return err
-	}
-	if err := biz.repo.CreateBook(ctx, data); err != nil {
-		return err
-	}
-
+func (biz *createBookBiz) CreateBook(ctx context.Context, data *bookmodel.Book) error {
+	//if !biz.requester.IsHasFeature(common.BookCreateFeatureCode) {
+	//	return bookmodel.ErrBookCreateNoPermission
+	//}
+	//
+	//if err := data.Validate(); err != nil {
+	//	return err
+	//}
+	//
+	//if err := handleBookId(biz.gen, data); err != nil {
+	//	return err
+	//}
+	//if err := biz.repo.CreateBook(ctx, data); err != nil {
+	//	return err
+	//}
+	//
 	return nil
 }
 
-func handleBookId(gen generator.IdGenerator, data *bookmodel.ReqCreateBook) error {
-	id, err := gen.IdProcess(data.Id)
+func handleBookId(gen generator.IdGenerator, data *bookmodel.Book) error {
+	id, err := gen.IdProcess(&data.ID)
 	if err != nil {
 		return err
 	}
-	data.Id = id
+	data.ID = *id
 	return nil
 }

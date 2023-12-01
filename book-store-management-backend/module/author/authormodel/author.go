@@ -43,14 +43,8 @@ var (
 )
 
 func (data *Author) Validate() *common.AppError {
-	//if !common.ValidateId(data.Id) {
-	//	return ErrBookIdInvalid
-	//}
-	//if common.ValidateEmptyString(data.Name) {
-	//	return ErrBookNameEmpty
-	//}
-	//if data.Price < 0 {
-	//	return ErrBookPriceIsNegativeNumber
-	//}
+	if common.ValidateEmptyString(data.Name) {
+		return ErrAuthorNameEmpty
+	}
 	return nil
 }

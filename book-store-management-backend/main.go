@@ -7,6 +7,7 @@ import (
 	"book-store-management-backend/module/author/authortransport"
 	"book-store-management-backend/module/book/booktransport"
 	"book-store-management-backend/module/category/categorytransport"
+	"book-store-management-backend/module/publisher/publishertransport"
 	"book-store-management-backend/module/user/usertransport/ginuser"
 	"fmt"
 	"log"
@@ -80,6 +81,7 @@ func main() {
 		authortransport.SetupRoutes(v1, appCtx)
 		categorytransport.SetupRoutes(v1, appCtx)
 		booktransport.SetupRoutes(v1, appCtx)
+		publishertransport.SetupRoutes(v1, appCtx)
 	}
 
 	v1.POST("/login", ginuser.Login(appCtx))

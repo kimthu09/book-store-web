@@ -6,12 +6,17 @@ import (
 )
 
 type Book struct {
-	// Id        string  `json:"id" json:"column:id;"`
-	// Quantity  int     `json:"quantity" json:"column:qty;"`
-	// Edition   int     `json:"edition" json:"column:edition;"`
-	// Price     float64 `json:"price" json:"column:price;"`
-	// SalePrice float64 `json:"salePrice" json:"column:salePrice;"`
-	// IsActive  bool    `json:"isActive" json:"column:isActive;"`
+	ID          string  `json:"id" gorm:"column:id;primaryKey"`
+	Name        string  `json:"name" gorm:"column:name"`
+	Description string  `json:"desc" gorm:"column:desc"`
+	Edition     int     `json:"edition" gorm:"column:edition"`
+	Quantity    int     `json:"quantity" gorm:"column:qty"`
+	Price       float64 `json:"price" gorm:"column:price"`
+	SalePrice   float64 `json:"salePrice" gorm:"column:salePrice"`
+	PublisherID string  `json:"publisherId" gorm:"column:publisherId"`
+	AuthorIDs   string  `json:"authorIds" gorm:"column:authorIds"`
+	CategoryIDs string  `json:"categoryIds" gorm:"column:categoryIds"`
+	IsActive    bool    `json:"isActive" gorm:"column:isActive"`
 }
 
 func (*Book) TableName() string {
