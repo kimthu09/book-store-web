@@ -1,11 +1,20 @@
 package inventorychecknoterepo
 
 import (
+	"book-store-management-backend/common"
 	"book-store-management-backend/module/inventorychecknote/inventorychecknotemodel"
+	"book-store-management-backend/module/inventorychecknotedetail/inventorychecknotedetailmodel"
 	"context"
 )
 
 type SeeDetailInventoryCheckNoteStore interface {
+	ListInventoryCheckNoteDetail(
+		ctx context.Context,
+		inventoryCheckNoteId string,
+		paging *common.Paging) ([]inventorychecknotedetailmodel.InventoryCheckNoteDetail, error)
+}
+
+type FindInventoryCheckNoteStore interface {
 	FindInventoryCheckNote(
 		ctx context.Context,
 		conditions map[string]interface{},
@@ -14,24 +23,42 @@ type SeeDetailInventoryCheckNoteStore interface {
 }
 
 type seeDetailInventoryCheckNoteRepo struct {
-	store SeeDetailInventoryCheckNoteStore
+	inventoryCheckNoteStore       FindInventoryCheckNoteStore
+	inventoryCheckNoteDetailStore SeeDetailInventoryCheckNoteStore
 }
 
-func NewSeeDetailInventoryCheckNoteRepo(store SeeDetailInventoryCheckNoteStore) *seeDetailInventoryCheckNoteRepo {
-	return &seeDetailInventoryCheckNoteRepo{store: store}
+func NewSeeDetailInventoryCheckNoteRepo(
+	inventoryCheckNoteStore FindInventoryCheckNoteStore,
+	inventoryCheckNoteDetailStore SeeDetailInventoryCheckNoteStore) *seeDetailInventoryCheckNoteRepo {
+	return &seeDetailInventoryCheckNoteRepo{
+		inventoryCheckNoteStore:       inventoryCheckNoteStore,
+		inventoryCheckNoteDetailStore: inventoryCheckNoteDetailStore,
+	}
 }
 
 func (repo *seeDetailInventoryCheckNoteRepo) SeeDetailInventoryCheckNote(
 	ctx context.Context,
-	inventoryCheckNoteId string) (*inventorychecknotemodel.InventoryCheckNote, error) {
-	inventoryCheckNote, err := repo.store.FindInventoryCheckNote(
-		ctx,
-		map[string]interface{}{"id": inventoryCheckNoteId},
-		"Details.Book")
-
-	if err != nil {
-		return nil, err
+	inventoryCheckNoteId string,
+	paging *common.Paging) (*inventorychecknotemodel.InventoryCheckNote, error) {
+	inventoryCheckNote, errInventoryCheckNote :=
+		repo.inventoryCheckNoteStore.FindInventoryCheckNote(
+			ctx,
+			map[string]interface{}{"id": inventoryCheckNoteId},
+			"CreateByUser")
+	if errInventoryCheckNote != nil {
+		return nil, errInventoryCheckNote
 	}
+
+	details, errInventoryCheckNoteDetail := repo.inventoryCheckNoteDetailStore.ListInventoryCheckNoteDetail(
+		ctx,
+		inventoryCheckNoteId,
+		paging,
+	)
+	if errInventoryCheckNoteDetail != nil {
+		return nil, errInventoryCheckNoteDetail
+	}
+
+	inventoryCheckNote.Details = details
 
 	return inventoryCheckNote, nil
 }
