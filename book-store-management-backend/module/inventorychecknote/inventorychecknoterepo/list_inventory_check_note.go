@@ -29,7 +29,7 @@ func (repo *listInventoryCheckNoteRepo) ListInventoryCheckNote(
 	result, err := repo.store.ListInventoryCheckNote(
 		ctx,
 		filter,
-		[]string{"id", "createBy"},
+		[]string{"InventoryCheckNote.id"},
 		paging)
 
 	if err != nil {

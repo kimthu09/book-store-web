@@ -56,6 +56,8 @@ func (biz *createImportNoteBiz) CreateImportNote(
 		return err
 	}
 
+	data.Round()
+
 	for _, v := range data.ImportNoteDetails {
 		if err := biz.repo.CheckBook(ctx, v.BookId); err != nil {
 			return err
@@ -107,7 +109,7 @@ func handleImportNoteCreateId(
 func handleTotalPrice(data *importnotemodel.ImportNoteCreate) {
 	var totalPrice float32 = 0
 	for _, importNoteDetail := range data.ImportNoteDetails {
-		totalPrice += importNoteDetail.Price * importNoteDetail.AmountImport
+		totalPrice += importNoteDetail.Price * importNoteDetail.QuantityImport
 	}
 	data.TotalPrice = totalPrice
 }

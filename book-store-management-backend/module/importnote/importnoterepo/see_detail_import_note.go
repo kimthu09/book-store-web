@@ -1,38 +1,64 @@
 package importnoterepo
 
 import (
+	"book-store-management-backend/common"
 	"book-store-management-backend/module/importnote/importnotemodel"
+	"book-store-management-backend/module/importnotedetail/importnotedetailmodel"
 	"context"
 )
 
 type SeeDetailImportNoteStore interface {
+	ListImportNoteDetail(
+		ctx context.Context,
+		importNoteId string,
+		paging *common.Paging) ([]importnotedetailmodel.ImportNoteDetail, error)
+}
+
+type FindImportNoteStore interface {
 	FindImportNote(
 		ctx context.Context,
 		conditions map[string]interface{},
-		moreKeys ...string,
-	) (*importnotemodel.ImportNote, error)
+		moreKeys ...string) (*importnotemodel.ImportNote, error)
 }
 
 type seeDetailImportNoteRepo struct {
-	store SeeDetailImportNoteStore
+	importNoteStore       FindImportNoteStore
+	importNoteDetailStore SeeDetailImportNoteStore
 }
 
-func NewSeeDetailImportNoteRepo(store SeeDetailImportNoteStore) *seeDetailImportNoteRepo {
-	return &seeDetailImportNoteRepo{store: store}
+func NewSeeDetailImportNoteRepo(
+	importNoteStore FindImportNoteStore,
+	importNoteDetailStore SeeDetailImportNoteStore) *seeDetailImportNoteRepo {
+	return &seeDetailImportNoteRepo{
+		importNoteDetailStore: importNoteDetailStore,
+		importNoteStore:       importNoteStore,
+	}
 }
 
 func (repo *seeDetailImportNoteRepo) SeeDetailImportNote(
 	ctx context.Context,
-	importNoteId string) (*importnotemodel.ImportNote, error) {
-	importNote, err := repo.store.FindImportNote(
+	importNoteId string,
+	paging *common.Paging) (*importnotemodel.ImportNote, error) {
+	importNote, errImportNote := repo.importNoteStore.FindImportNote(
 		ctx,
-		map[string]interface{}{"id": importNoteId},
-		"Supplier",
-		"Details.Book")
-
-	if err != nil {
-		return nil, err
+		map[string]interface{}{
+			"id": importNoteId,
+		},
+		"Supplier", "CreateByUser", "CloseByUser")
+	if errImportNote != nil {
+		return nil, errImportNote
 	}
+
+	details, errImportNoteDetail := repo.importNoteDetailStore.ListImportNoteDetail(
+		ctx,
+		importNoteId,
+		paging,
+	)
+	if errImportNoteDetail != nil {
+		return nil, errImportNoteDetail
+	}
+
+	importNote.Details = details
 
 	return importNote, nil
 }

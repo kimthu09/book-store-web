@@ -3,11 +3,11 @@ package inventorychecknotedetailmodel
 import "book-store-management-backend/common"
 
 type InventoryCheckNoteDetailCreate struct {
-	InventoryCheckNoteId string  `json:"-" gorm:"column:inventoryCheckNoteId;"`
-	BookId               string  `json:"bookId" gorm:"column:bookId;"`
-	Initial              float32 `json:"-" gorm:"column:initial;"`
-	Difference           float32 `json:"difference" gorm:"column:difference;"`
-	Final                float32 `json:"-" gorm:"column:final;"`
+	InventoryCheckNoteId string `json:"-" gorm:"column:inventoryCheckNoteId;"`
+	BookId               string `json:"bookId" gorm:"column:bookId;"`
+	Initial              int    `json:"-" gorm:"column:initial;"`
+	Difference           int    `json:"difference" gorm:"column:difference;"`
+	Final                int    `json:"-" gorm:"column:final;"`
 }
 
 func (*InventoryCheckNoteDetailCreate) TableName() string {
