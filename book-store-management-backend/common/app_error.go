@@ -190,4 +190,11 @@ func ErrRecordNotFound() *AppError {
 var (
 	errRecordNotFound = errors.New("record not found")
 	errIdIsTooLong    = errors.New("id is too long")
+	errDateInvalid    = errors.New("date is not in format dd/mm/yyyy")
+)
+
+var ErrDateInvalid = NewCustomError(
+	errDateInvalid,
+	fmt.Sprintf(errDateInvalid.Error()),
+	fmt.Sprintf("ERR_DATE_INVALID"),
 )
