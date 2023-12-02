@@ -12,7 +12,7 @@ type CreateInventoryCheckNoteRepo interface {
 	HandleInventoryCheckNote(
 		ctx context.Context,
 		data *inventorychecknotemodel.InventoryCheckNoteCreate) error
-	HandleBookAmount(
+	HandleBookQuantity(
 		ctx context.Context,
 		data *inventorychecknotemodel.InventoryCheckNoteCreate) error
 }
@@ -49,7 +49,7 @@ func (biz *createInventoryCheckNoteBiz) CreateInventoryCheckNote(
 		return err
 	}
 
-	if err := biz.repo.HandleBookAmount(ctx, data); err != nil {
+	if err := biz.repo.HandleBookQuantity(ctx, data); err != nil {
 		return err
 	}
 

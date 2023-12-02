@@ -6,11 +6,11 @@ import (
 )
 
 type InventoryCheckNoteCreate struct {
-	Id                *string                                                        `json:"id" gorm:"column:id;"`
-	AmountDifferent   float32                                                        `json:"-" gorm:"column:amountDifferent;"`
-	AmountAfterAdjust float32                                                        `json:"-" gorm:"column:amountAfterAdjust;"`
-	CreateBy          string                                                         `json:"-" gorm:"column:createBy;"`
-	Details           []inventorychecknotedetailmodel.InventoryCheckNoteDetailCreate `json:"details" gorm:"-"`
+	Id                  *string                                                        `json:"id" gorm:"column:id;" example:""`
+	QuantityDifferent   int                                                            `json:"-" gorm:"column:qtyDifferent;"`
+	QuantityAfterAdjust int                                                            `json:"-" gorm:"column:qtyAfterAdjust;"`
+	CreateBy            string                                                         `json:"-" gorm:"column:createBy;"`
+	Details             []inventorychecknotedetailmodel.InventoryCheckNoteDetailCreate `json:"details" gorm:"-"`
 }
 
 func (*InventoryCheckNoteCreate) TableName() string {

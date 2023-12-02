@@ -22,10 +22,10 @@ type CreateInventoryCheckNoteDetailStore interface {
 }
 
 type UpdateBookStore interface {
-	UpdateAmountBook(
+	UpdateQuantityBook(
 		ctx context.Context,
 		id string,
-		data *bookmodel.BookUpdateAmount,
+		data *bookmodel.BookUpdateQuantity,
 	) error
 	FindBook(
 		ctx context.Context,
@@ -66,11 +66,11 @@ func (repo *createInventoryCheckNoteRepo) HandleInventoryCheckNote(
 	return nil
 }
 
-func (repo *createInventoryCheckNoteRepo) HandleBookAmount(
+func (repo *createInventoryCheckNoteRepo) HandleBookQuantity(
 	ctx context.Context,
 	data *inventorychecknotemodel.InventoryCheckNoteCreate) error {
-	amountDiff := float32(0)
-	amountAfter := float32(0)
+	qtyDiff := 0
+	qtyAfter := 0
 	for i, value := range data.Details {
 		book, errGetBook := repo.bookStore.FindBook(
 			ctx, map[string]interface{}{"id": value.BookId})
@@ -78,25 +78,25 @@ func (repo *createInventoryCheckNoteRepo) HandleBookAmount(
 			return errGetBook
 		}
 
-		data.Details[i].Initial = book.Amount
-		data.Details[i].Final = book.Amount + value.Difference
-		amountDiff += value.Difference
-		amountAfter += data.Details[i].Final
+		data.Details[i].Initial = book.Quantity
+		data.Details[i].Final = book.Quantity + value.Difference
+		qtyDiff += value.Difference
+		qtyAfter += data.Details[i].Final
 
 		if data.Details[i].Final < 0 {
-			return inventorychecknotemodel.ErrInventoryCheckNoteModifyAmountIsInvalid
+			return inventorychecknotemodel.ErrInventoryCheckNoteModifyQuantityIsInvalid
 		}
 
-		bookUpdate := bookmodel.BookUpdateAmount{AmountUpdate: value.Difference}
+		bookUpdate := bookmodel.BookUpdateQuantity{QuantityUpdate: value.Difference}
 
-		if err := repo.bookStore.UpdateAmountBook(
+		if err := repo.bookStore.UpdateQuantityBook(
 			ctx, value.BookId, &bookUpdate,
 		); err != nil {
 			return err
 		}
 	}
 
-	data.AmountDifferent = amountDiff
-	data.AmountAfterAdjust = amountAfter
+	data.QuantityDifferent = qtyDiff
+	data.QuantityAfterAdjust = qtyAfter
 	return nil
 }

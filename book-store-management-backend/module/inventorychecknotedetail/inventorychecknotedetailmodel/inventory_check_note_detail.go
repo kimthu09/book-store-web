@@ -7,12 +7,12 @@ import (
 )
 
 type InventoryCheckNoteDetail struct {
-	InventoryCheckNoteId string         `json:"inventoryCheckNoteId" gorm:"column:inventoryCheckNoteId;"`
-	BookId               string         `json:"-" gorm:"column:bookId;"`
-	Book                 bookmodel.Book `json:"book"`
-	Initial              float32        `json:"initial" gorm:"column:initial;"`
-	Difference           float32        `json:"difference" gorm:"column:difference;"`
-	Final                float32        `json:"final" gorm:"column:final;"`
+	InventoryCheckNoteId string               `json:"inventoryCheckNoteId" gorm:"column:inventoryCheckNoteId;"`
+	BookId               string               `json:"-" gorm:"column:bookId;"`
+	Book                 bookmodel.SimpleBook `json:"book"`
+	Initial              int                  `json:"initial" gorm:"column:initial;"`
+	Difference           int                  `json:"difference" gorm:"column:difference;"`
+	Final                int                  `json:"final" gorm:"column:final;"`
 }
 
 func (*InventoryCheckNoteDetail) TableName() string {
