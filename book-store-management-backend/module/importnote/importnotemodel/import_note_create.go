@@ -40,3 +40,9 @@ func (data *ImportNoteCreate) Validate() *common.AppError {
 	}
 	return nil
 }
+
+func (data *ImportNoteCreate) Round() {
+	for i := range data.ImportNoteDetails {
+		data.ImportNoteDetails[i].Round()
+	}
+}

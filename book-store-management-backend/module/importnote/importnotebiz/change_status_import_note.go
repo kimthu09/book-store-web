@@ -28,9 +28,9 @@ type ChangeStatusImportNoteRepo interface {
 		ctx context.Context,
 		importNoteId string,
 	) ([]importnotedetailmodel.ImportNoteDetail, error)
-	HandleBookAmount(
+	HandleBookQuantity(
 		ctx context.Context,
-		bookTotalAmountNeedUpdate map[string]float32,
+		bookTotalQuantityNeedUpdate map[string]int,
 	) error
 }
 
@@ -96,8 +96,8 @@ func (biz *changeStatusImportNoteRepo) ChangeStatusImportNote(
 			return errGetImportNoteDetails
 		}
 
-		mapBookAmount := getMapBookTotalAmountNeedUpdated(importNoteDetails)
-		if err := biz.repo.HandleBookAmount(ctx, mapBookAmount); err != nil {
+		mapBookQuantity := getMapBookTotalQuantityNeedUpdated(importNoteDetails)
+		if err := biz.repo.HandleBookQuantity(ctx, mapBookQuantity); err != nil {
 			return err
 		}
 	}
@@ -107,11 +107,11 @@ func (biz *changeStatusImportNoteRepo) ChangeStatusImportNote(
 	return nil
 }
 
-func getMapBookTotalAmountNeedUpdated(
-	importNoteDetails []importnotedetailmodel.ImportNoteDetail) map[string]float32 {
-	result := make(map[string]float32)
+func getMapBookTotalQuantityNeedUpdated(
+	importNoteDetails []importnotedetailmodel.ImportNoteDetail) map[string]int {
+	result := make(map[string]int)
 	for _, v := range importNoteDetails {
-		result[v.BookId] += v.AmountImport
+		result[v.BookId] += v.QuantityImport
 	}
 	return result
 }

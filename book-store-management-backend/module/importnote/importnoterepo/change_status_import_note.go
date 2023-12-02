@@ -30,11 +30,11 @@ type GetImportNoteDetailStore interface {
 	) ([]importnotedetailmodel.ImportNoteDetail, error)
 }
 
-type UpdateAmountBookStore interface {
-	UpdateAmountBook(
+type UpdateQuantityBookStore interface {
+	UpdateQuantityBook(
 		ctx context.Context,
 		id string,
-		data *bookmodel.BookUpdateAmount,
+		data *bookmodel.BookUpdateQuantity,
 	) error
 }
 
@@ -61,7 +61,7 @@ type CreateSupplierDebtStore interface {
 type changeStatusImportNoteRepo struct {
 	importNoteStore       ChangeStatusImportNoteStore
 	importNoteDetailStore GetImportNoteDetailStore
-	bookStore             UpdateAmountBookStore
+	bookStore             UpdateQuantityBookStore
 	supplierStore         UpdateDebtOfSupplierStore
 	supplierDebtStore     CreateSupplierDebtStore
 }
@@ -69,7 +69,7 @@ type changeStatusImportNoteRepo struct {
 func NewChangeStatusImportNoteRepo(
 	importNoteStore ChangeStatusImportNoteStore,
 	importNoteDetailStore GetImportNoteDetailStore,
-	bookStore UpdateAmountBookStore,
+	bookStore UpdateQuantityBookStore,
 	supplierStore UpdateDebtOfSupplierStore,
 	supplierDebtStore CreateSupplierDebtStore) *changeStatusImportNoteRepo {
 	return &changeStatusImportNoteRepo{
@@ -115,17 +115,17 @@ func (repo *changeStatusImportNoteRepo) CreateSupplierDebt(
 		return err
 	}
 
-	amountBorrow := -importNote.TotalPrice
-	amountLeft := supplier.Debt + amountBorrow
+	qtyBorrow := -importNote.TotalPrice
+	qtyLeft := supplier.Debt + qtyBorrow
 
 	debtType := enum.Debt
 	supplierDebtCreate := supplierdebtmodel.SupplierDebtCreate{
-		Id:         supplierDebtId,
-		SupplierId: importNote.SupplierId,
-		Amount:     amountBorrow,
-		AmountLeft: amountLeft,
-		DebtType:   &debtType,
-		CreateBy:   importNote.CloseBy,
+		Id:           supplierDebtId,
+		SupplierId:   importNote.SupplierId,
+		Quantity:     qtyBorrow,
+		QuantityLeft: qtyLeft,
+		DebtType:     &debtType,
+		CreateBy:     importNote.CloseBy,
 	}
 
 	if err := repo.supplierDebtStore.CreateSupplierDebt(
@@ -139,9 +139,9 @@ func (repo *changeStatusImportNoteRepo) CreateSupplierDebt(
 func (repo *changeStatusImportNoteRepo) UpdateDebtSupplier(
 	ctx context.Context,
 	importNote *importnotemodel.ImportNoteUpdate) error {
-	amountUpdate := -importNote.TotalPrice
+	qtyUpdate := -importNote.TotalPrice
 	supplierUpdateDebt := suppliermodel.SupplierUpdateDebt{
-		Amount: &amountUpdate,
+		QuantityUpdate: &qtyUpdate,
 	}
 	if err := repo.supplierStore.UpdateSupplierDebt(
 		ctx, importNote.SupplierId, &supplierUpdateDebt,
@@ -165,12 +165,12 @@ func (repo *changeStatusImportNoteRepo) FindListImportNoteDetail(
 	return importNoteDetails, nil
 }
 
-func (repo *changeStatusImportNoteRepo) HandleBookAmount(
+func (repo *changeStatusImportNoteRepo) HandleBookQuantity(
 	ctx context.Context,
-	bookTotalAmountNeedUpdate map[string]float32) error {
-	for key, value := range bookTotalAmountNeedUpdate {
-		bookUpdate := bookmodel.BookUpdateAmount{AmountUpdate: value}
-		if err := repo.bookStore.UpdateAmountBook(
+	bookTotalQuantityNeedUpdate map[string]int) error {
+	for key, value := range bookTotalQuantityNeedUpdate {
+		bookUpdate := bookmodel.BookUpdateQuantity{QuantityUpdate: value}
+		if err := repo.bookStore.UpdateQuantityBook(
 			ctx, key, &bookUpdate,
 		); err != nil {
 			return err

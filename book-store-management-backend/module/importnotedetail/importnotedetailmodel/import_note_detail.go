@@ -7,11 +7,11 @@ import (
 )
 
 type ImportNoteDetail struct {
-	ImportNoteId string         `json:"importNoteId" gorm:"column:importNoteId;"`
-	BookId       string         `json:"bookId" gorm:"column:bookId;"`
-	Book         bookmodel.Book `json:"book"`
-	AmountImport float32        `json:"amountImport" gorm:"column:amountImport;"`
-	Price        float32        `json:"price" gorm:"column:price;"`
+	ImportNoteId   string               `json:"importNoteId" gorm:"column:importNoteId;"`
+	BookId         string               `json:"-" gorm:"column:bookId;"`
+	Book           bookmodel.SimpleBook `json:"book"`
+	QuantityImport int                  `json:"qtyImport" gorm:"column:qtyImport;"`
+	Price          float32              `json:"price" gorm:"column:price;"`
 }
 
 func (*ImportNoteDetail) TableName() string {
@@ -29,9 +29,9 @@ var (
 		"price of ingredient is negative number",
 		"ErrImportDetailPriceIsNegativeNumber",
 	)
-	ErrImportDetailAmountImportIsNotPositiveNumber = common.NewCustomError(
-		errors.New("amount import is not positive number"),
-		"amount import is not positive number",
-		"ErrImportDetailAmountImportIsNotPositiveNumber",
+	ErrImportDetailQuantityImportIsNotPositiveNumber = common.NewCustomError(
+		errors.New("quantity import is not positive number"),
+		"quantity import is not positive number",
+		"ErrImportDetailQuantityImportIsNotPositiveNumber",
 	)
 )

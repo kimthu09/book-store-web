@@ -5,6 +5,7 @@ import (
 	"book-store-management-backend/module/inventorychecknote/inventorychecknotemodel"
 	"context"
 	"gorm.io/gorm"
+	"time"
 )
 
 func (s *sqlStore) ListInventoryCheckNote(
@@ -19,14 +20,14 @@ func (s *sqlStore) ListInventoryCheckNote(
 
 	handleFilter(db, filter, propertiesContainSearchKey)
 
-	dbTemp, errPaging := handlePaging(db, paging)
+	dbTemp, errPaging := common.HandlePaging(db, paging)
 	if errPaging != nil {
 		return nil, errPaging
 	}
 	db = dbTemp
 
 	if err := db.
-		Limit(int(paging.Limit)).
+		Preload("CreateByUser").
 		Order("createAt desc").
 		Find(&result).Error; err != nil {
 		return nil, common.ErrDB(err)
@@ -43,16 +44,18 @@ func handleFilter(
 		if filter.SearchKey != "" {
 			db = common.GetWhereClause(db, filter.SearchKey, propertiesContainSearchKey)
 		}
+		if filter.DateFromCreateAt != nil {
+			timeFrom := time.Unix(*filter.DateFromCreateAt, 0)
+			db = db.Where("createAt >= ?", timeFrom)
+		}
+		if filter.DateToCreateAt != nil {
+			timeTo := time.Unix(*filter.DateToCreateAt, 0)
+			db = db.Where("createAt <= ?", timeTo)
+		}
+		if filter.CreateBy != nil {
+			db = db.
+				Joins("JOIN MUser ON InventoryCheckNote.createBy = MUser.id").
+				Where("MUser.name LIKE ?", "%"+*filter.CreateBy+"%")
+		}
 	}
-}
-
-func handlePaging(db *gorm.DB, paging *common.Paging) (*gorm.DB, error) {
-	if err := db.Count(&paging.Total).Error; err != nil {
-		return nil, common.ErrDB(err)
-	}
-
-	offset := (paging.Page - 1) * paging.Limit
-	db = db.Offset(int(offset))
-
-	return db, nil
 }
