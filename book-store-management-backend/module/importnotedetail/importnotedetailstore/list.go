@@ -21,7 +21,7 @@ func (s *sqlStore) ListImportNoteDetail(
 	if errPaging != nil {
 		return nil, errPaging
 	}
-	db = dbTemp.Limit(int(paging.Limit))
+	db = dbTemp
 
 	if err := db.
 		Preload("Book").

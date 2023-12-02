@@ -20,14 +20,13 @@ func (s *sqlStore) ListImportNote(
 
 	handleFilter(db, filter, propertiesContainSearchKey)
 
-	dbTemp, errPaging := handlePaging(db, paging)
+	dbTemp, errPaging := common.HandlePaging(db, paging)
 	if errPaging != nil {
 		return nil, errPaging
 	}
 	db = dbTemp
 
 	if err := db.
-		Limit(int(paging.Limit)).
 		Preload("Supplier").
 		Preload("CreateByUser").
 		Preload("CloseByUser").
@@ -88,15 +87,4 @@ func handleFilter(
 				Where("CloseByUser.name LIKE ?", "%"+*filter.CloseBy+"%")
 		}
 	}
-}
-
-func handlePaging(db *gorm.DB, paging *common.Paging) (*gorm.DB, error) {
-	if err := db.Count(&paging.Total).Error; err != nil {
-		return nil, common.ErrDB(err)
-	}
-
-	offset := (paging.Page - 1) * paging.Limit
-	db = db.Offset(int(offset))
-
-	return db, nil
 }
