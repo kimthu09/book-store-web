@@ -3,21 +3,24 @@ package importnotemodel
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/module/importnotedetail/importnotedetailmodel"
+	"book-store-management-backend/module/user/usermodel"
 	"errors"
 	"time"
 )
 
 type ImportNote struct {
-	Id         string                                   `json:"id" gorm:"column:id;"`
-	SupplierId string                                   `json:"-" gorm:"column:supplierId;"`
-	Supplier   SimpleSupplier                           `json:"supplier" gorm:"foreignKey:SupplierId;references:Id"`
-	TotalPrice float32                                  `json:"totalPrice" gorm:"column:totalPrice;"`
-	Status     *ImportNoteStatus                        `json:"status" gorm:"column:status;"`
-	CreateBy   string                                   `json:"createBy" gorm:"column:createBy;"`
-	CloseBy    *string                                  `json:"closeBy" gorm:"column:closeBy;"`
-	CreateAt   *time.Time                               `json:"createAt" gorm:"column:createAt;"`
-	CloseAt    *time.Time                               `json:"closeAt" gorm:"column:closeAt;"`
-	Details    []importnotedetailmodel.ImportNoteDetail `json:"details"`
+	Id           string                                   `json:"id" gorm:"column:id;"`
+	SupplierId   string                                   `json:"-" gorm:"column:supplierId;"`
+	Supplier     SimpleSupplier                           `json:"supplier" gorm:"foreignKey:SupplierId;references:Id"`
+	TotalPrice   float32                                  `json:"totalPrice" gorm:"column:totalPrice;"`
+	Status       *ImportNoteStatus                        `json:"status" gorm:"column:status;"`
+	CreateBy     string                                   `json:"-" gorm:"column:createBy;"`
+	CreateByUser usermodel.SimpleUser                     `json:"createBy" gorm:"foreignKey:CreateBy"`
+	CloseBy      *string                                  `json:"-" gorm:"column:closeBy;"`
+	CloseByUser  *usermodel.SimpleUser                    `json:"closeBy" gorm:"foreignKey:CloseBy"`
+	CreateAt     *time.Time                               `json:"createAt" gorm:"column:createAt;"`
+	CloseAt      *time.Time                               `json:"closeAt" gorm:"column:closeAt;"`
+	Details      []importnotedetailmodel.ImportNoteDetail `json:"details"`
 }
 
 func (*ImportNote) TableName() string {

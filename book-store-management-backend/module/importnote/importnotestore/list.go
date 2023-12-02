@@ -5,6 +5,7 @@ import (
 	"book-store-management-backend/module/importnote/importnotemodel"
 	"context"
 	"gorm.io/gorm"
+	"time"
 )
 
 func (s *sqlStore) ListImportNote(
@@ -27,8 +28,10 @@ func (s *sqlStore) ListImportNote(
 
 	if err := db.
 		Limit(int(paging.Limit)).
-		Order("createAt desc").
 		Preload("Supplier").
+		Preload("CreateByUser").
+		Preload("CloseByUser").
+		Order("createAt desc").
 		Find(&result).Error; err != nil {
 		return nil, common.ErrDB(err)
 	}
@@ -52,6 +55,37 @@ func handleFilter(
 		}
 		if filter.MaxPrice != nil {
 			db = db.Where("totalPrice <= ?", filter.MaxPrice)
+		}
+		if filter.DateFromCreateAt != nil {
+			timeFrom := time.Unix(*filter.DateFromCreateAt, 0)
+			db = db.Where("createAt >= ?", timeFrom)
+		}
+		if filter.DateToCreateAt != nil {
+			timeTo := time.Unix(*filter.DateToCreateAt, 0)
+			db = db.Where("createAt <= ?", timeTo)
+		}
+		if filter.DateFromCloseAt != nil {
+			timeFrom := time.Unix(*filter.DateFromCloseAt, 0)
+			db = db.Where("closeAt >= ?", timeFrom)
+		}
+		if filter.DateToCloseAt != nil {
+			timeTo := time.Unix(*filter.DateToCloseAt, 0)
+			db = db.Where("closeAt <= ?", timeTo)
+		}
+		if filter.Supplier != nil {
+			db = db.
+				Joins("JOIN Supplier ON ImportNote.supplierId = Supplier.id").
+				Where("Supplier.name LIKE ?", "%"+*filter.Supplier+"%")
+		}
+		if filter.CreateBy != nil {
+			db = db.
+				Joins("JOIN MUser AS CreateByUser ON ImportNote.createBy = CreateByUser.id").
+				Where("CloseByUser.name LIKE ?", "%"+*filter.CreateBy+"%")
+		}
+		if filter.CloseBy != nil {
+			db = db.
+				Joins("JOIN MUser AS CloseByUser ON ImportNote.closeBy = CloseByUser.id").
+				Where("CloseByUser.name LIKE ?", "%"+*filter.CloseBy+"%")
 		}
 	}
 }

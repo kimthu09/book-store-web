@@ -7,7 +7,10 @@ import (
 	"book-store-management-backend/module/author/authortransport"
 	"book-store-management-backend/module/book/booktransport"
 	"book-store-management-backend/module/category/categorytransport"
+	"book-store-management-backend/module/importnote/importnotetransport/ginimportnote"
+	"book-store-management-backend/module/inventorychecknote/inventorychecknotetransport/gininventorychecknote"
 	"book-store-management-backend/module/publisher/publishertransport"
+	"book-store-management-backend/module/supplier/suppliertransport/ginsupplier"
 	"book-store-management-backend/module/user/usertransport/ginuser"
 	"fmt"
 	"log"
@@ -82,6 +85,9 @@ func main() {
 		categorytransport.SetupRoutes(v1, appCtx)
 		booktransport.SetupRoutes(v1, appCtx)
 		publishertransport.SetupRoutes(v1, appCtx)
+		ginimportnote.SetupRoutes(v1, appCtx)
+		gininventorychecknote.SetupRoutes(v1, appCtx)
+		ginsupplier.SetupRoutes(v1, appCtx)
 	}
 
 	v1.POST("/login", ginuser.Login(appCtx))
@@ -89,31 +95,6 @@ func main() {
 	{
 		users.PATCH("", ginuser.CreateUser(appCtx))
 	}
-
-	//
-	//suppliers := v1.Group("/suppliers", middleware.RequireAuth(appCtx))
-	//{
-	//	suppliers.GET("", ginsupplier.ListSupplier(appCtx))
-	//	suppliers.GET("/:id", ginsupplier.SeeDetailSupplier(appCtx))
-	//	suppliers.POST("", ginsupplier.CreateSupplier(appCtx))
-	//	suppliers.PATCH("/:id", ginsupplier.UpdateInfoSupplier(appCtx))
-	//	suppliers.POST("/:id/pay", ginsupplier.PaySupplier(appCtx))
-	//}
-	//
-	//importNotes := v1.Group("/importNotes", middleware.RequireAuth(appCtx))
-	//{
-	//	importNotes.GET("", ginimportnote.ListImportNote(appCtx))
-	//	importNotes.GET("/:id", ginimportnote.SeeDetailImportNote(appCtx))
-	//	importNotes.POST("", ginimportnote.CreateImportNote(appCtx))
-	//	importNotes.PATCH("/:id", ginimportnote.ChangeStatusImportNote(appCtx))
-	//}
-	//
-	//inventoryCheckNotes := v1.Group("/inventoryCheckNotes", middleware.RequireAuth(appCtx))
-	//{
-	//	inventoryCheckNotes.GET("", gininventorychecknote.ListInventoryCheckNote(appCtx))
-	//	inventoryCheckNotes.GET("/:id", gininventorychecknote.SeeDetailInventoryCheckNote(appCtx))
-	//	inventoryCheckNotes.POST("", gininventorychecknote.CreateInventoryCheckNote(appCtx))
-	//}
 
 	if err := r.Run(fmt.Sprintf(":%s", cfg.Port)); err != nil {
 		log.Fatalln("Error running server:", err)
