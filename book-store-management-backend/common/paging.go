@@ -11,5 +11,7 @@ func (p *Paging) Fulfill() {
 		p.Page = 1
 	}
 
-	p.Limit = 10
+	if p.Limit <= 0 {
+		p.Limit = 10
+	}
 }
