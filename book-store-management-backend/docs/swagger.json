@@ -241,6 +241,365 @@
                     }
                 }
             }
+        },
+        "/suppliers": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "suppliers"
+                ],
+                "summary": "List supplier",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 11,
+                        "name": "total",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "example": 100000,
+                        "name": "maxDebt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "example": 10,
+                        "name": "minDebt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "id, name, phone, email",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "list supplier",
+                        "schema": {
+                            "$ref": "#/definitions/suppliermodel.ResListSupplier"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "suppliers"
+                ],
+                "summary": "Create supplier",
+                "parameters": [
+                    {
+                        "description": "supplier need to create",
+                        "name": "supplier",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/suppliermodel.ReqCreateSupplier"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "supplier id",
+                        "schema": {
+                            "$ref": "#/definitions/suppliermodel.ResSupplierCreate"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/suppliers/{id}": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "suppliers"
+                ],
+                "summary": "Update info supplier",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "supplier id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "supplier info to update",
+                        "name": "supplier",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/suppliermodel.ReqUpdateInfoSupplier"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/suppliers/{id}/debts": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "suppliers"
+                ],
+                "summary": "See debts of supplier",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "supplier id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 11,
+                        "name": "total",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1709500431,
+                        "name": "from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1709500431,
+                        "name": "to",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "supplier",
+                        "schema": {
+                            "$ref": "#/definitions/suppliermodel.ResSeeDebtSupplier"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/suppliers/{id}/import_notes": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "suppliers"
+                ],
+                "summary": "See import notes of supplier",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "supplier id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 11,
+                        "name": "total",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1709500431,
+                        "name": "from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1709500431,
+                        "name": "to",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "supplier",
+                        "schema": {
+                            "$ref": "#/definitions/suppliermodel.ResSeeDebtSupplier"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/suppliers/{id}/pay": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "suppliers"
+                ],
+                "summary": "Pay supplier",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "supplier id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "pay information",
+                        "name": "supplier",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/suppliermodel.ReqUpdateDebtSupplier"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -388,17 +747,87 @@
                 }
             }
         },
+        "common.AppError": {
+            "type": "object",
+            "properties": {
+                "error_key": {
+                    "type": "string",
+                    "example": "ErrKey"
+                },
+                "log": {
+                    "type": "string",
+                    "example": "error log"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "error message"
+                },
+                "status_code": {
+                    "type": "integer",
+                    "example": 400
+                }
+            }
+        },
         "common.Paging": {
             "type": "object",
             "properties": {
                 "limit": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 10
                 },
                 "page": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "total": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 11
+                }
+            }
+        },
+        "common.ResSuccess": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "enum.DebtType": {
+            "type": "string",
+            "enum": [
+                "Pay",
+                "Debt"
+            ],
+            "x-enum-varnames": [
+                "Pay",
+                "Debt"
+            ]
+        },
+        "filter.SupplierDebtFilter": {
+            "type": "object",
+            "properties": {
+                "from": {
+                    "type": "integer",
+                    "example": 1709500431
+                },
+                "to": {
+                    "type": "integer",
+                    "example": 1709500431
+                }
+            }
+        },
+        "filter.SupplierImportFilter": {
+            "type": "object",
+            "properties": {
+                "from": {
+                    "type": "integer",
+                    "example": 1709500431
+                },
+                "to": {
+                    "type": "integer",
+                    "example": 1709500431
                 }
             }
         },
@@ -452,6 +881,216 @@
                 },
                 "paging": {
                     "$ref": "#/definitions/common.Paging"
+                }
+            }
+        },
+        "supplierdebtmodel.SupplierDebt": {
+            "type": "object",
+            "properties": {
+                "create_at": {
+                    "type": "string",
+                    "example": "1709500431"
+                },
+                "create_by": {
+                    "type": "string",
+                    "example": "user_id"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "debt001"
+                },
+                "qty": {
+                    "type": "number",
+                    "example": -70000
+                },
+                "qty_left": {
+                    "type": "number",
+                    "example": -100000
+                },
+                "supplier_id": {
+                    "type": "string",
+                    "example": "123"
+                },
+                "type": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/enum.DebtType"
+                        }
+                    ],
+                    "example": "Debt"
+                }
+            }
+        },
+        "suppliermodel.ReqCreateSupplier": {
+            "type": "object",
+            "properties": {
+                "debt": {
+                    "type": "number",
+                    "example": -100000
+                },
+                "email": {
+                    "type": "string",
+                    "example": "a@gmail.com"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "123"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Nguyễn Văn A"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "0123456789"
+                }
+            }
+        },
+        "suppliermodel.ReqUpdateDebtSupplier": {
+            "type": "object",
+            "properties": {
+                "qty_update": {
+                    "type": "number",
+                    "example": 10000
+                }
+            }
+        },
+        "suppliermodel.ReqUpdateInfoSupplier": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "b@gmail.com"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "tên đã đổi"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "1234567890"
+                }
+            }
+        },
+        "suppliermodel.ResDebtSupplier": {
+            "type": "object",
+            "properties": {
+                "debt": {
+                    "type": "number",
+                    "example": -100000
+                },
+                "debt_history": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/supplierdebtmodel.SupplierDebt"
+                    }
+                },
+                "email": {
+                    "type": "string",
+                    "example": "a@gmail.com"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "123"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Nguyễn Văn A"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "0123456789"
+                }
+            }
+        },
+        "suppliermodel.ResListSupplier": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains list of supplier.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/suppliermodel.Supplier"
+                    }
+                },
+                "filter": {
+                    "description": "Filter contains the filter parameters used to retrieve supplier.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/filter.SupplierImportFilter"
+                        }
+                    ]
+                },
+                "paging": {
+                    "description": "Paging provides information about pagination.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/common.Paging"
+                        }
+                    ]
+                }
+            }
+        },
+        "suppliermodel.ResSeeDebtSupplier": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains the detailed information about supplier's debts.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/suppliermodel.ResDebtSupplier"
+                        }
+                    ]
+                },
+                "filter": {
+                    "description": "Filter contains the filter parameters used to retrieve debts.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/filter.SupplierDebtFilter"
+                        }
+                    ]
+                },
+                "paging": {
+                    "description": "Paging provides information about pagination.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/common.Paging"
+                        }
+                    ]
+                }
+            }
+        },
+        "suppliermodel.ResSupplierCreate": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string",
+                    "example": "123"
+                }
+            }
+        },
+        "suppliermodel.Supplier": {
+            "type": "object",
+            "properties": {
+                "debt": {
+                    "type": "number",
+                    "example": -100000
+                },
+                "email": {
+                    "type": "string",
+                    "example": "a@gmail.com"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "123"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Nguyễn Văn A"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "0123456789"
                 }
             }
         }

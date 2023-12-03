@@ -4,29 +4,28 @@ import (
 	"database/sql/driver"
 	"errors"
 	"fmt"
-	"strings"
 )
 
-type DebtType int
+type DebtType string
 
 const (
-	Pay DebtType = iota
-	Debt
+	Pay  DebtType = "Pay"
+	Debt DebtType = "Debt"
 )
 
-var allDebtType = [2]string{"Pay", "Debt"}
+var allDebtType = [2]DebtType{"Pay", "Debt"}
 
 func (debtType *DebtType) String() string {
-	return allDebtType[*debtType]
+	return string(*debtType)
 }
 
 func parseStrDebtType(s string) (DebtType, error) {
-	for i := range allDebtType {
-		if allDebtType[i] == s {
-			return DebtType(i), nil
+	for _, dt := range allDebtType {
+		if dt.String() == s {
+			return dt, nil
 		}
 	}
-	return DebtType(0), errors.New("invalid debt type string")
+	return "", errors.New("invalid debt type string")
 }
 
 func (debtType *DebtType) Scan(value interface{}) error {
@@ -52,26 +51,4 @@ func (debtType *DebtType) Value() (driver.Value, error) {
 	}
 
 	return debtType.String(), nil
-}
-
-func (debtType *DebtType) MarshalJSON() ([]byte, error) {
-	if debtType == nil {
-		return nil, nil
-	}
-
-	return []byte(fmt.Sprintf("\"%s\"", debtType.String())), nil
-}
-
-func (debtType *DebtType) UnmarshalJSON(data []byte) error {
-	str := strings.ReplaceAll(string(data), "\"", "")
-
-	debtTypeValue, err := parseStrDebtType(str)
-
-	if err != nil {
-		return err
-	}
-
-	*debtType = debtTypeValue
-
-	return nil
 }
