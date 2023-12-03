@@ -2,33 +2,19 @@ package suppliermodel
 
 import (
 	"book-store-management-backend/common"
-	"book-store-management-backend/module/supplierdebt/supplierdebtmodel"
 	"errors"
 )
 
 type Supplier struct {
-	Id          string                           `json:"id" gorm:"column:id;"`
-	Name        string                           `json:"name" gorm:"column:name;"`
-	Email       string                           `json:"email" gorm:"column:email;"`
-	Phone       string                           `json:"phone" gorm:"column:phone;"`
-	Debt        float32                          `json:"debt" gorm:"column:debt;"`
-	DebtHistory []supplierdebtmodel.SupplierDebt `json:"debtHistory"`
+	Id    string  `json:"id" gorm:"column:id;" example:"123"`
+	Name  string  `json:"name" gorm:"column:name;" example:"Nguyễn Văn A"`
+	Email string  `json:"email" gorm:"column:email;" example:"a@gmail.com"`
+	Phone string  `json:"phone" gorm:"column:phone;" example:"0123456789"`
+	Debt  float32 `json:"debt" gorm:"column:debt;" example:"-100000"`
 }
 
 func (*Supplier) TableName() string {
 	return common.TableSupplier
-}
-
-func (s *Supplier) Len() int {
-	return len(s.DebtHistory)
-}
-
-func (s *Supplier) Less(i, j int) bool {
-	return s.DebtHistory[i].CreateAt.After(*s.DebtHistory[j].CreateAt)
-}
-
-func (s *Supplier) Swap(i, j int) {
-	s.DebtHistory[i], s.DebtHistory[j] = s.DebtHistory[j], s.DebtHistory[i]
 }
 
 var (
@@ -52,6 +38,11 @@ var (
 		"email of supplier is invalid",
 		"ErrSupplierEmailInvalid",
 	)
+	ErrSupplierInitDebtInvalid = common.NewCustomError(
+		errors.New("init debt of supplier is invalid"),
+		"init debt of supplier is invalid",
+		"ErrSupplierInitDebtInvalid",
+	)
 	ErrSupplierDebtPayNotExist = common.NewCustomError(
 		errors.New("debt pay is not exist"),
 		"debt pay is not exist",
@@ -61,11 +52,6 @@ var (
 		errors.New("debt pay is invalid"),
 		"debt pay is invalid",
 		"ErrSupplierDebtPayIsInvalid",
-	)
-	ErrSupplierDebtPayIsOverCurrentDebt = common.NewCustomError(
-		errors.New("debt pay is over"),
-		"debt pay is over",
-		"ErrSupplierDebtPayIsOverCurrentDebt",
 	)
 	ErrSupplierIdDuplicate = common.ErrDuplicateKey(
 		errors.New("id of supplier is duplicate"),
