@@ -30,6 +30,17 @@ export type ImportDetail = {
 export type Supplier = {
   id: string;
   name: string;
+  email?: string;
+  phone: string;
+  debt: number;
+};
+export type SupplierDebt = {
+  id: string;
+  idSupplier: string;
+  amount: number;
+  amountLeft: number;
+  createBy: string;
+  createAt: Date;
 };
 
 export enum StatusNote {
