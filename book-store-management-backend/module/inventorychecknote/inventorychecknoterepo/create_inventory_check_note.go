@@ -10,7 +10,7 @@ import (
 type CreateInventoryCheckNoteStore interface {
 	CreateInventoryCheckNote(
 		ctx context.Context,
-		data *inventorychecknotemodel.InventoryCheckNoteCreate,
+		data *inventorychecknotemodel.ReqCreateInventoryCheckNote,
 	) error
 }
 
@@ -53,7 +53,7 @@ func NewCreateInventoryCheckNoteRepo(
 
 func (repo *createInventoryCheckNoteRepo) HandleInventoryCheckNote(
 	ctx context.Context,
-	data *inventorychecknotemodel.InventoryCheckNoteCreate) error {
+	data *inventorychecknotemodel.ReqCreateInventoryCheckNote) error {
 	if err := repo.inventoryCheckNoteStore.CreateInventoryCheckNote(ctx, data); err != nil {
 		return err
 	}
@@ -68,7 +68,7 @@ func (repo *createInventoryCheckNoteRepo) HandleInventoryCheckNote(
 
 func (repo *createInventoryCheckNoteRepo) HandleBookQuantity(
 	ctx context.Context,
-	data *inventorychecknotemodel.InventoryCheckNoteCreate) error {
+	data *inventorychecknotemodel.ReqCreateInventoryCheckNote) error {
 	qtyDiff := 0
 	qtyAfter := 0
 	for i, value := range data.Details {

@@ -7,7 +7,7 @@ import (
 )
 
 type CreateUserStore interface {
-	CreateUser(ctx context.Context, data *usermodel.UserCreate) error
+	CreateUser(ctx context.Context, data *usermodel.ReqCreateUser) error
 }
 
 type CheckRoleStore interface {
@@ -44,7 +44,7 @@ func (repo *createUserRepo) CheckRoleExist(ctx context.Context, roleId string) e
 	return nil
 }
 
-func (repo *createUserRepo) CreateUser(ctx context.Context, data *usermodel.UserCreate) error {
+func (repo *createUserRepo) CreateUser(ctx context.Context, data *usermodel.ReqCreateUser) error {
 	if err := repo.userStore.CreateUser(ctx, data); err != nil {
 		return err
 	}

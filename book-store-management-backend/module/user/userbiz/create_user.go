@@ -11,7 +11,7 @@ import (
 
 type CreateUserRepo interface {
 	CheckRoleExist(ctx context.Context, roleId string) error
-	CreateUser(ctx context.Context, data *usermodel.UserCreate) error
+	CreateUser(ctx context.Context, data *usermodel.ReqCreateUser) error
 }
 
 type createUserBiz struct {
@@ -36,7 +36,7 @@ func NewCreateUserBiz(
 
 func (biz *createUserBiz) CreateUser(
 	ctx context.Context,
-	data *usermodel.UserCreate) error {
+	data *usermodel.ReqCreateUser) error {
 	if biz.requester.GetRole().Id != common.RoleAdminId {
 		return usermodel.ErrUserCreateNoPermission
 	}
@@ -64,7 +64,7 @@ func (biz *createUserBiz) CreateUser(
 	return nil
 }
 
-func handleUserId(gen generator.IdGenerator, data *usermodel.UserCreate) error {
+func handleUserId(gen generator.IdGenerator, data *usermodel.ReqCreateUser) error {
 	id, err := gen.GenerateId()
 	if err != nil {
 		return err

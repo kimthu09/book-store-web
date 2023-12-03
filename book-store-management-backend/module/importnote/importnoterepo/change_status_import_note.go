@@ -19,7 +19,7 @@ type ChangeStatusImportNoteStore interface {
 	UpdateImportNote(
 		ctx context.Context,
 		id string,
-		data *importnotemodel.ImportNoteUpdate,
+		data *importnotemodel.ReqUpdateImportNote,
 	) error
 }
 
@@ -96,7 +96,7 @@ func (repo *changeStatusImportNoteRepo) FindImportNote(
 func (repo *changeStatusImportNoteRepo) UpdateImportNote(
 	ctx context.Context,
 	importNoteId string,
-	data *importnotemodel.ImportNoteUpdate) error {
+	data *importnotemodel.ReqUpdateImportNote) error {
 	if err := repo.importNoteStore.UpdateImportNote(
 		ctx, importNoteId, data); err != nil {
 		return err
@@ -107,7 +107,7 @@ func (repo *changeStatusImportNoteRepo) UpdateImportNote(
 func (repo *changeStatusImportNoteRepo) CreateSupplierDebt(
 	ctx context.Context,
 	supplierDebtId string,
-	importNote *importnotemodel.ImportNoteUpdate) error {
+	importNote *importnotemodel.ReqUpdateImportNote) error {
 	supplier, err := repo.supplierStore.FindSupplier(
 		ctx,
 		map[string]interface{}{"id": importNote.SupplierId})
@@ -138,7 +138,7 @@ func (repo *changeStatusImportNoteRepo) CreateSupplierDebt(
 
 func (repo *changeStatusImportNoteRepo) UpdateDebtSupplier(
 	ctx context.Context,
-	importNote *importnotemodel.ImportNoteUpdate) error {
+	importNote *importnotemodel.ReqUpdateImportNote) error {
 	qtyUpdate := -importNote.TotalPrice
 	supplierUpdateDebt := suppliermodel.ReqUpdateDebtSupplier{
 		QuantityUpdate: &qtyUpdate,

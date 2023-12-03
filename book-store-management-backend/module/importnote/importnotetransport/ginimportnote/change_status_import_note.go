@@ -18,6 +18,17 @@ import (
 	"net/http"
 )
 
+// @BasePath /v1
+// @Security BearerAuth
+// @Summary Change status import note
+// @Tags importNotes
+// @Accept json
+// @Produce json
+// @Param id path string true "import note id"
+// @Param importNote body importnotemodel.ReqUpdateImportNote true "status need to update of import note"
+// @Response 200 {object} common.ResSuccess "status of response"
+// @Response 400 {object} common.AppError "error"
+// @Router /importNotes/{id} [patch]
 func ChangeStatusImportNote(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idImportNote := c.Param("id")
@@ -25,7 +36,7 @@ func ChangeStatusImportNote(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(common.ErrInvalidRequest(errors.New("param id not exist")))
 		}
 
-		var data importnotemodel.ImportNoteUpdate
+		var data importnotemodel.ReqUpdateImportNote
 
 		if err := c.ShouldBind(&data); err != nil {
 			panic(common.ErrInvalidRequest(err))

@@ -12,7 +12,7 @@ type SeeDetailImportNoteRepo interface {
 		ctx context.Context,
 		importNoteId string,
 		paging *common.Paging,
-	) (*importnotemodel.ImportNote, error)
+	) (*importnotemodel.ResDetailImportNote, error)
 }
 
 type seeDetailImportNoteBiz struct {
@@ -29,7 +29,7 @@ func NewSeeDetailImportNoteBiz(
 func (biz *seeDetailImportNoteBiz) SeeDetailImportNote(
 	ctx context.Context,
 	importNoteId string,
-	paging *common.Paging) (*importnotemodel.ImportNote, error) {
+	paging *common.Paging) (*importnotemodel.ResDetailImportNote, error) {
 	if !biz.requester.IsHasFeature(common.ImportNoteViewFeatureCode) {
 		return nil, importnotemodel.ErrImportNoteViewNoPermission
 	}

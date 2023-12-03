@@ -38,7 +38,7 @@ func NewSeeDetailImportNoteRepo(
 func (repo *seeDetailImportNoteRepo) SeeDetailImportNote(
 	ctx context.Context,
 	importNoteId string,
-	paging *common.Paging) (*importnotemodel.ImportNote, error) {
+	paging *common.Paging) (*importnotemodel.ResDetailImportNote, error) {
 	importNote, errImportNote := repo.importNoteStore.FindImportNote(
 		ctx,
 		map[string]interface{}{
@@ -49,6 +49,8 @@ func (repo *seeDetailImportNoteRepo) SeeDetailImportNote(
 		return nil, errImportNote
 	}
 
+	resDetailImportNote := importnotemodel.GetResDetailImportNoteFromImportNote(importNote)
+
 	details, errImportNoteDetail := repo.importNoteDetailStore.ListImportNoteDetail(
 		ctx,
 		importNoteId,
@@ -58,7 +60,7 @@ func (repo *seeDetailImportNoteRepo) SeeDetailImportNote(
 		return nil, errImportNoteDetail
 	}
 
-	importNote.Details = details
+	resDetailImportNote.Details = details
 
-	return importNote, nil
+	return resDetailImportNote, nil
 }

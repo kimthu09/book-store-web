@@ -3,11 +3,11 @@ package importnotedetailmodel
 import "book-store-management-backend/common"
 
 type ImportNoteDetailCreate struct {
-	ImportNoteId   string  `json:"importNoteId" gorm:"column:importNoteId;"`
-	BookId         string  `json:"bookId" gorm:"column:bookId;"`
-	QuantityImport float32 `json:"qtyImport" gorm:"column:qtyImport;"`
-	Price          float32 `json:"price" gorm:"column:price;"`
-	IsReplacePrice bool    `json:"isReplacePrice" gorm:"-"`
+	ImportNoteId   string  `json:"-" gorm:"column:importNoteId;"`
+	BookId         string  `json:"bookId" gorm:"column:bookId;" example:"book id"`
+	QuantityImport float32 `json:"qtyImport" gorm:"column:qtyImport;" example:"100"`
+	Price          float32 `json:"price" gorm:"column:price;" example:"60000"`
+	IsReplacePrice bool    `json:"isReplacePrice" gorm:"-" example:"true"`
 }
 
 func (*ImportNoteDetailCreate) TableName() string {

@@ -7,7 +7,7 @@ import (
 )
 
 type ImportNoteDetail struct {
-	ImportNoteId   string               `json:"importNoteId" gorm:"column:importNoteId;"`
+	ImportNoteId   string               `json:"importNoteId" gorm:"column:importNoteId;" example:"import note id"`
 	BookId         string               `json:"-" gorm:"column:bookId;"`
 	Book           bookmodel.SimpleBook `json:"book"`
 	QuantityImport int                  `json:"qtyImport" gorm:"column:qtyImport;"`
