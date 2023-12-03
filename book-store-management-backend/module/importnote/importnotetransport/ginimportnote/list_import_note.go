@@ -12,6 +12,17 @@ import (
 	"net/http"
 )
 
+// @BasePath /v1
+// @Security BearerAuth
+// @Summary List import note
+// @Tags importNotes
+// @Accept json
+// @Produce json
+// @Param page query common.Paging false "page"
+// @Param filter query importnotemodel.Filter false "filter"
+// @Response 200 {object} importnotemodel.ResListImportNote "list import note"
+// @Response 400 {object} common.AppError "error"
+// @Router /importNotes [get]
 func ListImportNote(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var filter importnotemodel.Filter

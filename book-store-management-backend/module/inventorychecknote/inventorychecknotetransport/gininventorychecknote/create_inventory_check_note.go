@@ -15,9 +15,19 @@ import (
 	"net/http"
 )
 
+// @BasePath /v1
+// @Security BearerAuth
+// @Summary Create inventory check note
+// @Tags inventoryCheckNotes
+// @Accept json
+// @Produce json
+// @Param inventoryCheckNote body inventorychecknotemodel.ReqCreateInventoryCheckNote true "inventory check note need to create"
+// @Response 200 {object} inventorychecknotemodel.ResCreateInventoryCheckNote "inventory check note id"
+// @Response 400 {object} common.AppError "error"
+// @Router /inventoryCheckNotes [post]
 func CreateInventoryCheckNote(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var data inventorychecknotemodel.InventoryCheckNoteCreate
+		var data inventorychecknotemodel.ReqCreateInventoryCheckNote
 
 		if err := c.ShouldBind(&data); err != nil {
 			panic(common.ErrInvalidRequest(err))

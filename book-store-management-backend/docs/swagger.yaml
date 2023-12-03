@@ -59,6 +59,15 @@ definitions:
       salePrice:
         type: number
     type: object
+  bookmodel.SimpleBook:
+    properties:
+      id:
+        example: book id
+        type: string
+      name:
+        example: Những câu chuyện hay
+        type: string
+    type: object
   categorymodel.Category:
     properties:
       id:
@@ -95,7 +104,7 @@ definitions:
     type: object
   common.AppError:
     properties:
-      error_key:
+      errorKey:
         example: ErrKey
         type: string
       log:
@@ -104,7 +113,7 @@ definitions:
       message:
         example: error message
         type: string
-      status_code:
+      statusCode:
         example: 400
         type: integer
     type: object
@@ -151,6 +160,320 @@ definitions:
       to:
         example: 1709500431
         type: integer
+    type: object
+  importnotedetailmodel.ImportNoteDetail:
+    properties:
+      book:
+        $ref: '#/definitions/bookmodel.SimpleBook'
+      importNoteId:
+        example: import note id
+        type: string
+      price:
+        type: number
+      qtyImport:
+        type: integer
+    type: object
+  importnotedetailmodel.ImportNoteDetailCreate:
+    properties:
+      bookId:
+        example: book id
+        type: string
+      isReplacePrice:
+        example: true
+        type: boolean
+      price:
+        example: 60000
+        type: number
+      qtyImport:
+        example: 100
+        type: number
+    type: object
+  importnotemodel.Filter:
+    properties:
+      closeAtFrom:
+        example: 1709500431
+        type: integer
+      closeAtTo:
+        example: 1709500431
+        type: integer
+      closeBy:
+        example: user name
+        type: string
+      createAtFrom:
+        example: 1709500431
+        type: integer
+      createAtTo:
+        example: 1709500431
+        type: integer
+      createBy:
+        example: user name
+        type: string
+      maxPrice:
+        example: 1000
+        type: number
+      minPrice:
+        example: 10
+        type: number
+      searchKey:
+        example: ""
+        type: string
+      status:
+        example: Done
+        type: string
+      supplier:
+        example: supplier name
+        type: string
+    type: object
+  importnotemodel.ImportNote:
+    properties:
+      closeAt:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      closeBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      createAt:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      createBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      id:
+        example: import note id
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/importnotemodel.ImportNoteStatus'
+        example: Done
+      supplier:
+        $ref: '#/definitions/importnotemodel.SimpleSupplier'
+      totalPrice:
+        example: 120000
+        type: number
+    type: object
+  importnotemodel.ImportNoteStatus:
+    enum:
+    - InProgress
+    - Done
+    - Cancel
+    type: string
+    x-enum-varnames:
+    - InProgress
+    - Done
+    - Cancel
+  importnotemodel.ReqCreateImportNote:
+    properties:
+      details:
+        items:
+          $ref: '#/definitions/importnotedetailmodel.ImportNoteDetailCreate'
+        type: array
+      id:
+        example: ""
+        type: string
+      supplierId:
+        example: supplier id
+        type: string
+    type: object
+  importnotemodel.ReqUpdateImportNote:
+    properties:
+      status:
+        allOf:
+        - $ref: '#/definitions/importnotemodel.ImportNoteStatus'
+        example: Done
+    type: object
+  importnotemodel.ResCreateImportNote:
+    properties:
+      data:
+        example: "123"
+        type: string
+    type: object
+  importnotemodel.ResDetailImportNote:
+    properties:
+      closeAt:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      closeBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      createAt:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      createBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      details:
+        items:
+          $ref: '#/definitions/importnotedetailmodel.ImportNoteDetail'
+        type: array
+      id:
+        example: import note id
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/importnotemodel.ImportNoteStatus'
+        example: Done
+      supplier:
+        $ref: '#/definitions/importnotemodel.SimpleSupplier'
+      totalPrice:
+        example: 120000
+        type: number
+    type: object
+  importnotemodel.ResListImportNote:
+    properties:
+      data:
+        description: Data contains list of import note.
+        items:
+          $ref: '#/definitions/importnotemodel.ImportNote'
+        type: array
+      filter:
+        allOf:
+        - $ref: '#/definitions/importnotemodel.Filter'
+        description: Filter contains the filter parameters used to retrieve import
+          note.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  importnotemodel.ResSeeDetailImportNote:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/importnotemodel.ResDetailImportNote'
+        description: Data contains the detailed information about import note details.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  importnotemodel.SimpleSupplier:
+    properties:
+      id:
+        example: supplier id
+        type: string
+      name:
+        example: Nguyễn Văn A
+        type: string
+    type: object
+  inventorychecknotedetailmodel.InventoryCheckNoteDetail:
+    properties:
+      book:
+        $ref: '#/definitions/bookmodel.SimpleBook'
+      difference:
+        example: 100
+        type: integer
+      final:
+        example: 200
+        type: integer
+      initial:
+        example: 100
+        type: integer
+      inventoryCheckNoteId:
+        example: inventory check note id
+        type: string
+    type: object
+  inventorychecknotedetailmodel.InventoryCheckNoteDetailCreate:
+    properties:
+      bookId:
+        example: book id
+        type: string
+      difference:
+        example: 100
+        type: integer
+    type: object
+  inventorychecknotemodel.Filter:
+    properties:
+      createAtFrom:
+        example: 1709500431
+        type: integer
+      createAtTo:
+        example: 1709500431
+        type: integer
+      createBy:
+        example: user name
+        type: string
+      searchKey:
+        example: ""
+        type: string
+    type: object
+  inventorychecknotemodel.InventoryCheckNote:
+    properties:
+      createAt:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      createBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      id:
+        example: inventory check note id
+        type: string
+      qtyAfterAdjust:
+        example: 200
+        type: integer
+      qtyDifferent:
+        example: 100
+        type: integer
+    type: object
+  inventorychecknotemodel.ReqCreateInventoryCheckNote:
+    properties:
+      details:
+        items:
+          $ref: '#/definitions/inventorychecknotedetailmodel.InventoryCheckNoteDetailCreate'
+        type: array
+      id:
+        example: ""
+        type: string
+    type: object
+  inventorychecknotemodel.ResCreateInventoryCheckNote:
+    properties:
+      data:
+        example: "123"
+        type: string
+    type: object
+  inventorychecknotemodel.ResDetailInventoryCheckNote:
+    properties:
+      createAt:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      createBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      details:
+        items:
+          $ref: '#/definitions/inventorychecknotedetailmodel.InventoryCheckNoteDetail'
+        type: array
+      id:
+        example: inventory check note id
+        type: string
+      qtyAfterAdjust:
+        example: 200
+        type: integer
+      qtyDifferent:
+        example: 100
+        type: integer
+    type: object
+  inventorychecknotemodel.ResListInventoryCheckNote:
+    properties:
+      data:
+        description: Data contains list of inventory check note.
+        items:
+          $ref: '#/definitions/inventorychecknotemodel.InventoryCheckNote'
+        type: array
+      filter:
+        allOf:
+        - $ref: '#/definitions/inventorychecknotemodel.Filter'
+        description: Filter contains the filter parameters used to retrieve inventory
+          check note.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  inventorychecknotemodel.ResSeeDetailInventoryCheckNote:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/inventorychecknotemodel.ResDetailInventoryCheckNote'
+        description: Data contains the detailed information about inventory check
+          note details.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
     type: object
   publishermodel.Filter:
     properties:
@@ -324,6 +647,61 @@ definitions:
         example: "0123456789"
         type: string
     type: object
+  tokenprovider.Token:
+    properties:
+      created:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      expiry:
+        example: 2592000
+        type: integer
+      token:
+        example: token
+        type: string
+    type: object
+  usermodel.Account:
+    properties:
+      accessToken:
+        $ref: '#/definitions/tokenprovider.Token'
+      refreshToken:
+        $ref: '#/definitions/tokenprovider.Token'
+    type: object
+  usermodel.ReqCreateUser:
+    properties:
+      email:
+        example: a@gmail.com
+        type: string
+      name:
+        example: Nguyễn Văn A
+        type: string
+      roleId:
+        example: user
+        type: string
+    type: object
+  usermodel.ReqLoginUser:
+    properties:
+      email:
+        example: b@gmail.com
+        type: string
+      password:
+        example: app123
+        type: string
+    type: object
+  usermodel.ResCreateUser:
+    properties:
+      data:
+        example: "123"
+        type: string
+    type: object
+  usermodel.SimpleUser:
+    properties:
+      id:
+        example: user id
+        type: string
+      name:
+        example: Nguyễn Văn A
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -434,6 +812,318 @@ paths:
       summary: Create category with name
       tags:
       - categories
+  /importNotes:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: 1709500431
+        in: query
+        name: closeAtFrom
+        type: integer
+      - example: 1709500431
+        in: query
+        name: closeAtTo
+        type: integer
+      - example: user name
+        in: query
+        name: closeBy
+        type: string
+      - example: 1709500431
+        in: query
+        name: createAtFrom
+        type: integer
+      - example: 1709500431
+        in: query
+        name: createAtTo
+        type: integer
+      - example: user name
+        in: query
+        name: createBy
+        type: string
+      - example: 1000
+        in: query
+        name: maxPrice
+        type: number
+      - example: 10
+        in: query
+        name: minPrice
+        type: number
+      - example: ""
+        in: query
+        name: search
+        type: string
+      - example: Done
+        in: query
+        name: status
+        type: string
+      - example: supplier name
+        in: query
+        name: supplier
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list import note
+          schema:
+            $ref: '#/definitions/importnotemodel.ResListImportNote'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List import note
+      tags:
+      - importNotes
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: import note need to create
+        in: body
+        name: importNote
+        required: true
+        schema:
+          $ref: '#/definitions/importnotemodel.ReqCreateImportNote'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: import note id
+          schema:
+            $ref: '#/definitions/importnotemodel.ResCreateImportNote'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Create import note
+      tags:
+      - importNotes
+  /importNotes/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: import note id
+        in: path
+        name: id
+        required: true
+        type: string
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: import note
+          schema:
+            $ref: '#/definitions/importnotemodel.ResSeeDetailImportNote'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See detail import note
+      tags:
+      - importNotes
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: import note id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: status need to update of import note
+        in: body
+        name: importNote
+        required: true
+        schema:
+          $ref: '#/definitions/importnotemodel.ReqUpdateImportNote'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Change status import note
+      tags:
+      - importNotes
+  /inventoryCheckNotes:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: 1709500431
+        in: query
+        name: createAtFrom
+        type: integer
+      - example: 1709500431
+        in: query
+        name: createAtTo
+        type: integer
+      - example: user name
+        in: query
+        name: createBy
+        type: string
+      - example: ""
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list inventory check note
+          schema:
+            $ref: '#/definitions/inventorychecknotemodel.ResListInventoryCheckNote'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List inventory check note
+      tags:
+      - inventoryCheckNotes
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: inventory check note need to create
+        in: body
+        name: inventoryCheckNote
+        required: true
+        schema:
+          $ref: '#/definitions/inventorychecknotemodel.ReqCreateInventoryCheckNote'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: inventory check note id
+          schema:
+            $ref: '#/definitions/inventorychecknotemodel.ResCreateInventoryCheckNote'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Create inventory check note
+      tags:
+      - inventoryCheckNotes
+  /inventoryCheckNotes/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: inventory check note id
+        in: path
+        name: id
+        required: true
+        type: string
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: inventory check note
+          schema:
+            $ref: '#/definitions/inventorychecknotemodel.ResSeeDetailInventoryCheckNote'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See detail inventory check note
+      tags:
+      - inventoryCheckNotes
+  /login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: login information
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqLoginUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: user token
+          schema:
+            $ref: '#/definitions/usermodel.Account'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Login
+      tags:
+      - common
   /publishers:
     get:
       consumes:
@@ -699,6 +1389,33 @@ paths:
       summary: Pay supplier
       tags:
       - suppliers
+  /users:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: user need to create
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqCreateUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: user id
+          schema:
+            $ref: '#/definitions/usermodel.ResCreateUser'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Create user
+      tags:
+      - users
 securityDefinitions:
   BearerAuth:
     in: header

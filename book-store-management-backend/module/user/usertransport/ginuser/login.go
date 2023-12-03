@@ -13,9 +13,19 @@ import (
 	"net/http"
 )
 
+// @BasePath /v1
+// @Security BearerAuth
+// @Summary Login
+// @Tags common
+// @Accept json
+// @Produce json
+// @Param user body usermodel.ReqLoginUser true "login information"
+// @Response 200 {object} usermodel.Account "user token"
+// @Response 400 {object} common.AppError "error"
+// @Router /login [post]
 func Login(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var data usermodel.UserLogin
+		var data usermodel.ReqLoginUser
 
 		if err := c.ShouldBind(&data); err != nil {
 			c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(err))

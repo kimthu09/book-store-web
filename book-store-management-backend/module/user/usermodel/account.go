@@ -5,8 +5,8 @@ import (
 )
 
 type Account struct {
-	AccessToken  *tokenprovider.Token `json:"access_token"`
-	RefreshToken *tokenprovider.Token `json:"refresh_token"`
+	AccessToken  *tokenprovider.Token `json:"accessToken"`
+	RefreshToken *tokenprovider.Token `json:"refreshToken"`
 }
 
 func NewAccount(at, rt *tokenprovider.Token) *Account {

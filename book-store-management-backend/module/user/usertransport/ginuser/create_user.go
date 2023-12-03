@@ -15,9 +15,19 @@ import (
 	"net/http"
 )
 
+// @BasePath /v1
+// @Security BearerAuth
+// @Summary Create user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param user body usermodel.ReqCreateUser true "user need to create"
+// @Response 200 {object} usermodel.ResCreateUser "user id"
+// @Response 400 {object} common.AppError "error"
+// @Router /users [post]
 func CreateUser(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var data usermodel.UserCreate
+		var data usermodel.ReqCreateUser
 
 		if err := c.ShouldBind(&data); err != nil {
 			c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(err))

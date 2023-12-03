@@ -12,6 +12,17 @@ import (
 	"net/http"
 )
 
+// @BasePath /v1
+// @Security BearerAuth
+// @Summary See detail import note
+// @Tags importNotes
+// @Accept json
+// @Produce json
+// @Param id path string true "import note id"
+// @Param page query common.Paging false "page"
+// @Response 200 {object} importnotemodel.ResSeeDetailImportNote "import note"
+// @Response 400 {object} common.AppError "error"
+// @Router /importNotes/{id} [get]
 func SeeDetailImportNote(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		importNoteId := c.Param("id")

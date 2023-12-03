@@ -12,6 +12,17 @@ import (
 	"net/http"
 )
 
+// @BasePath /v1
+// @Security BearerAuth
+// @Summary List inventory check note
+// @Tags inventoryCheckNotes
+// @Accept json
+// @Produce json
+// @Param page query common.Paging false "page"
+// @Param filter query inventorychecknotemodel.Filter false "filter"
+// @Response 200 {object} inventorychecknotemodel.ResListInventoryCheckNote "list inventory check note"
+// @Response 400 {object} common.AppError "error"
+// @Router /inventoryCheckNotes [get]
 func ListInventoryCheckNote(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var filter inventorychecknotemodel.Filter

@@ -39,7 +39,7 @@ func NewLoginBiz(
 	}
 }
 
-func (biz *loginBiz) Login(ctx context.Context, data *usermodel.UserLogin) (*usermodel.Account, error) {
+func (biz *loginBiz) Login(ctx context.Context, data *usermodel.ReqLoginUser) (*usermodel.Account, error) {
 	user, err := biz.repo.FindUserByEmail(ctx, data.Email)
 
 	if err != nil {
