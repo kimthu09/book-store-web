@@ -3,7 +3,7 @@ package suppliermodel
 import "book-store-management-backend/common"
 
 type ReqUpdateDebtSupplier struct {
-	QuantityUpdate *float32 `json:"qty_update" gorm:"-" example:"10000"`
+	QuantityUpdate *float32 `json:"qtyUpdate" gorm:"-" example:"10000"`
 	CreateBy       string   `json:"-" gorm:"-"`
 }
 
