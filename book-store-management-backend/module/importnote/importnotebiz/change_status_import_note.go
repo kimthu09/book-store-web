@@ -16,14 +16,14 @@ type ChangeStatusImportNoteRepo interface {
 	UpdateImportNote(
 		ctx context.Context,
 		importNoteId string,
-		data *importnotemodel.ImportNoteUpdate) error
+		data *importnotemodel.ReqUpdateImportNote) error
 	CreateSupplierDebt(
 		ctx context.Context,
 		supplierDebtId string,
-		importNote *importnotemodel.ImportNoteUpdate) error
+		importNote *importnotemodel.ReqUpdateImportNote) error
 	UpdateDebtSupplier(
 		ctx context.Context,
-		importNote *importnotemodel.ImportNoteUpdate) error
+		importNote *importnotemodel.ReqUpdateImportNote) error
 	FindListImportNoteDetail(
 		ctx context.Context,
 		importNoteId string,
@@ -54,7 +54,7 @@ func NewChangeStatusImportNoteBiz(
 func (biz *changeStatusImportNoteRepo) ChangeStatusImportNote(
 	ctx context.Context,
 	importNoteId string,
-	data *importnotemodel.ImportNoteUpdate) error {
+	data *importnotemodel.ReqUpdateImportNote) error {
 	if !biz.requester.IsHasFeature(common.ImportNoteChangeStatusFeatureCode) {
 		return importnotemodel.ErrImportNoteChangeStatusNoPermission
 	}

@@ -19,7 +19,7 @@ type CreateImportNoteRepo interface {
 	) error
 	HandleCreateImportNote(
 		ctx context.Context,
-		data *importnotemodel.ImportNoteCreate,
+		data *importnotemodel.ReqCreateImportNote,
 	) error
 	UpdatePriceBook(
 		ctx context.Context,
@@ -47,7 +47,7 @@ func NewCreateImportNoteBiz(
 
 func (biz *createImportNoteBiz) CreateImportNote(
 	ctx context.Context,
-	data *importnotemodel.ImportNoteCreate) error {
+	data *importnotemodel.ReqCreateImportNote) error {
 	if !biz.requester.IsHasFeature(common.ImportNoteCreateFeatureCode) {
 		return importnotemodel.ErrImportNoteCreateNoPermission
 	}
@@ -93,7 +93,7 @@ func (biz *createImportNoteBiz) CreateImportNote(
 
 func handleImportNoteCreateId(
 	gen generator.IdGenerator,
-	data *importnotemodel.ImportNoteCreate) error {
+	data *importnotemodel.ReqCreateImportNote) error {
 	idImportNote, err := gen.IdProcess(data.Id)
 	if err != nil {
 		return err
@@ -106,7 +106,7 @@ func handleImportNoteCreateId(
 	return nil
 }
 
-func handleTotalPrice(data *importnotemodel.ImportNoteCreate) {
+func handleTotalPrice(data *importnotemodel.ReqCreateImportNote) {
 	var totalPrice float32 = 0
 	for _, importNoteDetail := range data.ImportNoteDetails {
 		totalPrice += importNoteDetail.Price * importNoteDetail.QuantityImport

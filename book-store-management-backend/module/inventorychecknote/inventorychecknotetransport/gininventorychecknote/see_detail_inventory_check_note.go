@@ -12,6 +12,17 @@ import (
 	"net/http"
 )
 
+// @BasePath /v1
+// @Security BearerAuth
+// @Summary See detail inventory check note
+// @Tags inventoryCheckNotes
+// @Accept json
+// @Produce json
+// @Param id path string true "inventory check note id"
+// @Param page query common.Paging false "page"
+// @Response 200 {object} inventorychecknotemodel.ResSeeDetailInventoryCheckNote "inventory check note"
+// @Response 400 {object} common.AppError "error"
+// @Router /inventoryCheckNotes/{id} [get]
 func SeeDetailInventoryCheckNote(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		inventoryCheckNoteId := c.Param("id")

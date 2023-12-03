@@ -7,13 +7,13 @@ import (
 )
 
 type Token struct {
-	Token   string    `json:"token"`
-	Created time.Time `json:"created"`
-	Expiry  int       `json:"expiry"`
+	Token   string    `json:"token" example:"token"`
+	Created time.Time `json:"created" example:"2023-12-03T15:02:19.62113565Z"`
+	Expiry  int       `json:"expiry" example:"2592000"`
 }
 
 type TokenPayload struct {
-	UserId string `json:"user_id"`
+	UserId string `json:"userId"`
 	Role   string `json:"role"`
 }
 

@@ -9,7 +9,7 @@ import (
 func (s *sqlStore) UpdateImportNote(
 	ctx context.Context,
 	id string,
-	data *importnotemodel.ImportNoteUpdate) error {
+	data *importnotemodel.ReqUpdateImportNote) error {
 	db := s.db
 
 	if err := db.Where("id = ?", id).Updates(data).Error; err != nil {

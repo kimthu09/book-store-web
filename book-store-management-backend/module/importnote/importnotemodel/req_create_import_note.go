@@ -5,19 +5,19 @@ import (
 	"book-store-management-backend/module/importnotedetail/importnotedetailmodel"
 )
 
-type ImportNoteCreate struct {
-	Id                *string                                        `json:"id" gorm:"column:id;"`
+type ReqCreateImportNote struct {
+	Id                *string                                        `json:"id" gorm:"column:id;" example:""`
 	TotalPrice        float32                                        `json:"-" gorm:"column:totalPrice;"`
-	SupplierId        string                                         `json:"supplierId" gorm:"column:supplierId"`
+	SupplierId        string                                         `json:"supplierId" gorm:"column:supplierId" example:"supplier id"`
 	CreateBy          string                                         `json:"-" gorm:"column:createBy;"`
 	ImportNoteDetails []importnotedetailmodel.ImportNoteDetailCreate `json:"details" gorm:"-"`
 }
 
-func (*ImportNoteCreate) TableName() string {
+func (*ReqCreateImportNote) TableName() string {
 	return common.TableImportNote
 }
 
-func (data *ImportNoteCreate) Validate() *common.AppError {
+func (data *ReqCreateImportNote) Validate() *common.AppError {
 	if !common.ValidateId(data.Id) {
 		return ErrImportNoteIdInvalid
 	}
@@ -41,7 +41,7 @@ func (data *ImportNoteCreate) Validate() *common.AppError {
 	return nil
 }
 
-func (data *ImportNoteCreate) Round() {
+func (data *ReqCreateImportNote) Round() {
 	for i := range data.ImportNoteDetails {
 		data.ImportNoteDetails[i].Round()
 	}

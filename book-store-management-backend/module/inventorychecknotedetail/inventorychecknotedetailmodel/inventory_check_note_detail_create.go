@@ -4,9 +4,9 @@ import "book-store-management-backend/common"
 
 type InventoryCheckNoteDetailCreate struct {
 	InventoryCheckNoteId string `json:"-" gorm:"column:inventoryCheckNoteId;"`
-	BookId               string `json:"bookId" gorm:"column:bookId;"`
+	BookId               string `json:"bookId" gorm:"column:bookId;" example:"book id"`
 	Initial              int    `json:"-" gorm:"column:initial;"`
-	Difference           int    `json:"difference" gorm:"column:difference;"`
+	Difference           int    `json:"difference" gorm:"column:difference;" example:"100"`
 	Final                int    `json:"-" gorm:"column:final;"`
 }
 

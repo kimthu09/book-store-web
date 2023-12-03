@@ -11,7 +11,7 @@ import (
 type CreateImportNoteStore interface {
 	CreateImportNote(
 		ctx context.Context,
-		data *importnotemodel.ImportNoteCreate,
+		data *importnotemodel.ReqCreateImportNote,
 	) error
 }
 
@@ -87,7 +87,7 @@ func (repo *createImportNoteRepo) CheckSupplier(
 
 func (repo *createImportNoteRepo) HandleCreateImportNote(
 	ctx context.Context,
-	data *importnotemodel.ImportNoteCreate) error {
+	data *importnotemodel.ReqCreateImportNote) error {
 	if err := repo.importNoteStore.CreateImportNote(ctx, data); err != nil {
 		return err
 	}

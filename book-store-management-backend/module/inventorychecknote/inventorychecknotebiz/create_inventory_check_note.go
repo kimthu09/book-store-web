@@ -11,10 +11,10 @@ import (
 type CreateInventoryCheckNoteRepo interface {
 	HandleInventoryCheckNote(
 		ctx context.Context,
-		data *inventorychecknotemodel.InventoryCheckNoteCreate) error
+		data *inventorychecknotemodel.ReqCreateInventoryCheckNote) error
 	HandleBookQuantity(
 		ctx context.Context,
-		data *inventorychecknotemodel.InventoryCheckNoteCreate) error
+		data *inventorychecknotemodel.ReqCreateInventoryCheckNote) error
 }
 
 type createInventoryCheckNoteBiz struct {
@@ -36,7 +36,7 @@ func NewCreateInventoryCheckNoteBiz(
 
 func (biz *createInventoryCheckNoteBiz) CreateInventoryCheckNote(
 	ctx context.Context,
-	data *inventorychecknotemodel.InventoryCheckNoteCreate) error {
+	data *inventorychecknotemodel.ReqCreateInventoryCheckNote) error {
 	if !biz.requester.IsHasFeature(common.InventoryCheckNoteCreateFeatureCode) {
 		return inventorychecknotemodel.ErrInventoryCheckNoteCreateNoPermission
 	}
@@ -62,7 +62,7 @@ func (biz *createInventoryCheckNoteBiz) CreateInventoryCheckNote(
 
 func handleInventoryCheckNoteId(
 	gen generator.IdGenerator,
-	data *inventorychecknotemodel.InventoryCheckNoteCreate) error {
+	data *inventorychecknotemodel.ReqCreateInventoryCheckNote) error {
 	id, errGenerateId := gen.IdProcess(data.Id)
 	if errGenerateId != nil {
 		return errGenerateId

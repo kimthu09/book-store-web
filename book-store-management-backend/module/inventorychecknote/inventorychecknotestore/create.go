@@ -8,7 +8,7 @@ import (
 
 func (s *sqlStore) CreateInventoryCheckNote(
 	ctx context.Context,
-	data *inventorychecknotemodel.InventoryCheckNoteCreate) error {
+	data *inventorychecknotemodel.ReqCreateInventoryCheckNote) error {
 	db := s.db
 
 	if err := db.Create(data).Error; err != nil {

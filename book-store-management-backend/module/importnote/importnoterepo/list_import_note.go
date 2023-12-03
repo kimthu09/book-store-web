@@ -29,7 +29,7 @@ func (repo *listImportNoteRepo) ListImportNote(
 	result, err := repo.store.ListImportNote(
 		ctx,
 		filter,
-		[]string{"ImportNote.id"},
+		[]string{"ResDetailImportNote.id"},
 		paging)
 
 	if err != nil {

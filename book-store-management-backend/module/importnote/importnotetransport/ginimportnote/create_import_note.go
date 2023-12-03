@@ -16,9 +16,19 @@ import (
 	"net/http"
 )
 
+// @BasePath /v1
+// @Security BearerAuth
+// @Summary Create import note
+// @Tags importNotes
+// @Accept json
+// @Produce json
+// @Param importNote body importnotemodel.ReqCreateImportNote true "import note need to create"
+// @Response 200 {object} importnotemodel.ResCreateImportNote "import note id"
+// @Response 400 {object} common.AppError "error"
+// @Router /importNotes [post]
 func CreateImportNote(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var data importnotemodel.ImportNoteCreate
+		var data importnotemodel.ReqCreateImportNote
 
 		if err := c.ShouldBind(&data); err != nil {
 			panic(common.ErrInvalidRequest(err))

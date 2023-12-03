@@ -12,7 +12,7 @@ type SeeDetailInventoryCheckNoteRepo interface {
 		ctx context.Context,
 		inventoryCheckNoteId string,
 		paging *common.Paging,
-	) (*inventorychecknotemodel.InventoryCheckNote, error)
+	) (*inventorychecknotemodel.ResDetailInventoryCheckNote, error)
 }
 
 type seeDetailInventoryCheckNoteBiz struct {
@@ -29,7 +29,7 @@ func NewSeeDetailImportNoteBiz(
 func (biz *seeDetailInventoryCheckNoteBiz) SeeDetailInventoryCheckNote(
 	ctx context.Context,
 	inventoryCheckNoteId string,
-	paging *common.Paging) (*inventorychecknotemodel.InventoryCheckNote, error) {
+	paging *common.Paging) (*inventorychecknotemodel.ResDetailInventoryCheckNote, error) {
 	if !biz.requester.IsHasFeature(common.InventoryCheckNoteViewFeatureCode) {
 		return nil, inventorychecknotemodel.ErrInventoryCheckNoteViewNoPermission
 	}

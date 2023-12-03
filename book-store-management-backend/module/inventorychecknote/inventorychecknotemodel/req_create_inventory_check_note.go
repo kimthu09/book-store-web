@@ -5,7 +5,7 @@ import (
 	"book-store-management-backend/module/inventorychecknotedetail/inventorychecknotedetailmodel"
 )
 
-type InventoryCheckNoteCreate struct {
+type ReqCreateInventoryCheckNote struct {
 	Id                  *string                                                        `json:"id" gorm:"column:id;" example:""`
 	QuantityDifferent   int                                                            `json:"-" gorm:"column:qtyDifferent;"`
 	QuantityAfterAdjust int                                                            `json:"-" gorm:"column:qtyAfterAdjust;"`
@@ -13,11 +13,11 @@ type InventoryCheckNoteCreate struct {
 	Details             []inventorychecknotedetailmodel.InventoryCheckNoteDetailCreate `json:"details" gorm:"-"`
 }
 
-func (*InventoryCheckNoteCreate) TableName() string {
+func (*ReqCreateInventoryCheckNote) TableName() string {
 	return common.TableInventoryCheckNote
 }
 
-func (data *InventoryCheckNoteCreate) Validate() *common.AppError {
+func (data *ReqCreateInventoryCheckNote) Validate() *common.AppError {
 	if !common.ValidateId(data.Id) {
 		return ErrInventoryCheckNoteIdInvalid
 	}

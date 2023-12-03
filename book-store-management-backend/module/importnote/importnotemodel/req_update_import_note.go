@@ -2,19 +2,19 @@ package importnotemodel
 
 import "book-store-management-backend/common"
 
-type ImportNoteUpdate struct {
+type ReqUpdateImportNote struct {
 	CloseBy    string            `json:"-" gorm:"column:closeBy;"`
 	Id         string            `json:"-" gorm:"-"`
 	SupplierId string            `json:"-" gorm:"-"`
 	TotalPrice float32           `json:"-" gorm:"-"`
-	Status     *ImportNoteStatus `json:"status" gorm:"column:status;"`
+	Status     *ImportNoteStatus `json:"status" gorm:"column:status;" example:"Done"`
 }
 
-func (*ImportNoteUpdate) TableName() string {
+func (*ReqUpdateImportNote) TableName() string {
 	return common.TableImportNote
 }
 
-func (data *ImportNoteUpdate) Validate() *common.AppError {
+func (data *ReqUpdateImportNote) Validate() *common.AppError {
 	if data.Status == nil {
 		return ErrImportNoteStatusEmpty
 	}

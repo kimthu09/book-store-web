@@ -88,12 +88,7 @@ func main() {
 		ginimportnote.SetupRoutes(v1, appCtx)
 		gininventorychecknote.SetupRoutes(v1, appCtx)
 		ginsupplier.SetupRoutes(v1, appCtx)
-	}
-
-	v1.POST("/login", ginuser.Login(appCtx))
-	users := v1.Group("/users", middleware.RequireAuth(appCtx))
-	{
-		users.PATCH("", ginuser.CreateUser(appCtx))
+		ginuser.SetupRoutes(v1, appCtx)
 	}
 
 	if err := r.Run(fmt.Sprintf(":%s", cfg.Port)); err != nil {

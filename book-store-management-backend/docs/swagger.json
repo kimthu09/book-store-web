@@ -179,6 +179,499 @@
                 }
             }
         },
+        "/importNotes": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "importNotes"
+                ],
+                "summary": "List import note",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 11,
+                        "name": "total",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1709500431,
+                        "name": "closeAtFrom",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1709500431,
+                        "name": "closeAtTo",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "user name",
+                        "name": "closeBy",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1709500431,
+                        "name": "createAtFrom",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1709500431,
+                        "name": "createAtTo",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "user name",
+                        "name": "createBy",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "example": 1000,
+                        "name": "maxPrice",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "example": 10,
+                        "name": "minPrice",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "Done",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "supplier name",
+                        "name": "supplier",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "list import note",
+                        "schema": {
+                            "$ref": "#/definitions/importnotemodel.ResListImportNote"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "importNotes"
+                ],
+                "summary": "Create import note",
+                "parameters": [
+                    {
+                        "description": "import note need to create",
+                        "name": "importNote",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/importnotemodel.ReqCreateImportNote"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "import note id",
+                        "schema": {
+                            "$ref": "#/definitions/importnotemodel.ResCreateImportNote"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/importNotes/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "importNotes"
+                ],
+                "summary": "See detail import note",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "import note id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 11,
+                        "name": "total",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "import note",
+                        "schema": {
+                            "$ref": "#/definitions/importnotemodel.ResSeeDetailImportNote"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "importNotes"
+                ],
+                "summary": "Change status import note",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "import note id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "status need to update of import note",
+                        "name": "importNote",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/importnotemodel.ReqUpdateImportNote"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/inventoryCheckNotes": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inventoryCheckNotes"
+                ],
+                "summary": "List inventory check note",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 11,
+                        "name": "total",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1709500431,
+                        "name": "createAtFrom",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1709500431,
+                        "name": "createAtTo",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "user name",
+                        "name": "createBy",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "list inventory check note",
+                        "schema": {
+                            "$ref": "#/definitions/inventorychecknotemodel.ResListInventoryCheckNote"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inventoryCheckNotes"
+                ],
+                "summary": "Create inventory check note",
+                "parameters": [
+                    {
+                        "description": "inventory check note need to create",
+                        "name": "inventoryCheckNote",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/inventorychecknotemodel.ReqCreateInventoryCheckNote"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "inventory check note id",
+                        "schema": {
+                            "$ref": "#/definitions/inventorychecknotemodel.ResCreateInventoryCheckNote"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/inventoryCheckNotes/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inventoryCheckNotes"
+                ],
+                "summary": "See detail inventory check note",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "inventory check note id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 11,
+                        "name": "total",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "inventory check note",
+                        "schema": {
+                            "$ref": "#/definitions/inventorychecknotemodel.ResSeeDetailInventoryCheckNote"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "common"
+                ],
+                "summary": "Login",
+                "parameters": [
+                    {
+                        "description": "login information",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.ReqLoginUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "user token",
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.Account"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
         "/publishers": {
             "get": {
                 "security": [
@@ -600,6 +1093,50 @@
                     }
                 }
             }
+        },
+        "/users": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Create user",
+                "parameters": [
+                    {
+                        "description": "user need to create",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.ReqCreateUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "user id",
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.ResCreateUser"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -694,6 +1231,19 @@
                 }
             }
         },
+        "bookmodel.SimpleBook": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "book id"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Những câu chuyện hay"
+                }
+            }
+        },
         "categorymodel.Category": {
             "type": "object",
             "properties": {
@@ -750,7 +1300,7 @@
         "common.AppError": {
             "type": "object",
             "properties": {
-                "error_key": {
+                "errorKey": {
                     "type": "string",
                     "example": "ErrKey"
                 },
@@ -762,7 +1312,7 @@
                     "type": "string",
                     "example": "error message"
                 },
-                "status_code": {
+                "statusCode": {
                     "type": "integer",
                     "example": 400
                 }
@@ -828,6 +1378,477 @@
                 "to": {
                     "type": "integer",
                     "example": 1709500431
+                }
+            }
+        },
+        "importnotedetailmodel.ImportNoteDetail": {
+            "type": "object",
+            "properties": {
+                "book": {
+                    "$ref": "#/definitions/bookmodel.SimpleBook"
+                },
+                "importNoteId": {
+                    "type": "string",
+                    "example": "import note id"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "qtyImport": {
+                    "type": "integer"
+                }
+            }
+        },
+        "importnotedetailmodel.ImportNoteDetailCreate": {
+            "type": "object",
+            "properties": {
+                "bookId": {
+                    "type": "string",
+                    "example": "book id"
+                },
+                "isReplacePrice": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "price": {
+                    "type": "number",
+                    "example": 60000
+                },
+                "qtyImport": {
+                    "type": "number",
+                    "example": 100
+                }
+            }
+        },
+        "importnotemodel.Filter": {
+            "type": "object",
+            "properties": {
+                "closeAtFrom": {
+                    "type": "integer",
+                    "example": 1709500431
+                },
+                "closeAtTo": {
+                    "type": "integer",
+                    "example": 1709500431
+                },
+                "closeBy": {
+                    "type": "string",
+                    "example": "user name"
+                },
+                "createAtFrom": {
+                    "type": "integer",
+                    "example": 1709500431
+                },
+                "createAtTo": {
+                    "type": "integer",
+                    "example": 1709500431
+                },
+                "createBy": {
+                    "type": "string",
+                    "example": "user name"
+                },
+                "maxPrice": {
+                    "type": "number",
+                    "example": 1000
+                },
+                "minPrice": {
+                    "type": "number",
+                    "example": 10
+                },
+                "searchKey": {
+                    "type": "string",
+                    "example": ""
+                },
+                "status": {
+                    "type": "string",
+                    "example": "Done"
+                },
+                "supplier": {
+                    "type": "string",
+                    "example": "supplier name"
+                }
+            }
+        },
+        "importnotemodel.ImportNote": {
+            "type": "object",
+            "properties": {
+                "closeAt": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                },
+                "closeBy": {
+                    "$ref": "#/definitions/usermodel.SimpleUser"
+                },
+                "createAt": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                },
+                "createBy": {
+                    "$ref": "#/definitions/usermodel.SimpleUser"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "import note id"
+                },
+                "status": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/importnotemodel.ImportNoteStatus"
+                        }
+                    ],
+                    "example": "Done"
+                },
+                "supplier": {
+                    "$ref": "#/definitions/importnotemodel.SimpleSupplier"
+                },
+                "totalPrice": {
+                    "type": "number",
+                    "example": 120000
+                }
+            }
+        },
+        "importnotemodel.ImportNoteStatus": {
+            "type": "string",
+            "enum": [
+                "InProgress",
+                "Done",
+                "Cancel"
+            ],
+            "x-enum-varnames": [
+                "InProgress",
+                "Done",
+                "Cancel"
+            ]
+        },
+        "importnotemodel.ReqCreateImportNote": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/importnotedetailmodel.ImportNoteDetailCreate"
+                    }
+                },
+                "id": {
+                    "type": "string",
+                    "example": ""
+                },
+                "supplierId": {
+                    "type": "string",
+                    "example": "supplier id"
+                }
+            }
+        },
+        "importnotemodel.ReqUpdateImportNote": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/importnotemodel.ImportNoteStatus"
+                        }
+                    ],
+                    "example": "Done"
+                }
+            }
+        },
+        "importnotemodel.ResCreateImportNote": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string",
+                    "example": "123"
+                }
+            }
+        },
+        "importnotemodel.ResDetailImportNote": {
+            "type": "object",
+            "properties": {
+                "closeAt": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                },
+                "closeBy": {
+                    "$ref": "#/definitions/usermodel.SimpleUser"
+                },
+                "createAt": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                },
+                "createBy": {
+                    "$ref": "#/definitions/usermodel.SimpleUser"
+                },
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/importnotedetailmodel.ImportNoteDetail"
+                    }
+                },
+                "id": {
+                    "type": "string",
+                    "example": "import note id"
+                },
+                "status": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/importnotemodel.ImportNoteStatus"
+                        }
+                    ],
+                    "example": "Done"
+                },
+                "supplier": {
+                    "$ref": "#/definitions/importnotemodel.SimpleSupplier"
+                },
+                "totalPrice": {
+                    "type": "number",
+                    "example": 120000
+                }
+            }
+        },
+        "importnotemodel.ResListImportNote": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains list of import note.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/importnotemodel.ImportNote"
+                    }
+                },
+                "filter": {
+                    "description": "Filter contains the filter parameters used to retrieve import note.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/importnotemodel.Filter"
+                        }
+                    ]
+                },
+                "paging": {
+                    "description": "Paging provides information about pagination.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/common.Paging"
+                        }
+                    ]
+                }
+            }
+        },
+        "importnotemodel.ResSeeDetailImportNote": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains the detailed information about import note details.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/importnotemodel.ResDetailImportNote"
+                        }
+                    ]
+                },
+                "paging": {
+                    "description": "Paging provides information about pagination.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/common.Paging"
+                        }
+                    ]
+                }
+            }
+        },
+        "importnotemodel.SimpleSupplier": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "supplier id"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Nguyễn Văn A"
+                }
+            }
+        },
+        "inventorychecknotedetailmodel.InventoryCheckNoteDetail": {
+            "type": "object",
+            "properties": {
+                "book": {
+                    "$ref": "#/definitions/bookmodel.SimpleBook"
+                },
+                "difference": {
+                    "type": "integer",
+                    "example": 100
+                },
+                "final": {
+                    "type": "integer",
+                    "example": 200
+                },
+                "initial": {
+                    "type": "integer",
+                    "example": 100
+                },
+                "inventoryCheckNoteId": {
+                    "type": "string",
+                    "example": "inventory check note id"
+                }
+            }
+        },
+        "inventorychecknotedetailmodel.InventoryCheckNoteDetailCreate": {
+            "type": "object",
+            "properties": {
+                "bookId": {
+                    "type": "string",
+                    "example": "book id"
+                },
+                "difference": {
+                    "type": "integer",
+                    "example": 100
+                }
+            }
+        },
+        "inventorychecknotemodel.Filter": {
+            "type": "object",
+            "properties": {
+                "createAtFrom": {
+                    "type": "integer",
+                    "example": 1709500431
+                },
+                "createAtTo": {
+                    "type": "integer",
+                    "example": 1709500431
+                },
+                "createBy": {
+                    "type": "string",
+                    "example": "user name"
+                },
+                "searchKey": {
+                    "type": "string",
+                    "example": ""
+                }
+            }
+        },
+        "inventorychecknotemodel.InventoryCheckNote": {
+            "type": "object",
+            "properties": {
+                "createAt": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                },
+                "createBy": {
+                    "$ref": "#/definitions/usermodel.SimpleUser"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "inventory check note id"
+                },
+                "qtyAfterAdjust": {
+                    "type": "integer",
+                    "example": 200
+                },
+                "qtyDifferent": {
+                    "type": "integer",
+                    "example": 100
+                }
+            }
+        },
+        "inventorychecknotemodel.ReqCreateInventoryCheckNote": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/inventorychecknotedetailmodel.InventoryCheckNoteDetailCreate"
+                    }
+                },
+                "id": {
+                    "type": "string",
+                    "example": ""
+                }
+            }
+        },
+        "inventorychecknotemodel.ResCreateInventoryCheckNote": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string",
+                    "example": "123"
+                }
+            }
+        },
+        "inventorychecknotemodel.ResDetailInventoryCheckNote": {
+            "type": "object",
+            "properties": {
+                "createAt": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                },
+                "createBy": {
+                    "$ref": "#/definitions/usermodel.SimpleUser"
+                },
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/inventorychecknotedetailmodel.InventoryCheckNoteDetail"
+                    }
+                },
+                "id": {
+                    "type": "string",
+                    "example": "inventory check note id"
+                },
+                "qtyAfterAdjust": {
+                    "type": "integer",
+                    "example": 200
+                },
+                "qtyDifferent": {
+                    "type": "integer",
+                    "example": 100
+                }
+            }
+        },
+        "inventorychecknotemodel.ResListInventoryCheckNote": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains list of inventory check note.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/inventorychecknotemodel.InventoryCheckNote"
+                    }
+                },
+                "filter": {
+                    "description": "Filter contains the filter parameters used to retrieve inventory check note.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/inventorychecknotemodel.Filter"
+                        }
+                    ]
+                },
+                "paging": {
+                    "description": "Paging provides information about pagination.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/common.Paging"
+                        }
+                    ]
+                }
+            }
+        },
+        "inventorychecknotemodel.ResSeeDetailInventoryCheckNote": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains the detailed information about inventory check note details.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/inventorychecknotemodel.ResDetailInventoryCheckNote"
+                        }
+                    ]
+                },
+                "paging": {
+                    "description": "Paging provides information about pagination.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/common.Paging"
+                        }
+                    ]
                 }
             }
         },
@@ -1091,6 +2112,86 @@
                 "phone": {
                     "type": "string",
                     "example": "0123456789"
+                }
+            }
+        },
+        "tokenprovider.Token": {
+            "type": "object",
+            "properties": {
+                "created": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                },
+                "expiry": {
+                    "type": "integer",
+                    "example": 2592000
+                },
+                "token": {
+                    "type": "string",
+                    "example": "token"
+                }
+            }
+        },
+        "usermodel.Account": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "$ref": "#/definitions/tokenprovider.Token"
+                },
+                "refreshToken": {
+                    "$ref": "#/definitions/tokenprovider.Token"
+                }
+            }
+        },
+        "usermodel.ReqCreateUser": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "a@gmail.com"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Nguyễn Văn A"
+                },
+                "roleId": {
+                    "type": "string",
+                    "example": "user"
+                }
+            }
+        },
+        "usermodel.ReqLoginUser": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "b@gmail.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "app123"
+                }
+            }
+        },
+        "usermodel.ResCreateUser": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string",
+                    "example": "123"
+                }
+            }
+        },
+        "usermodel.SimpleUser": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "user id"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Nguyễn Văn A"
                 }
             }
         }

@@ -39,7 +39,7 @@ func NewSeeDetailInventoryCheckNoteRepo(
 func (repo *seeDetailInventoryCheckNoteRepo) SeeDetailInventoryCheckNote(
 	ctx context.Context,
 	inventoryCheckNoteId string,
-	paging *common.Paging) (*inventorychecknotemodel.InventoryCheckNote, error) {
+	paging *common.Paging) (*inventorychecknotemodel.ResDetailInventoryCheckNote, error) {
 	inventoryCheckNote, errInventoryCheckNote :=
 		repo.inventoryCheckNoteStore.FindInventoryCheckNote(
 			ctx,
@@ -48,6 +48,8 @@ func (repo *seeDetailInventoryCheckNoteRepo) SeeDetailInventoryCheckNote(
 	if errInventoryCheckNote != nil {
 		return nil, errInventoryCheckNote
 	}
+
+	resDetailInventoryCheckNote := inventorychecknotemodel.GetResDetailInventoryCheckNoteFromInventoryCheckNote(inventoryCheckNote)
 
 	details, errInventoryCheckNoteDetail := repo.inventoryCheckNoteDetailStore.ListInventoryCheckNoteDetail(
 		ctx,
@@ -58,7 +60,7 @@ func (repo *seeDetailInventoryCheckNoteRepo) SeeDetailInventoryCheckNote(
 		return nil, errInventoryCheckNoteDetail
 	}
 
-	inventoryCheckNote.Details = details
+	resDetailInventoryCheckNote.Details = details
 
-	return inventoryCheckNote, nil
+	return resDetailInventoryCheckNote, nil
 }
