@@ -9,11 +9,11 @@ import (
 )
 
 type ImportNote struct {
-	Id           string                                   `json:"id" gorm:"column:id;"`
+	Id           string                                   `json:"id" gorm:"column:id;" example:"IMP_001"`
 	SupplierId   string                                   `json:"-" gorm:"column:supplierId;"`
 	Supplier     SimpleSupplier                           `json:"supplier" gorm:"foreignKey:SupplierId;references:Id"`
-	TotalPrice   float32                                  `json:"totalPrice" gorm:"column:totalPrice;"`
-	Status       *ImportNoteStatus                        `json:"status" gorm:"column:status;"`
+	TotalPrice   float32                                  `json:"totalPrice" gorm:"column:totalPrice;" example:"120000"`
+	Status       *ImportNoteStatus                        `json:"status" gorm:"column:status;" example:"Done"`
 	CreateBy     string                                   `json:"-" gorm:"column:createBy;"`
 	CreateByUser usermodel.SimpleUser                     `json:"createBy" gorm:"foreignKey:CreateBy"`
 	CloseBy      *string                                  `json:"-" gorm:"column:closeBy;"`
@@ -23,17 +23,17 @@ type ImportNote struct {
 	Details      []importnotedetailmodel.ImportNoteDetail `json:"details"`
 }
 
-func (*ImportNote) TableName() string {
-	return common.TableImportNote
-}
-
 type SimpleSupplier struct {
-	Id   string `json:"id" gorm:"column:id;"`
-	Name string `json:"name" gorm:"column:name;"`
+	Id   string `json:"id" gorm:"column:id;" example:"123"`
+	Name string `json:"name" gorm:"column:name;" example:"Nguyễn Văn A"`
 }
 
 func (*SimpleSupplier) TableName() string {
 	return common.TableSupplier
+}
+
+func (*ImportNote) TableName() string {
+	return common.TableImportNote
 }
 
 var (

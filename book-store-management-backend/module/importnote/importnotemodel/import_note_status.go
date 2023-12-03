@@ -4,30 +4,29 @@ import (
 	"database/sql/driver"
 	"errors"
 	"fmt"
-	"strings"
 )
 
-type ImportNoteStatus int
+type ImportNoteStatus string
 
 const (
-	InProgress ImportNoteStatus = iota
-	Done
-	Cancel
+	InProgress ImportNoteStatus = "InProgress"
+	Done       ImportNoteStatus = "Done"
+	Cancel     ImportNoteStatus = "Cancel"
 )
 
-var allImportNoteStatus = [3]string{"InProgress", "Done", "Cancel"}
+var allImportNoteStatus = [3]ImportNoteStatus{"InProgress", "Done", "Cancel"}
 
 func (importNoteStatus *ImportNoteStatus) String() string {
-	return allImportNoteStatus[*importNoteStatus]
+	return string(*importNoteStatus)
 }
 
 func parseStrImportNoteStatus(s string) (ImportNoteStatus, error) {
-	for i := range allImportNoteStatus {
-		if allImportNoteStatus[i] == s {
-			return ImportNoteStatus(i), nil
+	for _, value := range allImportNoteStatus {
+		if value.String() == s {
+			return value, nil
 		}
 	}
-	return ImportNoteStatus(0), errors.New("invalid status string")
+	return InProgress, errors.New("invalid status string")
 }
 
 func (importNoteStatus *ImportNoteStatus) Scan(value interface{}) error {
@@ -53,26 +52,4 @@ func (importNoteStatus *ImportNoteStatus) Value() (driver.Value, error) {
 	}
 
 	return importNoteStatus.String(), nil
-}
-
-func (importNoteStatus *ImportNoteStatus) MarshalJSON() ([]byte, error) {
-	if importNoteStatus == nil {
-		return nil, nil
-	}
-
-	return []byte(fmt.Sprintf("\"%s\"", importNoteStatus.String())), nil
-}
-
-func (importNoteStatus *ImportNoteStatus) UnmarshalJSON(data []byte) error {
-	str := strings.ReplaceAll(string(data), "\"", "")
-
-	importNoteStatusValue, err := parseStrImportNoteStatus(str)
-
-	if err != nil {
-		return err
-	}
-
-	*importNoteStatus = importNoteStatusValue
-
-	return nil
 }
