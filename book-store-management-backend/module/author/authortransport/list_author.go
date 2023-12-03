@@ -20,6 +20,8 @@ import (
 // @Produce json
 // @Response 200 {object} authormodel.ResListAuthor
 // @Router /authors [get]
+// @Param page query int false "Page"
+// @Param limit query int false "Limit"
 func ListAuthor(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var filter authormodel.Filter
