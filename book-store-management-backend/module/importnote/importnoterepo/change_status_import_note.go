@@ -47,7 +47,7 @@ type UpdateDebtOfSupplierStore interface {
 	UpdateSupplierDebt(
 		ctx context.Context,
 		id string,
-		data *suppliermodel.SupplierUpdateDebt,
+		data *suppliermodel.ReqUpdateDebtSupplier,
 	) error
 }
 
@@ -140,7 +140,7 @@ func (repo *changeStatusImportNoteRepo) UpdateDebtSupplier(
 	ctx context.Context,
 	importNote *importnotemodel.ImportNoteUpdate) error {
 	qtyUpdate := -importNote.TotalPrice
-	supplierUpdateDebt := suppliermodel.SupplierUpdateDebt{
+	supplierUpdateDebt := suppliermodel.ReqUpdateDebtSupplier{
 		QuantityUpdate: &qtyUpdate,
 	}
 	if err := repo.supplierStore.UpdateSupplierDebt(
