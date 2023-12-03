@@ -10,7 +10,7 @@ type ResDebtSupplier struct {
 	Email       string                           `json:"email" gorm:"column:email;" example:"a@gmail.com"`
 	Phone       string                           `json:"phone" gorm:"column:phone;" example:"0123456789"`
 	Debt        float32                          `json:"debt" gorm:"column:debt;" example:"-100000"`
-	DebtHistory []supplierdebtmodel.SupplierDebt `json:"debt_history"`
+	DebtHistory []supplierdebtmodel.SupplierDebt `json:"debtHistory"`
 }
 
 func GetResSeeDebtSupplierFromSupplier(supplier *Supplier) *ResDebtSupplier {
