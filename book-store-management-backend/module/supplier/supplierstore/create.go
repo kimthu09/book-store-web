@@ -6,7 +6,7 @@ import (
 	"context"
 )
 
-func (s *sqlStore) CreateSupplier(ctx context.Context, data *suppliermodel.SupplierCreate) error {
+func (s *sqlStore) CreateSupplier(ctx context.Context, data *suppliermodel.ReqCreateSupplier) error {
 	db := s.db
 
 	if err := db.Create(data).Error; err != nil {

@@ -11,7 +11,7 @@ import (
 type CreateSupplierRepo interface {
 	CreateSupplier(
 		ctx context.Context,
-		data *suppliermodel.SupplierCreate,
+		data *suppliermodel.ReqCreateSupplier,
 	) error
 }
 
@@ -34,7 +34,7 @@ func NewCreateSupplierBiz(
 
 func (biz *createSupplierBiz) CreateSupplier(
 	ctx context.Context,
-	data *suppliermodel.SupplierCreate) error {
+	data *suppliermodel.ReqCreateSupplier) error {
 	if !biz.requester.IsHasFeature(common.SupplierCreateFeatureCode) {
 		return suppliermodel.ErrSupplierCreateNoPermission
 	}
@@ -42,6 +42,8 @@ func (biz *createSupplierBiz) CreateSupplier(
 	if err := data.Validate(); err != nil {
 		return err
 	}
+
+	data.Round()
 
 	if err := handleSupplierId(biz.gen, data); err != nil {
 		return err
@@ -53,7 +55,7 @@ func (biz *createSupplierBiz) CreateSupplier(
 	return nil
 }
 
-func handleSupplierId(gen generator.IdGenerator, data *suppliermodel.SupplierCreate) error {
+func handleSupplierId(gen generator.IdGenerator, data *suppliermodel.ReqCreateSupplier) error {
 	id, err := gen.IdProcess(data.Id)
 	if err != nil {
 		return err

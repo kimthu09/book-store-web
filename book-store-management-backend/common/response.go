@@ -13,3 +13,7 @@ func NewSuccessResponse(data, paging, filter interface{}) *successRes {
 func SimpleSuccessResponse(data interface{}) *successRes {
 	return &successRes{Data: data, Paging: nil, Filter: nil}
 }
+
+type ResSuccess struct {
+	IsSuccess bool `json:"data" example:"true"`
+}

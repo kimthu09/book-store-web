@@ -6,7 +6,7 @@ import (
 )
 
 type CreateSupplierStore interface {
-	CreateSupplier(ctx context.Context, data *suppliermodel.SupplierCreate) error
+	CreateSupplier(ctx context.Context, data *suppliermodel.ReqCreateSupplier) error
 }
 
 type createSupplierRepo struct {
@@ -19,7 +19,7 @@ func NewCreateSupplierRepo(store CreateSupplierStore) *createSupplierRepo {
 
 func (biz *createSupplierRepo) CreateSupplier(
 	ctx context.Context,
-	data *suppliermodel.SupplierCreate) error {
+	data *suppliermodel.ReqCreateSupplier) error {
 	if err := biz.store.CreateSupplier(ctx, data); err != nil {
 		return err
 	}

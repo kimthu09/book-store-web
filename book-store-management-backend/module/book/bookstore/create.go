@@ -25,13 +25,11 @@ func (s *sqlStore) CreateBook(ctx context.Context, data *bookmodel.ReqCreateBook
 	db := s.db
 
 	var tmpData BookDBModel = BookDBModel{
-		Id:         data.Id,
 		BookInfoId: "JFK",
 		Quantity:   data.Quantity,
 		Edition:    data.Edition,
 		Price:      data.Price,
 		SalePrice:  data.SalePrice,
-		IsActive:   data.IsActive,
 	}
 	if err := db.Create(tmpData).Error; err != nil {
 		if gormErr := common.GetGormErr(err); gormErr != nil {

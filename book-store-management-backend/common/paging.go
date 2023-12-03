@@ -1,9 +1,9 @@
 package common
 
 type Paging struct {
-	Page  int64 `json:"page" form:"page"`
-	Limit int64 `json:"limit" form:"limit"`
-	Total int64 `json:"total" form:"-"`
+	Page  int64 `json:"page" form:"page" example:"1"`
+	Limit int64 `json:"limit" form:"limit" example:"10"`
+	Total int64 `json:"total" example:"11"`
 }
 
 func (p *Paging) Fulfill() {

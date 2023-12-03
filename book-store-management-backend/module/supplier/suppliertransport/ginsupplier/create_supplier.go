@@ -13,9 +13,19 @@ import (
 	"net/http"
 )
 
+// @BasePath /v1
+// @Security BearerAuth
+// @Summary Create supplier
+// @Tags suppliers
+// @Accept json
+// @Produce json
+// @Param supplier body suppliermodel.ReqCreateSupplier true "supplier need to create"
+// @Response 200 {object} suppliermodel.ResSupplierCreate "supplier id"
+// @Response 400 {object} common.AppError "error"
+// @Router /suppliers [post]
 func CreateSupplier(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var data suppliermodel.SupplierCreate
+		var data suppliermodel.ReqCreateSupplier
 
 		if err := c.ShouldBind(&data); err != nil {
 			panic(common.ErrInvalidRequest(err))
