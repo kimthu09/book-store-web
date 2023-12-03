@@ -6,11 +6,13 @@ import {
   StatusNote,
   Supplier,
   ImportDetail,
+  SupplierDebt,
 } from "@/types";
 import { GrBook } from "react-icons/gr";
 import { MdOutlineWarehouse } from "react-icons/md";
-import { GoPeople } from "react-icons/go";
-
+import { GoPeople, GoPerson } from "react-icons/go";
+import { PiHandshake } from "react-icons/pi";
+import { FaRegHandshake } from "react-icons/fa";
 export const books: Book[] = [
   {
     id: "1",
@@ -98,7 +100,7 @@ export const categories: Category[] = [
 export const importNotes: ImportNote[] = [
   {
     id: "NGAY1",
-    supplierId: "DT01",
+    supplierId: "Ncc01",
     totalPrice: 5060000,
     status: StatusNote.Inprogress,
     createAt: new Date(),
@@ -106,7 +108,7 @@ export const importNotes: ImportNote[] = [
   },
   {
     id: "NGAY2",
-    supplierId: "DT01",
+    supplierId: "Ncc01",
     totalPrice: 3720000,
     status: StatusNote.Done,
     createAt: new Date(2023, 9, 8),
@@ -114,7 +116,7 @@ export const importNotes: ImportNote[] = [
   },
   {
     id: "NGAY3",
-    supplierId: "DT01",
+    supplierId: "Ncc01",
     totalPrice: 4660000,
     status: StatusNote.Cancel,
     createAt: new Date(2023, 10, 1),
@@ -170,18 +172,53 @@ export const suppliers: Supplier[] = [
   {
     id: "Ncc01",
     name: "Cong ty Sach Hoa Nghien",
+    phone: "0123456789",
+    debt: 2000000,
+    email: "ctyHoaNghien@gmail.com",
   },
   {
     id: "Ncc02",
     name: "Cong ty Quang Nam",
+    phone: "0123456789",
+    debt: 4600000,
   },
   {
     id: "Ncc03",
     name: "Cong ty Hoa Lan",
+    phone: "0123456789",
+    debt: 1200000,
   },
   {
-    id: "Ncc03",
+    id: "Ncc04",
     name: "Cong ty ForDream",
+    phone: "0123456789",
+    debt: 2000000,
+  },
+];
+export const supplierDebts: SupplierDebt[] = [
+  {
+    id: "PN001",
+    idSupplier: "Ncc01",
+    amount: 23000000,
+    amountLeft: 3000000,
+    createBy: "NV01",
+    createAt: new Date(2023, 4, 24),
+  },
+  {
+    id: "PN002",
+    idSupplier: "Ncc01",
+    amount: 12000000,
+    amountLeft: 500000,
+    createBy: "NV01",
+    createAt: new Date(2023, 4, 12),
+  },
+  {
+    id: "PN003",
+    idSupplier: "Ncc01",
+    amount: 1050000,
+    amountLeft: 50000,
+    createBy: "NV01",
+    createAt: new Date(2023, 4, 3),
   },
 ];
 export const statuses = [
@@ -224,4 +261,10 @@ export const sidebarItems: SidebarItem[] = [
   //   href: "/",
   //   icon: GoPeople,
   // },
+  {
+    title: "Quản lý nhà cung cấp",
+    href: "/supplier",
+    icon: FaRegHandshake,
+    submenu: false,
+  },
 ];

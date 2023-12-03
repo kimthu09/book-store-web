@@ -93,13 +93,63 @@ definitions:
       paging:
         $ref: '#/definitions/common.Paging'
     type: object
+  common.AppError:
+    properties:
+      error_key:
+        example: ErrKey
+        type: string
+      log:
+        example: error log
+        type: string
+      message:
+        example: error message
+        type: string
+      status_code:
+        example: 400
+        type: integer
+    type: object
   common.Paging:
     properties:
       limit:
+        example: 10
         type: integer
       page:
+        example: 1
         type: integer
       total:
+        example: 11
+        type: integer
+    type: object
+  common.ResSuccess:
+    properties:
+      data:
+        example: true
+        type: boolean
+    type: object
+  enum.DebtType:
+    enum:
+    - Pay
+    - Debt
+    type: string
+    x-enum-varnames:
+    - Pay
+    - Debt
+  filter.SupplierDebtFilter:
+    properties:
+      from:
+        example: 1709500431
+        type: integer
+      to:
+        example: 1709500431
+        type: integer
+    type: object
+  filter.SupplierImportFilter:
+    properties:
+      from:
+        example: 1709500431
+        type: integer
+      to:
+        example: 1709500431
         type: integer
     type: object
   publishermodel.Filter:
@@ -135,6 +185,144 @@ definitions:
         $ref: '#/definitions/publishermodel.Filter'
       paging:
         $ref: '#/definitions/common.Paging'
+    type: object
+  supplierdebtmodel.SupplierDebt:
+    properties:
+      create_at:
+        example: "1709500431"
+        type: string
+      create_by:
+        example: user_id
+        type: string
+      id:
+        example: debt001
+        type: string
+      qty:
+        example: -70000
+        type: number
+      qty_left:
+        example: -100000
+        type: number
+      supplier_id:
+        example: "123"
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/enum.DebtType'
+        example: Debt
+    type: object
+  suppliermodel.ReqCreateSupplier:
+    properties:
+      debt:
+        example: -100000
+        type: number
+      email:
+        example: a@gmail.com
+        type: string
+      id:
+        example: "123"
+        type: string
+      name:
+        example: Nguyễn Văn A
+        type: string
+      phone:
+        example: "0123456789"
+        type: string
+    type: object
+  suppliermodel.ReqUpdateDebtSupplier:
+    properties:
+      qty_update:
+        example: 10000
+        type: number
+    type: object
+  suppliermodel.ReqUpdateInfoSupplier:
+    properties:
+      email:
+        example: b@gmail.com
+        type: string
+      name:
+        example: tên đã đổi
+        type: string
+      phone:
+        example: "1234567890"
+        type: string
+    type: object
+  suppliermodel.ResDebtSupplier:
+    properties:
+      debt:
+        example: -100000
+        type: number
+      debt_history:
+        items:
+          $ref: '#/definitions/supplierdebtmodel.SupplierDebt'
+        type: array
+      email:
+        example: a@gmail.com
+        type: string
+      id:
+        example: "123"
+        type: string
+      name:
+        example: Nguyễn Văn A
+        type: string
+      phone:
+        example: "0123456789"
+        type: string
+    type: object
+  suppliermodel.ResListSupplier:
+    properties:
+      data:
+        description: Data contains list of supplier.
+        items:
+          $ref: '#/definitions/suppliermodel.Supplier'
+        type: array
+      filter:
+        allOf:
+        - $ref: '#/definitions/filter.SupplierImportFilter'
+        description: Filter contains the filter parameters used to retrieve supplier.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  suppliermodel.ResSeeDebtSupplier:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/suppliermodel.ResDebtSupplier'
+        description: Data contains the detailed information about supplier's debts.
+      filter:
+        allOf:
+        - $ref: '#/definitions/filter.SupplierDebtFilter'
+        description: Filter contains the filter parameters used to retrieve debts.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  suppliermodel.ResSupplierCreate:
+    properties:
+      data:
+        example: "123"
+        type: string
+    type: object
+  suppliermodel.Supplier:
+    properties:
+      debt:
+        example: -100000
+        type: number
+      email:
+        example: a@gmail.com
+        type: string
+      id:
+        example: "123"
+        type: string
+      name:
+        example: Nguyễn Văn A
+        type: string
+      phone:
+        example: "0123456789"
+        type: string
     type: object
 host: localhost:8080
 info:
@@ -284,6 +472,233 @@ paths:
       summary: Create publisher with name
       tags:
       - publishers
+  /suppliers:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: 100000
+        in: query
+        name: maxDebt
+        type: number
+      - example: 10
+        in: query
+        name: minDebt
+        type: number
+      - example: id, name, phone, email
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list supplier
+          schema:
+            $ref: '#/definitions/suppliermodel.ResListSupplier'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List supplier
+      tags:
+      - suppliers
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: supplier need to create
+        in: body
+        name: supplier
+        required: true
+        schema:
+          $ref: '#/definitions/suppliermodel.ReqCreateSupplier'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: supplier id
+          schema:
+            $ref: '#/definitions/suppliermodel.ResSupplierCreate'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Create supplier
+      tags:
+      - suppliers
+  /suppliers/{id}:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: supplier id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: supplier info to update
+        in: body
+        name: supplier
+        required: true
+        schema:
+          $ref: '#/definitions/suppliermodel.ReqUpdateInfoSupplier'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Update info supplier
+      tags:
+      - suppliers
+  /suppliers/{id}/debts:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: supplier id
+        in: path
+        name: id
+        required: true
+        type: string
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: 1709500431
+        in: query
+        name: from
+        type: integer
+      - example: 1709500431
+        in: query
+        name: to
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: supplier
+          schema:
+            $ref: '#/definitions/suppliermodel.ResSeeDebtSupplier'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See debts of supplier
+      tags:
+      - suppliers
+  /suppliers/{id}/import_notes:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: supplier id
+        in: path
+        name: id
+        required: true
+        type: string
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: 1709500431
+        in: query
+        name: from
+        type: integer
+      - example: 1709500431
+        in: query
+        name: to
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: supplier
+          schema:
+            $ref: '#/definitions/suppliermodel.ResSeeDebtSupplier'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See import notes of supplier
+      tags:
+      - suppliers
+  /suppliers/{id}/pay:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: supplier id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: pay information
+        in: body
+        name: supplier
+        required: true
+        schema:
+          $ref: '#/definitions/suppliermodel.ReqUpdateDebtSupplier'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Pay supplier
+      tags:
+      - suppliers
 securityDefinitions:
   BearerAuth:
     in: header

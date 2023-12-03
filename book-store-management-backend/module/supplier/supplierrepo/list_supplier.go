@@ -3,13 +3,14 @@ package supplierrepo
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/module/supplier/suppliermodel"
+	"book-store-management-backend/module/supplier/suppliermodel/filter"
 	"context"
 )
 
 type ListSupplierStore interface {
 	ListSupplier(
 		ctx context.Context,
-		filter *suppliermodel.Filter,
+		filter *filter.Filter,
 		propertiesContainSearchKey []string,
 		paging *common.Paging,
 	) ([]suppliermodel.Supplier, error)
@@ -25,7 +26,7 @@ func NewListSupplierRepo(store ListSupplierStore) *listSupplierRepo {
 
 func (repo *listSupplierRepo) ListSupplier(
 	ctx context.Context,
-	filter *suppliermodel.Filter,
+	filter *filter.Filter,
 	paging *common.Paging) ([]suppliermodel.Supplier, error) {
 	result, err := repo.store.ListSupplier(
 		ctx,

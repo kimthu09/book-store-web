@@ -4,13 +4,14 @@ import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/supplier/suppliermodel"
+	"book-store-management-backend/module/supplier/suppliermodel/filter"
 	"context"
 )
 
 type ListSupplierRepo interface {
 	ListSupplier(
 		ctx context.Context,
-		filter *suppliermodel.Filter,
+		filter *filter.Filter,
 		paging *common.Paging,
 	) ([]suppliermodel.Supplier, error)
 }
@@ -28,7 +29,7 @@ func NewListSupplierRepo(
 
 func (biz *listSupplierBiz) ListSupplier(
 	ctx context.Context,
-	filter *suppliermodel.Filter,
+	filter *filter.Filter,
 	paging *common.Paging) ([]suppliermodel.Supplier, error) {
 	if !biz.requester.IsHasFeature(common.SupplierViewFeatureCode) {
 		return nil, suppliermodel.ErrSupplierViewNoPermission
