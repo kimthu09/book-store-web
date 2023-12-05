@@ -24,7 +24,7 @@ import (
 // @Param filter query filter.SupplierDebtFilter false "filter"
 // @Response 200 {object} suppliermodel.ResSeeDebtSupplier "supplier"
 // @Response 400 {object} common.AppError "error"
-// @Router /suppliers/{id}/import_notes [get]
+// @Router /suppliers/{id}/importNotes [get]
 func SeeSupplierImportNote(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Param("id")

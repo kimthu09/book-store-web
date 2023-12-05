@@ -11,7 +11,7 @@ func SetupRoutes(router *gin.RouterGroup, appCtx appctx.AppContext) {
 	{
 		suppliers.GET("", ListSupplier(appCtx))
 		suppliers.POST("", CreateSupplier(appCtx))
-		suppliers.GET("/:id/import_notes", SeeSupplierImportNote(appCtx))
+		suppliers.GET("/:id/importNotes", SeeSupplierImportNote(appCtx))
 		suppliers.GET("/:id/debts", SeeSupplierDebt(appCtx))
 		suppliers.PATCH("/:id", UpdateInfoSupplier(appCtx))
 		suppliers.POST("/:id/pay", PaySupplier(appCtx))

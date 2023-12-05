@@ -978,7 +978,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/suppliers/{id}/import_notes": {
+        "/suppliers/{id}/importNotes": {
             "get": {
                 "security": [
                     {
@@ -1915,11 +1915,11 @@ const docTemplate = `{
         "supplierdebtmodel.SupplierDebt": {
             "type": "object",
             "properties": {
-                "create_at": {
+                "createAt": {
                     "type": "string",
                     "example": "1709500431"
                 },
-                "create_by": {
+                "createBy": {
                     "type": "string",
                     "example": "user_id"
                 },
@@ -1931,11 +1931,11 @@ const docTemplate = `{
                     "type": "number",
                     "example": -70000
                 },
-                "qty_left": {
+                "qtyLeft": {
                     "type": "number",
                     "example": -100000
                 },
-                "supplier_id": {
+                "supplierId": {
                     "type": "string",
                     "example": "123"
                 },
@@ -1977,7 +1977,7 @@ const docTemplate = `{
         "suppliermodel.ReqUpdateDebtSupplier": {
             "type": "object",
             "properties": {
-                "qty_update": {
+                "qtyUpdate": {
                     "type": "number",
                     "example": 10000
                 }
@@ -2007,7 +2007,7 @@ const docTemplate = `{
                     "type": "number",
                     "example": -100000
                 },
-                "debt_history": {
+                "debtHistory": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/supplierdebtmodel.SupplierDebt"
