@@ -511,10 +511,10 @@ definitions:
     type: object
   supplierdebtmodel.SupplierDebt:
     properties:
-      create_at:
+      createAt:
         example: "1709500431"
         type: string
-      create_by:
+      createBy:
         example: user_id
         type: string
       id:
@@ -523,10 +523,10 @@ definitions:
       qty:
         example: -70000
         type: number
-      qty_left:
+      qtyLeft:
         example: -100000
         type: number
-      supplier_id:
+      supplierId:
         example: "123"
         type: string
       type:
@@ -554,7 +554,7 @@ definitions:
     type: object
   suppliermodel.ReqUpdateDebtSupplier:
     properties:
-      qty_update:
+      qtyUpdate:
         example: 10000
         type: number
     type: object
@@ -575,7 +575,7 @@ definitions:
       debt:
         example: -100000
         type: number
-      debt_history:
+      debtHistory:
         items:
           $ref: '#/definitions/supplierdebtmodel.SupplierDebt'
         type: array
@@ -1311,7 +1311,7 @@ paths:
       summary: See debts of supplier
       tags:
       - suppliers
-  /suppliers/{id}/import_notes:
+  /suppliers/{id}/importNotes:
     get:
       consumes:
       - application/json

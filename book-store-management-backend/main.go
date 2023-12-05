@@ -13,6 +13,7 @@ import (
 	"book-store-management-backend/module/supplier/suppliertransport/ginsupplier"
 	"book-store-management-backend/module/user/usertransport/ginuser"
 	"fmt"
+	"github.com/gin-contrib/cors"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -67,7 +68,13 @@ func main() {
 
 	appCtx := appctx.NewAppContext(db, cfg.SecretKey)
 
+	c := cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:8080", "http://localhost:300"},
+		AllowCredentials: true,
+	})
+
 	r := gin.Default()
+	r.Use(c)
 	r.Use(middleware.Recover(appCtx))
 
 	r.GET("/ping", func(c *gin.Context) {
@@ -77,7 +84,7 @@ func main() {
 	})
 
 	docs.SwaggerInfo.BasePath = "/v1"
-	v1 := r.Group("/v1")
+	v1 := r.Group("/v1", c)
 	{
 		v1.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
