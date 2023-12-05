@@ -69,7 +69,7 @@ func main() {
 	appCtx := appctx.NewAppContext(db, cfg.SecretKey)
 
 	c := cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:8080", "http://localhost:300"},
+		AllowOrigins:     []string{"http://localhost:8080", "http://localhost:3000"},
 		AllowCredentials: true,
 	})
 
