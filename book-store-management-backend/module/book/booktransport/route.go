@@ -23,6 +23,6 @@ func SetupRoutes(router *gin.RouterGroup, appCtx appctx.AppContext) {
 				"message": "get all books",
 			})
 		})
-		//books.POST("", CreateBook(appCtx))
+		books.POST("", CreateBook(appCtx))
 	}
 }

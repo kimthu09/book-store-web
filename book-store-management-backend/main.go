@@ -91,9 +91,18 @@ func main() {
 		ginuser.SetupRoutes(v1, appCtx)
 	}
 
+	//bs := bookstore.NewSQLStore(db)
+	//tmpId := "1"
+	//bs.CreateBook(nil, &bookstore.BookDBModel{
+	//	Name:        "fhdsjkfhjdds",
+	//	ID:          &tmpId,
+	//	Description: "fjkdslfj",
+	//})
+
 	if err := r.Run(fmt.Sprintf(":%s", cfg.Port)); err != nil {
 		log.Fatalln("Error running server:", err)
 	}
+
 }
 
 func loadConfig() (*appConfig, error) {

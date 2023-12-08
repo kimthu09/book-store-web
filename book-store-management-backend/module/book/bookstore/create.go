@@ -22,7 +22,7 @@ func (*BookDBModel) TableName() string {
 	return common.TableBook
 }
 
-func (s *sqlStore) CreateBook(ctx context.Context, data *bookmodel.ReqCreateBook) error {
+func (s *sqlStore) CreateBook(ctx context.Context, data *bookmodel.Book) error {
 	db := s.db
 
 	var tmpData BookDBModel = BookDBModel{

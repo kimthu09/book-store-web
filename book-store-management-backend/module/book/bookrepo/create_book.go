@@ -6,7 +6,7 @@ import (
 )
 
 type CreateBookStore interface {
-	CreateBook(ctx context.Context, bookGeneral *bookmodel.Book, bookInfo *bookmodel.BookInfo) error
+	CreateBook(ctx context.Context, bookGeneral *bookmodel.Book) error
 }
 
 type createBookRepo struct {
