@@ -59,6 +59,36 @@ definitions:
       salePrice:
         type: number
     type: object
+  bookmodel.ReqCreateBook:
+    properties:
+      authorIds:
+        items:
+          type: string
+        type: array
+      categoryIds:
+        items:
+          type: string
+        type: array
+      desc:
+        type: string
+      edition:
+        type: integer
+      listedPrice:
+        type: number
+      name:
+        type: string
+      publisherId:
+        type: string
+      quantity:
+        type: integer
+      sellPrice:
+        type: number
+    type: object
+  bookmodel.ResCreateBook:
+    properties:
+      id:
+        type: string
+    type: object
   bookmodel.SimpleBook:
     properties:
       id:
@@ -511,10 +541,10 @@ definitions:
     type: object
   supplierdebtmodel.SupplierDebt:
     properties:
-      create_at:
+      createAt:
         example: "1709500431"
         type: string
-      create_by:
+      createBy:
         example: user_id
         type: string
       id:
@@ -523,10 +553,10 @@ definitions:
       qty:
         example: -70000
         type: number
-      qty_left:
+      qtyLeft:
         example: -100000
         type: number
-      supplier_id:
+      supplierId:
         example: "123"
         type: string
       type:
@@ -554,7 +584,7 @@ definitions:
     type: object
   suppliermodel.ReqUpdateDebtSupplier:
     properties:
-      qty_update:
+      qtyUpdate:
         example: 10000
         type: number
     type: object
@@ -575,7 +605,7 @@ definitions:
       debt:
         example: -100000
         type: number
-      debt_history:
+      debtHistory:
         items:
           $ref: '#/definitions/supplierdebtmodel.SupplierDebt'
         type: array
@@ -772,6 +802,28 @@ paths:
       security:
       - BearerAuth: []
       summary: Get all books
+      tags:
+      - books
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create book
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/bookmodel.ReqCreateBook'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: book id
+          schema:
+            $ref: '#/definitions/bookmodel.ResCreateBook'
+      security:
+      - BearerAuth: []
+      summary: Create book name, desc, authors, categories, publisher, .etc
       tags:
       - books
   /categories:

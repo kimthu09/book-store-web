@@ -9,28 +9,32 @@ type ReqCreateBook struct {
 	Description string   `json:"desc" gorm:"column:desc"`
 	Edition     int      `json:"edition" gorm:"column:edition"`
 	Quantity    int      `json:"quantity" gorm:"column:qty"`
-	Price       float64  `json:"price" gorm:"column:price"`
-	SalePrice   float64  `json:"salePrice" gorm:"column:salePrice"`
+	ListedPrice float64  `json:"listedPrice" gorm:"column:listedPrice"`
+	SellPrice   float64  `json:"sellPrice" gorm:"column:sellPrice"`
 	PublisherID string   `json:"publisherId" gorm:"column:publisherId"`
 	AuthorIDs   []string `json:"authorIds" gorm:"column:authorIds"`
 	CategoryIDs []string `json:"categoryIds" gorm:"column:categoryIds"`
 }
 
-//func (*ReqCreateBook) TableName() string {
-//	return common.TableBook
-//}
+func (*ReqCreateBook) TableName() string {
+	return common.TableBook
+}
 
 func (data *ReqCreateBook) Validate() *common.AppError {
 	if common.ValidateEmptyString(data.Name) {
 		return ErrBookNameEmpty
 	}
 
-	if data.Price <= 0 {
+	if data.ListedPrice <= 0 {
 		return ErrBookPriceIsLessThanZero
 	}
 
-	if data.SalePrice <= 0 {
-		return ErrBookSalePriceIsLessThanZero
+	if data.SellPrice <= 0 {
+		if data.SellPrice == 0 {
+			data.SellPrice = data.ListedPrice
+		} else {
+			return ErrBookSalePriceIsLessThanZero
+		}
 	}
 
 	if data.Quantity < 0 {

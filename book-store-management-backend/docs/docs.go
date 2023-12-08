@@ -121,6 +121,42 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "books"
+                ],
+                "summary": "Create book name, desc, authors, categories, publisher, .etc",
+                "parameters": [
+                    {
+                        "description": "Create book",
+                        "name": "book",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/bookmodel.ReqCreateBook"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "book id",
+                        "schema": {
+                            "$ref": "#/definitions/bookmodel.ResCreateBook"
+                        }
+                    }
+                }
             }
         },
         "/categories": {
@@ -1238,6 +1274,52 @@ const docTemplate = `{
                 }
             }
         },
+        "bookmodel.ReqCreateBook": {
+            "type": "object",
+            "properties": {
+                "authorIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "categoryIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "edition": {
+                    "type": "integer"
+                },
+                "listedPrice": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "publisherId": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "sellPrice": {
+                    "type": "number"
+                }
+            }
+        },
+        "bookmodel.ResCreateBook": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
         "bookmodel.SimpleBook": {
             "type": "object",
             "properties": {
@@ -1915,11 +1997,11 @@ const docTemplate = `{
         "supplierdebtmodel.SupplierDebt": {
             "type": "object",
             "properties": {
-                "create_at": {
+                "createAt": {
                     "type": "string",
                     "example": "1709500431"
                 },
-                "create_by": {
+                "createBy": {
                     "type": "string",
                     "example": "user_id"
                 },
@@ -1931,11 +2013,11 @@ const docTemplate = `{
                     "type": "number",
                     "example": -70000
                 },
-                "qty_left": {
+                "qtyLeft": {
                     "type": "number",
                     "example": -100000
                 },
-                "supplier_id": {
+                "supplierId": {
                     "type": "string",
                     "example": "123"
                 },
@@ -1977,7 +2059,7 @@ const docTemplate = `{
         "suppliermodel.ReqUpdateDebtSupplier": {
             "type": "object",
             "properties": {
-                "qty_update": {
+                "qtyUpdate": {
                     "type": "number",
                     "example": 10000
                 }
@@ -2007,7 +2089,7 @@ const docTemplate = `{
                     "type": "number",
                     "example": -100000
                 },
-                "debt_history": {
+                "debtHistory": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/supplierdebtmodel.SupplierDebt"

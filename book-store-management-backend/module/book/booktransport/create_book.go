@@ -5,6 +5,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @BasePath /v1
+// @Security BearerAuth
+// @Summary Create book name, desc, authors, categories, publisher, .etc
+// @Tags books
+// @Accept json
+// @Produce json
+// @Param book body bookmodel.ReqCreateBook true "Create book"
+// @Response 200 {object} bookmodel.ResCreateBook "book id"
+// @Router /books [post]
 func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//var data bookmodel.ReqCreateBook
