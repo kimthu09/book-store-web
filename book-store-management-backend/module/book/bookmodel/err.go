@@ -18,15 +18,15 @@ var (
 		"ErrBookNameEmpty",
 	)
 
-	ErrBookPriceIsLessThanZero = common.NewCustomError(
-		errors.New("price of Book is a less than zero"),
-		"price of Book must be greater than 0",
-		"ErrBookPriceIsLessThanZero",
+	ErrBookListedPriceIsLessThanZero = common.NewCustomError(
+		errors.New("listed price of Book is less than zero"),
+		"listed price of Book must be greater than 0",
+		"ErrBookListedPriceIsLessThanZero",
 	)
 
 	ErrBookSalePriceIsLessThanZero = common.NewCustomError(
-		errors.New("sale price of Book is less than zero"),
-		"sale price of Book must be greater than 0",
+		errors.New("sell price of Book is less than zero"),
+		"sell price of Book must be greater than 0",
 		"ErrBookSalePriceIsLessThanZero",
 	)
 

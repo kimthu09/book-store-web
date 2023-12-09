@@ -6,10 +6,11 @@ import (
 	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/book/bookmodel"
 	"context"
+	"fmt"
 )
 
 type CreateBookRepo interface {
-	CreateBook(ctx context.Context, data *bookmodel.ReqCreateBook) error
+	CreateBook(ctx context.Context, data *bookmodel.Book) error
 }
 
 type createBookBiz struct {
@@ -34,10 +35,19 @@ func (biz *createBookBiz) CreateBook(ctx context.Context, reqData *bookmodel.Req
 		return bookmodel.ErrBookCreateNoPermission
 	}
 
+	fmt.Println("=====================================\nBusiness Book\n=====================================\n")
+
 	data := &bookmodel.Book{
 		ID:          nil,
 		Name:        reqData.Name,
 		Description: reqData.Description,
+		Edition:     reqData.Edition,
+		Quantity:    reqData.Quantity,
+		ListedPrice: reqData.ListedPrice,
+		SellPrice:   reqData.SellPrice,
+		PublisherID: reqData.PublisherID,
+		AuthorIDs:   reqData.AuthorIDs,
+		CategoryIDs: reqData.CategoryIDs,
 	}
 	if err := data.Validate(); err != nil {
 		return err
@@ -47,7 +57,7 @@ func (biz *createBookBiz) CreateBook(ctx context.Context, reqData *bookmodel.Req
 		return err
 	}
 
-	if err := biz.repo.CreateBook(ctx, reqData); err != nil {
+	if err := biz.repo.CreateBook(ctx, data); err != nil {
 		return err
 	}
 

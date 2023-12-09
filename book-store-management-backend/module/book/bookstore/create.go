@@ -3,6 +3,7 @@ package bookstore
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/module/book/bookmodel"
+	"fmt"
 	"gorm.io/gorm"
 
 	"golang.org/x/net/context"
@@ -23,6 +24,9 @@ func (*BookDBModel) TableName() string {
 }
 
 func (s *sqlStore) CreateBook(ctx context.Context, data *bookmodel.Book) error {
+	fmt.Println("=====================================\nStore Book\n=====================================\n")
+	return nil
+
 	db := s.db
 
 	var tmpData BookDBModel = BookDBModel{
