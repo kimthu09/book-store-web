@@ -17,10 +17,9 @@ func NewCreateAuthorRepo(store CreateAuthor) *createAuthorRepo {
 	return &createAuthorRepo{store: store}
 }
 
-func (biz *createAuthorRepo) CreateAuthor(ctx context.Context, data *authormodel.Author) error {
-	if err := biz.store.CreateAuthor(ctx, data); err != nil {
+func (repo *createAuthorRepo) CreateAuthor(ctx context.Context, data *authormodel.Author) error {
+	if err := repo.store.CreateAuthor(ctx, data); err != nil {
 		return err
 	}
-
 	return nil
 }

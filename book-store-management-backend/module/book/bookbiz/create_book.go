@@ -6,36 +6,54 @@ import (
 	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/book/bookmodel"
 	"context"
-	"fmt"
 )
 
 type CreateBookRepo interface {
 	CreateBook(ctx context.Context, data *bookmodel.Book) error
 }
 
+type AuthorRepo interface {
+	IsExistAuthorId(ctx context.Context, authorId string) bool
+}
+
+type publisherRepo interface {
+	IsExistPublisherId(ctx context.Context, publisherId string) bool
+}
+
+type categoryRepo interface {
+	IsExistCategoryId(ctx context.Context, categoryId string) bool
+}
+
 type createBookBiz struct {
-	gen       generator.IdGenerator
-	repo      CreateBookRepo
-	requester middleware.Requester
+	gen           generator.IdGenerator
+	repo          CreateBookRepo
+	authorRepo    AuthorRepo
+	publisherRepo publisherRepo
+	categoryRepo  categoryRepo
+	requester     middleware.Requester
 }
 
 func NewCreateBookBiz(
 	gen generator.IdGenerator,
 	repo CreateBookRepo,
+	authorRepo AuthorRepo,
+	publisherRepo publisherRepo,
+	categoryRepo categoryRepo,
 	requester middleware.Requester) *createBookBiz {
 	return &createBookBiz{
-		gen:       gen,
-		repo:      repo,
-		requester: requester,
+		gen:           gen,
+		repo:          repo,
+		authorRepo:    authorRepo,
+		publisherRepo: publisherRepo,
+		categoryRepo:  categoryRepo,
+		requester:     requester,
 	}
 }
 
-func (biz *createBookBiz) CreateBook(ctx context.Context, reqData *bookmodel.ReqCreateBook) error {
+func (biz *createBookBiz) CreateBook(ctx context.Context, reqData *bookmodel.ReqCreateBook, resData *bookmodel.ResCreateBook) error {
 	if !biz.requester.IsHasFeature(common.BookCreateFeatureCode) {
 		return bookmodel.ErrBookCreateNoPermission
 	}
-
-	fmt.Println("=====================================\nBusiness Book\n=====================================\n")
 
 	data := &bookmodel.Book{
 		ID:          nil,
@@ -49,10 +67,21 @@ func (biz *createBookBiz) CreateBook(ctx context.Context, reqData *bookmodel.Req
 		AuthorIDs:   reqData.AuthorIDs,
 		CategoryIDs: reqData.CategoryIDs,
 	}
+
 	if err := data.Validate(); err != nil {
 		return err
 	}
-
+	data.AuthorIDs = common.RemoveDuplicateStringValues(data.AuthorIDs)
+	if err := validateAuthors(ctx, biz.authorRepo, data.AuthorIDs); err != nil {
+		return err
+	}
+	if err := validatePublisher(ctx, biz.publisherRepo, data.PublisherID); err != nil {
+		return err
+	}
+	data.CategoryIDs = common.RemoveDuplicateStringValues(data.CategoryIDs)
+	if err := validateCategories(ctx, biz.categoryRepo, data.CategoryIDs); err != nil {
+		return err
+	}
 	if err := handleBookId(biz.gen, data); err != nil {
 		return err
 	}
@@ -60,7 +89,7 @@ func (biz *createBookBiz) CreateBook(ctx context.Context, reqData *bookmodel.Req
 	if err := biz.repo.CreateBook(ctx, data); err != nil {
 		return err
 	}
-
+	resData.Id = *data.ID
 	return nil
 }
 

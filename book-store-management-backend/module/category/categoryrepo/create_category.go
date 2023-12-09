@@ -17,10 +17,9 @@ func NewCreateCategoryRepo(store CreateCategory) *createCategoryRepo {
 	return &createCategoryRepo{store: store}
 }
 
-func (biz *createCategoryRepo) CreateCategory(ctx context.Context, data *categorymodel.Category) error {
-	if err := biz.store.CreateCategory(ctx, data); err != nil {
+func (repo *createCategoryRepo) CreateCategory(ctx context.Context, data *categorymodel.Category) error {
+	if err := repo.store.CreateCategory(ctx, data); err != nil {
 		return err
 	}
-
 	return nil
 }

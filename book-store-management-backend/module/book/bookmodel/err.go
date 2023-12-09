@@ -36,10 +36,10 @@ var (
 		"ErrBookQuantityIsNegativeNumber",
 	)
 
-	ErrBookEditionIsNegativeNumber = common.NewCustomError(
-		errors.New("edition number of Book is a negative number"),
-		"edition number of Book is a negative number",
-		"ErrBookEditionIsNegativeNumber",
+	ErrBookEditionNotPositiveNumber = common.NewCustomError(
+		errors.New("edition number of Book is not positive number"),
+		"edition number of Book is not positive number",
+		"ErrBookEditionNotPositiveNumber",
 	)
 
 	ErrBookPublisherIdEmpty = common.NewCustomError(
@@ -47,17 +47,31 @@ var (
 		"publisher ID of Book is empty",
 		"ErrBookPublisherIdEmpty",
 	)
-
 	ErrBookAuthorIdsEmpty = common.NewCustomError(
 		errors.New("author IDs of Book are empty"),
 		"author IDs of Book are empty",
 		"ErrBookAuthorIdsEmpty",
 	)
-
 	ErrBookCategoryIdsEmpty = common.NewCustomError(
 		errors.New("category IDs of Book are empty"),
 		"category IDs of Book are empty",
 		"ErrBookCategoryIdsEmpty",
+	)
+
+	ErrBookValidatePublisher = common.NewCustomError(
+		errors.New("publisher ID of Book is invalid"),
+		"publisher ID of Book is invalid",
+		"ErrBookValidatePublisher",
+	)
+	ErrBookValidateAuthor = common.NewCustomError(
+		errors.New("author IDs of Book are invalid"),
+		"author IDs of Book are invalid",
+		"ErrBookValidateAuthor",
+	)
+	ErrBookValidateCategory = common.NewCustomError(
+		errors.New("category IDs of Book are invalid"),
+		"category IDs of Book are invalid",
+		"ErrBookValidateCategory",
 	)
 
 	ErrBookQtyUpdateInvalid = common.NewCustomError(

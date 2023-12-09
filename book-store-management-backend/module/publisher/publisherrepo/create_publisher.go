@@ -17,8 +17,8 @@ func NewCreatePublisherRepo(store CreatePublisher) *createPublisherRepo {
 	return &createPublisherRepo{store: store}
 }
 
-func (biz *createPublisherRepo) CreatePublisher(ctx context.Context, data *publishermodel.Publisher) error {
-	if err := biz.store.CreatePublisher(ctx, data); err != nil {
+func (repo *createPublisherRepo) CreatePublisher(ctx context.Context, data *publishermodel.Publisher) error {
+	if err := repo.store.CreatePublisher(ctx, data); err != nil {
 		return err
 	}
 

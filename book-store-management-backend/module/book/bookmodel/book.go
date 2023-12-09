@@ -43,8 +43,8 @@ func (data *Book) Validate() *common.AppError {
 		return ErrBookQuantityIsNegativeNumber
 	}
 
-	if data.Edition < 0 {
-		return ErrBookEditionIsNegativeNumber
+	if data.Edition <= 0 {
+		return ErrBookEditionNotPositiveNumber
 	}
 
 	if common.ValidateEmptyString(data.PublisherID) {
