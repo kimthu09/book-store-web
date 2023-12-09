@@ -19,14 +19,16 @@
 -- Table structure for table `Author`
 --
 
+DROP TABLE IF EXISTS `Author`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `Author` (
+CREATE TABLE `Author` (
   `id` varchar(12) NOT NULL,
   `name` text NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -36,31 +38,32 @@ CREATE TABLE IF NOT EXISTS `Author` (
 --
 
 LOCK TABLES `Author` WRITE;
-INSERT INTO `Author` VALUES ('tgak','Adam Khoo','2023-12-02 01:51:49','2023-12-02 01:51:49',1),('tgnna','Nguyễn Nhật Ánh','2023-12-02 01:51:49','2023-12-02 01:51:49',1),('tgvef','Viktor E Frankl','2023-12-02 01:51:49','2023-12-02 01:51:49',1);
+INSERT INTO `Author` VALUES ('tgak','Adam Khoo','2023-12-02 01:51:49','2023-12-02 01:51:49',1,NULL),('tgnna','Nguyễn Nhật Ánh','2023-12-02 01:51:49','2023-12-02 01:51:49',1,NULL),('tgvef','Viktor E Frankl','2023-12-02 01:51:49','2023-12-02 01:51:49',1,NULL);
 UNLOCK TABLES;
 
 --
 -- Table structure for table `Book`
 --
 
+DROP TABLE IF EXISTS `Book`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `Book` (
+CREATE TABLE `Book` (
   `id` varchar(12) NOT NULL,
   `name` varchar(100) NOT NULL,
   `desc` text,
   `edition` int NOT NULL,
   `qty` int DEFAULT '0',
-  `price` float NOT NULL,
-  `salePrice` float NOT NULL,
+  `listedPrice` float NOT NULL,
+  `sellPrice` float NOT NULL,
   `publisherId` varchar(12) DEFAULT NULL,
   `authorIds` text NOT NULL,
   `categoryIds` text NOT NULL,
   `isActive` tinyint(1) NOT NULL DEFAULT '1',
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `Book_pk2` (`id`)
+  `deletedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -69,15 +72,17 @@ CREATE TABLE IF NOT EXISTS `Book` (
 --
 
 LOCK TABLES `Book` WRITE;
+INSERT INTO `Book` VALUES ('V3iCrODIR','Tôi là Bêtô','Tôi Là Bêtô là tác phẩm của nhà văn chuyên viết cho thanh thiếu niên Nguyễn Nhật Ánh.',1,0,75000,80000,'nxbdk','tgnna','dmtt|dmtruyen',1,'2023-12-09 20:35:03','2023-12-09 20:35:03',NULL);
 UNLOCK TABLES;
 
 --
 -- Table structure for table `BookChangeHistory`
 --
 
+DROP TABLE IF EXISTS `BookChangeHistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `BookChangeHistory` (
+CREATE TABLE `BookChangeHistory` (
   `id` varchar(12) NOT NULL,
   `bookId` varchar(12) NOT NULL,
   `amount` float NOT NULL,
@@ -86,6 +91,7 @@ CREATE TABLE IF NOT EXISTS `BookChangeHistory` (
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`,`bookId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -101,14 +107,16 @@ UNLOCK TABLES;
 -- Table structure for table `Category`
 --
 
+DROP TABLE IF EXISTS `Category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `Category` (
+CREATE TABLE `Category` (
   `id` varchar(12) NOT NULL,
   `name` varchar(50) NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -118,21 +126,23 @@ CREATE TABLE IF NOT EXISTS `Category` (
 --
 
 LOCK TABLES `Category` WRITE;
-INSERT INTO `Category` VALUES ('dmkns','Kỹ năng sống','2023-12-02 01:52:21','2023-12-02 01:52:21',1),('dmsgk','Sách giáo khoa','2023-12-02 01:52:21','2023-12-02 01:52:21',1),('dmtruyen','Truyện','2023-12-02 01:52:21','2023-12-02 01:52:21',1),('dmtt','Tiểu thuyết','2023-12-02 01:52:21','2023-12-02 01:52:21',1);
+INSERT INTO `Category` VALUES ('dmkns','Kỹ năng sống','2023-12-02 01:52:21','2023-12-02 01:52:21',1,NULL),('dmsgk','Sách giáo khoa','2023-12-02 01:52:21','2023-12-02 01:52:21',1,NULL),('dmtruyen','Truyện','2023-12-02 01:52:21','2023-12-02 01:52:21',1,NULL),('dmtt','Tiểu thuyết','2023-12-02 01:52:21','2023-12-02 01:52:21',1,NULL);
 UNLOCK TABLES;
 
 --
 -- Table structure for table `Feature`
 --
 
+DROP TABLE IF EXISTS `Feature`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `Feature` (
+CREATE TABLE `Feature` (
   `id` varchar(12) NOT NULL,
   `description` text,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -148,9 +158,10 @@ UNLOCK TABLES;
 -- Table structure for table `ImportNote`
 --
 
+DROP TABLE IF EXISTS `ImportNote`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `ImportNote` (
+CREATE TABLE `ImportNote` (
   `id` varchar(12) NOT NULL,
   `supplierId` varchar(12) NOT NULL,
   `totalPrice` float DEFAULT '0',
@@ -162,6 +173,7 @@ CREATE TABLE IF NOT EXISTS `ImportNote` (
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -177,9 +189,10 @@ UNLOCK TABLES;
 -- Table structure for table `ImportNoteDetail`
 --
 
+DROP TABLE IF EXISTS `ImportNoteDetail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `ImportNoteDetail` (
+CREATE TABLE `ImportNoteDetail` (
   `importNoteId` varchar(12) NOT NULL,
   `bookId` varchar(12) NOT NULL,
   `price` float NOT NULL,
@@ -187,6 +200,7 @@ CREATE TABLE IF NOT EXISTS `ImportNoteDetail` (
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`importNoteId`,`bookId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -202,9 +216,10 @@ UNLOCK TABLES;
 -- Table structure for table `InventoryCheckNote`
 --
 
+DROP TABLE IF EXISTS `InventoryCheckNote`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `InventoryCheckNote` (
+CREATE TABLE `InventoryCheckNote` (
   `id` varchar(12) NOT NULL,
   `qtyDifferent` float NOT NULL,
   `qtyAfterAdjust` float NOT NULL,
@@ -213,6 +228,7 @@ CREATE TABLE IF NOT EXISTS `InventoryCheckNote` (
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -228,9 +244,10 @@ UNLOCK TABLES;
 -- Table structure for table `InventoryCheckNoteDetail`
 --
 
+DROP TABLE IF EXISTS `InventoryCheckNoteDetail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `InventoryCheckNoteDetail` (
+CREATE TABLE `InventoryCheckNoteDetail` (
   `inventoryCheckNoteId` varchar(12) NOT NULL,
   `bookId` varchar(12) NOT NULL,
   `initial` float NOT NULL,
@@ -239,6 +256,7 @@ CREATE TABLE IF NOT EXISTS `InventoryCheckNoteDetail` (
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`inventoryCheckNoteId`,`bookId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -254,17 +272,18 @@ UNLOCK TABLES;
 -- Table structure for table `Invoice`
 --
 
+DROP TABLE IF EXISTS `Invoice`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `Invoice` (
+CREATE TABLE `Invoice` (
   `id` varchar(13) NOT NULL,
   `totalPrice` float NOT NULL,
   `qtyReceived` float NOT NULL,
-  `createAt` datetime DEFAULT (now()),
-  `createBy` varchar(13) NOT NULL,
+  `createdBy` varchar(13) NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -280,9 +299,10 @@ UNLOCK TABLES;
 -- Table structure for table `InvoiceDetail`
 --
 
+DROP TABLE IF EXISTS `InvoiceDetail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `InvoiceDetail` (
+CREATE TABLE `InvoiceDetail` (
   `invoiceId` varchar(13) NOT NULL,
   `bookId` varchar(13) NOT NULL,
   `qty` float NOT NULL,
@@ -290,6 +310,7 @@ CREATE TABLE IF NOT EXISTS `InvoiceDetail` (
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`invoiceId`,`bookId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -305,9 +326,10 @@ UNLOCK TABLES;
 -- Table structure for table `MUser`
 --
 
+DROP TABLE IF EXISTS `MUser`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `MUser` (
+CREATE TABLE `MUser` (
   `id` varchar(12) NOT NULL,
   `name` text NOT NULL,
   `phone` varchar(13) NOT NULL,
@@ -319,6 +341,7 @@ CREATE TABLE IF NOT EXISTS `MUser` (
   `isActive` tinyint(1) NOT NULL DEFAULT '1',
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -328,21 +351,23 @@ CREATE TABLE IF NOT EXISTS `MUser` (
 --
 
 LOCK TABLES `MUser` WRITE;
-INSERT INTO `MUser` VALUES ('bgIqwQSIg','Hello','','','sayhi@gmail.com','0dd71ba5a82e98ccdc6f5edb6fb870a5','ByVwWucjSGZkozLFeQcopssBrHPbCHoqRuUCFUbpfIhhqGUujj','user',1,'2023-12-02 01:52:32','2023-12-02 01:52:32'),('g3W21A7SR','1234','1234567890','','b@gmail.com','5e107317df151f6e8e0015c4f2ee7936','mVMxRDAHpAJfyzuiXWRELghNpynUqBKueSboGBcrwHUuzEWsms','admin',1,'2023-12-02 01:52:32','2023-12-02 01:52:32'),('za1u8m4Sg','say hi','','','c@gmail.com','431d9ac06ad32dac38b659d804d12879','QYlnGKRgYBxIXzMnnQSVcglbtjPsAhVlxMRMDaqnaquxwADSur','admin',1,'2023-12-02 01:52:32','2023-12-02 01:52:32'),('ziwok1023','quocadmin','1234567890','','admin@gmail.com','5e107317df151f6e8e0015c4f2ee7936','mVMxRDAHpAJfyzuiXWRELghNpynUqBKueSboGBcrwHUuzEWsms','admin',1,'2023-12-02 01:52:32','2023-12-02 01:52:32');
+INSERT INTO `MUser` VALUES ('bgIqwQSIg','user','','','user@gmail.com','0dd71ba5a82e98ccdc6f5edb6fb870a5','ByVwWucjSGZkozLFeQcopssBrHPbCHoqRuUCFUbpfIhhqGUujj','user',1,'2023-12-02 01:52:32','2023-12-04 01:24:10',NULL),('g3W21A7SR','admin','1234567890','','admin@gmail.com','5e107317df151f6e8e0015c4f2ee7936','mVMxRDAHpAJfyzuiXWRELghNpynUqBKueSboGBcrwHUuzEWsms','admin',1,'2023-12-02 01:52:32','2023-12-04 01:24:10',NULL);
 UNLOCK TABLES;
 
 --
 -- Table structure for table `Publisher`
 --
 
+DROP TABLE IF EXISTS `Publisher`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `Publisher` (
+CREATE TABLE `Publisher` (
   `id` varchar(12) NOT NULL,
   `name` varchar(50) NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -352,21 +377,23 @@ CREATE TABLE IF NOT EXISTS `Publisher` (
 --
 
 LOCK TABLES `Publisher` WRITE;
-INSERT INTO `Publisher` VALUES ('nxbdg','Giáo dục','2023-12-02 01:52:21','2023-12-02 01:52:21',1),('nxbdk','Kim Đồng','2023-12-02 01:52:21','2023-12-02 01:52:21',1);
+INSERT INTO `Publisher` VALUES ('nxbdg','Giáo dục','2023-12-02 01:52:21','2023-12-02 01:52:21',1,NULL),('nxbdk','Kim Đồng','2023-12-02 01:52:21','2023-12-02 01:52:21',1,NULL);
 UNLOCK TABLES;
 
 --
 -- Table structure for table `Role`
 --
 
+DROP TABLE IF EXISTS `Role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `Role` (
+CREATE TABLE `Role` (
   `id` varchar(13) NOT NULL,
   `name` text,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -376,21 +403,23 @@ CREATE TABLE IF NOT EXISTS `Role` (
 --
 
 LOCK TABLES `Role` WRITE;
-INSERT INTO `Role` VALUES ('admin','admin','2023-12-02 01:52:40','2023-12-02 01:52:40',1),('fl_9lf4Ig','haha','2023-12-02 01:52:40','2023-12-02 01:52:40',1),('user','user','2023-12-02 01:52:40','2023-12-02 01:52:40',1);
+INSERT INTO `Role` VALUES ('admin','admin','2023-12-02 01:52:40','2023-12-02 01:52:40',1,NULL),('user','user','2023-12-02 01:52:40','2023-12-02 01:52:40',1,NULL);
 UNLOCK TABLES;
 
 --
 -- Table structure for table `RoleFeature`
 --
 
+DROP TABLE IF EXISTS `RoleFeature`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `RoleFeature` (
+CREATE TABLE `RoleFeature` (
   `roleId` varchar(12) NOT NULL,
   `featureId` varchar(30) NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`roleId`,`featureId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -400,16 +429,17 @@ CREATE TABLE IF NOT EXISTS `RoleFeature` (
 --
 
 LOCK TABLES `RoleFeature` WRITE;
-INSERT INTO `RoleFeature` VALUES ('admin','AUTHOR_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','AUTHOR_DELETE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','AUTHOR_UPDATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','AUTHOR_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','BOOK_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','BOOK_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','CAN_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','CAN_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','CAT_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','CAT_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','CAT_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','CATEGORY_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','CATEGORY_DELETE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','CATEGORY_UPDATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','CATEGORY_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','CUS_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','CUS_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','CUS_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','CUS_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','EXP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','EXP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','FOD_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','FOD_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','FOD_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','FOD_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','IMP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','IMP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','IMP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','ING_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','ING_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','INV_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','INV_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','PUBLISHER_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','PUBLISHER_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','SUP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','SUP_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','SUP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','SUP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','TOP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','TOP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','TOP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','TOP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','USE_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','USE_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('admin','USE_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('fl_9lf4Ig','IMP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','CAN_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','CAT_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','CAT_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','CUS_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','CUS_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','CUS_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','EXP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','FOD_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','FOD_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','FOD_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','IMP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','IMP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','ING_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','INV_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','SUP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','SUP_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','SUP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','TOP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','TOP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','TOP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','USE_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1),('user','USE_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1);
+INSERT INTO `RoleFeature` VALUES ('admin','AUTHOR_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','AUTHOR_DELETE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','AUTHOR_UPDATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','AUTHOR_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','BOOK_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','BOOK_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CAN_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CAN_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CAT_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CAT_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CAT_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CATEGORY_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CATEGORY_DELETE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CATEGORY_UPDATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CATEGORY_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CUS_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CUS_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CUS_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CUS_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','EXP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','EXP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','FOD_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','FOD_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','FOD_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','FOD_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','IMP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','IMP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','IMP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','ING_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','ING_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','INV_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','INV_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','PUBLISHER_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','PUBLISHER_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','SUP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','SUP_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','SUP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','SUP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','TOP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','TOP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','TOP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','TOP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','USE_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','USE_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','USE_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','CAN_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','CAT_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','CAT_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','CUS_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','CUS_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','CUS_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','EXP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','FOD_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','FOD_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','FOD_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','IMP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','IMP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','ING_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','INV_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','SUP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','SUP_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','SUP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','TOP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','TOP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','TOP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','USE_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','USE_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL);
 UNLOCK TABLES;
 
 --
 -- Table structure for table `ShopGeneral`
 --
 
+DROP TABLE IF EXISTS `ShopGeneral`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `ShopGeneral` (
+CREATE TABLE `ShopGeneral` (
   `id` varchar(12) NOT NULL,
   `name` varchar(12) NOT NULL,
   `email` float NOT NULL,
@@ -418,6 +448,7 @@ CREATE TABLE IF NOT EXISTS `ShopGeneral` (
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -433,15 +464,17 @@ UNLOCK TABLES;
 -- Table structure for table `StockReport`
 --
 
+DROP TABLE IF EXISTS `StockReport`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `StockReport` (
+CREATE TABLE `StockReport` (
   `id` varchar(12) NOT NULL,
   `year` int NOT NULL,
   `month` int NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -457,9 +490,10 @@ UNLOCK TABLES;
 -- Table structure for table `StockReportDetail`
 --
 
+DROP TABLE IF EXISTS `StockReportDetail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `StockReportDetail` (
+CREATE TABLE `StockReportDetail` (
   `reportId` varchar(12) NOT NULL,
   `bookId` varchar(12) NOT NULL,
   `initial` float NOT NULL,
@@ -470,6 +504,7 @@ CREATE TABLE IF NOT EXISTS `StockReportDetail` (
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`reportId`,`bookId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -485,9 +520,10 @@ UNLOCK TABLES;
 -- Table structure for table `Supplier`
 --
 
+DROP TABLE IF EXISTS `Supplier`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `Supplier` (
+CREATE TABLE `Supplier` (
   `id` varchar(12) NOT NULL,
   `name` text NOT NULL,
   `email` text NOT NULL,
@@ -496,6 +532,7 @@ CREATE TABLE IF NOT EXISTS `Supplier` (
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone` (`phone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -512,9 +549,10 @@ UNLOCK TABLES;
 -- Table structure for table `SupplierDebt`
 --
 
+DROP TABLE IF EXISTS `SupplierDebt`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `SupplierDebt` (
+CREATE TABLE `SupplierDebt` (
   `id` varchar(12) NOT NULL,
   `supplierId` varchar(12) NOT NULL,
   `qty` float NOT NULL,
@@ -525,6 +563,7 @@ CREATE TABLE IF NOT EXISTS `SupplierDebt` (
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`,`supplierId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -540,9 +579,10 @@ UNLOCK TABLES;
 -- Table structure for table `SupplierDebtDetail`
 --
 
+DROP TABLE IF EXISTS `SupplierDebtDetail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `SupplierDebtDetail` (
+CREATE TABLE `SupplierDebtDetail` (
   `reportId` varchar(12) NOT NULL,
   `supplierId` varchar(12) NOT NULL,
   `initial` float NOT NULL,
@@ -551,6 +591,7 @@ CREATE TABLE IF NOT EXISTS `SupplierDebtDetail` (
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`reportId`,`supplierId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -566,15 +607,17 @@ UNLOCK TABLES;
 -- Table structure for table `SupplierDebtReport`
 --
 
+DROP TABLE IF EXISTS `SupplierDebtReport`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE IF NOT EXISTS `SupplierDebtReport` (
+CREATE TABLE `SupplierDebtReport` (
   `id` varchar(12) NOT NULL,
   `year` int NOT NULL,
   `month` int NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isActive` tinyint(1) DEFAULT '1',
+  `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -595,4 +638,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-02  8:57:29
+-- Dump completed on 2023-12-10  3:36:54
