@@ -5,15 +5,15 @@ import (
 )
 
 type ReqCreateBook struct {
-	Name        string   `json:"name" gorm:"column:name"`
-	Description string   `json:"desc" gorm:"column:desc"`
-	Edition     int      `json:"edition" gorm:"column:edition"`
-	Quantity    int      `json:"quantity" gorm:"column:qty"`
-	ListedPrice float64  `json:"listedPrice" gorm:"column:listedPrice"`
-	SellPrice   float64  `json:"sellPrice" gorm:"column:sellPrice"`
-	PublisherID string   `json:"publisherId" gorm:"column:publisherId"`
-	AuthorIDs   []string `json:"authorIds" gorm:"column:authorIds"`
-	CategoryIDs []string `json:"categoryIds" gorm:"column:categoryIds"`
+	Name        string   `json:"name" gorm:"column:name" example:"Tôi là Bêtô"`
+	Description string   `json:"desc" gorm:"column:desc" example:"Tôi Là Bêtô là tác phẩm của nhà văn chuyên viết cho thanh thiếu niên Nguyễn Nhật Ánh."`
+	Edition     int      `json:"edition" gorm:"column:edition" example:"1"`
+	Quantity    int      `json:"quantity" gorm:"column:qty" example:"0"`
+	ListedPrice float64  `json:"listedPrice" gorm:"column:listedPrice" example:"75000"`
+	SellPrice   float64  `json:"sellPrice" gorm:"column:sellPrice" example:"80000"`
+	PublisherID string   `json:"publisherId" gorm:"column:publisherId" example:"nxbdk"`
+	AuthorIDs   []string `json:"authorIds" gorm:"column:authorIds" example:"tgnna"`
+	CategoryIDs []string `json:"categoryIds" gorm:"column:categoryIds" example:"dmtt,dmtruyen"`
 }
 
 func (*ReqCreateBook) TableName() string {

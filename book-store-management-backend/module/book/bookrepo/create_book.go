@@ -29,8 +29,8 @@ func (biz *createBookRepo) CreateBook(ctx context.Context, data *bookmodel.Book)
 		ListedPrice: data.ListedPrice,
 		SellPrice:   data.SellPrice,
 		PublisherID: data.PublisherID,
-		AuthorIDs:   strings.Join(data.AuthorIDs, "-"),
-		CategoryIDs: strings.Join(data.CategoryIDs, "-"),
+		AuthorIDs:   strings.Join(data.AuthorIDs, "|"),
+		CategoryIDs: strings.Join(data.CategoryIDs, "|"),
 	}
 	if err := biz.store.CreateBook(ctx, &dbData); err != nil {
 		return err
