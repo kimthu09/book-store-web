@@ -2,94 +2,62 @@ package bookmodel
 
 import (
 	"book-store-management-backend/common"
-	"errors"
 )
 
 type Book struct {
-	ID          string  `json:"id" gorm:"column:id;primaryKey"`
-	Name        string  `json:"name" gorm:"column:name"`
-	Description string  `json:"desc" gorm:"column:desc"`
-	Edition     int     `json:"edition" gorm:"column:edition"`
-	Quantity    int     `json:"quantity" gorm:"column:qty"`
-	Price       float64 `json:"price" gorm:"column:price"`
-	SalePrice   float64 `json:"salePrice" gorm:"column:salePrice"`
-	PublisherID string  `json:"publisherId" gorm:"column:publisherId"`
-	AuthorIDs   string  `json:"authorIds" gorm:"column:authorIds"`
-	CategoryIDs string  `json:"categoryIds" gorm:"column:categoryIds"`
-	IsActive    bool    `json:"isActive" gorm:"column:isActive"`
+	ID          *string  `json:"id" gorm:"column:id;primaryKey"`
+	Name        string   `json:"name" gorm:"column:name"`
+	Description string   `json:"desc" gorm:"column:desc"`
+	Edition     int      `json:"edition" gorm:"column:edition"`
+	Quantity    int      `json:"quantity" gorm:"column:qty"`
+	ListedPrice float64  `json:"listedPrice" gorm:"column:listedPrice"`
+	SellPrice   float64  `json:"sellPrice" gorm:"column:sellPrice"`
+	PublisherID string   `json:"publisherId" gorm:"column:publisherId"`
+	AuthorIDs   []string `json:"authorIds" gorm:"column:authorIds"`
+	CategoryIDs []string `json:"categoryIds" gorm:"column:categoryIds"`
+	common.SQLModel
 }
 
 func (*Book) TableName() string {
 	return common.TableBook
 }
 
-var (
-	ErrBookIdInvalid = common.NewCustomError(
-		errors.New("id of Book is invalid"),
-		"id of Book is invalid",
-		"ErrBookIdInvalid",
-	)
+func (data *Book) Validate() *common.AppError {
+	if common.ValidateEmptyString(data.Name) {
+		return ErrBookNameEmpty
+	}
 
-	ErrBookNameEmpty = common.NewCustomError(
-		errors.New("name of Book is empty"),
-		"name of Book is empty",
-		"ErrBookNameEmpty",
-	)
+	if data.ListedPrice <= 0 {
+		return ErrBookListedPriceIsLessThanZero
+	}
 
-	ErrBookPriceIsLessThanZero = common.NewCustomError(
-		errors.New("price of Book is a less than zero"),
-		"price of Book must be greater than 0",
-		"ErrBookPriceIsLessThanZero",
-	)
+	if data.SellPrice <= 0 {
+		if data.SellPrice == 0 {
+			data.SellPrice = data.ListedPrice
+		} else {
+			return ErrBookSalePriceIsLessThanZero
+		}
+	}
 
-	ErrBookSalePriceIsLessThanZero = common.NewCustomError(
-		errors.New("sale price of Book is less than zero"),
-		"sale price of Book must be greater than 0",
-		"ErrBookSalePriceIsLessThanZero",
-	)
+	if data.Quantity < 0 {
+		return ErrBookQuantityIsNegativeNumber
+	}
 
-	ErrBookQuantityIsNegativeNumber = common.NewCustomError(
-		errors.New("quantity of Book is a negative number"),
-		"quantity of Book is a negative number",
-		"ErrBookQuantityIsNegativeNumber",
-	)
+	if data.Edition <= 0 {
+		return ErrBookEditionNotPositiveNumber
+	}
 
-	ErrBookEditionIsNegativeNumber = common.NewCustomError(
-		errors.New("edition number of Book is a negative number"),
-		"edition number of Book is a negative number",
-		"ErrBookEditionIsNegativeNumber",
-	)
+	if common.ValidateEmptyString(data.PublisherID) {
+		return ErrBookPublisherIdEmpty
+	}
 
-	ErrBookPublisherIdEmpty = common.NewCustomError(
-		errors.New("publisher ID of Book is empty"),
-		"publisher ID of Book is empty",
-		"ErrBookPublisherIdEmpty",
-	)
+	if len(data.AuthorIDs) == 0 {
+		return ErrBookAuthorIdsEmpty
+	}
 
-	ErrBookAuthorIdsEmpty = common.NewCustomError(
-		errors.New("author IDs of Book are empty"),
-		"author IDs of Book are empty",
-		"ErrBookAuthorIdsEmpty",
-	)
+	if len(data.CategoryIDs) == 0 {
+		return ErrBookCategoryIdsEmpty
+	}
 
-	ErrBookCategoryIdsEmpty = common.NewCustomError(
-		errors.New("category IDs of Book are empty"),
-		"category IDs of Book are empty",
-		"ErrBookCategoryIdsEmpty",
-	)
-
-	ErrBookQtyUpdateInvalid = common.NewCustomError(
-		errors.New("quantity need to update for the Book is invalid"),
-		"quantity need to update for the Book is invalid",
-		"ErrBookQtyUpdateInvalid",
-	)
-	ErrBookIdDuplicate = common.ErrDuplicateKey(
-		errors.New("id of Book is duplicate"),
-	)
-	ErrBookCreateNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to create Book"),
-	)
-	ErrBookViewNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to view Book"),
-	)
-)
+	return nil
+}

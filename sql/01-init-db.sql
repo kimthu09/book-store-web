@@ -1,5 +1,3 @@
-use bookstoremanagement;
-
 create table Author
 (
     id        varchar(12)                          not null
@@ -7,7 +5,8 @@ create table Author
     name      text                                 not null,
     createdAt datetime   default CURRENT_TIMESTAMP null,
     updatedAt datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
-    isActive  tinyint(1) default 1                 null
+    deletedAt datetime                             null
+    isActive  tinyint(1) default 1                 null,
 );
 
 create table Book
@@ -18,16 +17,15 @@ create table Book
     `desc`      text                                 null,
     edition     int                                  not null,
     qty         int        default 0                 null,
-    price       float                                not null,
-    salePrice   float                                not null,
+    listedPrice float                                not null,
+    sellPrice   float                                not null,
     publisherId varchar(12)                          null,
     authorIds   text                                 not null,
     categoryIds text                                 not null,
-    isActive    tinyint(1) default 1                 not null,
     createdAt   datetime   default CURRENT_TIMESTAMP null,
     updatedAt   datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
-    constraint Book_pk2
-        unique (id)
+    deletedAt   datetime                             null
+    isActive    tinyint(1) default 1                 not null,
 );
 
 create table BookChangeHistory
@@ -39,6 +37,7 @@ create table BookChangeHistory
     type       enum ('Sell', 'Import', 'Modify')    not null,
     createdAt  datetime   default CURRENT_TIMESTAMP null,
     updatedAt  datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    deletedAt  datetime                             null,
     isActive   tinyint(1) default 1                 null,
     primary key (id, bookId)
 );
@@ -50,7 +49,8 @@ create table Category
     name      varchar(50)                          not null,
     createdAt datetime   default CURRENT_TIMESTAMP null,
     updatedAt datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
-    isActive  tinyint(1) default 1                 null
+    deletedAt datetime                             null
+    isActive  tinyint(1) default 1                 null,
 );
 
 create table Feature
@@ -60,7 +60,8 @@ create table Feature
     description text                                 null,
     createdAt   datetime   default CURRENT_TIMESTAMP null,
     updatedAt   datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
-    isActive    tinyint(1) default 1                 null
+    deletedAt   datetime                             null
+    isActive    tinyint(1) default 1                 null,
 );
 
 create table ImportNote
@@ -76,7 +77,8 @@ create table ImportNote
     closeAt    datetime                                                        null,
     createdAt  datetime                              default CURRENT_TIMESTAMP null,
     updatedAt  datetime                              default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
-    isActive   tinyint(1)                            default 1                 null
+    deletedAt  datetime                                                        null
+    isActive   tinyint(1)                            default 1                 null,
 );
 
 create table ImportNoteDetail
@@ -87,6 +89,7 @@ create table ImportNoteDetail
     qtyImport    float      default 0                 null,
     createdAt    datetime   default CURRENT_TIMESTAMP null,
     updatedAt    datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    deletedAt    datetime                             null,
     isActive     tinyint(1) default 1                 null,
     primary key (importNoteId, bookId)
 );
@@ -101,7 +104,8 @@ create table InventoryCheckNote
     createAt       datetime   default (now())           null,
     createdAt      datetime   default CURRENT_TIMESTAMP null,
     updatedAt      datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
-    isActive       tinyint(1) default 1                 null
+    deletedAt      datetime                             null
+    isActive       tinyint(1) default 1                 null,
 );
 
 create table InventoryCheckNoteDetail
@@ -113,6 +117,7 @@ create table InventoryCheckNoteDetail
     final                float                                not null,
     createdAt            datetime   default CURRENT_TIMESTAMP null,
     updatedAt            datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    deletedAt            datetime                             null,
     isActive             tinyint(1) default 1                 null,
     primary key (inventoryCheckNoteId, bookId)
 );
@@ -123,11 +128,11 @@ create table Invoice
         primary key,
     totalPrice  float                                not null,
     qtyReceived float                                not null,
-    createAt    datetime   default (now())           null,
-    createBy    varchar(13)                          not null,
+    createdBy   varchar(13)                          not null,
     createdAt   datetime   default CURRENT_TIMESTAMP null,
     updatedAt   datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
-    isActive    tinyint(1) default 1                 null
+    deletedAt   datetime                             null
+    isActive    tinyint(1) default 1                 null,
 );
 
 create table InvoiceDetail
@@ -138,6 +143,7 @@ create table InvoiceDetail
     unitPrice float                                not null,
     createdAt datetime   default CURRENT_TIMESTAMP null,
     updatedAt datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    deletedAt datetime                             null,
     isActive  tinyint(1) default 1                 null,
     primary key (invoiceId, bookId)
 );
@@ -153,9 +159,10 @@ create table MUser
     password  text                                 not null,
     salt      text                                 not null,
     roleId    varchar(12)                          not null,
-    isActive  tinyint(1) default 1                 not null,
     createdAt datetime   default CURRENT_TIMESTAMP null,
-    updatedAt datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP
+    updatedAt datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    deletedAt datetime                             null
+    isActive  tinyint(1) default 1                 not null,
 );
 
 create table Publisher
@@ -165,7 +172,8 @@ create table Publisher
     name      varchar(50)                          not null,
     createdAt datetime   default CURRENT_TIMESTAMP null,
     updatedAt datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
-    isActive  tinyint(1) default 1                 null
+    deletedAt datetime                             null
+    isActive  tinyint(1) default 1                 null,
 );
 
 create table Role
@@ -175,7 +183,8 @@ create table Role
     name      text                                 null,
     createdAt datetime   default CURRENT_TIMESTAMP null,
     updatedAt datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
-    isActive  tinyint(1) default 1                 null
+    deletedAt datetime                             null
+    isActive  tinyint(1) default 1                 null,
 );
 
 create table RoleFeature
@@ -184,6 +193,7 @@ create table RoleFeature
     featureId varchar(30)                          not null,
     createdAt datetime   default CURRENT_TIMESTAMP null,
     updatedAt datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    deletedAt datetime                             null,
     isActive  tinyint(1) default 1                 null,
     primary key (roleId, featureId)
 );
@@ -198,7 +208,8 @@ create table ShopGeneral
     address   text                                 null,
     createdAt datetime   default CURRENT_TIMESTAMP null,
     updatedAt datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
-    isActive  tinyint(1) default 1                 null
+    deletedAt datetime                             null
+    isActive  tinyint(1) default 1                 null,
 );
 
 create table StockReport
@@ -209,7 +220,8 @@ create table StockReport
     month     int                                  not null,
     createdAt datetime   default CURRENT_TIMESTAMP null,
     updatedAt datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
-    isActive  tinyint(1) default 1                 null
+    deletedAt datetime                             null
+    isActive  tinyint(1) default 1                 null,
 );
 
 create table StockReportDetail
@@ -223,6 +235,7 @@ create table StockReportDetail
     final     float                                not null,
     createdAt datetime   default CURRENT_TIMESTAMP null,
     updatedAt datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    deletedAt datetime                             null,
     isActive  tinyint(1) default 1                 null,
     primary key (reportId, bookId)
 );
@@ -237,6 +250,7 @@ create table Supplier
     debt      float      default 0                 null,
     createdAt datetime   default CURRENT_TIMESTAMP null,
     updatedAt datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    deletedAt datetime                             null,
     isActive  tinyint(1) default 1                 null,
     constraint phone
         unique (phone)
@@ -253,6 +267,7 @@ create table SupplierDebt
     createBy   varchar(9)                           not null,
     createdAt  datetime   default CURRENT_TIMESTAMP null,
     updatedAt  datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    deletedAt  datetime                             null,
     isActive   tinyint(1) default 1                 null,
     primary key (id, supplierId)
 );
@@ -266,6 +281,7 @@ create table SupplierDebtDetail
     final      float                                not null,
     createdAt  datetime   default CURRENT_TIMESTAMP null,
     updatedAt  datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    deletedAt  datetime                             null,
     isActive   tinyint(1) default 1                 null,
     primary key (reportId, supplierId)
 );
@@ -278,6 +294,7 @@ create table SupplierDebtReport
     month     int                                  not null,
     createdAt datetime   default CURRENT_TIMESTAMP null,
     updatedAt datetime   default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
-    isActive  tinyint(1) default 1                 null
+    deletedAt datetime                             null
+    isActive  tinyint(1) default 1                 null,
 );
 

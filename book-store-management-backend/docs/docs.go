@@ -121,6 +121,42 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "books"
+                ],
+                "summary": "Create book name, desc, authors, categories, publisher, etc.",
+                "parameters": [
+                    {
+                        "description": "Create book",
+                        "name": "book",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/bookmodel.ReqCreateBook"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "book id",
+                        "schema": {
+                            "$ref": "#/definitions/bookmodel.ResCreateBook"
+                        }
+                    }
+                }
             }
         },
         "/categories": {
@@ -1204,9 +1240,21 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "authorIds": {
-                    "type": "string"
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "categoryIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
                     "type": "string"
                 },
                 "desc": {
@@ -1219,13 +1267,13 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "isActive": {
-                    "type": "boolean"
+                    "type": "integer"
+                },
+                "listedPrice": {
+                    "type": "number"
                 },
                 "name": {
                     "type": "string"
-                },
-                "price": {
-                    "type": "number"
                 },
                 "publisherId": {
                     "type": "string"
@@ -1233,8 +1281,71 @@ const docTemplate = `{
                 "quantity": {
                     "type": "integer"
                 },
-                "salePrice": {
+                "sellPrice": {
                     "type": "number"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "bookmodel.ReqCreateBook": {
+            "type": "object",
+            "properties": {
+                "authorIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "tgnna"
+                    ]
+                },
+                "categoryIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "dmtt",
+                        "dmtruyen"
+                    ]
+                },
+                "desc": {
+                    "type": "string",
+                    "example": "Tôi Là Bêtô là tác phẩm của nhà văn chuyên viết cho thanh thiếu niên Nguyễn Nhật Ánh."
+                },
+                "edition": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "listedPrice": {
+                    "type": "number",
+                    "example": 75000
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Tôi là Bêtô"
+                },
+                "publisherId": {
+                    "type": "string",
+                    "example": "nxbdk"
+                },
+                "quantity": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "sellPrice": {
+                    "type": "number",
+                    "example": 80000
+                }
+            }
+        },
+        "bookmodel.ResCreateBook": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
                 }
             }
         },

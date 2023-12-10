@@ -37,8 +37,16 @@ definitions:
   bookmodel.Book:
     properties:
       authorIds:
-        type: string
+        items:
+          type: string
+        type: array
       categoryIds:
+        items:
+          type: string
+        type: array
+      createdAt:
+        type: string
+      deletedAt:
         type: string
       desc:
         type: string
@@ -47,17 +55,62 @@ definitions:
       id:
         type: string
       isActive:
-        type: boolean
+        type: integer
+      listedPrice:
+        type: number
       name:
         type: string
-      price:
-        type: number
       publisherId:
         type: string
       quantity:
         type: integer
-      salePrice:
+      sellPrice:
         type: number
+      updatedAt:
+        type: string
+    type: object
+  bookmodel.ReqCreateBook:
+    properties:
+      authorIds:
+        example:
+        - tgnna
+        items:
+          type: string
+        type: array
+      categoryIds:
+        example:
+        - dmtt
+        - dmtruyen
+        items:
+          type: string
+        type: array
+      desc:
+        example: Tôi Là Bêtô là tác phẩm của nhà văn chuyên viết cho thanh thiếu niên
+          Nguyễn Nhật Ánh.
+        type: string
+      edition:
+        example: 1
+        type: integer
+      listedPrice:
+        example: 75000
+        type: number
+      name:
+        example: Tôi là Bêtô
+        type: string
+      publisherId:
+        example: nxbdk
+        type: string
+      quantity:
+        example: 0
+        type: integer
+      sellPrice:
+        example: 80000
+        type: number
+    type: object
+  bookmodel.ResCreateBook:
+    properties:
+      id:
+        type: string
     type: object
   bookmodel.SimpleBook:
     properties:
@@ -772,6 +825,28 @@ paths:
       security:
       - BearerAuth: []
       summary: Get all books
+      tags:
+      - books
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create book
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/bookmodel.ReqCreateBook'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: book id
+          schema:
+            $ref: '#/definitions/bookmodel.ResCreateBook'
+      security:
+      - BearerAuth: []
+      summary: Create book name, desc, authors, categories, publisher, etc.
       tags:
       - books
   /categories:
