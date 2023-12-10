@@ -72,7 +72,7 @@ CREATE TABLE `Book` (
 --
 
 LOCK TABLES `Book` WRITE;
-INSERT INTO `Book` VALUES ('stlbt','Tôi là Bêtô','Tôi Là Bêtô là tác phẩm của nhà văn chuyên viết cho thanh thiếu niên Nguyễn Nhật Ánh.',1,0,75000,80000,'nxbdk','tgnna','dmtt|dmtruyen','2023-12-09 20:41:28','2023-12-10 15:50:13',NULL,1);
+INSERT INTO `Book` VALUES ('stlbt','Tôi là Bêtô','Tôi Là Bêtô là tác phẩm của nhà văn chuyên viết cho thanh thiếu niên Nguyễn Nhật Ánh.',1,0,75000,80000,'nxbdk','tgnna','dmtt|dmtruyen','2023-12-09 20:41:28','2023-12-10 15:50:13',NULL,1),('sttgbct','Tôi tài giỏi, bạn cũng thế!','Tôi tài giỏi, bạn cũng thế! (nhan đề gốc tiếng Anh: I Am Gifted, So Are You!) là quyển sách bán chạy nhất của doanh nhân người Singapore Adam Khoo, viết về những phương pháp học tập tiên tiến. Quyển sách đã được dịch ra hàng chục thứ tiếng, trong đó Tôi tài giỏi, bạn cũng thế! là phiên bản tiếng Việt được dịch bởi hai dịch giả nổi tiếng Trần Đăng Khoa và Uông Xuân Vy của TGM Books. Tại Việt Nam, quyển sách đã trở thành một hiện tượng giáo dục trong những năm 2009-2011 và đạt được nhiều thành tựu trong lĩnh vực xuất bản, tạo ra kỷ lục mới cho ngành xuất bản Việt Nam với hơn 200.000 bản in được bán ra và hơn 400.000 e-book được phân phối.',1,0,150000,150000,'nxbgd','tgak','dmkns','2023-12-10 16:07:24','2023-12-10 16:07:46',NULL,1);
 UNLOCK TABLES;
 
 --
@@ -376,7 +376,7 @@ CREATE TABLE `Publisher` (
 --
 
 LOCK TABLES `Publisher` WRITE;
-INSERT INTO `Publisher` VALUES ('nxbdg','Giáo dục','2023-12-02 01:52:21','2023-12-02 01:52:21',NULL,1),('nxbdk','Kim Đồng','2023-12-02 01:52:21','2023-12-02 01:52:21',NULL,1);
+INSERT INTO `Publisher` VALUES ('nxbdk','Kim Đồng','2023-12-02 01:52:21','2023-12-02 01:52:21',NULL,1),('nxbgd','Giáo dục','2023-12-02 01:52:21','2023-12-10 16:07:18',NULL,1);
 UNLOCK TABLES;
 
 --
@@ -637,4 +637,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-10 22:52:23
+-- Dump completed on 2023-12-10 23:08:11
