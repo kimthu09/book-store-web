@@ -2,6 +2,7 @@ package bookmodel
 
 import (
 	"book-store-management-backend/common"
+	"time"
 )
 
 type Book struct {
@@ -15,7 +16,11 @@ type Book struct {
 	PublisherID string   `json:"publisherId" gorm:"column:publisherId"`
 	AuthorIDs   []string `json:"authorIds" gorm:"column:authorIds"`
 	CategoryIDs []string `json:"categoryIds" gorm:"column:categoryIds"`
-	common.SQLModel
+
+	CreatedAt *time.Time `json:"createdAt,omitempty" gorm:"createdAt; column:createdAt;"`
+	UpdatedAt *time.Time `json:"updatedAt,omitempty" gorm:"updatedAt; column:updatedAt;"`
+	DeletedAt *time.Time `json:"deletedAt,omitempty" gorm:"deletedAt; column:deletedAt;"`
+	IsActive  *int       `json:"isActive,omitempty" gorm:"isActive; column:isActive; default:1"`
 }
 
 func (*Book) TableName() string {

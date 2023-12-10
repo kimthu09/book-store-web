@@ -32,7 +32,7 @@ services:
     working_dir: /data
     environment:
       - GOMEMLIMIT=5120MiB
-    entrypoint: "/bin/bash\r -c /data/go-server.sh"
+    entrypoint: "/bin/bash\n -c /data/go-server.sh"
     ports:
       - 8080:8080
     depends_on:
@@ -41,17 +41,17 @@ services:
     links:
       - bsm-mysql
       # - cache
-  bsm-fe:
-    image: lebaotriet/nodejs-18
-    container_name: bsm-fe
-    volumes:
-      - ../book-store-management:/data
-      - ../book-store-management/entrypoint.sh:/entrypoint.sh
-      # - ../book-store-management/nginx.conf:/etc/nginx/sites-available/default
-    ports:
-      - 3000:3000
-    working_dir: /data
-    links:
-      - bsm-be
-    depends_on:
-      - bsm-be
+  # bsm-fe:
+  #   image: lebaotriet/nodejs-18
+  #   container_name: bsm-fe
+  #   volumes:
+  #     - ../book-store-management:/data
+  #     - ../book-store-management/entrypoint.sh:/entrypoint.sh
+  #     # - ../book-store-management/nginx.conf:/etc/nginx/sites-available/default
+  #   ports:
+  #     - 3000:3000
+  #   working_dir: /data
+  #   links:
+  #     - bsm-be
+  #   depends_on:
+  #     - bsm-be
