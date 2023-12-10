@@ -69,6 +69,24 @@ definitions:
       updatedAt:
         type: string
     type: object
+  bookmodel.Filter:
+    properties:
+      createdAtFrom:
+        example: 1709500431
+        type: integer
+      createdAtTo:
+        example: 1709500431
+        type: integer
+      maxSellPrice:
+        example: 1000
+        type: number
+      minSellPrice:
+        example: 10
+        type: number
+      searchKey:
+        example: ""
+        type: string
+    type: object
   bookmodel.ReqCreateBook:
     properties:
       authorIds:
@@ -111,6 +129,17 @@ definitions:
     properties:
       id:
         type: string
+    type: object
+  bookmodel.ResListBook:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/bookmodel.Book'
+        type: array
+      filter:
+        $ref: '#/definitions/bookmodel.Filter'
+      paging:
+        $ref: '#/definitions/common.Paging'
     type: object
   bookmodel.SimpleBook:
     properties:
@@ -815,13 +844,46 @@ paths:
     get:
       consumes:
       - application/json
+      parameters:
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: 1709500431
+        in: query
+        name: createdAtFrom
+        type: integer
+      - example: 1709500431
+        in: query
+        name: createdAtTo
+        type: integer
+      - example: 1000
+        in: query
+        name: maxSellPrice
+        type: number
+      - example: 10
+        in: query
+        name: minSellPrice
+        type: number
+      - example: ""
+        in: query
+        name: search
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/bookmodel.Book'
+            $ref: '#/definitions/bookmodel.ResListBook'
       security:
       - BearerAuth: []
       summary: Get all books
