@@ -911,6 +911,22 @@ paths:
       summary: Create book name, desc, authors, categories, publisher, etc.
       tags:
       - books
+  /books/:id:
+    delete:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+      security:
+      - BearerAuth: []
+      summary: Delete book by id
+      tags:
+      - books
   /categories:
     get:
       consumes:
