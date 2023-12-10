@@ -21,19 +21,6 @@ func NewListBookRepo(store ListBookStore) *listBookRepo {
 }
 
 func (repo *listBookRepo) ListBook(ctx context.Context, filter *bookmodel.Filter, paging *common.Paging) ([]bookmodel.Book, error) {
-	//return []bookstore.BookDBModel{
-	//	{
-	//		ID:        nil,
-	//		Name:      "Sách 1",
-	//		AuthorIDs: "1|2",
-	//	},
-	//	{
-	//		ID:        nil,
-	//		Name:      "Sách 2",
-	//		AuthorIDs: "2|5",
-	//	},
-	//}, nil
-
 	resultDbModel, err := repo.store.ListBook(ctx, filter, []string{"name"}, paging)
 
 	if err != nil {
