@@ -27,8 +27,8 @@ CREATE TABLE `Author` (
   `name` text NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -38,7 +38,7 @@ CREATE TABLE `Author` (
 --
 
 LOCK TABLES `Author` WRITE;
-INSERT INTO `Author` VALUES ('tgak','Adam Khoo','2023-12-02 01:51:49','2023-12-02 01:51:49',1,NULL),('tgnna','Nguyễn Nhật Ánh','2023-12-02 01:51:49','2023-12-02 01:51:49',1,NULL),('tgvef','Viktor E Frankl','2023-12-02 01:51:49','2023-12-02 01:51:49',1,NULL);
+INSERT INTO `Author` VALUES ('tgak','Adam Khoo','2023-12-02 01:51:49','2023-12-02 01:51:49',NULL,1),('tgnna','Nguyễn Nhật Ánh','2023-12-02 01:51:49','2023-12-02 01:51:49',NULL,1),('tgvef','Viktor E Frankl','2023-12-02 01:51:49','2023-12-02 01:51:49',NULL,1);
 UNLOCK TABLES;
 
 --
@@ -59,10 +59,10 @@ CREATE TABLE `Book` (
   `publisherId` varchar(12) DEFAULT NULL,
   `authorIds` text NOT NULL,
   `categoryIds` text NOT NULL,
-  `isActive` tinyint(1) NOT NULL DEFAULT '1',
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -72,7 +72,7 @@ CREATE TABLE `Book` (
 --
 
 LOCK TABLES `Book` WRITE;
-INSERT INTO `Book` VALUES ('V3iCrODIR','Tôi là Bêtô','Tôi Là Bêtô là tác phẩm của nhà văn chuyên viết cho thanh thiếu niên Nguyễn Nhật Ánh.',1,0,75000,80000,'nxbdk','tgnna','dmtt|dmtruyen',1,'2023-12-09 20:35:03','2023-12-09 20:35:03',NULL);
+INSERT INTO `Book` VALUES ('stlbt','Tôi là Bêtô','Tôi Là Bêtô là tác phẩm của nhà văn chuyên viết cho thanh thiếu niên Nguyễn Nhật Ánh.',1,0,75000,80000,'nxbdk','tgnna','dmtt|dmtruyen','2023-12-09 20:41:28','2023-12-10 15:50:13',NULL,1),('sttgbct','Tôi tài giỏi, bạn cũng thế!','Tôi tài giỏi, bạn cũng thế! (nhan đề gốc tiếng Anh: I Am Gifted, So Are You!) là quyển sách bán chạy nhất của doanh nhân người Singapore Adam Khoo, viết về những phương pháp học tập tiên tiến. Quyển sách đã được dịch ra hàng chục thứ tiếng, trong đó Tôi tài giỏi, bạn cũng thế! là phiên bản tiếng Việt được dịch bởi hai dịch giả nổi tiếng Trần Đăng Khoa và Uông Xuân Vy của TGM Books. Tại Việt Nam, quyển sách đã trở thành một hiện tượng giáo dục trong những năm 2009-2011 và đạt được nhiều thành tựu trong lĩnh vực xuất bản, tạo ra kỷ lục mới cho ngành xuất bản Việt Nam với hơn 200.000 bản in được bán ra và hơn 400.000 e-book được phân phối.',1,0,150000,150000,'nxbgd','tgak','dmkns','2023-12-10 16:07:24','2023-12-10 16:07:46',NULL,1);
 UNLOCK TABLES;
 
 --
@@ -90,8 +90,8 @@ CREATE TABLE `BookChangeHistory` (
   `type` enum('Sell','Import','Modify') NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`,`bookId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -115,8 +115,8 @@ CREATE TABLE `Category` (
   `name` varchar(50) NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -126,7 +126,7 @@ CREATE TABLE `Category` (
 --
 
 LOCK TABLES `Category` WRITE;
-INSERT INTO `Category` VALUES ('dmkns','Kỹ năng sống','2023-12-02 01:52:21','2023-12-02 01:52:21',1,NULL),('dmsgk','Sách giáo khoa','2023-12-02 01:52:21','2023-12-02 01:52:21',1,NULL),('dmtruyen','Truyện','2023-12-02 01:52:21','2023-12-02 01:52:21',1,NULL),('dmtt','Tiểu thuyết','2023-12-02 01:52:21','2023-12-02 01:52:21',1,NULL);
+INSERT INTO `Category` VALUES ('dmkns','Kỹ năng sống','2023-12-02 01:52:21','2023-12-02 01:52:21',NULL,1),('dmsgk','Sách giáo khoa','2023-12-02 01:52:21','2023-12-02 01:52:21',NULL,1),('dmtruyen','Truyện','2023-12-02 01:52:21','2023-12-02 01:52:21',NULL,1),('dmtt','Tiểu thuyết','2023-12-02 01:52:21','2023-12-02 01:52:21',NULL,1);
 UNLOCK TABLES;
 
 --
@@ -141,8 +141,8 @@ CREATE TABLE `Feature` (
   `description` text,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -166,14 +166,13 @@ CREATE TABLE `ImportNote` (
   `supplierId` varchar(12) NOT NULL,
   `totalPrice` float DEFAULT '0',
   `status` enum('InProgress','Done','Cancel') DEFAULT 'InProgress',
-  `createBy` varchar(12) NOT NULL,
-  `closeBy` varchar(12) DEFAULT NULL,
-  `createAt` datetime DEFAULT (now()),
-  `closeAt` datetime DEFAULT NULL,
+  `closedBy` varchar(12) DEFAULT NULL,
+  `closedAt` datetime DEFAULT NULL,
+  `createdBy` varchar(12) NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -199,8 +198,8 @@ CREATE TABLE `ImportNoteDetail` (
   `qtyImport` float DEFAULT '0',
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`importNoteId`,`bookId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -227,8 +226,8 @@ CREATE TABLE `InventoryCheckNote` (
   `createAt` datetime DEFAULT (now()),
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -255,8 +254,8 @@ CREATE TABLE `InventoryCheckNoteDetail` (
   `final` float NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`inventoryCheckNoteId`,`bookId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -282,8 +281,8 @@ CREATE TABLE `Invoice` (
   `createdBy` varchar(13) NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -309,8 +308,8 @@ CREATE TABLE `InvoiceDetail` (
   `unitPrice` float NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`invoiceId`,`bookId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -338,10 +337,10 @@ CREATE TABLE `MUser` (
   `password` text NOT NULL,
   `salt` text NOT NULL,
   `roleId` varchar(12) NOT NULL,
-  `isActive` tinyint(1) NOT NULL DEFAULT '1',
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -351,7 +350,7 @@ CREATE TABLE `MUser` (
 --
 
 LOCK TABLES `MUser` WRITE;
-INSERT INTO `MUser` VALUES ('bgIqwQSIg','user','','','user@gmail.com','0dd71ba5a82e98ccdc6f5edb6fb870a5','ByVwWucjSGZkozLFeQcopssBrHPbCHoqRuUCFUbpfIhhqGUujj','user',1,'2023-12-02 01:52:32','2023-12-04 01:24:10',NULL),('g3W21A7SR','admin','1234567890','','admin@gmail.com','5e107317df151f6e8e0015c4f2ee7936','mVMxRDAHpAJfyzuiXWRELghNpynUqBKueSboGBcrwHUuzEWsms','admin',1,'2023-12-02 01:52:32','2023-12-04 01:24:10',NULL);
+INSERT INTO `MUser` VALUES ('bgIqwQSIg','user','','','user@gmail.com','0dd71ba5a82e98ccdc6f5edb6fb870a5','ByVwWucjSGZkozLFeQcopssBrHPbCHoqRuUCFUbpfIhhqGUujj','user','2023-12-02 01:52:32','2023-12-04 01:24:10',NULL,1),('g3W21A7SR','admin','1234567890','','admin@gmail.com','5e107317df151f6e8e0015c4f2ee7936','mVMxRDAHpAJfyzuiXWRELghNpynUqBKueSboGBcrwHUuzEWsms','admin','2023-12-02 01:52:32','2023-12-04 01:24:10',NULL,1);
 UNLOCK TABLES;
 
 --
@@ -366,8 +365,8 @@ CREATE TABLE `Publisher` (
   `name` varchar(50) NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -377,7 +376,7 @@ CREATE TABLE `Publisher` (
 --
 
 LOCK TABLES `Publisher` WRITE;
-INSERT INTO `Publisher` VALUES ('nxbdg','Giáo dục','2023-12-02 01:52:21','2023-12-02 01:52:21',1,NULL),('nxbdk','Kim Đồng','2023-12-02 01:52:21','2023-12-02 01:52:21',1,NULL);
+INSERT INTO `Publisher` VALUES ('nxbdk','Kim Đồng','2023-12-02 01:52:21','2023-12-02 01:52:21',NULL,1),('nxbgd','Giáo dục','2023-12-02 01:52:21','2023-12-10 16:07:18',NULL,1);
 UNLOCK TABLES;
 
 --
@@ -392,8 +391,8 @@ CREATE TABLE `Role` (
   `name` text,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -403,7 +402,7 @@ CREATE TABLE `Role` (
 --
 
 LOCK TABLES `Role` WRITE;
-INSERT INTO `Role` VALUES ('admin','admin','2023-12-02 01:52:40','2023-12-02 01:52:40',1,NULL),('user','user','2023-12-02 01:52:40','2023-12-02 01:52:40',1,NULL);
+INSERT INTO `Role` VALUES ('admin','admin','2023-12-02 01:52:40','2023-12-02 01:52:40',NULL,1),('user','user','2023-12-02 01:52:40','2023-12-02 01:52:40',NULL,1);
 UNLOCK TABLES;
 
 --
@@ -418,8 +417,8 @@ CREATE TABLE `RoleFeature` (
   `featureId` varchar(30) NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`roleId`,`featureId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -429,7 +428,7 @@ CREATE TABLE `RoleFeature` (
 --
 
 LOCK TABLES `RoleFeature` WRITE;
-INSERT INTO `RoleFeature` VALUES ('admin','AUTHOR_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','AUTHOR_DELETE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','AUTHOR_UPDATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','AUTHOR_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','BOOK_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','BOOK_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CAN_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CAN_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CAT_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CAT_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CAT_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CATEGORY_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CATEGORY_DELETE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CATEGORY_UPDATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CATEGORY_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CUS_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CUS_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CUS_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','CUS_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','EXP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','EXP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','FOD_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','FOD_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','FOD_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','FOD_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','IMP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','IMP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','IMP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','ING_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','ING_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','INV_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','INV_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','PUBLISHER_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','PUBLISHER_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','SUP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','SUP_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','SUP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','SUP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','TOP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','TOP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','TOP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','TOP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','USE_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','USE_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('admin','USE_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','CAN_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','CAT_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','CAT_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','CUS_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','CUS_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','CUS_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','EXP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','FOD_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','FOD_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','FOD_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','IMP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','IMP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','ING_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','INV_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','SUP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','SUP_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','SUP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','TOP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','TOP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','TOP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','USE_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL),('user','USE_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',1,NULL);
+INSERT INTO `RoleFeature` VALUES ('admin','AUTHOR_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','AUTHOR_DELETE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','AUTHOR_UPDATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','AUTHOR_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','BOOK_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','BOOK_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAN_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAN_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAT_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAT_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAT_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CATEGORY_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CATEGORY_DELETE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CATEGORY_UPDATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CATEGORY_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CUS_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CUS_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CUS_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CUS_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','EXP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','EXP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','FOD_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','FOD_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','FOD_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','FOD_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','IMP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','IMP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','IMP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','ING_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','ING_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','INV_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','INV_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','PUBLISHER_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','PUBLISHER_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','SUP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','SUP_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','SUP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','SUP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','TOP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','TOP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','TOP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','TOP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','USE_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','USE_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','USE_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CAN_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CAT_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CAT_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CUS_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CUS_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CUS_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','EXP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','FOD_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','FOD_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','FOD_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','IMP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','IMP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','ING_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','INV_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','SUP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','SUP_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','SUP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','TOP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','TOP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','TOP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','USE_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','USE_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1);
 UNLOCK TABLES;
 
 --
@@ -447,8 +446,8 @@ CREATE TABLE `ShopGeneral` (
   `address` text,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -473,8 +472,8 @@ CREATE TABLE `StockReport` (
   `month` int NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -503,8 +502,8 @@ CREATE TABLE `StockReportDetail` (
   `final` float NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`reportId`,`bookId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -531,8 +530,8 @@ CREATE TABLE `Supplier` (
   `debt` float DEFAULT '0',
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone` (`phone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -562,8 +561,8 @@ CREATE TABLE `SupplierDebt` (
   `createBy` varchar(9) NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`,`supplierId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -590,8 +589,8 @@ CREATE TABLE `SupplierDebtDetail` (
   `final` float NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`reportId`,`supplierId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -616,8 +615,8 @@ CREATE TABLE `SupplierDebtReport` (
   `month` int NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -638,4 +637,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-10  3:36:54
+-- Dump completed on 2023-12-10 23:08:11
