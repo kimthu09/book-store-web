@@ -90,8 +90,8 @@ CREATE TABLE `BookChangeHistory` (
   `type` enum('Sell','Import','Modify') NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1',
   `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`,`bookId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -637,4 +637,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-10 22:50:20
+-- Dump completed on 2023-12-10 22:52:23
