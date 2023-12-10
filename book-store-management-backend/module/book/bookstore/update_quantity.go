@@ -7,11 +7,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func (s *sqlStore) UpdateQuantityBook(
+func (store *sqlStore) UpdateQuantityBook(
 	ctx context.Context,
 	id string,
 	data *bookmodel.BookUpdateQuantity) error {
-	db := s.db
+	db := store.db
 
 	if err := db.Table(common.TableBook).
 		Where("id = ?", id).

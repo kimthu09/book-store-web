@@ -6,11 +6,11 @@ import (
 	"context"
 )
 
-func (s *sqlStore) UpdatePriceBook(
+func (store *sqlStore) UpdatePriceBook(
 	ctx context.Context,
 	id string,
 	data *bookmodel.BookUpdatePrice) error {
-	db := s.db
+	db := store.db
 
 	if err := db.Table(common.TableBook).
 		Where("id = ?", id).

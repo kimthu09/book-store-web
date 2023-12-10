@@ -15,13 +15,6 @@ services:
       MYSQL_DATABASE: bookstoremanagement
     ports:
       - 39062:3306
-  # cache:
-  #   container_name: cache
-  #   image: redis:7.2-bookworm
-  #   restart: always
-  #   ports:
-  #     - "63790:6379"
-  #   command: redis-server --save 20 1 --loglevel warning --requirepass AvwQcUuAcmNymxrJxz3fCtcGFcc8U5xa
   bsm-be:
     image: golang:1.20.7-bookworm
     container_name: bsm-be
@@ -32,15 +25,13 @@ services:
     working_dir: /data
     environment:
       - GOMEMLIMIT=5120MiB
-    entrypoint: "/bin/bash\r -c /data/go-server.sh"
+    entrypoint: "/bin/bash\n -c /data/go-server.sh"
     ports:
       - 8080:8080
     depends_on:
       - bsm-mysql
-      # - cache
     links:
       - bsm-mysql
-      # - cache
   bsm-fe:
     image: lebaotriet/nodejs-18
     container_name: bsm-fe

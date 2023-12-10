@@ -10,8 +10,8 @@ func (*BookDBModel) TableName() string {
 	return common.TableBook
 }
 
-func (s *sqlStore) CreateBook(ctx context.Context, data *BookDBModel) error {
-	db := s.db
+func (store *sqlStore) CreateBook(ctx context.Context, data *BookDBModel) error {
+	db := store.db
 
 	if err := db.Create(data).Error; err != nil {
 		if gormErr := common.GetGormErr(err); gormErr != nil {
