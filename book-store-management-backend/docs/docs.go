@@ -113,11 +113,61 @@ const docTemplate = `{
                     "books"
                 ],
                 "summary": "Get all books",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 11,
+                        "name": "total",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1709500431,
+                        "name": "createdAtFrom",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1709500431,
+                        "name": "createdAtTo",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "example": 1000,
+                        "name": "maxSellPrice",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "example": 10,
+                        "name": "minSellPrice",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/bookmodel.Book"
+                            "$ref": "#/definitions/bookmodel.ResListBook"
                         }
                     }
                 }
@@ -1289,6 +1339,31 @@ const docTemplate = `{
                 }
             }
         },
+        "bookmodel.Filter": {
+            "type": "object",
+            "properties": {
+                "createdAtFrom": {
+                    "type": "integer",
+                    "example": 1709500431
+                },
+                "createdAtTo": {
+                    "type": "integer",
+                    "example": 1709500431
+                },
+                "maxSellPrice": {
+                    "type": "number",
+                    "example": 1000
+                },
+                "minSellPrice": {
+                    "type": "number",
+                    "example": 10
+                },
+                "searchKey": {
+                    "type": "string",
+                    "example": ""
+                }
+            }
+        },
         "bookmodel.ReqCreateBook": {
             "type": "object",
             "properties": {
@@ -1346,6 +1421,23 @@ const docTemplate = `{
             "properties": {
                 "id": {
                     "type": "string"
+                }
+            }
+        },
+        "bookmodel.ResListBook": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/bookmodel.Book"
+                    }
+                },
+                "filter": {
+                    "$ref": "#/definitions/bookmodel.Filter"
+                },
+                "paging": {
+                    "$ref": "#/definitions/common.Paging"
                 }
             }
         },
