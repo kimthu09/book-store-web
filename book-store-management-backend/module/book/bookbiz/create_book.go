@@ -12,7 +12,7 @@ type CreateBookRepo interface {
 	CreateBook(ctx context.Context, data *bookmodel.Book) error
 }
 
-type AuthorRepo interface {
+type authorRepo interface {
 	IsExistAuthorId(ctx context.Context, authorId string) bool
 }
 
@@ -27,7 +27,7 @@ type categoryRepo interface {
 type createBookBiz struct {
 	gen           generator.IdGenerator
 	repo          CreateBookRepo
-	authorRepo    AuthorRepo
+	authorRepo    authorRepo
 	publisherRepo publisherRepo
 	categoryRepo  categoryRepo
 	requester     middleware.Requester
@@ -36,7 +36,7 @@ type createBookBiz struct {
 func NewCreateBookBiz(
 	gen generator.IdGenerator,
 	repo CreateBookRepo,
-	authorRepo AuthorRepo,
+	authorRepo authorRepo,
 	publisherRepo publisherRepo,
 	categoryRepo categoryRepo,
 	requester middleware.Requester) *createBookBiz {

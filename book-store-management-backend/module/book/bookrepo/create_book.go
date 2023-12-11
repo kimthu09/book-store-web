@@ -19,20 +19,22 @@ func NewCreateBookRepo(store CreateBookStore) *createBookRepo {
 	return &createBookRepo{store: store}
 }
 
-func (biz *createBookRepo) CreateBook(ctx context.Context, data *bookmodel.Book) error {
+func (repo *createBookRepo) CreateBook(ctx context.Context, data *bookmodel.Book) error {
+	strAuthorIDs := strings.Join(data.AuthorIDs, "|")
+	strCategoryIDs := strings.Join(data.CategoryIDs, "|")
 	dbData := bookstore.BookDBModel{
 		ID:          data.ID,
-		Name:        data.Name,
-		Description: data.Description,
-		Edition:     data.Edition,
-		Quantity:    data.Quantity,
-		ListedPrice: data.ListedPrice,
-		SellPrice:   data.SellPrice,
-		PublisherID: data.PublisherID,
-		AuthorIDs:   strings.Join(data.AuthorIDs, "|"),
-		CategoryIDs: strings.Join(data.CategoryIDs, "|"),
+		Name:        &data.Name,
+		Description: &data.Description,
+		Edition:     &data.Edition,
+		Quantity:    &data.Quantity,
+		ListedPrice: &data.ListedPrice,
+		SellPrice:   &data.SellPrice,
+		PublisherID: &data.PublisherID,
+		AuthorIDs:   &strAuthorIDs,
+		CategoryIDs: &strCategoryIDs,
 	}
-	if err := biz.store.CreateBook(ctx, &dbData); err != nil {
+	if err := repo.store.CreateBook(ctx, &dbData); err != nil {
 		return err
 	}
 	return nil
