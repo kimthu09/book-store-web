@@ -3,11 +3,18 @@ import { IconType } from "react-icons";
 export type Book = {
   id: string;
   name: string;
-  nxb: string;
+  publisherId: string;
+
   quantity: number;
-  price: number;
-  status: boolean;
-  category: string;
+  listedPrice: number;
+  sellPrice: number;
+
+  isActive: boolean;
+  categoryIds: [];
+
+  authorIds: [];
+  desc: string;
+  edition: number;
 };
 export type ImportNote = {
   id: string;
@@ -58,8 +65,8 @@ export type Category = {
 };
 
 export interface CategoryListProps {
-  category: string;
-  setCategory: (category: string) => void;
+  checkedCategory: Array<string>;
+  onCheckChanged: (idCate: string) => void;
   canAdd?: boolean;
   readonly?: boolean;
 }

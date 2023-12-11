@@ -1091,7 +1091,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/suppliers/{id}/import_notes": {
+        "/suppliers/{id}/importNotes": {
             "get": {
                 "security": [
                     {

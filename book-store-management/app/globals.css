@@ -104,3 +104,7 @@ input[type="range"]::-webkit-slider-thumb {
   width: var(--radix-dropdown-menu-trigger-width);
   max-height: 44rem;
 }
+
+.error___message {
+  @apply text-sm text-red-700;
+}
