@@ -4,6 +4,8 @@ import "./globals.css";
 import Sidebar from "@/components/sidebar";
 import Header from "@/components/header";
 import HeaderMobile from "@/components/header-mobile";
+import axios from "axios";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,16 +20,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} flex overflow-y-hidden`}>
+    <html lang="en" className="h-full">
+      <body className={`${inter.className} flex overflow-y-hidden h-full`}>
         <Sidebar />
-        <main className="flex-1 h-screen">
-          <div className="flex flex-col">
+        <main className="flex flex-1">
+          <div className="flex w-full flex-col overflow-y-hidden">
             <Header />
             <HeaderMobile />
-            <div className="md:p-10 p-4 h-[100vh] overflow-auto pt-[80px] md:pt-[80px]">
-              {children}
-            </div>
+            <div className="md:p-10 p-4 overflow-auto">{children}</div>
+            <Toaster />
           </div>
         </main>
       </body>
