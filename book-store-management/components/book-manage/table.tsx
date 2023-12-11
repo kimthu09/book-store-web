@@ -39,7 +39,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Book } from "@/types";
-import { books } from "@/constants";
 import FilterSheet from "./filter-sheet";
 import {
   Dialog,
@@ -53,8 +52,7 @@ import { useState } from "react";
 import CategoryList from "../category-list";
 import Link from "next/link";
 import { ExportBookList } from "../excel-export";
-
-const data: Book[] = books;
+import deleteBook from "@/lib/deleteBook";
 
 export const columns: ColumnDef<Book>[] = [
   {
@@ -81,7 +79,7 @@ export const columns: ColumnDef<Book>[] = [
     header: () => {
       return <span className="font-semibold">ID</span>;
     },
-    cell: ({ row }) => <div className="capitalize">{row.getValue("id")}</div>,
+    cell: ({ row }) => <div>{row.getValue("id")}</div>,
   },
   {
     accessorKey: "name",
@@ -100,61 +98,65 @@ export const columns: ColumnDef<Book>[] = [
     },
     cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
-  {
-    accessorKey: "nxb",
-    header: () => {
-      return <span className="font-semibold">NXB</span>;
-    },
-    cell: ({ row }) => <div className="capitalize">{row.getValue("nxb")}</div>,
-  },
-  {
-    accessorKey: "price",
-    header: ({ column }) => (
-      <Button
-        className="p-2"
-        variant={"ghost"}
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        <span className="font-semibold">Giá</span>
+  // {
+  //   accessorKey: "publisherId",
+  //   header: () => {
+  //     return <span className="font-semibold">NXB</span>;
+  //   },
+  //   cell: ({ row }) => (
+  //     <div className="capitalize">{row.getValue("publisherId")}</div>
+  //   ),
+  // },
+  // {
+  //   accessorKey: "sellPrice",
+  //   header: ({ column }) => (
+  //     <Button
+  //       className="p-2"
+  //       variant={"ghost"}
+  //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //     >
+  //       <span className="font-semibold">Giá</span>
 
-        <CaretSortIcon className="ml-1 h-4 w-4" />
-      </Button>
-    ),
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("price"));
+  //       <CaretSortIcon className="ml-1 h-4 w-4" />
+  //     </Button>
+  //   ),
+  //   cell: ({ row }) => {
+  //     const amount = parseFloat(row.getValue("sellPrice"));
 
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("vi-VN", {
-        style: "currency",
-        currency: "VND",
-      }).format(amount);
+  //     // Format the amount as a dollar amount
+  //     const formatted = new Intl.NumberFormat("vi-VN", {
+  //       style: "currency",
+  //       currency: "VND",
+  //     }).format(amount);
 
-      return <div className="text-left font-medium">{formatted}</div>;
-    },
-  },
+  //     return <div className="text-left font-medium">{formatted}</div>;
+  //   },
+  // },
+  // {
+  //   accessorKey: "quantity",
+  //   header: () => {
+  //     return <div className="font-semibold flex justify-end">Số lượng</div>;
+  //   },
+  //   cell: ({ row }) => (
+  //     <div className="text-right">{row.getValue("quantity")}</div>
+  //   ),
+  // },
   {
-    accessorKey: "quantity",
-    header: () => {
-      return <div className="font-semibold flex justify-end">Số lượng</div>;
-    },
-    cell: ({ row }) => <div className="text-right">{row.getValue("id")}</div>,
-  },
-  {
-    accessorKey: "status",
+    accessorKey: "isActive",
     header: () => {
       return (
         <div className="font-semibold flex justify-center">Trạng thái</div>
       );
     },
     cell: ({ row }) => {
-      const status = row.getValue("status");
+      const status = row.getValue("isActive");
       return (
         <div
           className={`lg:max-w-[16rem] max-w-[3rem] truncate ${
-            status ? "text-green-600" : "text-red-600"
+            status === 1 ? "text-green-600" : "text-red-600"
           } text-center`}
         >
-          {status ? "Đang giao dịch" : "Ngừng giao dịch"}
+          {status === 1 ? "Đang bán" : "Ngừng bán"}
         </div>
       );
     },
@@ -166,36 +168,40 @@ export const columns: ColumnDef<Book>[] = [
       const book = row.original;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel></DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(book.id)}
-            >
-              Sao chép mã sách
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link
-                href={{
-                  pathname: "books/edit",
-                  query: {
-                    id: book.id,
-                  },
-                }}
+        <div className="flex justify-end">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <DotsHorizontalIcon className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel></DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(book.id)}
               >
-                Chỉnh sửa sách
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>More</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+                Sao chép mã sách
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              {/* <DropdownMenuItem>
+                <Link
+                  href={{
+                    pathname: "books/edit",
+                    query: {
+                      id: book.id,
+                    },
+                  }}
+                >
+                  Chỉnh sửa sách
+                </Link>
+              </DropdownMenuItem> */}
+              <DropdownMenuItem onClick={() => deleteBook(book.id)}>
+                Ngừng bán
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       );
     },
   },
@@ -212,17 +218,9 @@ function idToName(id: string) {
   return id;
 }
 
-const filters = [
-  {
-    value: "name",
-    label: "Tên sản phẩm",
-  },
-  {
-    value: "id",
-    label: "Mã sản phẩm",
-  },
-];
-export function BookTable() {
+export function BookTable({ data }: { data: Book[] }) {
+  // const data: Book[] = books;
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -251,7 +249,7 @@ export function BookTable() {
     <div className="w-full">
       <div className="flex items-center py-4 gap-2">
         <div>
-          <DropdownMenu>
+          {/* <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="w-40 justify-between">
                 Chọn thao tác <ChevronDownIcon className="ml-2 h-4 w-4" />
@@ -303,15 +301,15 @@ export function BookTable() {
               <Dialog>
                 <DialogTrigger asChild>
                   <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                    Xoá khỏi danh mục
+                    Ngừng bán
                   </DropdownMenuItem>
                 </DialogTrigger>
                 <DialogContent>
-                  <DialogTitle>Xoá mặt hàng khỏi danh mục</DialogTitle>
+                  <DialogTitle>Ngừng bán sách được chọn</DialogTitle>
                 </DialogContent>
               </Dialog>
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
         </div>
 
         <DropdownMenu>
@@ -341,9 +339,7 @@ export function BookTable() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <div className="ml-auto">
-          <FilterSheet />
-        </div>
+        <div className="ml-auto">{/* <FilterSheet /> */}</div>
       </div>
       <div className="rounded-md border">
         <Table>

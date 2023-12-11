@@ -1,10 +1,14 @@
 import { BookTable } from "@/components/book-manage/table";
 import { Button } from "@/components/ui/button";
+import getAllBooks from "@/lib/getAllBook";
+import { Book } from "@/types";
 import Link from "next/link";
 import React from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 
-const BookManagement = () => {
+async function BookManagement() {
+  const booksData: Promise<Book[]> = getAllBooks();
+  const books = await booksData;
   return (
     <div className="col">
       <div className="flex flex-row justify-between items-center">
@@ -23,10 +27,10 @@ const BookManagement = () => {
       <div className="flex flex-row flex-wrap gap-2"></div>
 
       <div className="mb-4 p-3 sha bg-white shadow-[0_1px_3px_0_rgba(0,0,0,0.2)]">
-        <BookTable />
+        <BookTable data={books} />
       </div>
     </div>
   );
-};
+}
 
 export default BookManagement;
