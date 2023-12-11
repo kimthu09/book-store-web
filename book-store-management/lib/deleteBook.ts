@@ -2,7 +2,7 @@ import { apiKey } from "@/constants";
 import axios from "axios";
 
 export default async function deleteBook(bookId: string) {
-  const url = `http://localhost:8080/v1/books/:${bookId}`;
+  const url = `http://localhost:8080/v1/books/${bookId}`;
 
   const headers = {
     accept: "application/json",
