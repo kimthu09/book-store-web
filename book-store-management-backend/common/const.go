@@ -32,7 +32,9 @@ const (
 	CategoryDeleteFeatureCode = "CATEGORY_DELETE"
 
 	BookCreateFeatureCode = "BOOK_CREATE"
+	BookUpdateFeatureCode = "BOOK_UPDATE"
 	BookViewFeatureCode   = "BOOK_VIEW"
+	BookDeleteFeatureCode = "BOOK_DELETE"
 
 	PublisherCreateFeatureCode = "PUBLISHER_CREATE"
 	PublisherViewFeatureCode   = "PUBLISHER_VIEW"

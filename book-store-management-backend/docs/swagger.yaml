@@ -1276,7 +1276,7 @@ paths:
       - BearerAuth: []
       summary: Login
       tags:
-      - common
+      - auth
   /publishers:
     get:
       consumes:

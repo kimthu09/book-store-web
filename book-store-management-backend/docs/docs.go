@@ -762,7 +762,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "common"
+                    "auth"
                 ],
                 "summary": "Login",
                 "parameters": [

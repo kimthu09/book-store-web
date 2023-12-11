@@ -1,6 +1,11 @@
 package bookbiz
 
-import "context"
+import (
+	"book-store-management-backend/common"
+	"book-store-management-backend/middleware"
+	"book-store-management-backend/module/book/bookmodel"
+	"context"
+)
 
 type DeleteBookRepo interface {
 	DeleteBook(ctx context.Context, id string) error
@@ -11,13 +16,21 @@ type DeleteRepo interface {
 }
 
 type deleteBookBiz struct {
-	repo DeleteRepo
+	requester middleware.Requester
+	repo      DeleteRepo
 }
 
-func NewDeleteBookBiz(repo DeleteRepo) *deleteBookBiz {
-	return &deleteBookBiz{repo: repo}
+func NewDeleteBookBiz(requester middleware.Requester, repo DeleteRepo) *deleteBookBiz {
+	return &deleteBookBiz{
+		requester: requester,
+		repo:      repo,
+	}
 }
 
 func (biz *deleteBookBiz) DeleteBook(ctx context.Context, id string) error {
+	if !biz.requester.IsHasFeature(common.BookDeleteFeatureCode) {
+		return bookmodel.ErrBookDeleteNoPermission
+	}
+
 	return biz.repo.DeleteBook(ctx, id)
 }

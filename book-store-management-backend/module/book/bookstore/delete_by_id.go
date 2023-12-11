@@ -2,6 +2,7 @@ package bookstore
 
 import (
 	"book-store-management-backend/common"
+	"book-store-management-backend/module/book/bookmodel"
 	"context"
 )
 
@@ -16,5 +17,12 @@ func (store *sqlStore) DeleteBook(ctx context.Context, id string) error {
 		"isActive":  "0",
 		"deletedAt": db.NowFunc(),
 	})
+
+	if db.Error != nil {
+		return common.ErrDB(db.Error)
+	}
+	if db.RowsAffected == 0 {
+		return bookmodel.ErrBookNotFound
+	}
 	return db.Error
 }
