@@ -96,7 +96,6 @@ func main() {
 	if err := r.Run(fmt.Sprintf(":%s", cfg.Port)); err != nil {
 		log.Fatalln("Error running server:", err)
 	}
-
 }
 
 func loadConfig() (*appConfig, error) {

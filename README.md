@@ -16,15 +16,8 @@
 
 - DB Name: `bookstoremanagement`
 
-### 1. Move to docker-compose folder
-
-```bash
-cd docker-compose
-```
-
-### 2. Run docker-compose
+### Run docker-compose
 
 ```bash
 docker-compose up
 ```
-
