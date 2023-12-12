@@ -5,30 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bcd0db1b-7464-48d1-92cb-22a4f9dac902" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/book-store-web.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/docs.go" beforeDir="false" afterPath="$PROJECT_DIR$/docs/docs.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/swagger.json" beforeDir="false" afterPath="$PROJECT_DIR$/docs/swagger.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/swagger.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/swagger.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitlebiz/create_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitlebiz/create_book.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitlebiz/list_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitlebiz/list_book_title.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitlemodel/booktitle.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitlemodel/booktitle.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitlemodel/err.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitlemodel/err.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitlemodel/filter.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitlemodel/filter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitlemodel/req_create_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitlemodel/req_create_book.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitlemodel/res_create_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitlemodel/res_create_book.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitlemodel/res_list_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitlemodel/res_list_book.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitlerepo/create_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitlerepo/create_book.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitlerepo/list_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitlerepo/list_book.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitlestore/find.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitlestore/find.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitlestore/list.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitlestore/list.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitletransport/create_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitletransport/create_book.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitletransport/delete_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitletransport/delete_book.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitletransport/list_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitletransport/list_book_title.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitletransport/route.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitletransport/route.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitletransport/create_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitletransport/create_book_title.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitletransport/delete_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitletransport/delete_book_title.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitletransport/update_book_info.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitletransport/update_book_title_info.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
