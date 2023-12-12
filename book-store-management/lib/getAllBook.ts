@@ -8,8 +8,6 @@ export default async function getAllBooks(page: number) {
     },
   });
   if (!res.ok) {
-    console.log("quao");
-
     throw new Error("Failed to fetch data");
   }
   return res.json().then((json) => {

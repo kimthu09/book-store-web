@@ -1,5 +1,6 @@
 "use client";
 
+import AuthorList from "@/components/author-list";
 import CategoryList from "@/components/category-list";
 import {
   AlertDialog,
@@ -14,11 +15,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import createBook from "@/lib/createBook";
+import getAllAuthor from "@/lib/getAllAuthor";
 import getAllCategory from "@/lib/getAllCategory";
-import { Book } from "@/types";
 import Link from "next/link";
 import { useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
@@ -30,7 +30,7 @@ export type FormValues = {
   desc: string;
   idBook: string;
   authorIds: {
-    idAuthors: string;
+    idAuthor: string;
   }[];
 
   categoryIds: {
@@ -49,8 +49,6 @@ const InsertNewBook = () => {
       categoryIds: [],
     },
   });
-  const [book, setBook] = useState<Partial<Book>>({ id: "" });
-  const [isNew, setIsNew] = useState(false);
   const [creating, setCreating] = useState(true);
   const { register, handleSubmit, control, watch } = form;
 
@@ -63,6 +61,16 @@ const InsertNewBook = () => {
     control: control,
     name: "categoryIds",
   });
+
+  const {
+    fields: fieldsAuthor,
+    append: appendAuthor,
+    remove: removeAuthor,
+    update: updateAuthor,
+  } = useFieldArray({
+    control: control,
+    name: "authorIds",
+  });
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data);
     if (data.categoryIds.length < 1) {
@@ -72,22 +80,42 @@ const InsertNewBook = () => {
       });
       return;
     }
+    if (data.authorIds.length < 1) {
+      toast({
+        title: "Chưa chọn tác giả",
+        description: "Vui lòng chọn ít nhất một tác giả",
+      });
+      return;
+    }
     const response: Promise<any> = createBook({
       id: data.idBook,
       name: data.name,
       desc: data.desc,
       categoryIds: data.categoryIds.map((item) => item.idCate),
+      authorIds: data.authorIds.map((item) => item.idAuthor),
     });
     const responseData = await response;
-    console.log(responseData);
-    if (responseData.data.id != "") {
-      setCreating(false);
+    console.log("hi there... " + JSON.stringify(responseData));
+    if (responseData.hasOwnProperty("data")) {
+      if (responseData.data.id != "") {
+        setCreating(false);
+      }
+    } else {
+      toast({
+        title: "Mã sách đã tồn tại",
+        description: "Vui lòng nhập một mã sách khác",
+      });
     }
   };
   const { categories, isLoading, isError } = getAllCategory();
+  const {
+    authors,
+    isLoading: isAuthorLoading,
+    isError: isAuthorError,
+  } = getAllAuthor();
 
-  if (isError) return <div>Failed to load</div>;
-  if (!categories) {
+  if (isError || isAuthorError) return <div>Failed to load</div>;
+  if (!categories || !authors) {
     console.log(categories);
     return <div>Loading...</div>;
   } else
@@ -123,12 +151,6 @@ const InsertNewBook = () => {
                   <div className="flex-1">
                     <Label>Tên sách</Label>
                     <Input required {...register("name")}></Input>
-                    {/* <BookList
-                    book={book}
-                    setBook={setBookHandler}
-                    isNew={isNew}
-                    setIsNew={handleBookConfirm}
-                  ></BookList> */}
                   </div>
 
                   <div>
@@ -146,7 +168,6 @@ const InsertNewBook = () => {
                           appendCate({ idCate: idCate });
                         }
                       }}
-                      readonly={!isNew}
                     />
                     <div className="flex flex-wrap gap-2 mt-3">
                       {fieldsCate.map((cate, index) => (
@@ -166,6 +187,49 @@ const InsertNewBook = () => {
                               className="text-primary group-hover:flex hidden h-4 w-4"
                               onClick={() => {
                                 removeCate(index);
+                              }}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    {/* Category select */}
+                    <Label>Tác giả</Label>
+                    <AuthorList
+                      checkedAuthor={fieldsAuthor.map(
+                        (author) => author.idAuthor
+                      )}
+                      onCheckChanged={(idAuthor) => {
+                        const selectedIndex = fieldsAuthor.findIndex(
+                          (cate) => cate.idAuthor === idAuthor
+                        );
+                        if (selectedIndex > -1) {
+                          removeAuthor(selectedIndex);
+                        } else {
+                          appendAuthor({ idAuthor: idAuthor });
+                        }
+                      }}
+                    />
+                    <div className="flex flex-wrap gap-2 mt-3">
+                      {fieldsAuthor.map((author, index) => (
+                        <div
+                          key={author.id}
+                          className="rounded-xl flex  px-3 py-1 h-fit outline-none text-sm text-primary  bg-blue-100 items-center gap-1 group"
+                        >
+                          {
+                            authors.find((item) => item.id === author.idAuthor)
+                              ?.name
+                          }
+                          <div className="cursor-pointer w-4">
+                            <AiOutlineClose className="group-hover:hidden" />
+                            <AiOutlineClose
+                              color="red"
+                              fill="red"
+                              className="text-primary group-hover:flex hidden h-4 w-4"
+                              onClick={() => {
+                                removeAuthor(index);
                               }}
                             />
                           </div>
