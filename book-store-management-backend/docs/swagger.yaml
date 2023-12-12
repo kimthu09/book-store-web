@@ -147,7 +147,7 @@ definitions:
   bookmodel.SimpleBook:
     properties:
       id:
-        example: book id
+        example: booktitle id
         type: string
       name:
         example: Những câu chuyện hay
@@ -261,7 +261,7 @@ definitions:
   importnotedetailmodel.ImportNoteDetailCreate:
     properties:
       bookId:
-        example: book id
+        example: booktitle id
         type: string
       isReplacePrice:
         example: true
@@ -456,7 +456,7 @@ definitions:
   inventorychecknotedetailmodel.InventoryCheckNoteDetailCreate:
     properties:
       bookId:
-        example: book id
+        example: booktitle id
         type: string
       difference:
         example: 100
@@ -900,9 +900,9 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: Create book
+      - description: Create booktitle
         in: body
-        name: book
+        name: booktitle
         required: true
         schema:
           $ref: '#/definitions/bookmodel.ReqCreateBook'
@@ -910,12 +910,12 @@ paths:
       - application/json
       responses:
         "200":
-          description: book id
+          description: booktitle id
           schema:
             $ref: '#/definitions/bookmodel.ResCreateBook'
       security:
       - BearerAuth: []
-      summary: Create book name, desc, authors, categories, publisher, etc.
+      summary: Create booktitle name, desc, authors, categories, publisher, etc.
       tags:
       - books
   /books/:id:
@@ -931,7 +931,7 @@ paths:
             $ref: '#/definitions/common.ResSuccess'
       security:
       - BearerAuth: []
-      summary: Delete book by id
+      summary: Delete booktitle by id
       tags:
       - books
   /categories:

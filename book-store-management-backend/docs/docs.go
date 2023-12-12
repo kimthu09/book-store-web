@@ -173,7 +173,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/bookmodel.ResListBook"
+                            "$ref": "#/definitions/booktitlemodel.ResListBook"
                         }
                     }
                 }
@@ -193,23 +193,23 @@ const docTemplate = `{
                 "tags": [
                     "books"
                 ],
-                "summary": "Create book name, desc, authors, categories, publisher, etc.",
+                "summary": "Create booktitle name, desc, authors, categories, publisher, etc.",
                 "parameters": [
                     {
-                        "description": "Create book",
-                        "name": "book",
+                        "description": "Create booktitle",
+                        "name": "booktitle",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bookmodel.ReqCreateBook"
+                            "$ref": "#/definitions/booktitlemodel.ReqCreateBook"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "book id",
+                        "description": "booktitle id",
                         "schema": {
-                            "$ref": "#/definitions/bookmodel.ResCreateBook"
+                            "$ref": "#/definitions/booktitlemodel.ResCreateBook"
                         }
                     }
                 }
@@ -231,7 +231,7 @@ const docTemplate = `{
                 "tags": [
                     "books"
                 ],
-                "summary": "Delete book by id",
+                "summary": "Delete booktitle by id",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1319,7 +1319,7 @@ const docTemplate = `{
                 }
             }
         },
-        "bookmodel.Book": {
+        "booktitlemodel.Book": {
             "type": "object",
             "properties": {
                 "authorIds": {
@@ -1372,7 +1372,7 @@ const docTemplate = `{
                 }
             }
         },
-        "bookmodel.Filter": {
+        "booktitlemodel.Filter": {
             "type": "object",
             "properties": {
                 "createdAtFrom": {
@@ -1401,7 +1401,7 @@ const docTemplate = `{
                 }
             }
         },
-        "bookmodel.ReqCreateBook": {
+        "booktitlemodel.ReqCreateBook": {
             "type": "object",
             "properties": {
                 "authorIds": {
@@ -1453,7 +1453,7 @@ const docTemplate = `{
                 }
             }
         },
-        "bookmodel.ResCreateBook": {
+        "booktitlemodel.ResCreateBook": {
             "type": "object",
             "properties": {
                 "id": {
@@ -1461,29 +1461,29 @@ const docTemplate = `{
                 }
             }
         },
-        "bookmodel.ResListBook": {
+        "booktitlemodel.ResListBook": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/bookmodel.Book"
+                        "$ref": "#/definitions/booktitlemodel.Book"
                     }
                 },
                 "filter": {
-                    "$ref": "#/definitions/bookmodel.Filter"
+                    "$ref": "#/definitions/booktitlemodel.Filter"
                 },
                 "paging": {
                     "$ref": "#/definitions/common.Paging"
                 }
             }
         },
-        "bookmodel.SimpleBook": {
+        "booktitlemodel.SimpleBook": {
             "type": "object",
             "properties": {
                 "id": {
                     "type": "string",
-                    "example": "book id"
+                    "example": "booktitle id"
                 },
                 "name": {
                     "type": "string",
@@ -1631,8 +1631,8 @@ const docTemplate = `{
         "importnotedetailmodel.ImportNoteDetail": {
             "type": "object",
             "properties": {
-                "book": {
-                    "$ref": "#/definitions/bookmodel.SimpleBook"
+                "booktitle": {
+                    "$ref": "#/definitions/booktitlemodel.SimpleBook"
                 },
                 "importNoteId": {
                     "type": "string",
@@ -1651,7 +1651,7 @@ const docTemplate = `{
             "properties": {
                 "bookId": {
                     "type": "string",
-                    "example": "book id"
+                    "example": "booktitle id"
                 },
                 "isReplacePrice": {
                     "type": "boolean",
@@ -1917,8 +1917,8 @@ const docTemplate = `{
         "inventorychecknotedetailmodel.InventoryCheckNoteDetail": {
             "type": "object",
             "properties": {
-                "book": {
-                    "$ref": "#/definitions/bookmodel.SimpleBook"
+                "booktitle": {
+                    "$ref": "#/definitions/booktitlemodel.SimpleBook"
                 },
                 "difference": {
                     "type": "integer",
@@ -1943,7 +1943,7 @@ const docTemplate = `{
             "properties": {
                 "bookId": {
                     "type": "string",
-                    "example": "book id"
+                    "example": "booktitle id"
                 },
                 "difference": {
                     "type": "integer",
