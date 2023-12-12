@@ -10,7 +10,6 @@ const fetcher = (url: string) =>
     },
   })
     .then((res) => {
-      console.log(res);
       return res.json();
     })
     .then((json) => json.data);
