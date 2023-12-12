@@ -64,9 +64,19 @@ export type Category = {
   name: string;
 };
 
+export type Author = {
+  id: string;
+  name: string;
+};
 export interface CategoryListProps {
   checkedCategory: Array<string>;
   onCheckChanged: (idCate: string) => void;
+  canAdd?: boolean;
+  readonly?: boolean;
+}
+export interface AuthorListProps {
+  checkedAuthor: Array<string>;
+  onCheckChanged: (idAuthor: string) => void;
   canAdd?: boolean;
   readonly?: boolean;
 }

@@ -31,10 +31,10 @@ export default function Sidebar() {
                 }`}
               >
                 <Image
-                  src="/logo.png"
+                  src="/android-chrome-192x192.png"
                   alt="logo"
-                  width={70}
-                  height={70}
+                  width={50}
+                  height={50}
                 ></Image>
               </div>
             </Link>

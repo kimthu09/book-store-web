@@ -6,11 +6,13 @@ export default async function createBook({
   name,
   desc,
   categoryIds,
+  authorIds,
 }: {
   id?: string;
   name: string;
   desc: string;
   categoryIds: string[];
+  authorIds: string[];
 }) {
   const url = "http://localhost:8080/v1/booktitles";
 
@@ -19,7 +21,7 @@ export default async function createBook({
     name: name,
     desc: desc,
     categoryIds: categoryIds,
-    authorIds: ["tgnna"],
+    authorIds: authorIds,
   };
   console.log(data);
   const headers = {
@@ -34,10 +36,11 @@ export default async function createBook({
   const res = axios
     .post(url, data, { headers: headers })
     .then((response) => {
-      return response.data;
+      if (response) return response.data;
     })
     .catch((error) => {
       console.error("Error:", error);
+      return error.response.data;
     });
   return res;
 }
