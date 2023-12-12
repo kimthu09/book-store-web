@@ -43,7 +43,7 @@ const CategoryList = ({
             aria-expanded={openCategory}
             className="justify-between w-full"
           >
-            Chọn danh mục
+            Chọn thể loại
             <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </DropdownMenuTrigger>

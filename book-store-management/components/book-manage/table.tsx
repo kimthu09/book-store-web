@@ -52,160 +52,10 @@ import { useState } from "react";
 import CategoryList from "../category-list";
 import Link from "next/link";
 import { ExportBookList } from "../excel-export";
+import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import deleteBook from "@/lib/deleteBook";
-
-export const columns: ColumnDef<Book>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "id",
-    header: () => {
-      return <span className="font-semibold">ID</span>;
-    },
-    cell: ({ row }) => <div>{row.getValue("id")}</div>,
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          className="p-2"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <span className="font-semibold">Tên sản phẩm</span>
-
-          <CaretSortIcon className="ml-1 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
-  },
-  // {
-  //   accessorKey: "publisherId",
-  //   header: () => {
-  //     return <span className="font-semibold">NXB</span>;
-  //   },
-  //   cell: ({ row }) => (
-  //     <div className="capitalize">{row.getValue("publisherId")}</div>
-  //   ),
-  // },
-  // {
-  //   accessorKey: "sellPrice",
-  //   header: ({ column }) => (
-  //     <Button
-  //       className="p-2"
-  //       variant={"ghost"}
-  //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //     >
-  //       <span className="font-semibold">Giá</span>
-
-  //       <CaretSortIcon className="ml-1 h-4 w-4" />
-  //     </Button>
-  //   ),
-  //   cell: ({ row }) => {
-  //     const amount = parseFloat(row.getValue("sellPrice"));
-
-  //     // Format the amount as a dollar amount
-  //     const formatted = new Intl.NumberFormat("vi-VN", {
-  //       style: "currency",
-  //       currency: "VND",
-  //     }).format(amount);
-
-  //     return <div className="text-left font-medium">{formatted}</div>;
-  //   },
-  // },
-  // {
-  //   accessorKey: "quantity",
-  //   header: () => {
-  //     return <div className="font-semibold flex justify-end">Số lượng</div>;
-  //   },
-  //   cell: ({ row }) => (
-  //     <div className="text-right">{row.getValue("quantity")}</div>
-  //   ),
-  // },
-  {
-    accessorKey: "isActive",
-    header: () => {
-      return (
-        <div className="font-semibold flex justify-center">Trạng thái</div>
-      );
-    },
-    cell: ({ row }) => {
-      const status = row.getValue("isActive");
-      return (
-        <div
-          className={`lg:max-w-[16rem] max-w-[3rem] truncate ${
-            status === 1 ? "text-green-600" : "text-red-600"
-          } text-center`}
-        >
-          {status === 1 ? "Đang bán" : "Ngừng bán"}
-        </div>
-      );
-    },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const book = row.original;
-
-      return (
-        <div className="flex justify-end">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <DotsHorizontalIcon className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel></DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(book.id)}
-              >
-                Sao chép mã sách
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              {/* <DropdownMenuItem>
-                <Link
-                  href={{
-                    pathname: "books/edit",
-                    query: {
-                      id: book.id,
-                    },
-                  }}
-                >
-                  Chỉnh sửa sách
-                </Link>
-              </DropdownMenuItem> */}
-              <DropdownMenuItem onClick={() => deleteBook(book.id)}>
-                Ngừng bán
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      );
-    },
-  },
-];
+import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "../ui/use-toast";
 
 function idToName(id: string) {
   if (id === "name") {
@@ -218,14 +68,192 @@ function idToName(id: string) {
   return id;
 }
 
-export function BookTable({ data }: { data: Book[] }) {
+export function BookTable({
+  data,
+  totalPage,
+}: {
+  data: Book[];
+  totalPage: number;
+}) {
   // const data: Book[] = books;
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const page = searchParams.get("page") ?? "1";
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [category, setCategory] = useState("");
+
+  const columns: ColumnDef<Book>[] = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected()}
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "id",
+      header: () => {
+        return <span className="font-semibold">ID</span>;
+      },
+      cell: ({ row }) => <div>{row.getValue("id")}</div>,
+    },
+    {
+      accessorKey: "name",
+      header: ({ column }) => {
+        return (
+          <Button
+            className="p-2"
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            <span className="font-semibold">Tên sản phẩm</span>
+
+            <CaretSortIcon className="ml-1 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("name")}</div>
+      ),
+    },
+    // {
+    //   accessorKey: "publisherId",
+    //   header: () => {
+    //     return <span className="font-semibold">NXB</span>;
+    //   },
+    //   cell: ({ row }) => (
+    //     <div className="capitalize">{row.getValue("publisherId")}</div>
+    //   ),
+    // },
+    // {
+    //   accessorKey: "sellPrice",
+    //   header: ({ column }) => (
+    //     <Button
+    //       className="p-2"
+    //       variant={"ghost"}
+    //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+    //     >
+    //       <span className="font-semibold">Giá</span>
+
+    //       <CaretSortIcon className="ml-1 h-4 w-4" />
+    //     </Button>
+    //   ),
+    //   cell: ({ row }) => {
+    //     const amount = parseFloat(row.getValue("sellPrice"));
+
+    //     // Format the amount as a dollar amount
+    //     const formatted = new Intl.NumberFormat("vi-VN", {
+    //       style: "currency",
+    //       currency: "VND",
+    //     }).format(amount);
+
+    //     return <div className="text-left font-medium">{formatted}</div>;
+    //   },
+    // },
+    // {
+    //   accessorKey: "quantity",
+    //   header: () => {
+    //     return <div className="font-semibold flex justify-end">Số lượng</div>;
+    //   },
+    //   cell: ({ row }) => (
+    //     <div className="text-right">{row.getValue("quantity")}</div>
+    //   ),
+    // },
+    {
+      accessorKey: "isActive",
+      header: () => {
+        return (
+          <div className="font-semibold flex justify-center">Trạng thái</div>
+        );
+      },
+      cell: ({ row }) => {
+        const status = row.getValue("isActive");
+        return (
+          <div
+            className={`lg:max-w-[16rem] max-w-[3rem] truncate ${
+              status === 1 ? "text-green-600" : "text-red-600"
+            } text-center`}
+          >
+            {status === 1 ? "Đang bán" : "Ngừng bán"}
+          </div>
+        );
+      },
+    },
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const book = row.original;
+
+        return (
+          <div className="flex justify-end">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <DotsHorizontalIcon className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel></DropdownMenuLabel>
+                <DropdownMenuItem
+                  onClick={() => navigator.clipboard.writeText(book.id)}
+                >
+                  Sao chép mã sách
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                {/* <DropdownMenuItem>
+                <Link
+                  href={{
+                    pathname: "books/edit",
+                    query: {
+                      id: book.id,
+                    },
+                  }}
+                >
+                  Chỉnh sửa sách
+                </Link>
+              </DropdownMenuItem> */}
+                <DropdownMenuItem
+                  onClick={async () => {
+                    const response: Promise<any> = deleteBook(book.id);
+                    const responseData = await response;
+                    console.log(responseData);
+                    if (responseData.data) {
+                      toast({
+                        title: "Thành công",
+                        description: "Sản phẩm đã có trạng thái ngừng bán",
+                      });
+                      router.refresh();
+                    }
+                  }}
+                >
+                  Ngừng bán
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        );
+      },
+    },
+  ];
+
   const table = useReactTable({
     data,
     columns,
@@ -399,19 +427,21 @@ export function BookTable({ data }: { data: Book[] }) {
         <div className="space-x-2">
           <Button
             variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            size="icon"
+            onClick={() => router.push(`/books?page=${Number(page) - 1}`)}
+            disabled={Number(page) <= 1}
           >
-            Previous
+            <LuChevronLeft className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            size="icon"
+            onClick={() => router.push(`/books?page=${Number(page) + 1}`)}
+            disabled={Number(page) >= totalPage}
+
+            // disabled={!table.getCanNextPage()}
           >
-            Next
+            <LuChevronRight className="h-4 w-4" />
           </Button>
         </div>
       </div>

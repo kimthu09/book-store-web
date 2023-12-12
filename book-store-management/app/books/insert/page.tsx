@@ -28,7 +28,7 @@ import { LuCheck } from "react-icons/lu";
 export type FormValues = {
   name: string;
   desc: string;
-
+  idBook: string;
   authorIds: {
     idAuthors: string;
   }[];
@@ -43,6 +43,7 @@ const InsertNewBook = () => {
 
   const form = useForm<FormValues>({
     defaultValues: {
+      idBook: "",
       name: "",
       desc: "",
       categoryIds: [],
@@ -72,6 +73,7 @@ const InsertNewBook = () => {
       return;
     }
     const response: Promise<any> = createBook({
+      id: data.idBook,
       name: data.name,
       desc: data.desc,
       categoryIds: data.categoryIds.map((item) => item.idCate),
@@ -108,15 +110,16 @@ const InsertNewBook = () => {
             <div className="flex flex-col flex-1 gap-4 lg:flex-row">
               <Card className="flex-1">
                 <CardContent className="flex-col flex gap-5 mt-5">
-                  {/* <div className="basis-1/3">
-                  <Label htmlFor="masach">Mã sách</Label>
-                  <Input
-                    id="masach"
-                    placeholder="Hệ thống sẽ tự sinh mã nếu để trống"
-                    value={!isNew ? book.id : ""}
-                    readOnly={!isNew}
-                  />
-                </div> */}
+                  <div className="basis-1/3">
+                    <Label htmlFor="masach">Mã sách</Label>
+                    <Input
+                      {...register("idBook")}
+                      id="masach"
+                      placeholder="Hệ thống sẽ tự sinh mã nếu để trống"
+                      // value={!isNew ? book.id : ""}
+                      // readOnly={!isNew}
+                    />
+                  </div>
                   <div className="flex-1">
                     <Label>Tên sách</Label>
                     <Input required {...register("name")}></Input>
@@ -207,9 +210,9 @@ const InsertNewBook = () => {
               <AlertDialogTitle>Đã thêm thành công</AlertDialogTitle>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogAction>
-                <Link href={"/books"}>OK</Link>
-              </AlertDialogAction>
+              <Link href={"/books"}>
+                <AlertDialogAction>OK</AlertDialogAction>
+              </Link>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
