@@ -19,7 +19,7 @@ import (
 	"net/http"
 )
 
-func UpdateBookInfo(appCtx appctx.AppContext) gin.HandlerFunc {
+func UpdateBookTitleInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Param("id")
 		var reqData booktitlemodel.ReqUpdateBookInfo
