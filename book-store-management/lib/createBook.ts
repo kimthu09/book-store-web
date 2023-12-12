@@ -2,30 +2,31 @@ import { apiKey } from "@/constants";
 import axios from "axios";
 
 export default async function createBook({
+  id,
   name,
   desc,
   categoryIds,
 }: {
+  id?: string;
   name: string;
   desc: string;
   categoryIds: string[];
 }) {
-  const url = "http://localhost:8080/v1/books";
+  const url = "http://localhost:8080/v1/booktitles";
+
   const data = {
+    id: id,
     name: name,
     desc: desc,
     categoryIds: categoryIds,
-    listedPrice: 75000,
     authorIds: ["tgnna"],
-    edition: 1,
-    publisherId: "nxbdk",
-    quantity: 0,
-    sellPrice: 80000,
   };
   console.log(data);
   const headers = {
+    accept: "application/json",
     "Content-Type": "application/json",
     Authorization: apiKey,
+
     // Add other headers as needed
   };
 

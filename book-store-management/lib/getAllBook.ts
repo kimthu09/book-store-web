@@ -1,7 +1,7 @@
 import { apiKey } from "@/constants";
 
-export default async function getAllBooks() {
-  const res = await fetch("http://localhost:8080/v1/books?page=1", {
+export default async function getAllBooks(page: number) {
+  const res = await fetch(`http://localhost:8080/v1/booktitles?page=${page}`, {
     headers: {
       accept: "application/json",
       Authorization: apiKey,
@@ -14,6 +14,9 @@ export default async function getAllBooks() {
   }
   return res.json().then((json) => {
     console.log(json);
-    return json.data;
+    return {
+      paging: json.paging,
+      data: json.data,
+    };
   });
 }
