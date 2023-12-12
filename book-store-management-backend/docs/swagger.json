@@ -138,6 +138,12 @@
                         "in": "query"
                     },
                     {
+                        "type": "boolean",
+                        "example": true,
+                        "name": "isActive",
+                        "in": "query"
+                    },
+                    {
                         "type": "number",
                         "example": 1000,
                         "name": "maxSellPrice",
@@ -1369,6 +1375,10 @@
                 "createdAtTo": {
                     "type": "integer",
                     "example": 1709500431
+                },
+                "isActive": {
+                    "type": "boolean",
+                    "example": true
                 },
                 "maxSellPrice": {
                     "type": "number",

@@ -54,6 +54,8 @@ func handleFilter(
 		if filter.MaxSellPrice != nil {
 			db = db.Where("sellPrice <= ?", *filter.MaxSellPrice)
 		}
-		db = db.Where("isActive = ?", 1)
+		if filter.IsActive != nil {
+			db = db.Where("isActive = ?", *filter.IsActive)
+		}
 	}
 }

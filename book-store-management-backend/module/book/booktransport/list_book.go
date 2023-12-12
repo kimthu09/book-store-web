@@ -3,6 +3,8 @@ package booktransport
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/appctx"
+	"book-store-management-backend/middleware"
+	"book-store-management-backend/module/book/bookbiz"
 	"book-store-management-backend/module/book/bookmodel"
 	"book-store-management-backend/module/book/bookrepo"
 	"book-store-management-backend/module/book/bookstore"
@@ -36,12 +38,15 @@ func ListBook(appCtx appctx.AppContext) gin.HandlerFunc {
 		store := bookstore.NewSQLStore(appCtx.GetMainDBConnection())
 		repo := bookrepo.NewListBookRepo(store)
 
-		response, err := repo.ListBook(c.Request.Context(), &filter, &paging)
+		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
+
+		biz := bookbiz.NewListBookBiz(repo, requester)
+		data, err := biz.ListBook(c.Request.Context(), &filter, &paging)
 
 		if err != nil {
 			panic(err)
 		}
 
-		c.JSON(200, common.NewSuccessResponse(response, paging, filter))
+		c.JSON(200, common.NewSuccessResponse(data, paging, filter))
 	}
 }
