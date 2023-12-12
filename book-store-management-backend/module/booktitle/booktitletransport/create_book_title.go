@@ -29,7 +29,7 @@ import (
 // @Param booktitle body booktitlemodel.ReqCreateBookTitle true "Create booktitle"
 // @Response 200 {object} booktitlemodel.ResCreateBookTitle "booktitle id"
 // @Router /booktitles [post]
-func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
+func CreateBookTitle(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var reqData booktitlemodel.ReqCreateBookTitle
 		if err := c.ShouldBind(&reqData); err != nil {

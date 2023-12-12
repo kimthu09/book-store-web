@@ -11,8 +11,8 @@ func SetupRoutes(router *gin.RouterGroup, appCtx appctx.AppContext) {
 	books := router.Group("/booktitles", middleware.RequireAuth(appCtx))
 	{
 		books.GET("", ListBookTitle(appCtx))
-		books.POST("", CreateBookTitle(appCtx))
-		books.PATCH("/:id", UpdateBookTitleInfo(appCtx))
-		books.DELETE("/:id", DeleteBookTitle(appCtx))
+		books.POST("", CreateBook(appCtx))
+		books.PATCH("/:id", UpdateBookInfo(appCtx))
+		books.DELETE("/:id", DeleteBook(appCtx))
 	}
 }
