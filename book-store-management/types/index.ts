@@ -3,62 +3,13 @@ import { IconType } from "react-icons";
 export type Book = {
   id: string;
   name: string;
-  publisherId: string;
-
-  quantity: number;
-  listedPrice: number;
-  sellPrice: number;
 
   isActive: boolean;
   categoryIds: [];
 
   authorIds: [];
-  desc: string;
-  edition: number;
-};
-export type ImportNote = {
-  id: string;
-  supplierId: string;
-  totalPrice: number;
-  status: StatusNote;
-  createBy: string;
-  closeBy?: string;
-  createAt: Date;
-  closeAt?: Date;
 };
 
-export type ImportDetail = {
-  book: Book;
-  idNote: string;
-  quantity: number;
-  price: number;
-};
-
-export type Supplier = {
-  id: string;
-  name: string;
-  email?: string;
-  phone: string;
-  debt: number;
-};
-export type SupplierDebt = {
-  id: string;
-  idSupplier: string;
-  amount: number;
-  amountLeft: number;
-  createBy: string;
-  createAt: Date;
-};
-
-export enum StatusNote {
-  Inprogress = "Đang xử lý",
-  Done = "Đã nhập",
-  Cancel = "Đã huỷ",
-}
-export enum StatusActive {
-  Active = "Đang giao dịch",
-  InActive = "Ngừng giao dịch",
-}
 export type Category = {
   id: string;
   name: string;

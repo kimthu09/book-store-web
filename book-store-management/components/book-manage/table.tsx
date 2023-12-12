@@ -39,7 +39,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Book } from "@/types";
-import FilterSheet from "./filter-sheet";
 import {
   Dialog,
   DialogClose,
@@ -51,11 +50,12 @@ import {
 import { useState } from "react";
 import CategoryList from "../category-list";
 import Link from "next/link";
-import { ExportBookList } from "../excel-export";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import deleteBook from "@/lib/deleteBook";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "../ui/use-toast";
+import getAllCategory from "@/lib/getAllCategory";
+import getAllAuthor from "@/lib/getAllAuthor";
 
 function idToName(id: string) {
   if (id === "name") {
@@ -79,6 +79,13 @@ export function BookTable({
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = searchParams.get("page") ?? "1";
+
+  const { categories, isLoading, isError } = getAllCategory();
+  const {
+    authors,
+    isLoading: isAuthorLoading,
+    isError: isAuthorError,
+  } = getAllAuthor();
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -132,49 +139,28 @@ export function BookTable({
         <div className="capitalize">{row.getValue("name")}</div>
       ),
     },
-    // {
-    //   accessorKey: "publisherId",
-    //   header: () => {
-    //     return <span className="font-semibold">NXB</span>;
-    //   },
-    //   cell: ({ row }) => (
-    //     <div className="capitalize">{row.getValue("publisherId")}</div>
-    //   ),
-    // },
-    // {
-    //   accessorKey: "sellPrice",
-    //   header: ({ column }) => (
-    //     <Button
-    //       className="p-2"
-    //       variant={"ghost"}
-    //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-    //     >
-    //       <span className="font-semibold">Giá</span>
-
-    //       <CaretSortIcon className="ml-1 h-4 w-4" />
-    //     </Button>
-    //   ),
-    //   cell: ({ row }) => {
-    //     const amount = parseFloat(row.getValue("sellPrice"));
-
-    //     // Format the amount as a dollar amount
-    //     const formatted = new Intl.NumberFormat("vi-VN", {
-    //       style: "currency",
-    //       currency: "VND",
-    //     }).format(amount);
-
-    //     return <div className="text-left font-medium">{formatted}</div>;
-    //   },
-    // },
-    // {
-    //   accessorKey: "quantity",
-    //   header: () => {
-    //     return <div className="font-semibold flex justify-end">Số lượng</div>;
-    //   },
-    //   cell: ({ row }) => (
-    //     <div className="text-right">{row.getValue("quantity")}</div>
-    //   ),
-    // },
+    {
+      accessorKey: "categoryIds",
+      accessorFn: (row) =>
+        row.categoryIds
+          .map((cateId) => categories.find((item) => cateId === item.id)?.name)
+          .join(", "),
+      header: () => {
+        return <span className="font-semibold">Thể loại</span>;
+      },
+      cell: ({ row }) => <div>{row.getValue("categoryIds")}</div>,
+    },
+    {
+      accessorKey: "authorIds",
+      accessorFn: (row) =>
+        row.authorIds
+          .map((authorId) => authors.find((item) => authorId === item.id)?.name)
+          .join(", "),
+      header: () => {
+        return <span className="font-semibold">Tác giả</span>;
+      },
+      cell: ({ row }) => <div>{row.getValue("authorIds")}</div>,
+    },
     {
       accessorKey: "isActive",
       header: () => {
@@ -218,18 +204,6 @@ export function BookTable({
                   Sao chép mã sách
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                {/* <DropdownMenuItem>
-                <Link
-                  href={{
-                    pathname: "books/edit",
-                    query: {
-                      id: book.id,
-                    },
-                  }}
-                >
-                  Chỉnh sửa sách
-                </Link>
-              </DropdownMenuItem> */}
                 <DropdownMenuItem
                   onClick={async () => {
                     const response: Promise<any> = deleteBook(book.id);
@@ -272,12 +246,16 @@ export function BookTable({
       rowSelection,
     },
   });
-
-  return (
-    <div className="w-full">
-      <div className="flex items-center py-4 gap-2">
-        <div>
-          {/* <DropdownMenu>
+  if (isError || isAuthorError) return <div>Failed to load</div>;
+  if (!categories || !authors) {
+    console.log(categories);
+    return <div>Loading...</div>;
+  } else
+    return (
+      <div className="w-full">
+        <div className="flex items-center py-4 gap-2">
+          <div>
+            {/* <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="w-40 justify-between">
                 Chọn thao tác <ChevronDownIcon className="ml-2 h-4 w-4" />
@@ -338,113 +316,111 @@ export function BookTable({
               </Dialog>
             </DropdownMenuContent>
           </DropdownMenu> */}
-        </div>
+          </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              Cột hiển thị <ChevronDownIcon className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {idToName(column.id)}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        <div className="ml-auto">{/* <FilterSheet /> */}</div>
-      </div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Cột hiển thị <ChevronDownIcon className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
                   return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {idToName(column.id)}
+                    </DropdownMenuCheckboxItem>
                   );
                 })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => router.push(`/books?page=${Number(page) - 1}`)}
-            disabled={Number(page) <= 1}
-          >
-            <LuChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => router.push(`/books?page=${Number(page) + 1}`)}
-            disabled={Number(page) >= totalPage}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-            // disabled={!table.getCanNextPage()}
-          >
-            <LuChevronRight className="h-4 w-4" />
-          </Button>
+          <div className="ml-auto">{/* <FilterSheet /> */}</div>
+        </div>
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <div className="flex-1 text-sm text-muted-foreground">
+            {table.getFilteredSelectedRowModel().rows.length} of{" "}
+            {table.getFilteredRowModel().rows.length} row(s) selected.
+          </div>
+          <div className="space-x-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => router.push(`/books?page=${Number(page) - 1}`)}
+              disabled={Number(page) <= 1}
+            >
+              <LuChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => router.push(`/books?page=${Number(page) + 1}`)}
+              disabled={Number(page) >= totalPage}
+            >
+              <LuChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
 }
