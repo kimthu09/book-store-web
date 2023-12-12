@@ -19,7 +19,7 @@ func NewCreateBookRepo(store CreateBookStore) *createBookRepo {
 	return &createBookRepo{store: store}
 }
 
-func (repo *createBookRepo) CreateBook(ctx context.Context, data *booktitlemodel.BookTitle) error {
+func (repo *createBookRepo) CreateBookTitle(ctx context.Context, data *booktitlemodel.BookTitle) error {
 	strAuthorIDs := strings.Join(data.AuthorIDs, "|")
 	strCategoryIDs := strings.Join(data.CategoryIDs, "|")
 	dbData := booktitlestore.BookTitleDBModel{

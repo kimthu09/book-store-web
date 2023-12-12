@@ -47,7 +47,7 @@ func UpdateBookTitleInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		biz := booktitlebiz.NewUpdateBookBiz(repo, authorRepo, publisherRepo, categoryRepo, requester)
 
-		err := biz.UpdateBook(c.Request.Context(), id, &reqData)
+		err := biz.UpdateBookTitle(c.Request.Context(), id, &reqData)
 		if err != nil {
 			panic(err)
 		}

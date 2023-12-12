@@ -9,7 +9,7 @@ import (
 )
 
 type CreateBookTitleRepo interface {
-	CreateBook(ctx context.Context, data *booktitlemodel.BookTitle) error
+	CreateBookTitle(ctx context.Context, data *booktitlemodel.BookTitle) error
 }
 
 type authorRepo interface {
@@ -74,18 +74,18 @@ func (biz *createBookTitleBiz) CreateBookTitle(ctx context.Context, reqData *boo
 	if err := validateCategories(ctx, biz.categoryRepo, data.CategoryIDs); err != nil {
 		return err
 	}
-	if err := handleBookId(biz.gen, data); err != nil {
+	if err := handleBookTitleId(biz.gen, data); err != nil {
 		return err
 	}
 
-	if err := biz.repo.CreateBook(ctx, data); err != nil {
+	if err := biz.repo.CreateBookTitle(ctx, data); err != nil {
 		return err
 	}
 	resData.Id = *data.ID
 	return nil
 }
 
-func handleBookId(gen generator.IdGenerator, data *booktitlemodel.BookTitle) error {
+func handleBookTitleId(gen generator.IdGenerator, data *booktitlemodel.BookTitle) error {
 	id, err := gen.IdProcess(data.ID)
 	if err != nil {
 		return err

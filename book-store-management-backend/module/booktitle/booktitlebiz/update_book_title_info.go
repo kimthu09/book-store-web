@@ -36,7 +36,7 @@ func NewUpdateBookBiz(
 	}
 }
 
-func (biz *updateBookBiz) UpdateBook(ctx context.Context, id string, reqData *booktitlemodel.ReqUpdateBookInfo) error {
+func (biz *updateBookBiz) UpdateBookTitle(ctx context.Context, id string, reqData *booktitlemodel.ReqUpdateBookInfo) error {
 	if !biz.requester.IsHasFeature(common.BookTitleUpdateFeatureCode) {
 		return booktitlemodel.ErrBookTitleUpdateNoPermission
 	}
