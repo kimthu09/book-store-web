@@ -20,7 +20,7 @@ import (
 // @Produce json
 // @Response 200 {object} common.ResSuccess
 // @Router /booktitles/:id [delete]
-func DeleteBook(appCtx appctx.AppContext) gin.HandlerFunc {
+func DeleteBookTitle(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		bookId := c.Param("id")
 		if bookId == "" {
