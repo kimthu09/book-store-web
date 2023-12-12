@@ -25,28 +25,25 @@ type categoryRepo interface {
 }
 
 type createBookTitleBiz struct {
-	gen           generator.IdGenerator
-	repo          CreateBookTitleRepo
-	authorRepo    authorRepo
-	publisherRepo publisherRepo
-	categoryRepo  categoryRepo
-	requester     middleware.Requester
+	gen          generator.IdGenerator
+	repo         CreateBookTitleRepo
+	authorRepo   authorRepo
+	categoryRepo categoryRepo
+	requester    middleware.Requester
 }
 
 func NewCreateBookTitleBiz(
 	gen generator.IdGenerator,
 	repo CreateBookTitleRepo,
 	authorRepo authorRepo,
-	publisherRepo publisherRepo,
 	categoryRepo categoryRepo,
 	requester middleware.Requester) *createBookTitleBiz {
 	return &createBookTitleBiz{
-		gen:           gen,
-		repo:          repo,
-		authorRepo:    authorRepo,
-		publisherRepo: publisherRepo,
-		categoryRepo:  categoryRepo,
-		requester:     requester,
+		gen:          gen,
+		repo:         repo,
+		authorRepo:   authorRepo,
+		categoryRepo: categoryRepo,
+		requester:    requester,
 	}
 }
 
@@ -61,6 +58,9 @@ func (biz *createBookTitleBiz) CreateBookTitle(ctx context.Context, reqData *boo
 		Description: reqData.Description,
 		AuthorIDs:   reqData.AuthorIDs,
 		CategoryIDs: reqData.CategoryIDs,
+	}
+	if reqData.Id != "" {
+		data.ID = &reqData.Id
 	}
 
 	if err := data.Validate(); err != nil {
@@ -86,6 +86,10 @@ func (biz *createBookTitleBiz) CreateBookTitle(ctx context.Context, reqData *boo
 }
 
 func handleBookTitleId(gen generator.IdGenerator, data *booktitlemodel.BookTitle) error {
+	if data.ID != nil && *data.ID != "" {
+		return nil
+	}
+
 	id, err := gen.IdProcess(data.ID)
 	if err != nil {
 		return err
