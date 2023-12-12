@@ -30,7 +30,7 @@ func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(common.ErrInvalidRequest(err))
 		}
 
-		db := appCtx.GetMainDBConnection()
+		db := appCtx.GetMainDBConnection().Begin()
 		gen := generator.NewShortIdGenerator()
 		store := bookstore.NewSQLStore(db)
 		repo := bookrepo.NewCreateBookRepo(store)
@@ -40,7 +40,6 @@ func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		var resData bookmodel.ResCreateBook
 		if err := biz.CreateBook(c.Request.Context(), &reqData, &resData); err != nil {
-			db.Rollback()
 			panic(err)
 		}
 
