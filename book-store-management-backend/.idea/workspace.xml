@@ -5,11 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bcd0db1b-7464-48d1-92cb-22a4f9dac902" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/module/book/bookmodel/book.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/book/bookbiz/create_book.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/book/bookmodel/err.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/book/bookrepo/create_book.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/book/booktransport/list_book.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/docs.go" beforeDir="false" afterPath="$PROJECT_DIR$/docs/docs.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/swagger.json" beforeDir="false" afterPath="$PROJECT_DIR$/docs/swagger.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/swagger.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/swagger.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/book/bookmodel/book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/book/bookmodel/book.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/book/bookmodel/req_create_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/book/bookmodel/req_create_book.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/book/bookstore/create.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/book/bookstore/create.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/book/bookstore/store.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/book/bookstore/store.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/book/bookstore/store_model.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/book/bookstore/store_model.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/module/book/booktransport/create_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/book/booktransport/create_book.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/module/book/booktransport/route.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/book/booktransport/route.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitlebiz/create_book_title.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitlebiz/create_book_title.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitlebiz/update_book_title_info.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitlebiz/update_book_title_info.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitlerepo/create_book_title.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitlerepo/create_book_title.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitletransport/update_book_title_info.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitletransport/update_book_title_info.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -36,9 +36,21 @@ definitions:
     type: object
   bookmodel.ReqCreateBook:
     properties:
-      id:
-        example: bookId
+      bookTitleId:
         type: string
+      edition:
+        type: integer
+      id:
+        type: string
+      listedPrice:
+        description: Quantity    *int    `json:"quantity" gorm:"column:quantity"`
+        type: integer
+      name:
+        type: string
+      publisherId:
+        type: string
+      sellPrice:
+        type: integer
     type: object
   bookmodel.ResCreateBook:
     properties:

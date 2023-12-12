@@ -1348,9 +1348,27 @@ const docTemplate = `{
         "bookmodel.ReqCreateBook": {
             "type": "object",
             "properties": {
+                "bookTitleId": {
+                    "type": "string"
+                },
+                "edition": {
+                    "type": "integer"
+                },
                 "id": {
-                    "type": "string",
-                    "example": "bookId"
+                    "type": "string"
+                },
+                "listedPrice": {
+                    "description": "Quantity    *int    ` + "`" + `json:\"quantity\" gorm:\"column:quantity\"` + "`" + `",
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "publisherId": {
+                    "type": "string"
+                },
+                "sellPrice": {
+                    "type": "integer"
                 }
             }
         },
