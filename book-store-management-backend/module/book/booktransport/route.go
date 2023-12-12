@@ -1,4 +1,4 @@
-package booktitletransport
+package booktransport
 
 import (
 	"book-store-management-backend/component/appctx"
