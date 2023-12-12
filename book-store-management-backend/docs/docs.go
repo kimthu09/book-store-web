@@ -96,6 +96,44 @@ const docTemplate = `{
                 }
             }
         },
+        "/books": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "books"
+                ],
+                "summary": "Create Book",
+                "parameters": [
+                    {
+                        "description": "Create Book",
+                        "name": "booktitle",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/bookmodel.ReqCreateBook"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "book id",
+                        "schema": {
+                            "$ref": "#/definitions/bookmodel.ResCreateBook"
+                        }
+                    }
+                }
+            }
+        },
         "/booktitles": {
             "get": {
                 "security": [
@@ -1304,6 +1342,23 @@ const docTemplate = `{
                 },
                 "paging": {
                     "$ref": "#/definitions/common.Paging"
+                }
+            }
+        },
+        "bookmodel.ReqCreateBook": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "bookId"
+                }
+            }
+        },
+        "bookmodel.ResCreateBook": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
                 }
             }
         },

@@ -5,6 +5,7 @@ import (
 	docs "book-store-management-backend/docs"
 	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/author/authortransport"
+	"book-store-management-backend/module/book/booktransport"
 	booktitletransport "book-store-management-backend/module/booktitle/booktitletransport"
 
 	"book-store-management-backend/module/category/categorytransport"
@@ -85,6 +86,7 @@ func main() {
 		authortransport.SetupRoutes(v1, appCtx)
 		categorytransport.SetupRoutes(v1, appCtx)
 		booktitletransport.SetupRoutes(v1, appCtx)
+		booktransport.SetupRoutes(v1, appCtx)
 		publishertransport.SetupRoutes(v1, appCtx)
 		//ginimportnote.SetupRoutes(v1, appCtx)
 		//gininventorychecknote.SetupRoutes(v1, appCtx)
