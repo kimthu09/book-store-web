@@ -40,6 +40,7 @@ func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		var resData bookmodel.ResCreateBook
 		if err := biz.CreateBook(c.Request.Context(), &reqData, &resData); err != nil {
+			db.Rollback()
 			panic(err)
 		}
 
