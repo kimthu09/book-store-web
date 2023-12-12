@@ -12,24 +12,24 @@ type ListBookStore interface {
 	ListBook(ctx context.Context, filter *booktitlemodel.Filter, propertiesContainSearchKey []string, paging *common.Paging) ([]booktitlestore.BookTitleDBModel, error)
 }
 
-type listBookRepo struct {
+type listBookTitleRepo struct {
 	store ListBookStore
 }
 
-func NewListBookRepo(store ListBookStore) *listBookRepo {
-	return &listBookRepo{store: store}
+func NewListBookTitleRepo(store ListBookStore) *listBookTitleRepo {
+	return &listBookTitleRepo{store: store}
 }
 
-func (repo *listBookRepo) ListBook(ctx context.Context, filter *booktitlemodel.Filter, paging *common.Paging) ([]booktitlemodel.Book, error) {
+func (repo *listBookTitleRepo) ListBookTitle(ctx context.Context, filter *booktitlemodel.Filter, paging *common.Paging) ([]booktitlemodel.BookTitle, error) {
 	resultDbModel, err := repo.store.ListBook(ctx, filter, []string{"name"}, paging)
 
 	if err != nil {
 		return nil, err
 	}
 
-	result := make([]booktitlemodel.Book, len(resultDbModel))
+	result := make([]booktitlemodel.BookTitle, len(resultDbModel))
 	for i, v := range resultDbModel {
-		result[i] = booktitlemodel.Book{
+		result[i] = booktitlemodel.BookTitle{
 			ID:          v.ID,
 			Name:        *v.Name,
 			Description: *v.Description,

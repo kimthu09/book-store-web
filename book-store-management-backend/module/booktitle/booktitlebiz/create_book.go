@@ -8,8 +8,8 @@ import (
 	"context"
 )
 
-type CreateBookRepo interface {
-	CreateBook(ctx context.Context, data *booktitlemodel.Book) error
+type CreateBookTitleRepo interface {
+	CreateBook(ctx context.Context, data *booktitlemodel.BookTitle) error
 }
 
 type authorRepo interface {
@@ -24,23 +24,23 @@ type categoryRepo interface {
 	IsExistCategoryId(ctx context.Context, categoryId string) bool
 }
 
-type createBookBiz struct {
+type createBookTitleBiz struct {
 	gen           generator.IdGenerator
-	repo          CreateBookRepo
+	repo          CreateBookTitleRepo
 	authorRepo    authorRepo
 	publisherRepo publisherRepo
 	categoryRepo  categoryRepo
 	requester     middleware.Requester
 }
 
-func NewCreateBookBiz(
+func NewCreateBookTitleBiz(
 	gen generator.IdGenerator,
-	repo CreateBookRepo,
+	repo CreateBookTitleRepo,
 	authorRepo authorRepo,
 	publisherRepo publisherRepo,
 	categoryRepo categoryRepo,
-	requester middleware.Requester) *createBookBiz {
-	return &createBookBiz{
+	requester middleware.Requester) *createBookTitleBiz {
+	return &createBookTitleBiz{
 		gen:           gen,
 		repo:          repo,
 		authorRepo:    authorRepo,
@@ -50,12 +50,12 @@ func NewCreateBookBiz(
 	}
 }
 
-func (biz *createBookBiz) CreateBook(ctx context.Context, reqData *booktitlemodel.ReqCreateBook, resData *booktitlemodel.ResCreateBook) error {
+func (biz *createBookTitleBiz) CreateBookTitle(ctx context.Context, reqData *booktitlemodel.ReqCreateBookTitle, resData *booktitlemodel.ResCreateBookTitle) error {
 	if !biz.requester.IsHasFeature(common.BookTitleCreateFeatureCode) {
 		return booktitlemodel.ErrBookTitleCreateNoPermission
 	}
 
-	data := &booktitlemodel.Book{
+	data := &booktitlemodel.BookTitle{
 		ID:          nil,
 		Name:        reqData.Name,
 		Description: reqData.Description,
@@ -85,7 +85,7 @@ func (biz *createBookBiz) CreateBook(ctx context.Context, reqData *booktitlemode
 	return nil
 }
 
-func handleBookId(gen generator.IdGenerator, data *booktitlemodel.Book) error {
+func handleBookId(gen generator.IdGenerator, data *booktitlemodel.BookTitle) error {
 	id, err := gen.IdProcess(data.ID)
 	if err != nil {
 		return err

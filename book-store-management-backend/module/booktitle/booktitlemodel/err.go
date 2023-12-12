@@ -7,7 +7,7 @@ import (
 
 var (
 	ErrBookTitleNotFound = common.NewCustomError(
-		errors.New("Book Title not found"),
+		errors.New("book Title not found"),
 		"BookTitle not found",
 		"ErrBookTitleNotFound",
 	)
@@ -22,7 +22,6 @@ var (
 		"name of Book Title is empty",
 		"ErrBookTitleNameEmpty",
 	)
-
 	ErrBookTitlePublisherIdEmpty = common.NewCustomError(
 		errors.New("publisher ID of Book Title is empty"),
 		"publisher ID of Book Title is empty",

@@ -19,19 +19,19 @@ import (
 	"net/http"
 )
 
-// CreateBook
+// CreateBookTitle
 // @BasePath /v1
 // @Security BearerAuth
 // @Summary Create booktitle name, desc, authors, categories.
 // @Tags booktitles
 // @Accept json
 // @Produce json
-// @Param booktitle body booktitlemodel.ReqCreateBook true "Create booktitle"
-// @Response 200 {object} booktitlemodel.ResCreateBook "booktitle id"
-// @Router /books [post]
+// @Param booktitle body booktitlemodel.ReqCreateBookTitle true "Create booktitle"
+// @Response 200 {object} booktitlemodel.ResCreateBookTitle "booktitle id"
+// @Router /booktitles [post]
 func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var reqData booktitlemodel.ReqCreateBook
+		var reqData booktitlemodel.ReqCreateBookTitle
 		if err := c.ShouldBind(&reqData); err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
@@ -52,11 +52,11 @@ func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		gen := generator.NewShortIdGenerator()
 
-		biz := booktitlebiz.NewCreateBookBiz(gen, repo, authorRepo, publisherRepo, categoryRepo, requester)
+		biz := booktitlebiz.NewCreateBookTitleBiz(gen, repo, authorRepo, publisherRepo, categoryRepo, requester)
 
-		var resData booktitlemodel.ResCreateBook
+		var resData booktitlemodel.ResCreateBookTitle
 
-		if err := biz.CreateBook(c.Request.Context(), &reqData, &resData); err != nil {
+		if err := biz.CreateBookTitle(c.Request.Context(), &reqData, &resData); err != nil {
 			db.Rollback()
 			panic(err)
 		}

@@ -7,25 +7,25 @@ import (
 	"context"
 )
 
-type ListBookRepo interface {
-	ListBook(ctx context.Context, filter *booktitlemodel.Filter, paging *common.Paging) ([]booktitlemodel.Book, error)
+type ListBookTitleRepo interface {
+	ListBookTitle(ctx context.Context, filter *booktitlemodel.Filter, paging *common.Paging) ([]booktitlemodel.BookTitle, error)
 }
 
-type listBookBiz struct {
-	repo      ListBookRepo
+type listBookTitleBiz struct {
+	repo      ListBookTitleRepo
 	requester middleware.Requester
 }
 
-func NewListBookBiz(repo ListBookRepo, requester middleware.Requester) *listBookBiz {
-	return &listBookBiz{repo: repo, requester: requester}
+func NewListBookTitleBiz(repo ListBookTitleRepo, requester middleware.Requester) *listBookTitleBiz {
+	return &listBookTitleBiz{repo: repo, requester: requester}
 }
 
-func (biz *listBookBiz) ListBook(ctx context.Context, filter *booktitlemodel.Filter, paging *common.Paging) ([]booktitlemodel.Book, error) {
+func (biz *listBookTitleBiz) ListBookTitle(ctx context.Context, filter *booktitlemodel.Filter, paging *common.Paging) ([]booktitlemodel.BookTitle, error) {
 	if !biz.requester.IsHasFeature(common.BookTitleViewFeatureCode) {
 		return nil, booktitlemodel.ErrBookTitleViewNoPermission
 	}
 
-	result, err := biz.repo.ListBook(ctx, filter, paging)
+	result, err := biz.repo.ListBookTitle(ctx, filter, paging)
 	if err != nil {
 		return nil, err
 	}

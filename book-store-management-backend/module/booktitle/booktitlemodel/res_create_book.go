@@ -1,5 +1,5 @@
 package booktitlemodel
 
-type ResCreateBook struct {
+type ResCreateBookTitle struct {
 	Id string `json:"id" json:"example:bookId"`
 }

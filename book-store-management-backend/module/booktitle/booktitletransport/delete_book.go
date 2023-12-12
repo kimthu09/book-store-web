@@ -19,7 +19,7 @@ import (
 // @Accept json
 // @Produce json
 // @Response 200 {object} common.ResSuccess
-// @Router /books/:id [delete]
+// @Router /booktitles/:id [delete]
 func DeleteBook(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		bookId := c.Param("bookId")

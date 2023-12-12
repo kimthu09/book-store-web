@@ -11,8 +11,8 @@ import (
 func (store *sqlStore) FindBook(
 	ctx context.Context,
 	conditions map[string]interface{},
-	moreKeys ...string) (*booktitlemodel.Book, error) {
-	var data booktitlemodel.Book
+	moreKeys ...string) (*booktitlemodel.BookTitle, error) {
+	var data booktitlemodel.BookTitle
 	db := store.db
 
 	for i := range moreKeys {

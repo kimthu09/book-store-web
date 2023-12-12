@@ -48,12 +48,6 @@ func handleFilter(
 			timeTo := time.Unix(*filter.DateToCreateAt, 0)
 			db = db.Where("createdAt <= ?", timeTo)
 		}
-		if filter.MinSellPrice != nil {
-			db = db.Where("sellPrice >= ?", *filter.MinSellPrice)
-		}
-		if filter.MaxSellPrice != nil {
-			db = db.Where("sellPrice <= ?", *filter.MaxSellPrice)
-		}
 		if filter.IsActive != nil {
 			db = db.Where("isActive = ?", *filter.IsActive)
 		}

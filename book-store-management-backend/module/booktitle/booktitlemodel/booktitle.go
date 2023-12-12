@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type Book struct {
+type BookTitle struct {
 	ID          *string  `json:"id" gorm:"column:id;primaryKey"`
 	Name        string   `json:"name" gorm:"column:name"`
 	Description string   `json:"desc" gorm:"column:desc"`
@@ -18,11 +18,11 @@ type Book struct {
 	IsActive  *int       `json:"isActive,omitempty" gorm:"isActive; column:isActive; default:1"`
 }
 
-func (*Book) TableName() string {
+func (*BookTitle) TableName() string {
 	return common.TableBookTitle
 }
 
-func (data *Book) Validate() *common.AppError {
+func (data *BookTitle) Validate() *common.AppError {
 	if common.ValidateEmptyString(data.Name) {
 		return ErrBookTitleNameEmpty
 	}
