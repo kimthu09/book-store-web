@@ -30,8 +30,9 @@ func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(common.ErrInvalidRequest(err))
 		}
 
+		db := appCtx.GetMainDBConnection()
 		gen := generator.NewShortIdGenerator()
-		store := bookstore.NewSQLStore(appCtx.GetMainDBConnection())
+		store := bookstore.NewSQLStore(db)
 		repo := bookrepo.NewCreateBookRepo(store)
 		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
 
@@ -42,6 +43,10 @@ func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
+		if err := db.Commit().Error; err != nil {
+			db.Rollback()
+			panic(err)
+		}
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(resData))
 	}
 }
