@@ -3,7 +3,12 @@ package booktransport
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/appctx"
+	"book-store-management-backend/component/generator"
+	"book-store-management-backend/middleware"
+	"book-store-management-backend/module/book/bookbiz"
 	"book-store-management-backend/module/book/bookmodel"
+	"book-store-management-backend/module/book/bookrepo"
+	"book-store-management-backend/module/book/bookstore"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -25,35 +30,17 @@ func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(common.ErrInvalidRequest(err))
 		}
 
-		//requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
+		gen := generator.NewShortIdGenerator()
+		store := bookstore.NewSQLStore(appCtx.GetMainDBConnection())
+		repo := bookrepo.NewCreateBookRepo(store)
+		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
 
-		//db := appCtx.GetMainDBConnection().Begin()
-		//
-		//store := booktitlestore.NewSQLStore(db)
-		//authorStore := authorstore.NewSQLStore(db)
-		//publisherStore := publisherstore.NewSQLStore(db)
-		//categoryStore := categorystore.NewSQLStore(db)
-		//
-		//repo := booktitlerepo.NewCreateBookRepo(store)
-		//authorRepo := authorrepo.NewExistAuthorRepo(authorStore)
-		//publisherRepo := publisherrepo.NewExistPublisherRepo(publisherStore)
-		//categoryRepo := categoryrepo.NewExistCategoryRepo(categoryStore)
-		//
-		//gen := generator.NewShortIdGenerator()
-		//
-		//biz := booktitlebiz.NewCreateBookTitleBiz(gen, repo, authorRepo, publisherRepo, categoryRepo, requester)
-		//
+		biz := bookbiz.NewCreateBookBiz(gen, repo, requester)
+
 		var resData bookmodel.ResCreateBook
-		//
-		//if err := biz.CreateBookTitle(c.Request.Context(), &reqData, &resData); err != nil {
-		//	db.Rollback()
-		//	panic(err)
-		//}
-		//
-		//if err := db.Commit().Error; err != nil {
-		//	db.Rollback()
-		//	panic(err)
-		//}
+		if err := biz.CreateBook(c.Request.Context(), &reqData, &resData); err != nil {
+			panic(err)
+		}
 
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(resData))
 	}
