@@ -8,11 +8,11 @@ import (
 )
 
 type DeleteBookRepo interface {
-	DeleteBook(ctx context.Context, id string) error
+	DeleteBookTitle(ctx context.Context, id string) error
 }
 
 type DeleteRepo interface {
-	DeleteBook(ctx context.Context, id string) error
+	DeleteBookTitle(ctx context.Context, id string) error
 }
 
 type deleteBookBiz struct {
@@ -27,10 +27,10 @@ func NewDeleteBookBiz(requester middleware.Requester, repo DeleteRepo) *deleteBo
 	}
 }
 
-func (biz *deleteBookBiz) DeleteBook(ctx context.Context, id string) error {
+func (biz *deleteBookBiz) DeleteBookTitle(ctx context.Context, id string) error {
 	if !biz.requester.IsHasFeature(common.BookTitleDeleteFeatureCode) {
 		return booktitlemodel.ErrBookTitleDeleteNoPermission
 	}
 
-	return biz.repo.DeleteBook(ctx, id)
+	return biz.repo.DeleteBookTitle(ctx, id)
 }

@@ -9,7 +9,7 @@ import (
 )
 
 type ListBookStore interface {
-	ListBook(ctx context.Context, filter *booktitlemodel.Filter, propertiesContainSearchKey []string, paging *common.Paging) ([]booktitlestore.BookTitleDBModel, error)
+	ListBookTitle(ctx context.Context, filter *booktitlemodel.Filter, propertiesContainSearchKey []string, paging *common.Paging) ([]booktitlestore.BookTitleDBModel, error)
 }
 
 type listBookTitleRepo struct {
@@ -21,7 +21,7 @@ func NewListBookTitleRepo(store ListBookStore) *listBookTitleRepo {
 }
 
 func (repo *listBookTitleRepo) ListBookTitle(ctx context.Context, filter *booktitlemodel.Filter, paging *common.Paging) ([]booktitlemodel.BookTitle, error) {
-	resultDbModel, err := repo.store.ListBook(ctx, filter, []string{"name"}, paging)
+	resultDbModel, err := repo.store.ListBookTitle(ctx, filter, []string{"name"}, paging)
 
 	if err != nil {
 		return nil, err

@@ -6,7 +6,7 @@ import (
 )
 
 type updateBookStore interface {
-	UpdateBook(ctx context.Context, id string, data *booktitlestore.BookTitleDBModel) error
+	UpdateBookTitle(ctx context.Context, id string, data *booktitlestore.BookTitleDBModel) error
 }
 
 type updateBookRepo struct {
@@ -17,7 +17,7 @@ func NewUpdateBookRepo(store updateBookStore) *updateBookRepo {
 	return &updateBookRepo{store: store}
 }
 
-func (repo *updateBookRepo) UpdateBook(ctx context.Context, id string, data *booktitlestore.BookTitleDBModel) error {
-	err := repo.store.UpdateBook(ctx, id, data)
+func (repo *updateBookRepo) UpdateBookTitle(ctx context.Context, id string, data *booktitlestore.BookTitleDBModel) error {
+	err := repo.store.UpdateBookTitle(ctx, id, data)
 	return err
 }

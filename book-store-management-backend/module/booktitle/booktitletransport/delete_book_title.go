@@ -36,7 +36,7 @@ func DeleteBookTitle(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		fmt.Println(biz)
 
-		if err := biz.DeleteBook(c.Request.Context(), bookId); err != nil {
+		if err := biz.DeleteBookTitle(c.Request.Context(), bookId); err != nil {
 			panic(err)
 		}
 		c.JSON(http.StatusOK, common.ResSuccess{IsSuccess: true})

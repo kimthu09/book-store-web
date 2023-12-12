@@ -8,7 +8,7 @@ import (
 )
 
 type CreateBookStore interface {
-	CreateBook(ctx context.Context, bookGeneral *booktitlestore.BookTitleDBModel) error
+	CreateBookTitle(ctx context.Context, bookGeneral *booktitlestore.BookTitleDBModel) error
 }
 
 type createBookRepo struct {
@@ -29,7 +29,7 @@ func (repo *createBookRepo) CreateBook(ctx context.Context, data *booktitlemodel
 		AuthorIDs:   &strAuthorIDs,
 		CategoryIDs: &strCategoryIDs,
 	}
-	if err := repo.store.CreateBook(ctx, &dbData); err != nil {
+	if err := repo.store.CreateBookTitle(ctx, &dbData); err != nil {
 		return err
 	}
 	return nil
