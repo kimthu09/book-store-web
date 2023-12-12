@@ -3,6 +3,7 @@ package booktransport
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/appctx"
+	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/book/bookbiz"
 	"book-store-management-backend/module/book/bookrepo"
 	"book-store-management-backend/module/book/bookstore"
@@ -26,10 +27,12 @@ func DeleteBook(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(common.ErrInvalidRequest(nil))
 		}
 
+		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
+
 		store := bookstore.NewSQLStore(appCtx.GetMainDBConnection())
 		repo := bookrepo.NewDeleteBookRepo(store)
 
-		biz := bookbiz.NewDeleteBookBiz(repo)
+		biz := bookbiz.NewDeleteBookBiz(requester, repo)
 
 		fmt.Println(biz)
 

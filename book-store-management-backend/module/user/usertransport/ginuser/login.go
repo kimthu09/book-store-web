@@ -16,7 +16,7 @@ import (
 // @BasePath /v1
 // @Security BearerAuth
 // @Summary Login
-// @Tags common
+// @Tags auth
 // @Accept json
 // @Produce json
 // @Param user body usermodel.ReqLoginUser true "login information"

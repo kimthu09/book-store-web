@@ -13,8 +13,8 @@ import (
 	"book-store-management-backend/module/supplier/suppliertransport/ginsupplier"
 	"book-store-management-backend/module/user/usertransport/ginuser"
 	"fmt"
-	"github.com/gin-contrib/cors"
 	"log"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -68,13 +68,8 @@ func main() {
 
 	appCtx := appctx.NewAppContext(db, cfg.SecretKey)
 
-	c := cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:8080", "http://localhost:3000"},
-		AllowCredentials: true,
-	})
-
 	r := gin.Default()
-	r.Use(c)
+	r.Use(CORSMiddleware())
 	r.Use(middleware.Recover(appCtx))
 
 	r.GET("/ping", func(c *gin.Context) {
@@ -84,7 +79,7 @@ func main() {
 	})
 
 	docs.SwaggerInfo.BasePath = "/v1"
-	v1 := r.Group("/v1", c)
+	v1 := r.Group("/v1")
 	{
 		v1.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
@@ -101,7 +96,6 @@ func main() {
 	if err := r.Run(fmt.Sprintf(":%s", cfg.Port)); err != nil {
 		log.Fatalln("Error running server:", err)
 	}
-
 }
 
 func loadConfig() (*appConfig, error) {
@@ -128,4 +122,21 @@ func connectDatabase(cfg *appConfig) (*gorm.DB, error) {
 		return nil, fmt.Errorf("failed to connect to database: %w", err)
 	}
 	return db.Debug(), nil
+}
+
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(http.StatusNoContent)
+			return
+		}
+
+		c.Next()
+	}
 }

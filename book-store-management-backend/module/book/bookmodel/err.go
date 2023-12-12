@@ -6,6 +6,11 @@ import (
 )
 
 var (
+	ErrBookNotFound = common.NewCustomError(
+		errors.New("Book not found"),
+		"Book not found",
+		"ErrBookNotFound",
+	)
 	ErrBookIdInvalid = common.NewCustomError(
 		errors.New("id of Book is invalid"),
 		"id of Book is invalid",
@@ -82,10 +87,17 @@ var (
 	ErrBookIdDuplicate = common.ErrDuplicateKey(
 		errors.New("id of Book is duplicate"),
 	)
+
 	ErrBookCreateNoPermission = common.ErrNoPermission(
 		errors.New("you have no permission to create Book"),
 	)
 	ErrBookViewNoPermission = common.ErrNoPermission(
 		errors.New("you have no permission to view Book"),
+	)
+	ErrBookUpdateNoPermission = common.ErrNoPermission(
+		errors.New("you have no permission to update Book"),
+	)
+	ErrBookDeleteNoPermission = common.ErrNoPermission(
+		errors.New("you have no permission to delete Book"),
 	)
 )

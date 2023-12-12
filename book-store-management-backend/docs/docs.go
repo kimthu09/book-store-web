@@ -145,6 +145,12 @@ const docTemplate = `{
                         "in": "query"
                     },
                     {
+                        "type": "boolean",
+                        "example": true,
+                        "name": "isActive",
+                        "in": "query"
+                    },
+                    {
                         "type": "number",
                         "example": 1000,
                         "name": "maxSellPrice",
@@ -762,7 +768,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "common"
+                    "auth"
                 ],
                 "summary": "Login",
                 "parameters": [
@@ -1376,6 +1382,10 @@ const docTemplate = `{
                 "createdAtTo": {
                     "type": "integer",
                     "example": 1709500431
+                },
+                "isActive": {
+                    "type": "boolean",
+                    "example": true
                 },
                 "maxSellPrice": {
                     "type": "number",

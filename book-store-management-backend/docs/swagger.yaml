@@ -77,6 +77,9 @@ definitions:
       createdAtTo:
         example: 1709500431
         type: integer
+      isActive:
+        example: true
+        type: boolean
       maxSellPrice:
         example: 1000
         type: number
@@ -865,6 +868,10 @@ paths:
         in: query
         name: createdAtTo
         type: integer
+      - example: true
+        in: query
+        name: isActive
+        type: boolean
       - example: 1000
         in: query
         name: maxSellPrice
@@ -1276,7 +1283,7 @@ paths:
       - BearerAuth: []
       summary: Login
       tags:
-      - common
+      - auth
   /publishers:
     get:
       consumes:
