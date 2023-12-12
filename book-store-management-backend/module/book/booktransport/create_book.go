@@ -22,13 +22,13 @@ import (
 // CreateBookTitle
 // @BasePath /v1
 // @Security BearerAuth
-// @Summary Create booktitle name, desc, authors, categories.
-// @Tags booktitles
+// @Summary Create Book
+// @Tags books
 // @Accept json
 // @Produce json
-// @Param booktitle body booktitlemodel.ReqCreateBookTitle true "Create booktitle"
-// @Response 200 {object} booktitlemodel.ResCreateBookTitle "booktitle id"
-// @Router /booktitles [post]
+// @Param booktitle body bookmodel.ReqCreateBook true "Create Book"
+// @Response 200 {object} bookmodel.ResCreateBook "book id"
+// @Router /books [post]
 func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var reqData booktitlemodel.ReqCreateBookTitle

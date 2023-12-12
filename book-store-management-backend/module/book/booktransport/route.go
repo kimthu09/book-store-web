@@ -8,11 +8,11 @@ import (
 )
 
 func SetupRoutes(router *gin.RouterGroup, appCtx appctx.AppContext) {
-	books := router.Group("/booktitles", middleware.RequireAuth(appCtx))
+	books := router.Group("/books", middleware.RequireAuth(appCtx))
 	{
-		books.GET("", ListBookTitle(appCtx))
+		//books.GET("", ListBook(appCtx))
 		books.POST("", CreateBook(appCtx))
-		books.PATCH("/:id", UpdateBookInfo(appCtx))
-		books.DELETE("/:id", DeleteBook(appCtx))
+		//books.PATCH("/:id", UpdateBookInfo(appCtx))
+		//books.DELETE("/:id", DeleteBook(appCtx))
 	}
 }

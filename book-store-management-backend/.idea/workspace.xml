@@ -6,9 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="bcd0db1b-7464-48d1-92cb-22a4f9dac902" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitletransport/create_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitletransport/create_book_title.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitletransport/delete_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitletransport/delete_book_title.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitletransport/update_book_info.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitletransport/update_book_title_info.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/docs.go" beforeDir="false" afterPath="$PROJECT_DIR$/docs/docs.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/swagger.json" beforeDir="false" afterPath="$PROJECT_DIR$/docs/swagger.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/swagger.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/swagger.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/book/bookmodel/req_create_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/book/bookmodel/req_create_book.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/book/bookmodel/res_create_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/book/bookmodel/res_create_book.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/book/booktransport/create_book.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/book/booktransport/create_book.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/book/booktransport/route.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/book/booktransport/route.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,11 +44,17 @@
     "git-widget-placeholder": "quoc",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/home/quocv",
+    "last_opened_file_path": "/home/quocv/src/uit/book-store-web/book-store-management-backend/module/book/bookmodel",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/module/book/bookmodel" />
+      <recent name="$PROJECT_DIR$/module/book/booktransport" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />

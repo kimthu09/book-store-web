@@ -34,6 +34,17 @@ definitions:
       paging:
         $ref: '#/definitions/common.Paging'
     type: object
+  bookmodel.ReqCreateBook:
+    properties:
+      id:
+        example: bookId
+        type: string
+    type: object
+  bookmodel.ResCreateBook:
+    properties:
+      id:
+        type: string
+    type: object
   bookmodel.SimpleBook:
     properties:
       id:
@@ -815,6 +826,29 @@ paths:
       summary: Create author with name
       tags:
       - authors
+  /books:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create Book
+        in: body
+        name: booktitle
+        required: true
+        schema:
+          $ref: '#/definitions/bookmodel.ReqCreateBook'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: book id
+          schema:
+            $ref: '#/definitions/bookmodel.ResCreateBook'
+      security:
+      - BearerAuth: []
+      summary: Create Book
+      tags:
+      - books
   /booktitles:
     get:
       consumes:
