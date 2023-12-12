@@ -22,7 +22,7 @@ import (
 // @Router /booktitles/:id [delete]
 func DeleteBook(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		bookId := c.Param("bookId")
+		bookId := c.Param("id")
 		if bookId == "" {
 			panic(common.ErrInvalidRequest(nil))
 		}

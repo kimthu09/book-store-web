@@ -22,7 +22,6 @@ import (
 func UpdateBookInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Param("id")
-		fmt.Println(id)
 		var reqData booktitlemodel.ReqUpdateBookInfo
 
 		if err := c.ShouldBind(&reqData); err != nil || id == "" {
