@@ -19,8 +19,6 @@
 -- Table structure for table `Author`
 --
 
-use bookstoremanagement;
-
 DROP TABLE IF EXISTS `Author`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -53,19 +51,22 @@ DROP TABLE IF EXISTS `Book`;
 CREATE TABLE `Book` (
   `id` varchar(12) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `desc` text,
-  `edition` int NOT NULL,
-  `qty` int DEFAULT '0',
-  `listedPrice` float NOT NULL,
-  `sellPrice` float NOT NULL,
-  `publisherId` varchar(12) DEFAULT NULL,
-  `authorIds` text NOT NULL,
-  `categoryIds` text NOT NULL,
-  `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
-  `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `booktitleid` varchar(12) NOT NULL,
+  `publisherid` varchar(12) NOT NULL,
+  `edition` int NOT NULL DEFAULT '1',
+  `quantity` int NOT NULL DEFAULT '0',
+  `listedPrice` int DEFAULT NULL,
+  `sellPrice` int DEFAULT NULL,
+  `importPrice` int DEFAULT NULL,
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `deletedAt` datetime DEFAULT NULL,
   `isActive` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`,`booktitleid`),
+  KEY `Book_BookTitle_id_fk` (`booktitleid`),
+  KEY `Book_Publisher_id_fk` (`publisherid`),
+  CONSTRAINT `Book_BookTitle_id_fk` FOREIGN KEY (`booktitleid`) REFERENCES `BookTitle` (`id`),
+  CONSTRAINT `Book_Publisher_id_fk` FOREIGN KEY (`publisherid`) REFERENCES `Publisher` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -74,7 +75,6 @@ CREATE TABLE `Book` (
 --
 
 LOCK TABLES `Book` WRITE;
-INSERT INTO `Book` VALUES ('stlbt','Tôi là Bêtô','Một tác phẩm của Nguyễn Nhật Ánh',1,0,80000,80000,'nxbkd','tgnna','dmtt|dmtruyen','2023-12-09 20:41:28','2023-12-11 09:54:37',NULL,1),('sttgbct','Tôi tài giỏi, bạn cũng thế!','Tôi tài giỏi, bạn cũng thế! (nhan đề gốc tiếng Anh: I Am Gifted, So Are You!) là quyển sách bán chạy nhất của doanh nhân người Singapore Adam Khoo, viết về những phương pháp học tập tiên tiến. Quyển sách đã được dịch ra hàng chục thứ tiếng, trong đó Tôi tài giỏi, bạn cũng thế! là phiên bản tiếng Việt được dịch bởi hai dịch giả nổi tiếng Trần Đăng Khoa và Uông Xuân Vy của TGM Books. Tại Việt Nam, quyển sách đã trở thành một hiện tượng giáo dục trong những năm 2009-2011 và đạt được nhiều thành tựu trong lĩnh vực xuất bản, tạo ra kỷ lục mới cho ngành xuất bản Việt Nam với hơn 200.000 bản in được bán ra và hơn 400.000 e-book được phân phối.',1,0,150000,150000,'nxbgd','tgak','dmkns','2023-12-10 16:07:24','2023-12-11 09:50:45',NULL,1);
 UNLOCK TABLES;
 
 --
@@ -103,6 +103,35 @@ CREATE TABLE `BookChangeHistory` (
 --
 
 LOCK TABLES `BookChangeHistory` WRITE;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `BookTitle`
+--
+
+DROP TABLE IF EXISTS `BookTitle`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `BookTitle` (
+  `id` varchar(12) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `desc` text,
+  `authorIds` text NOT NULL,
+  `categoryIds` text NOT NULL,
+  `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deletedAt` datetime DEFAULT NULL,
+  `isActive` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `BookTitle`
+--
+
+LOCK TABLES `BookTitle` WRITE;
+INSERT INTO `BookTitle` VALUES ('stlbt','Tôi là Bêtô','Một tác phẩm của Nguyễn Nhật Ánh','tgnna','dmtt|dmtruyen','2023-12-09 20:41:28','2023-12-11 09:54:37',NULL,1),('sttgbct','Tôi tài giỏi, bạn cũng thế!','Tôi tài giỏi, bạn cũng thế! (nhan đề gốc tiếng Anh: I Am Gifted, So Are You!) là quyển sách bán chạy nhất của doanh nhân người Singapore Adam Khoo, viết về những phương pháp học tập tiên tiến. Quyển sách đã được dịch ra hàng chục thứ tiếng, trong đó Tôi tài giỏi, bạn cũng thế! là phiên bản tiếng Việt được dịch bởi hai dịch giả nổi tiếng Trần Đăng Khoa và Uông Xuân Vy của TGM Books. Tại Việt Nam, quyển sách đã trở thành một hiện tượng giáo dục trong những năm 2009-2011 và đạt được nhiều thành tựu trong lĩnh vực xuất bản, tạo ra kỷ lục mới cho ngành xuất bản Việt Nam với hơn 200.000 bản in được bán ra và hơn 400.000 e-book được phân phối.','tgak','dmkns','2023-12-10 16:07:24','2023-12-11 09:50:45',NULL,1),('UDKbP0vIR','Tôi tài giỏi, bạn cũng thế!','Tôi tài giỏi, bạn cũng thế! (nhan đề gốc tiếng Anh: I Am Gifted, So Are You!) là quyển sách bán chạy nhất của doanh nhân người Singapore Adam Khoo, viết về những phương pháp học tập tiên tiến. Quyển sách đã được dịch ra hàng chục thứ tiếng, trong đó Tôi tài giỏi, bạn cũng thế! là phiên bản tiếng Việt được dịch bởi hai dịch giả nổi tiếng Trần Đăng Khoa và Uông Xuân Vy của TGM Books. Tại Việt Nam, quyển sách đã trở thành một hiện tượng giáo dục trong những năm 2009-2011 và đạt được nhiều thành tựu trong lĩnh vực xuất bản, tạo ra kỷ lục mới cho ngành xuất bản Việt Nam với hơn 200.000 bản in được bán ra và hơn 400.000 e-book được phân phối.','tgak','dmkns','2023-12-12 02:39:46','2023-12-12 02:39:46',NULL,1);
 UNLOCK TABLES;
 
 --
@@ -430,7 +459,7 @@ CREATE TABLE `RoleFeature` (
 --
 
 LOCK TABLES `RoleFeature` WRITE;
-INSERT INTO `RoleFeature` VALUES ('admin','AUTHOR_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','AUTHOR_DELETE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','AUTHOR_UPDATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','AUTHOR_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','BOOK_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','BOOK_DELETE','2023-12-11 11:58:04','2023-12-11 11:58:04',NULL,1),('admin','BOOK_UPDATE','2023-12-11 09:49:17','2023-12-11 09:49:17',NULL,1),('admin','BOOK_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAN_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAN_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAT_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAT_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAT_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CATEGORY_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CATEGORY_DELETE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CATEGORY_UPDATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CATEGORY_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CUS_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CUS_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CUS_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CUS_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','EXP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','EXP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','IMP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','IMP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','IMP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','ING_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','ING_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','INV_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','INV_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','PUBLISHER_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','PUBLISHER_DELETE','2023-12-11 11:59:02','2023-12-11 11:59:02',NULL,1),('admin','PUBLISHER_UPDATE','2023-12-11 11:59:02','2023-12-11 11:59:02',NULL,1),('admin','PUBLISHER_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','SUP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','SUP_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','SUP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','SUP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','TOP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','TOP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','TOP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','TOP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','USE_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','USE_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','USE_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CAN_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CAT_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CAT_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CUS_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CUS_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CUS_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','EXP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','FOD_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','FOD_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','FOD_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','IMP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','IMP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','ING_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','INV_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','SUP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','SUP_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','SUP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','TOP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','TOP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','TOP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','USE_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','USE_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1);
+INSERT INTO `RoleFeature` VALUES ('admin','AUTHOR_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','AUTHOR_DELETE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','AUTHOR_UPDATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','AUTHOR_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','BOOK_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','BOOK_DELETE','2023-12-11 11:58:04','2023-12-11 11:58:04',NULL,1),('admin','BOOK_TITLE_CREATE','2023-12-12 02:39:07','2023-12-12 02:39:07',NULL,1),('admin','BOOK_TITLE_DELETE','2023-12-12 02:39:07','2023-12-12 02:39:07',NULL,1),('admin','BOOK_TITLE_UPDATE','2023-12-12 02:39:07','2023-12-12 02:39:07',NULL,1),('admin','BOOK_TITLE_VIEW','2023-12-12 02:39:07','2023-12-12 02:39:07',NULL,1),('admin','BOOK_UPDATE','2023-12-11 09:49:17','2023-12-11 09:49:17',NULL,1),('admin','BOOK_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAN_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAN_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAT_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAT_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAT_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CATEGORY_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CATEGORY_DELETE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CATEGORY_UPDATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CATEGORY_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CUS_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CUS_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CUS_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CUS_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','EXP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','EXP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','IMP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','IMP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','IMP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','ING_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','ING_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','INV_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','INV_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','PUBLISHER_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','PUBLISHER_DELETE','2023-12-11 11:59:02','2023-12-11 11:59:02',NULL,1),('admin','PUBLISHER_UPDATE','2023-12-11 11:59:02','2023-12-11 11:59:02',NULL,1),('admin','PUBLISHER_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','SUP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','SUP_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','SUP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','SUP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','USE_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','USE_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','USE_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CAN_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CAT_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CAT_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CUS_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CUS_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CUS_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','EXP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','FOD_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','IMP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','IMP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','ING_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','INV_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','SUP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','SUP_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','SUP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','USE_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','USE_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1);
 UNLOCK TABLES;
 
 --
@@ -639,4 +668,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-12  0:58:37
+-- Dump completed on 2023-12-12 10:44:18

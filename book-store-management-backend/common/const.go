@@ -8,6 +8,7 @@ const (
 	TableCategory                 string = "Category"
 	TableUser                     string = "MUser"
 	TableBook                     string = "Book"
+	TableBookTitle                string = "BookTitle"
 	TablePublisher                string = "Publisher"
 	TableSupplier                 string = "Supplier"
 	TableSupplierDebt             string = "SupplierDebt"
@@ -35,6 +36,11 @@ const (
 	BookUpdateFeatureCode = "BOOK_UPDATE"
 	BookViewFeatureCode   = "BOOK_VIEW"
 	BookDeleteFeatureCode = "BOOK_DELETE"
+
+	BookTitleCreateFeatureCode = "BOOK_TITLE_CREATE"
+	BookTitleUpdateFeatureCode = "BOOK_TITLE_UPDATE"
+	BookTitleViewFeatureCode   = "BOOK_TITLE_VIEW"
+	BookTitleDeleteFeatureCode = "BOOK_TITLE_DELETE"
 
 	PublisherCreateFeatureCode = "PUBLISHER_CREATE"
 	PublisherViewFeatureCode   = "PUBLISHER_VIEW"

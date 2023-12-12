@@ -34,7 +34,16 @@ definitions:
       paging:
         $ref: '#/definitions/common.Paging'
     type: object
-  bookmodel.Book:
+  bookmodel.SimpleBook:
+    properties:
+      id:
+        example: idOfBook
+        type: string
+      name:
+        example: Doraemon
+        type: string
+    type: object
+  booktitlemodel.BookTitle:
     properties:
       authorIds:
         items:
@@ -50,26 +59,16 @@ definitions:
         type: string
       desc:
         type: string
-      edition:
-        type: integer
       id:
         type: string
       isActive:
         type: integer
-      listedPrice:
-        type: number
       name:
         type: string
-      publisherId:
-        type: string
-      quantity:
-        type: integer
-      sellPrice:
-        type: number
       updatedAt:
         type: string
     type: object
-  bookmodel.Filter:
+  booktitlemodel.Filter:
     properties:
       createdAtFrom:
         example: 1709500431
@@ -80,17 +79,11 @@ definitions:
       isActive:
         example: true
         type: boolean
-      maxSellPrice:
-        example: 1000
-        type: number
-      minSellPrice:
-        example: 10
-        type: number
       searchKey:
         example: ""
         type: string
     type: object
-  bookmodel.ReqCreateBook:
+  booktitlemodel.ReqCreateBookTitle:
     properties:
       authorIds:
         example:
@@ -109,49 +102,28 @@ definitions:
         example: Tôi Là Bêtô là tác phẩm của nhà văn chuyên viết cho thanh thiếu niên
           Nguyễn Nhật Ánh.
         type: string
-      edition:
-        example: 1
-        type: integer
-      listedPrice:
-        example: 75000
-        type: number
+      id:
+        example: bookId
+        type: string
       name:
         example: Tôi là Bêtô
         type: string
-      publisherId:
-        example: nxbdk
-        type: string
-      quantity:
-        example: 0
-        type: integer
-      sellPrice:
-        example: 80000
-        type: number
     type: object
-  bookmodel.ResCreateBook:
+  booktitlemodel.ResCreateBookTitle:
     properties:
       id:
         type: string
     type: object
-  bookmodel.ResListBook:
+  booktitlemodel.ResListBookTitle:
     properties:
       data:
         items:
-          $ref: '#/definitions/bookmodel.Book'
+          $ref: '#/definitions/booktitlemodel.BookTitle'
         type: array
       filter:
-        $ref: '#/definitions/bookmodel.Filter'
+        $ref: '#/definitions/booktitlemodel.Filter'
       paging:
         $ref: '#/definitions/common.Paging'
-    type: object
-  bookmodel.SimpleBook:
-    properties:
-      id:
-        example: book id
-        type: string
-      name:
-        example: Những câu chuyện hay
-        type: string
     type: object
   categorymodel.Category:
     properties:
@@ -843,7 +815,7 @@ paths:
       summary: Create author with name
       tags:
       - authors
-  /books:
+  /booktitles:
     get:
       consumes:
       - application/json
@@ -872,14 +844,6 @@ paths:
         in: query
         name: isActive
         type: boolean
-      - example: 1000
-        in: query
-        name: maxSellPrice
-        type: number
-      - example: 10
-        in: query
-        name: minSellPrice
-        type: number
       - example: ""
         in: query
         name: search
@@ -890,35 +854,35 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/bookmodel.ResListBook'
+            $ref: '#/definitions/booktitlemodel.ResListBookTitle'
       security:
       - BearerAuth: []
-      summary: Get all books
+      summary: Get all booktitles
       tags:
-      - books
+      - booktitles
     post:
       consumes:
       - application/json
       parameters:
-      - description: Create book
+      - description: Create booktitle
         in: body
-        name: book
+        name: booktitle
         required: true
         schema:
-          $ref: '#/definitions/bookmodel.ReqCreateBook'
+          $ref: '#/definitions/booktitlemodel.ReqCreateBookTitle'
       produces:
       - application/json
       responses:
         "200":
-          description: book id
+          description: booktitle id
           schema:
-            $ref: '#/definitions/bookmodel.ResCreateBook'
+            $ref: '#/definitions/booktitlemodel.ResCreateBookTitle'
       security:
       - BearerAuth: []
-      summary: Create book name, desc, authors, categories, publisher, etc.
+      summary: Create booktitle name, desc, authors, categories.
       tags:
-      - books
-  /books/:id:
+      - booktitles
+  /booktitles/:id:
     delete:
       consumes:
       - application/json
@@ -931,9 +895,9 @@ paths:
             $ref: '#/definitions/common.ResSuccess'
       security:
       - BearerAuth: []
-      summary: Delete book by id
+      summary: Delete booktitle by id
       tags:
-      - books
+      - booktitles
   /categories:
     get:
       consumes:

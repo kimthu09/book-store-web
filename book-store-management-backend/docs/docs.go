@@ -96,7 +96,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/books": {
+        "/booktitles": {
             "get": {
                 "security": [
                     {
@@ -110,9 +110,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "books"
+                    "booktitles"
                 ],
-                "summary": "Get all books",
+                "summary": "Get all booktitles",
                 "parameters": [
                     {
                         "type": "integer",
@@ -151,18 +151,6 @@ const docTemplate = `{
                         "in": "query"
                     },
                     {
-                        "type": "number",
-                        "example": 1000,
-                        "name": "maxSellPrice",
-                        "in": "query"
-                    },
-                    {
-                        "type": "number",
-                        "example": 10,
-                        "name": "minSellPrice",
-                        "in": "query"
-                    },
-                    {
                         "type": "string",
                         "example": "",
                         "name": "search",
@@ -173,7 +161,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/bookmodel.ResListBook"
+                            "$ref": "#/definitions/booktitlemodel.ResListBookTitle"
                         }
                     }
                 }
@@ -191,31 +179,31 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "books"
+                    "booktitles"
                 ],
-                "summary": "Create book name, desc, authors, categories, publisher, etc.",
+                "summary": "Create booktitle name, desc, authors, categories.",
                 "parameters": [
                     {
-                        "description": "Create book",
-                        "name": "book",
+                        "description": "Create booktitle",
+                        "name": "booktitle",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bookmodel.ReqCreateBook"
+                            "$ref": "#/definitions/booktitlemodel.ReqCreateBookTitle"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "book id",
+                        "description": "booktitle id",
                         "schema": {
-                            "$ref": "#/definitions/bookmodel.ResCreateBook"
+                            "$ref": "#/definitions/booktitlemodel.ResCreateBookTitle"
                         }
                     }
                 }
             }
         },
-        "/books/:id": {
+        "/booktitles/:id": {
             "delete": {
                 "security": [
                     {
@@ -229,9 +217,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "books"
+                    "booktitles"
                 ],
-                "summary": "Delete book by id",
+                "summary": "Delete booktitle by id",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1319,7 +1307,20 @@ const docTemplate = `{
                 }
             }
         },
-        "bookmodel.Book": {
+        "bookmodel.SimpleBook": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "idOfBook"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Doraemon"
+                }
+            }
+        },
+        "booktitlemodel.BookTitle": {
             "type": "object",
             "properties": {
                 "authorIds": {
@@ -1343,36 +1344,21 @@ const docTemplate = `{
                 "desc": {
                     "type": "string"
                 },
-                "edition": {
-                    "type": "integer"
-                },
                 "id": {
                     "type": "string"
                 },
                 "isActive": {
                     "type": "integer"
                 },
-                "listedPrice": {
-                    "type": "number"
-                },
                 "name": {
                     "type": "string"
-                },
-                "publisherId": {
-                    "type": "string"
-                },
-                "quantity": {
-                    "type": "integer"
-                },
-                "sellPrice": {
-                    "type": "number"
                 },
                 "updatedAt": {
                     "type": "string"
                 }
             }
         },
-        "bookmodel.Filter": {
+        "booktitlemodel.Filter": {
             "type": "object",
             "properties": {
                 "createdAtFrom": {
@@ -1387,21 +1373,13 @@ const docTemplate = `{
                     "type": "boolean",
                     "example": true
                 },
-                "maxSellPrice": {
-                    "type": "number",
-                    "example": 1000
-                },
-                "minSellPrice": {
-                    "type": "number",
-                    "example": 10
-                },
                 "searchKey": {
                     "type": "string",
                     "example": ""
                 }
             }
         },
-        "bookmodel.ReqCreateBook": {
+        "booktitlemodel.ReqCreateBookTitle": {
             "type": "object",
             "properties": {
                 "authorIds": {
@@ -1427,33 +1405,17 @@ const docTemplate = `{
                     "type": "string",
                     "example": "Tôi Là Bêtô là tác phẩm của nhà văn chuyên viết cho thanh thiếu niên Nguyễn Nhật Ánh."
                 },
-                "edition": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "listedPrice": {
-                    "type": "number",
-                    "example": 75000
+                "id": {
+                    "type": "string",
+                    "example": "bookId"
                 },
                 "name": {
                     "type": "string",
                     "example": "Tôi là Bêtô"
-                },
-                "publisherId": {
-                    "type": "string",
-                    "example": "nxbdk"
-                },
-                "quantity": {
-                    "type": "integer",
-                    "example": 0
-                },
-                "sellPrice": {
-                    "type": "number",
-                    "example": 80000
                 }
             }
         },
-        "bookmodel.ResCreateBook": {
+        "booktitlemodel.ResCreateBookTitle": {
             "type": "object",
             "properties": {
                 "id": {
@@ -1461,33 +1423,20 @@ const docTemplate = `{
                 }
             }
         },
-        "bookmodel.ResListBook": {
+        "booktitlemodel.ResListBookTitle": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/bookmodel.Book"
+                        "$ref": "#/definitions/booktitlemodel.BookTitle"
                     }
                 },
                 "filter": {
-                    "$ref": "#/definitions/bookmodel.Filter"
+                    "$ref": "#/definitions/booktitlemodel.Filter"
                 },
                 "paging": {
                     "$ref": "#/definitions/common.Paging"
-                }
-            }
-        },
-        "bookmodel.SimpleBook": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "example": "book id"
-                },
-                "name": {
-                    "type": "string",
-                    "example": "Những câu chuyện hay"
                 }
             }
         },
