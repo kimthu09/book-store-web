@@ -274,9 +274,11 @@ const InsertNewBook = () => {
               <AlertDialogTitle>Đã thêm thành công</AlertDialogTitle>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <Link href={"/books"}>
-                <AlertDialogAction>OK</AlertDialogAction>
-              </Link>
+              <a href="/books">
+                <AlertDialogAction>
+                OK
+                </AlertDialogAction>
+              </a>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

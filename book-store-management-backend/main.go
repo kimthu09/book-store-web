@@ -99,6 +99,7 @@ func main() {
 	}
 }
 
+
 func loadConfig() (*appConfig, error) {
 	env, err := godotenv.Read()
 	if err != nil {

@@ -17,7 +17,10 @@ const fetcher = (url: string) =>
 export default function getAllCategory() {
   const { data, error, isLoading } = useSWR(
     "http://localhost:8080/v1/categories",
-    fetcher
+    fetcher,
+      {
+          dedupingInterval: 1,
+      }
   );
 
   return {
