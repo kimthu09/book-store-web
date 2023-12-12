@@ -9,7 +9,7 @@ import (
 )
 
 type CreateBookTitleRepo interface {
-	CreateBook(ctx context.Context, data *booktitlemodel.BookTitle) error
+	CreateBookTitle(ctx context.Context, data *booktitlemodel.BookTitle) error
 }
 
 type authorRepo interface {
@@ -25,28 +25,25 @@ type categoryRepo interface {
 }
 
 type createBookTitleBiz struct {
-	gen           generator.IdGenerator
-	repo          CreateBookTitleRepo
-	authorRepo    authorRepo
-	publisherRepo publisherRepo
-	categoryRepo  categoryRepo
-	requester     middleware.Requester
+	gen          generator.IdGenerator
+	repo         CreateBookTitleRepo
+	authorRepo   authorRepo
+	categoryRepo categoryRepo
+	requester    middleware.Requester
 }
 
 func NewCreateBookTitleBiz(
 	gen generator.IdGenerator,
 	repo CreateBookTitleRepo,
 	authorRepo authorRepo,
-	publisherRepo publisherRepo,
 	categoryRepo categoryRepo,
 	requester middleware.Requester) *createBookTitleBiz {
 	return &createBookTitleBiz{
-		gen:           gen,
-		repo:          repo,
-		authorRepo:    authorRepo,
-		publisherRepo: publisherRepo,
-		categoryRepo:  categoryRepo,
-		requester:     requester,
+		gen:          gen,
+		repo:         repo,
+		authorRepo:   authorRepo,
+		categoryRepo: categoryRepo,
+		requester:    requester,
 	}
 }
 
@@ -62,6 +59,9 @@ func (biz *createBookTitleBiz) CreateBookTitle(ctx context.Context, reqData *boo
 		AuthorIDs:   reqData.AuthorIDs,
 		CategoryIDs: reqData.CategoryIDs,
 	}
+	if reqData.Id != "" {
+		data.ID = &reqData.Id
+	}
 
 	if err := data.Validate(); err != nil {
 		return err
@@ -74,18 +74,22 @@ func (biz *createBookTitleBiz) CreateBookTitle(ctx context.Context, reqData *boo
 	if err := validateCategories(ctx, biz.categoryRepo, data.CategoryIDs); err != nil {
 		return err
 	}
-	if err := handleBookId(biz.gen, data); err != nil {
+	if err := handleBookTitleId(biz.gen, data); err != nil {
 		return err
 	}
 
-	if err := biz.repo.CreateBook(ctx, data); err != nil {
+	if err := biz.repo.CreateBookTitle(ctx, data); err != nil {
 		return err
 	}
 	resData.Id = *data.ID
 	return nil
 }
 
-func handleBookId(gen generator.IdGenerator, data *booktitlemodel.BookTitle) error {
+func handleBookTitleId(gen generator.IdGenerator, data *booktitlemodel.BookTitle) error {
+	if data.ID != nil && *data.ID != "" {
+		return nil
+	}
+
 	id, err := gen.IdProcess(data.ID)
 	if err != nil {
 		return err

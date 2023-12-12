@@ -3,7 +3,7 @@ package booktitlerepo
 import "context"
 
 type DeleteBookStore interface {
-	DeleteBook(ctx context.Context, id string) error
+	DeleteBookTitle(ctx context.Context, id string) error
 }
 
 type deleteBookRepo struct {
@@ -14,7 +14,7 @@ func NewDeleteBookRepo(store DeleteBookStore) *deleteBookRepo {
 	return &deleteBookRepo{store: store}
 }
 
-func (repo *deleteBookRepo) DeleteBook(ctx context.Context, id string) error {
-	err := repo.store.DeleteBook(ctx, id)
+func (repo *deleteBookRepo) DeleteBookTitle(ctx context.Context, id string) error {
+	err := repo.store.DeleteBookTitle(ctx, id)
 	return err
 }

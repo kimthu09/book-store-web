@@ -34,7 +34,7 @@ func UpdateBookTitleInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
 
-		db := appCtx.GetMainDBConnection()
+		db := appCtx.GetMainDBConnection().Begin()
 		store := booktitlestore.NewSQLStore(db)
 		authorStore := authorstore.NewSQLStore(db)
 		publisherStore := publisherstore.NewSQLStore(db)
@@ -47,11 +47,15 @@ func UpdateBookTitleInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		biz := booktitlebiz.NewUpdateBookBiz(repo, authorRepo, publisherRepo, categoryRepo, requester)
 
-		err := biz.UpdateBook(c.Request.Context(), id, &reqData)
+		err := biz.UpdateBookTitle(c.Request.Context(), id, &reqData)
 		if err != nil {
 			panic(err)
 		}
 
+		if err := db.Commit().Error; err != nil {
+			db.Rollback()
+			panic(err)
+		}
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(true))
 	}
 }

@@ -13,8 +13,6 @@ import (
 	booktitlestore "book-store-management-backend/module/booktitle/booktitlestore"
 	"book-store-management-backend/module/category/categoryrepo"
 	"book-store-management-backend/module/category/categorystore"
-	"book-store-management-backend/module/publisher/publisherrepo"
-	"book-store-management-backend/module/publisher/publisherstore"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -42,17 +40,15 @@ func CreateBookTitle(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		store := booktitlestore.NewSQLStore(db)
 		authorStore := authorstore.NewSQLStore(db)
-		publisherStore := publisherstore.NewSQLStore(db)
 		categoryStore := categorystore.NewSQLStore(db)
 
 		repo := booktitlerepo.NewCreateBookRepo(store)
 		authorRepo := authorrepo.NewExistAuthorRepo(authorStore)
-		publisherRepo := publisherrepo.NewExistPublisherRepo(publisherStore)
 		categoryRepo := categoryrepo.NewExistCategoryRepo(categoryStore)
 
 		gen := generator.NewShortIdGenerator()
 
-		biz := booktitlebiz.NewCreateBookTitleBiz(gen, repo, authorRepo, publisherRepo, categoryRepo, requester)
+		biz := booktitlebiz.NewCreateBookTitleBiz(gen, repo, authorRepo, categoryRepo, requester)
 
 		var resData booktitlemodel.ResCreateBookTitle
 

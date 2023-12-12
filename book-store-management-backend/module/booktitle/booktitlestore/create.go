@@ -10,7 +10,7 @@ func (*BookTitleDBModel) TableName() string {
 	return common.TableBookTitle
 }
 
-func (store *sqlStore) CreateBook(ctx context.Context, data *BookTitleDBModel) error {
+func (store *sqlStore) CreateBookTitle(ctx context.Context, data *BookTitleDBModel) error {
 	db := store.db
 
 	if err := db.Create(data).Error; err != nil {

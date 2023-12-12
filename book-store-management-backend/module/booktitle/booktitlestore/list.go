@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func (store *sqlStore) ListBook(ctx context.Context, filter *booktitlemodel.Filter, propertiesContainSearchKey []string, paging *common.Paging) ([]BookTitleDBModel, error) {
+func (store *sqlStore) ListBookTitle(ctx context.Context, filter *booktitlemodel.Filter, propertiesContainSearchKey []string, paging *common.Paging) ([]BookTitleDBModel, error) {
 	var result []BookTitleDBModel
 	db := store.db
 

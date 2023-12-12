@@ -9,7 +9,7 @@ import (
 )
 
 type updateBookRepo interface {
-	UpdateBook(ctx context.Context, id string, data *booktitlestore.BookTitleDBModel) error
+	UpdateBookTitle(ctx context.Context, id string, data *booktitlestore.BookTitleDBModel) error
 }
 
 type updateBookBiz struct {
@@ -36,12 +36,12 @@ func NewUpdateBookBiz(
 	}
 }
 
-func (biz *updateBookBiz) UpdateBook(ctx context.Context, id string, reqData *booktitlemodel.ReqUpdateBookInfo) error {
+func (biz *updateBookBiz) UpdateBookTitle(ctx context.Context, id string, reqData *booktitlemodel.ReqUpdateBookInfo) error {
 	if !biz.requester.IsHasFeature(common.BookTitleUpdateFeatureCode) {
 		return booktitlemodel.ErrBookTitleUpdateNoPermission
 	}
 
-	err := biz.repo.UpdateBook(ctx, id, &booktitlestore.BookTitleDBModel{
+	err := biz.repo.UpdateBookTitle(ctx, id, &booktitlestore.BookTitleDBModel{
 		Name:        reqData.Name,
 		Description: reqData.Description,
 		AuthorIDs:   nil,

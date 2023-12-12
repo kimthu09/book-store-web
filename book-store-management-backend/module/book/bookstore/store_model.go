@@ -1,17 +1,17 @@
-package bookmodel
+package bookstore
 
 import (
 	"book-store-management-backend/common"
 	"time"
 )
 
-type Book struct {
+type BookDBModel struct {
 	ID          *string `json:"id" gorm:"column:id"`
 	Name        *string `json:"name" gorm:"column:name"`
-	BookTitleID *string `json:"bookTitleId" gorm:"column:booktitleid,fk"`
-	PublisherID *string `json:"publisherId" gorm:"column:publisherid,fk"`
-	Edition     *int    `json:"edition" gorm:"column:edition"`
-	Quantity    *int    `json:"quantity" gorm:"column:quantity"`
+	BookTitleID *string `json:"bookTitleId" gorm:"column:booktitleid"`
+	PublisherID *string `json:"publisherId" gorm:"column:publisherid"`
+	Edition     *int    `json:"edition" gorm:"column:edition; default:1"`
+	Quantity    *int    `json:"quantity" gorm:"column:quantity; default:0"`
 	ListedPrice *int    `json:"listedPrice" gorm:"column:listedPrice"`
 	SellPrice   *int    `json:"sellPrice" gorm:"column:sellPrice"`
 	ImportPrice *int    `json:"importPrice" gorm:"column:importPrice"`
@@ -22,6 +22,6 @@ type Book struct {
 	IsActive  *int       `json:"isActive,omitempty" gorm:"isActive; column:isActive; default:1"`
 }
 
-func (*Book) TableName() string {
+func (*BookDBModel) TableName() string {
 	return common.TableBook
 }

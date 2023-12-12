@@ -6,7 +6,7 @@ import (
 	"context"
 )
 
-func (store *sqlStore) DeleteBook(ctx context.Context, id string) error {
+func (store *sqlStore) DeleteBookTitle(ctx context.Context, id string) error {
 	db := store.db.Table(common.TableBookTitle).Where("id = ?", id)
 
 	if db.Error != nil {
