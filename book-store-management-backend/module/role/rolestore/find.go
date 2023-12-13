@@ -11,8 +11,8 @@ import (
 func (s *sqlStore) FindRole(
 	ctx context.Context,
 	conditions map[string]interface{},
-	moreKeys ...string) (*rolemodel.Role, error) {
-	var data rolemodel.Role
+	moreKeys ...string) (*rolemodel.ResSeeDetailRole, error) {
+	var data rolemodel.ResSeeDetailRole
 	db := s.db
 
 	for i := range moreKeys {

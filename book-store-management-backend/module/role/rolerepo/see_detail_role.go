@@ -9,7 +9,7 @@ type FindRoleStore interface {
 	FindRole(
 		ctx context.Context,
 		conditions map[string]interface{},
-		moreKeys ...string) (*rolemodel.Role, error)
+		moreKeys ...string) (*rolemodel.ResSeeDetailRole, error)
 }
 
 type seeRoleDetailRepo struct {
