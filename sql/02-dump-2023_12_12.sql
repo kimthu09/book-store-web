@@ -20,8 +20,6 @@
 --
 
 DROP TABLE IF EXISTS `Author`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Author` (
   `id` varchar(12) NOT NULL,
   `name` text NOT NULL,
@@ -31,23 +29,8 @@ CREATE TABLE `Author` (
   `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Author`
---
-
-LOCK TABLES `Author` WRITE;
-INSERT INTO `Author` VALUES ('tgak','Adam Khoo','2023-12-02 01:51:49','2023-12-02 01:51:49',NULL,1),('tgnna','Nguyễn Nhật Ánh','2023-12-02 01:51:49','2023-12-02 01:51:49',NULL,1),('tgvef','Viktor E Frankl','2023-12-02 01:51:49','2023-12-02 01:51:49',NULL,1);
-UNLOCK TABLES;
-
---
--- Table structure for table `Book`
---
 
 DROP TABLE IF EXISTS `Book`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Book` (
   `id` varchar(12) NOT NULL,
   `name` varchar(100) NOT NULL,
@@ -68,22 +51,8 @@ CREATE TABLE `Book` (
   CONSTRAINT `Book_BookTitle_id_fk` FOREIGN KEY (`booktitleid`) REFERENCES `BookTitle` (`id`),
   CONSTRAINT `Book_Publisher_id_fk` FOREIGN KEY (`publisherid`) REFERENCES `Publisher` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Book`
---
-
-LOCK TABLES `Book` WRITE;
-UNLOCK TABLES;
-
---
--- Table structure for table `BookChangeHistory`
---
 
 DROP TABLE IF EXISTS `BookChangeHistory`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BookChangeHistory` (
   `id` varchar(12) NOT NULL,
   `bookId` varchar(12) NOT NULL,
@@ -96,22 +65,8 @@ CREATE TABLE `BookChangeHistory` (
   `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`,`bookId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `BookChangeHistory`
---
-
-LOCK TABLES `BookChangeHistory` WRITE;
-UNLOCK TABLES;
-
---
--- Table structure for table `BookTitle`
---
 
 DROP TABLE IF EXISTS `BookTitle`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `BookTitle` (
   `id` varchar(12) NOT NULL,
   `name` varchar(100) NOT NULL,
@@ -124,23 +79,8 @@ CREATE TABLE `BookTitle` (
   `isActive` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `BookTitle`
---
-
-LOCK TABLES `BookTitle` WRITE;
-INSERT INTO `BookTitle` VALUES ('stlbt','Tôi là Bêtô','Một tác phẩm của Nguyễn Nhật Ánh','tgnna','dmtt|dmtruyen','2023-12-09 20:41:28','2023-12-11 09:54:37',NULL,1),('sttgbct','Tôi tài giỏi, bạn cũng thế!','Tôi tài giỏi, bạn cũng thế! (nhan đề gốc tiếng Anh: I Am Gifted, So Are You!) là quyển sách bán chạy nhất của doanh nhân người Singapore Adam Khoo, viết về những phương pháp học tập tiên tiến. Quyển sách đã được dịch ra hàng chục thứ tiếng, trong đó Tôi tài giỏi, bạn cũng thế! là phiên bản tiếng Việt được dịch bởi hai dịch giả nổi tiếng Trần Đăng Khoa và Uông Xuân Vy của TGM Books. Tại Việt Nam, quyển sách đã trở thành một hiện tượng giáo dục trong những năm 2009-2011 và đạt được nhiều thành tựu trong lĩnh vực xuất bản, tạo ra kỷ lục mới cho ngành xuất bản Việt Nam với hơn 200.000 bản in được bán ra và hơn 400.000 e-book được phân phối.','tgak','dmkns','2023-12-10 16:07:24','2023-12-11 09:50:45',NULL,1),('UDKbP0vIR','Tôi tài giỏi, bạn cũng thế!','Tôi tài giỏi, bạn cũng thế! (nhan đề gốc tiếng Anh: I Am Gifted, So Are You!) là quyển sách bán chạy nhất của doanh nhân người Singapore Adam Khoo, viết về những phương pháp học tập tiên tiến. Quyển sách đã được dịch ra hàng chục thứ tiếng, trong đó Tôi tài giỏi, bạn cũng thế! là phiên bản tiếng Việt được dịch bởi hai dịch giả nổi tiếng Trần Đăng Khoa và Uông Xuân Vy của TGM Books. Tại Việt Nam, quyển sách đã trở thành một hiện tượng giáo dục trong những năm 2009-2011 và đạt được nhiều thành tựu trong lĩnh vực xuất bản, tạo ra kỷ lục mới cho ngành xuất bản Việt Nam với hơn 200.000 bản in được bán ra và hơn 400.000 e-book được phân phối.','tgak','dmkns','2023-12-12 02:39:46','2023-12-12 02:39:46',NULL,1);
-UNLOCK TABLES;
-
---
--- Table structure for table `Category`
---
 
 DROP TABLE IF EXISTS `Category`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Category` (
   `id` varchar(12) NOT NULL,
   `name` varchar(50) NOT NULL,
@@ -150,25 +90,10 @@ CREATE TABLE `Category` (
   `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Category`
---
-
-LOCK TABLES `Category` WRITE;
-INSERT INTO `Category` VALUES ('dmkns','Kỹ năng sống','2023-12-02 01:52:21','2023-12-02 01:52:21',NULL,1),('dmsgk','Sách giáo khoa','2023-12-02 01:52:21','2023-12-02 01:52:21',NULL,1),('dmtruyen','Truyện','2023-12-02 01:52:21','2023-12-02 01:52:21',NULL,1),('dmtt','Tiểu thuyết','2023-12-02 01:52:21','2023-12-02 01:52:21',NULL,1);
-UNLOCK TABLES;
-
---
--- Table structure for table `Feature`
---
 
 DROP TABLE IF EXISTS `Feature`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Feature` (
-  `id` varchar(12) NOT NULL,
+  `id` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `description` text,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -176,22 +101,8 @@ CREATE TABLE `Feature` (
   `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Feature`
---
-
-LOCK TABLES `Feature` WRITE;
-UNLOCK TABLES;
-
---
--- Table structure for table `ImportNote`
---
 
 DROP TABLE IF EXISTS `ImportNote`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ImportNote` (
   `id` varchar(12) NOT NULL,
   `supplierId` varchar(12) NOT NULL,
@@ -206,22 +117,8 @@ CREATE TABLE `ImportNote` (
   `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `ImportNote`
---
-
-LOCK TABLES `ImportNote` WRITE;
-UNLOCK TABLES;
-
---
--- Table structure for table `ImportNoteDetail`
---
 
 DROP TABLE IF EXISTS `ImportNoteDetail`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ImportNoteDetail` (
   `importNoteId` varchar(12) NOT NULL,
   `bookId` varchar(12) NOT NULL,
@@ -233,22 +130,8 @@ CREATE TABLE `ImportNoteDetail` (
   `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`importNoteId`,`bookId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `ImportNoteDetail`
---
-
-LOCK TABLES `ImportNoteDetail` WRITE;
-UNLOCK TABLES;
-
---
--- Table structure for table `InventoryCheckNote`
---
 
 DROP TABLE IF EXISTS `InventoryCheckNote`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `InventoryCheckNote` (
   `id` varchar(12) NOT NULL,
   `qtyDifferent` float NOT NULL,
@@ -261,22 +144,8 @@ CREATE TABLE `InventoryCheckNote` (
   `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `InventoryCheckNote`
---
-
-LOCK TABLES `InventoryCheckNote` WRITE;
-UNLOCK TABLES;
-
---
--- Table structure for table `InventoryCheckNoteDetail`
---
 
 DROP TABLE IF EXISTS `InventoryCheckNoteDetail`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `InventoryCheckNoteDetail` (
   `inventoryCheckNoteId` varchar(12) NOT NULL,
   `bookId` varchar(12) NOT NULL,
@@ -289,22 +158,8 @@ CREATE TABLE `InventoryCheckNoteDetail` (
   `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`inventoryCheckNoteId`,`bookId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `InventoryCheckNoteDetail`
---
-
-LOCK TABLES `InventoryCheckNoteDetail` WRITE;
-UNLOCK TABLES;
-
---
--- Table structure for table `Invoice`
---
 
 DROP TABLE IF EXISTS `Invoice`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Invoice` (
   `id` varchar(13) NOT NULL,
   `totalPrice` float NOT NULL,
@@ -316,22 +171,8 @@ CREATE TABLE `Invoice` (
   `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Invoice`
---
-
-LOCK TABLES `Invoice` WRITE;
-UNLOCK TABLES;
-
---
--- Table structure for table `InvoiceDetail`
---
 
 DROP TABLE IF EXISTS `InvoiceDetail`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `InvoiceDetail` (
   `invoiceId` varchar(13) NOT NULL,
   `bookId` varchar(13) NOT NULL,
@@ -343,28 +184,14 @@ CREATE TABLE `InvoiceDetail` (
   `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`invoiceId`,`bookId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `InvoiceDetail`
---
-
-LOCK TABLES `InvoiceDetail` WRITE;
-UNLOCK TABLES;
-
---
--- Table structure for table `MUser`
---
 
 DROP TABLE IF EXISTS `MUser`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `MUser` (
   `id` varchar(12) NOT NULL,
   `name` text NOT NULL,
-  `phone` varchar(13) NOT NULL,
-  `address` text NOT NULL,
-  `email` text NOT NULL,
+  `phone` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
+  `address` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `password` text NOT NULL,
   `salt` text NOT NULL,
   `roleId` varchar(12) NOT NULL,
@@ -372,25 +199,13 @@ CREATE TABLE `MUser` (
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deletedAt` datetime DEFAULT NULL,
   `isActive` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`) USING BTREE,
+  KEY `roleId` (`roleId`),
+  CONSTRAINT `MUser_ibfk_1` FOREIGN KEY (`roleId`) REFERENCES `Role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `MUser`
---
-
-LOCK TABLES `MUser` WRITE;
-INSERT INTO `MUser` VALUES ('bgIqwQSIg','user','','','user@gmail.com','0dd71ba5a82e98ccdc6f5edb6fb870a5','ByVwWucjSGZkozLFeQcopssBrHPbCHoqRuUCFUbpfIhhqGUujj','user','2023-12-02 01:52:32','2023-12-04 01:24:10',NULL,1),('g3W21A7SR','admin','1234567890','','admin@gmail.com','5e107317df151f6e8e0015c4f2ee7936','mVMxRDAHpAJfyzuiXWRELghNpynUqBKueSboGBcrwHUuzEWsms','admin','2023-12-02 01:52:32','2023-12-04 01:24:10',NULL,1);
-UNLOCK TABLES;
-
---
--- Table structure for table `Publisher`
---
 
 DROP TABLE IF EXISTS `Publisher`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Publisher` (
   `id` varchar(12) NOT NULL,
   `name` varchar(50) NOT NULL,
@@ -400,75 +215,34 @@ CREATE TABLE `Publisher` (
   `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Publisher`
---
-
-LOCK TABLES `Publisher` WRITE;
-INSERT INTO `Publisher` VALUES ('nxbdk','Kim Đồng','2023-12-02 01:52:21','2023-12-02 01:52:21',NULL,1),('nxbgd','Giáo dục','2023-12-02 01:52:21','2023-12-10 16:07:18',NULL,1);
-UNLOCK TABLES;
-
---
--- Table structure for table `Role`
---
 
 DROP TABLE IF EXISTS `Role`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Role` (
-  `id` varchar(13) NOT NULL,
-  `name` text,
+  `id` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deletedAt` datetime DEFAULT NULL,
   `isActive` tinyint(1) DEFAULT '1',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Role`
---
-
-LOCK TABLES `Role` WRITE;
-INSERT INTO `Role` VALUES ('admin','admin','2023-12-02 01:52:40','2023-12-02 01:52:40',NULL,1),('user','user','2023-12-02 01:52:40','2023-12-02 01:52:40',NULL,1);
-UNLOCK TABLES;
-
---
--- Table structure for table `RoleFeature`
---
 
 DROP TABLE IF EXISTS `RoleFeature`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `RoleFeature` (
-  `roleId` varchar(12) NOT NULL,
+  `roleId` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `featureId` varchar(30) NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deletedAt` datetime DEFAULT NULL,
   `isActive` tinyint(1) DEFAULT '1',
-  PRIMARY KEY (`roleId`,`featureId`)
+  PRIMARY KEY (`roleId`,`featureId`),
+  KEY `featureId` (`featureId`),
+  CONSTRAINT `RoleFeature_ibfk_1` FOREIGN KEY (`roleId`) REFERENCES `Role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `RoleFeature_ibfk_2` FOREIGN KEY (`featureId`) REFERENCES `Feature` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `RoleFeature`
---
-
-LOCK TABLES `RoleFeature` WRITE;
-INSERT INTO `RoleFeature` VALUES ('admin','AUTHOR_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','AUTHOR_DELETE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','AUTHOR_UPDATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','AUTHOR_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','BOOK_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','BOOK_DELETE','2023-12-11 11:58:04','2023-12-11 11:58:04',NULL,1),('admin','BOOK_TITLE_CREATE','2023-12-12 02:39:07','2023-12-12 02:39:07',NULL,1),('admin','BOOK_TITLE_DELETE','2023-12-12 02:39:07','2023-12-12 02:39:07',NULL,1),('admin','BOOK_TITLE_UPDATE','2023-12-12 02:39:07','2023-12-12 02:39:07',NULL,1),('admin','BOOK_TITLE_VIEW','2023-12-12 02:39:07','2023-12-12 02:39:07',NULL,1),('admin','BOOK_UPDATE','2023-12-11 09:49:17','2023-12-11 09:49:17',NULL,1),('admin','BOOK_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAN_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAN_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAT_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAT_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CAT_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CATEGORY_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CATEGORY_DELETE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CATEGORY_UPDATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CATEGORY_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CUS_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CUS_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CUS_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','CUS_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','EXP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','EXP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','IMP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','IMP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','IMP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','ING_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','ING_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','INV_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','INV_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','PUBLISHER_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','PUBLISHER_DELETE','2023-12-11 11:59:02','2023-12-11 11:59:02',NULL,1),('admin','PUBLISHER_UPDATE','2023-12-11 11:59:02','2023-12-11 11:59:02',NULL,1),('admin','PUBLISHER_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','SUP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','SUP_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','SUP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','SUP_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','USE_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','USE_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('admin','USE_VIEW','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CAN_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CAT_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CAT_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CUS_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CUS_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','CUS_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','EXP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','FOD_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','IMP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','IMP_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','ING_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','INV_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','SUP_CREATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','SUP_PAY','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','SUP_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','USE_UP_INFO','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1),('user','USE_UP_STATE','2023-12-02 01:54:37','2023-12-02 01:54:37',NULL,1);
-UNLOCK TABLES;
-
---
--- Table structure for table `ShopGeneral`
---
 
 DROP TABLE IF EXISTS `ShopGeneral`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ShopGeneral` (
   `id` varchar(12) NOT NULL,
   `name` varchar(12) NOT NULL,
@@ -481,22 +255,8 @@ CREATE TABLE `ShopGeneral` (
   `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `ShopGeneral`
---
-
-LOCK TABLES `ShopGeneral` WRITE;
-UNLOCK TABLES;
-
---
--- Table structure for table `StockReport`
---
 
 DROP TABLE IF EXISTS `StockReport`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `StockReport` (
   `id` varchar(12) NOT NULL,
   `year` int NOT NULL,
@@ -507,22 +267,8 @@ CREATE TABLE `StockReport` (
   `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `StockReport`
---
-
-LOCK TABLES `StockReport` WRITE;
-UNLOCK TABLES;
-
---
--- Table structure for table `StockReportDetail`
---
 
 DROP TABLE IF EXISTS `StockReportDetail`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `StockReportDetail` (
   `reportId` varchar(12) NOT NULL,
   `bookId` varchar(12) NOT NULL,
@@ -537,22 +283,8 @@ CREATE TABLE `StockReportDetail` (
   `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`reportId`,`bookId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `StockReportDetail`
---
-
-LOCK TABLES `StockReportDetail` WRITE;
-UNLOCK TABLES;
-
---
--- Table structure for table `Supplier`
---
 
 DROP TABLE IF EXISTS `Supplier`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Supplier` (
   `id` varchar(12) NOT NULL,
   `name` text NOT NULL,
@@ -566,22 +298,8 @@ CREATE TABLE `Supplier` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone` (`phone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Supplier`
---
-
-LOCK TABLES `Supplier` WRITE;
-UNLOCK TABLES;
-
---
--- Table structure for table `SupplierDebt`
---
 
 DROP TABLE IF EXISTS `SupplierDebt`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `SupplierDebt` (
   `id` varchar(12) NOT NULL,
   `supplierId` varchar(12) NOT NULL,
@@ -596,22 +314,8 @@ CREATE TABLE `SupplierDebt` (
   `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`,`supplierId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `SupplierDebt`
---
-
-LOCK TABLES `SupplierDebt` WRITE;
-UNLOCK TABLES;
-
---
--- Table structure for table `SupplierDebtDetail`
---
 
 DROP TABLE IF EXISTS `SupplierDebtDetail`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `SupplierDebtDetail` (
   `reportId` varchar(12) NOT NULL,
   `supplierId` varchar(12) NOT NULL,
@@ -624,22 +328,8 @@ CREATE TABLE `SupplierDebtDetail` (
   `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`reportId`,`supplierId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `SupplierDebtDetail`
---
-
-LOCK TABLES `SupplierDebtDetail` WRITE;
-UNLOCK TABLES;
-
---
--- Table structure for table `SupplierDebtReport`
---
 
 DROP TABLE IF EXISTS `SupplierDebtReport`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `SupplierDebtReport` (
   `id` varchar(12) NOT NULL,
   `year` int NOT NULL,
@@ -650,15 +340,134 @@ CREATE TABLE `SupplierDebtReport` (
   `isActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `SupplierDebtReport`
---
+INSERT INTO `Author` (`id`, `name`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('tgak', 'Adam Khoo', '2023-12-02 01:51:49', '2023-12-02 01:51:49', NULL, 1);
+INSERT INTO `Author` (`id`, `name`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('tgnna', 'Nguyễn Nhật Ánh', '2023-12-02 01:51:49', '2023-12-02 01:51:49', NULL, 1);
+INSERT INTO `Author` (`id`, `name`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('tgvef', 'Viktor E Frankl', '2023-12-02 01:51:49', '2023-12-02 01:51:49', NULL, 1);
 
-LOCK TABLES `SupplierDebtReport` WRITE;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+
+
+
+INSERT INTO `BookTitle` (`id`, `name`, `desc`, `authorIds`, `categoryIds`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('stlbt', 'Tôi là Bêtô', 'Một tác phẩm của Nguyễn Nhật Ánh', 'tgnna', 'dmtt|dmtruyen', '2023-12-09 20:41:28', '2023-12-11 09:54:37', NULL, 1);
+INSERT INTO `BookTitle` (`id`, `name`, `desc`, `authorIds`, `categoryIds`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('sttgbct', 'Tôi tài giỏi, bạn cũng thế!', 'Tôi tài giỏi, bạn cũng thế! (nhan đề gốc tiếng Anh: I Am Gifted, So Are You!) là quyển sách bán chạy nhất của doanh nhân người Singapore Adam Khoo, viết về những phương pháp học tập tiên tiến. Quyển sách đã được dịch ra hàng chục thứ tiếng, trong đó Tôi tài giỏi, bạn cũng thế! là phiên bản tiếng Việt được dịch bởi hai dịch giả nổi tiếng Trần Đăng Khoa và Uông Xuân Vy của TGM Books. Tại Việt Nam, quyển sách đã trở thành một hiện tượng giáo dục trong những năm 2009-2011 và đạt được nhiều thành tựu trong lĩnh vực xuất bản, tạo ra kỷ lục mới cho ngành xuất bản Việt Nam với hơn 200.000 bản in được bán ra và hơn 400.000 e-book được phân phối.', 'tgak', 'dmkns', '2023-12-10 16:07:24', '2023-12-11 09:50:45', NULL, 1);
+INSERT INTO `BookTitle` (`id`, `name`, `desc`, `authorIds`, `categoryIds`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('UDKbP0vIR', 'Tôi tài giỏi, bạn cũng thế!', 'Tôi tài giỏi, bạn cũng thế! (nhan đề gốc tiếng Anh: I Am Gifted, So Are You!) là quyển sách bán chạy nhất của doanh nhân người Singapore Adam Khoo, viết về những phương pháp học tập tiên tiến. Quyển sách đã được dịch ra hàng chục thứ tiếng, trong đó Tôi tài giỏi, bạn cũng thế! là phiên bản tiếng Việt được dịch bởi hai dịch giả nổi tiếng Trần Đăng Khoa và Uông Xuân Vy của TGM Books. Tại Việt Nam, quyển sách đã trở thành một hiện tượng giáo dục trong những năm 2009-2011 và đạt được nhiều thành tựu trong lĩnh vực xuất bản, tạo ra kỷ lục mới cho ngành xuất bản Việt Nam với hơn 200.000 bản in được bán ra và hơn 400.000 e-book được phân phối.', 'tgak', 'dmkns', '2023-12-12 02:39:46', '2023-12-12 02:39:46', NULL, 1);
+
+INSERT INTO `Category` (`id`, `name`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('dmkns', 'Kỹ năng sống', '2023-12-02 01:52:21', '2023-12-02 01:52:21', NULL, 1);
+INSERT INTO `Category` (`id`, `name`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('dmsgk', 'Sách giáo khoa', '2023-12-02 01:52:21', '2023-12-02 01:52:21', NULL, 1);
+INSERT INTO `Category` (`id`, `name`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('dmtruyen', 'Truyện', '2023-12-02 01:52:21', '2023-12-02 01:52:21', NULL, 1);
+INSERT INTO `Category` (`id`, `name`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('dmtt', 'Tiểu thuyết', '2023-12-02 01:52:21', '2023-12-02 01:52:21', NULL, 1);
+
+INSERT INTO `Feature` (`id`, `description`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('AUTHOR_CREATE', 'Tạo tác giả', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1);
+INSERT INTO `Feature` (`id`, `description`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('AUTHOR_DELETE', 'Xóa tác giả', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1);
+INSERT INTO `Feature` (`id`, `description`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('AUTHOR_UPDATE', 'Chỉnh sửa thông tin tác giả', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1);
+INSERT INTO `Feature` (`id`, `description`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('AUTHOR_VIEW', 'Xem tác giả', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('BOOK_CREATE', 'Tạo sách', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('BOOK_DELETE', 'Xóa sách', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('BOOK_TITLE_CREATE', 'Tạo đầu sách', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('BOOK_TITLE_DELETE', 'Xóa đầu sách', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('BOOK_TITLE_UPDATE', 'Chỉnh sửa thông tin đầu sách', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('BOOK_TITLE_VIEW', 'Xem đầu sách', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('BOOK_UPDATE', 'Chỉnh sửa thông tin sách', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('BOOK_VIEW', 'Xem sách', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('CATEGORY_CREATE', 'Tạo danh mục', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('CATEGORY_DELETE', 'Xóa danh mục', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('CATEGORY_UPDATE', 'Chỉnh sửa thông tin danh mục', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('CATEGORY_VIEW', 'Xem danh mục', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('IMPORT_NOTE_CREATE', 'Tạo phiếu nhập', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('IMPORT_NOTE_STATUS', 'Chỉnh sửa trạng thái phiếu nhập', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('IMPORT_NOTE_VIEW', 'Xem phiếu nhập', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('INVENTORY_NOTE_CREATE', 'Tạo phiếu kiểm kho', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('INVENTORY_NOTE_VIEW', 'Xem phiếu kiểm kho', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('PUBLISHER_CREATE', 'Tạo nhà sản xuất', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('PUBLISHER_VIEW', 'Xem nhà sản xuất', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('SUPPLIER_CREATE', 'Tạo nhà cung cấp', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('SUPPLIER_PAY', 'Trả nợ nhà cung cấp', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('SUPPLIER_UPDATE_INFO', 'Chỉnh sửa thông tin nhà cung cấp', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('SUPPLIER_VIEW', 'Xem nhà cung cấp', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('USER_UPDATE_INFO', 'Chỉnh sửa thông tin người dùng', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('USER_UPDATE_STATE', 'Chỉnh sửa trạng thái', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1),
+('USER_VIEW', 'Xem người dùng', '2023-12-13 08:54:39', '2023-12-13 08:54:39', NULL, 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+INSERT INTO `MUser` (`id`, `name`, `phone`, `address`, `email`, `password`, `salt`, `roleId`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('bgIqwQSIg', 'user', '', '', 'user@gmail.com', '0dd71ba5a82e98ccdc6f5edb6fb870a5', 'ByVwWucjSGZkozLFeQcopssBrHPbCHoqRuUCFUbpfIhhqGUujj', 'user', '2023-12-02 01:52:32', '2023-12-04 01:24:10', NULL, 1);
+INSERT INTO `MUser` (`id`, `name`, `phone`, `address`, `email`, `password`, `salt`, `roleId`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('g3W21A7SR', 'admin', '1234567890', '', 'admin@gmail.com', '5e107317df151f6e8e0015c4f2ee7936', 'mVMxRDAHpAJfyzuiXWRELghNpynUqBKueSboGBcrwHUuzEWsms', 'admin', '2023-12-02 01:52:32', '2023-12-04 01:24:10', NULL, 1);
+
+
+INSERT INTO `Publisher` (`id`, `name`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('nxbdk', 'Kim Đồng', '2023-12-02 01:52:21', '2023-12-02 01:52:21', NULL, 1);
+INSERT INTO `Publisher` (`id`, `name`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('nxbgd', 'Giáo dục', '2023-12-02 01:52:21', '2023-12-10 16:07:18', NULL, 1);
+
+
+INSERT INTO `Role` (`id`, `name`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('admin', 'admin', '2023-12-02 01:52:40', '2023-12-02 01:52:40', NULL, 1);
+INSERT INTO `Role` (`id`, `name`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('user', 'user', '2023-12-02 01:52:40', '2023-12-02 01:52:40', NULL, 1);
+
+
+INSERT INTO `RoleFeature` (`roleId`, `featureId`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('admin', 'AUTHOR_CREATE', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1);
+INSERT INTO `RoleFeature` (`roleId`, `featureId`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('admin', 'AUTHOR_DELETE', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1);
+INSERT INTO `RoleFeature` (`roleId`, `featureId`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('admin', 'AUTHOR_UPDATE', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1);
+INSERT INTO `RoleFeature` (`roleId`, `featureId`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
+('admin', 'AUTHOR_VIEW', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'BOOK_CREATE', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'BOOK_DELETE', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'BOOK_TITLE_CREATE', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'BOOK_TITLE_DELETE', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'BOOK_TITLE_UPDATE', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'BOOK_TITLE_VIEW', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'BOOK_UPDATE', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'BOOK_VIEW', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'CATEGORY_CREATE', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'CATEGORY_DELETE', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'CATEGORY_UPDATE', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'CATEGORY_VIEW', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'IMPORT_NOTE_CREATE', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'IMPORT_NOTE_STATUS', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'IMPORT_NOTE_VIEW', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'INVENTORY_NOTE_CREATE', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'INVENTORY_NOTE_VIEW', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'PUBLISHER_CREATE', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'PUBLISHER_VIEW', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'SUPPLIER_CREATE', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'SUPPLIER_PAY', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'SUPPLIER_UPDATE_INFO', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'SUPPLIER_VIEW', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'USER_UPDATE_INFO', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'USER_UPDATE_STATE', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('admin', 'USER_VIEW', '2023-12-12 08:46:33', '2023-12-12 08:46:33', NULL, 1),
+('user', 'AUTHOR_CREATE', '2023-12-12 08:48:06', '2023-12-12 08:48:06', NULL, 1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
