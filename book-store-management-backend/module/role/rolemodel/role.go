@@ -7,19 +7,13 @@ import (
 )
 
 type Role struct {
-	Id           string           `json:"id" gorm:"column:id;"`
-	Name         string           `json:"name" gorm:"column:name;"`
-	RoleFeatures ListRoleFeatures `json:"features"`
+	Id           string                               `json:"id" gorm:"column:id;" example:"role id"`
+	Name         string                               `json:"name" gorm:"column:name;" example:"admin"`
+	RoleFeatures []rolefeaturemodel.SimpleRoleFeature `json:"features,omitempty"`
 }
 
 func (*Role) TableName() string {
 	return common.TableRole
-}
-
-type ListRoleFeatures []rolefeaturemodel.RoleFeature
-
-func (*ListRoleFeatures) TableName() string {
-	return common.TableRoleFeature
 }
 
 var (
@@ -37,6 +31,9 @@ var (
 		errors.New("features of role is invalid"),
 		"features of role is invalid",
 		"ErrRoleFeatureInvalid",
+	)
+	ErrRoleNameDuplicate = common.ErrDuplicateKey(
+		errors.New("name of role is duplicate"),
 	)
 	ErrRoleCreateNoPermission = common.ErrNoPermission(
 		errors.New("you have no permission to create role"),
