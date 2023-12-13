@@ -16,11 +16,11 @@ const fetcher = (url: string) =>
 
 export default function getAllCategory() {
   const { data, error, isLoading } = useSWR(
-    "http://localhost:8080/v1/categories",
+    "http://192.168.1.33:8080/v1/categories",
     fetcher,
-      {
-          dedupingInterval: 1,
-      }
+    {
+      dedupingInterval: 1,
+    }
   );
 
   return {
@@ -28,7 +28,7 @@ export default function getAllCategory() {
     isLoading,
     isError: error,
   };
-  // const res = await fetch("http://localhost:8080/v1/categories", {
+  // const res = await fetch("http://192.168.1.33:8080/v1/categories", {
   //   headers: {
   //     accept: "application/json",
   //     Authorization: apiKey,

@@ -7,7 +7,6 @@ const fetcher = (url: string) =>
     headers: {
       accept: "application/json",
       Authorization: apiKey,
-
     },
   })
     .then((res) => {
@@ -17,11 +16,11 @@ const fetcher = (url: string) =>
 
 export default function getAllAuthor() {
   const { data, error, isLoading } = useSWR(
-    "http://localhost:8080/v1/authors",
+    "http://192.168.1.33:8080/v1/authors",
     fetcher,
-      {
-          dedupingInterval: 1,
-      }
+    {
+      dedupingInterval: 1,
+    }
   );
 
   return {

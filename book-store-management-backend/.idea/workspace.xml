@@ -5,12 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bcd0db1b-7464-48d1-92cb-22a4f9dac902" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/module/booktitle/booktitlemodel/res_book_title_detail.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/booktitle/booktitlerepo/detail_book_title.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/booktitle/booktitlestore/detail_book_title.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/booktitle/booktitletransport/get_book_title_detail.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitletransport/route.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitletransport/route.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e8859fd8-ccac-4a18-80e3-6e71133bf950.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/e8859fd8-ccac-4a18-80e3-6e71133bf950.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go-deploy.sh" beforeDir="false" afterPath="$PROJECT_DIR$/go-deploy.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../book-store-management/constants/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../book-store-management/constants/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../book-store-management/entrypoint.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../book-store-management/entrypoint.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../book-store-management/lib/createBook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../book-store-management/lib/createBook.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../book-store-management/lib/deleteBook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../book-store-management/lib/deleteBook.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../book-store-management/lib/getAllAuthor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../book-store-management/lib/getAllAuthor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../book-store-management/lib/getAllBook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../book-store-management/lib/getAllBook.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../book-store-management/lib/getAllCategory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../book-store-management/lib/getAllCategory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../book-store-management/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../book-store-management/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,10 +53,10 @@
     "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
     "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "quoc",
+    "git-widget-placeholder": "thu",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/home/quocv/src/uit/book-store-web/book-store-management-backend/module/book/bookmodel",
+    "last_opened_file_path": "D:/codes/book-store-web/book-store-management-backend",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",

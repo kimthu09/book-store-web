@@ -14,7 +14,7 @@ export default async function createBook({
   categoryIds: string[];
   authorIds: string[];
 }) {
-  const url = "http://localhost:8080/v1/booktitles";
+  const url = "http://192.168.1.33:8080/v1/booktitles";
 
   const data = {
     id: id,
