@@ -6,7 +6,6 @@ import (
 	"book-store-management-backend/component/generator"
 	"book-store-management-backend/component/hasher"
 	"book-store-management-backend/middleware"
-	"book-store-management-backend/module/role/rolestore"
 	"book-store-management-backend/module/user/userbiz"
 	"book-store-management-backend/module/user/usermodel"
 	"book-store-management-backend/module/user/userrepo"
@@ -38,8 +37,7 @@ func CreateUser(appCtx appctx.AppContext) gin.HandlerFunc {
 		db := appCtx.GetMainDBConnection().Begin()
 
 		userStore := userstore.NewSQLStore(db)
-		roleStore := rolestore.NewSQLStore(db)
-		repo := userrepo.NewCreateUserRepo(userStore, roleStore)
+		repo := userrepo.NewCreateUserRepo(userStore)
 
 		md5 := hasher.NewMd5Hash()
 		gen := generator.NewShortIdGenerator()
