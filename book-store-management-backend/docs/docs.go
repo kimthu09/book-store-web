@@ -2779,15 +2779,6 @@ const docTemplate = `{
                 }
             }
         },
-        "rolefeaturemodel.SimpleRoleFeature": {
-            "type": "object",
-            "properties": {
-                "featureId": {
-                    "type": "string",
-                    "example": "feature id"
-                }
-            }
-        },
         "rolemodel.ReqCreateRole": {
             "type": "object",
             "properties": {
@@ -2846,7 +2837,7 @@ const docTemplate = `{
                     "description": "Data contains the detailed information about roles.",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/rolemodel.Role"
+                        "$ref": "#/definitions/rolemodel.SimpleRole"
                     }
                 }
             }
@@ -2854,25 +2845,6 @@ const docTemplate = `{
         "rolemodel.ResSeeDetailRole": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "string",
-                    "example": "role id"
-                },
-                "name": {
-                    "type": "string",
-                    "example": "admin"
-                }
-            }
-        },
-        "rolemodel.Role": {
-            "type": "object",
-            "properties": {
-                "features": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/rolefeaturemodel.SimpleRoleFeature"
-                    }
-                },
                 "id": {
                     "type": "string",
                     "example": "role id"

@@ -4,40 +4,17 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcd0db1b-7464-48d1-92cb-22a4f9dac902" name="Changes" comment="fix: update database">
+    <list default="true" id="bcd0db1b-7464-48d1-92cb-22a4f9dac902" name="Changes" comment="dev: update role for BE">
       <change afterPath="$PROJECT_DIR$/module/book/bookmodel/book_update_amount.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/module/book/bookmodel/book_update_price.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/module/book/bookstore/update_price.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/module/book/bookstore/update_quantity.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/feature/featurebiz/list_feature.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/feature/featuremodel/feature.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/feature/featuremodel/res_feature_detail.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/feature/featuremodel/res_list_feature.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/feature/featurestore/list.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/feature/featurestore/store.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/feature/featuretransport/ginfeature/list_feature.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/feature/featuretransport/ginfeature/route.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/role/rolebiz/list_feature_by_role.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/module/role/rolebiz/list_role.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/role/rolebiz/see_detail_role.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/role/rolebiz/update_role.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/role/rolemodel/res_create_role.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/role/rolemodel/res_list_feature_by_role.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/module/role/rolemodel/res_list_role.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/role/rolemodel/res_see_detail_role.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/module/role/rolemodel/simple_role.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/role/rolerepo/create_role.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/role/rolerepo/list_feature_by_role.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/module/role/rolerepo/list_role.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/role/rolerepo/see_detail_role.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/role/rolerepo/update_role.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/role/rolestore/update.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/role/roletransport/ginrole/create_role.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/role/roletransport/ginrole/list_feature_by_role.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/module/role/roletransport/ginrole/list_role.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/module/role/roletransport/ginrole/route.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/role/roletransport/ginrole/see_detail_role.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/role/roletransport/ginrole/update_role.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/module/rolefeature/rolefeaturemodel/simple_role_feature.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/module/supplier/supplierrepo/see_supplier_detail.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/module/user/userbiz/change_role_user.go" afterDir="false" />
@@ -72,31 +49,18 @@
       <change afterPath="$PROJECT_DIR$/module/user/usertransport/ginuser/reset_password.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/module/user/usertransport/ginuser/update_info_user.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/module/user/usertransport/ginuser/update_password.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e8859fd8-ccac-4a18-80e3-6e71133bf950.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/const.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/const.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/paging.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/paging.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/validator.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/validator.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/docs.go" beforeDir="false" afterPath="$PROJECT_DIR$/docs/docs.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/swagger.json" beforeDir="false" afterPath="$PROJECT_DIR$/docs/swagger.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/swagger.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/swagger.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/middleware/authorize.go" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/authorize.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/module/book/bookstore/store.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/book/bookstore/store.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/module/inventorychecknote/inventorychecknoterepo/create_inventory_check_note.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/inventorychecknote/inventorychecknoterepo/create_inventory_check_note.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/role/rolebiz/create_role.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/role/rolebiz/create_role.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/module/role/rolemodel/role.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/role/rolemodel/role.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/role/rolemodel/role_create.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/role/rolemodel/req_create_role.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/role/rolemodel/role_update.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/role/rolemodel/req_update_role.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/role/rolestore/create.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/role/rolestore/create.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/role/rolerepo/see_detail_role.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/role/rolerepo/see_detail_role.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/module/role/rolestore/find.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/role/rolestore/find.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/module/role/rolestore/list.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/role/rolestore/list.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/rolefeature/rolefeaturemodel/role_feature.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/rolefeature/rolefeaturemodel/role_feature.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/rolefeature/rolefeaturestore/create.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/rolefeature/rolefeaturestore/create_list.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/rolefeature/rolefeaturestore/create_list.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/module/rolefeature/rolefeaturestore/find.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/book/bookstore/find.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/rolefeature/rolefeaturestore/find_list_features.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/rolefeature/rolefeaturestore/find_list.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/module/supplier/supplierbiz/see_supplier_debt.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/supplier/supplierbiz/see_supplier_debt.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/module/supplier/supplierbiz/see_supplier_import_note.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/supplier/supplierbiz/see_supplier_import_note.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/module/supplier/suppliermodel/res_debt_supplier.go" beforeDir="false" />
@@ -138,6 +102,7 @@
   <component name="GOROOT" url="file://C:/Program Files/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RESET_MODE" value="SOFT" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -208,9 +173,23 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix: update database" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: update database" />
+    <MESSAGE value="dev: create role for BE" />
+    <MESSAGE value="dev: see full information role for BE" />
+    <MESSAGE value="dev: update role for BE" />
+    <option name="LAST_COMMIT_MESSAGE" value="dev: update role for BE" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

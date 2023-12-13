@@ -625,12 +625,6 @@ definitions:
       paging:
         $ref: '#/definitions/common.Paging'
     type: object
-  rolefeaturemodel.SimpleRoleFeature:
-    properties:
-      featureId:
-        example: feature id
-        type: string
-    type: object
   rolemodel.ReqCreateRole:
     properties:
       features:
@@ -670,24 +664,11 @@ definitions:
       data:
         description: Data contains the detailed information about roles.
         items:
-          $ref: '#/definitions/rolemodel.Role'
+          $ref: '#/definitions/rolemodel.SimpleRole'
         type: array
     type: object
   rolemodel.ResSeeDetailRole:
     properties:
-      id:
-        example: role id
-        type: string
-      name:
-        example: admin
-        type: string
-    type: object
-  rolemodel.Role:
-    properties:
-      features:
-        items:
-          $ref: '#/definitions/rolefeaturemodel.SimpleRoleFeature'
-        type: array
       id:
         example: role id
         type: string
