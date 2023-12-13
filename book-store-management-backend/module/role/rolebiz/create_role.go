@@ -9,13 +9,9 @@ import (
 )
 
 type CreateRoleRepo interface {
-	CheckFeatureExist(
-		ctx context.Context,
-		data *rolemodel.RoleCreate,
-	) error
 	CreateRole(
 		ctx context.Context,
-		data *rolemodel.RoleCreate,
+		data *rolemodel.ReqCreateRole,
 	) error
 	CreateRoleFeatures(
 		ctx context.Context,
@@ -43,8 +39,8 @@ func NewCreateRoleStore(
 
 func (biz *createRoleStore) CreateRole(
 	ctx context.Context,
-	data *rolemodel.RoleCreate) error {
-	if biz.requester.GetRole().Id != common.RoleAdminId {
+	data *rolemodel.ReqCreateRole) error {
+	if biz.requester.GetRoleId() != common.RoleAdminId {
 		return rolemodel.ErrRoleCreateNoPermission
 	}
 
@@ -53,10 +49,6 @@ func (biz *createRoleStore) CreateRole(
 	}
 
 	if err := handleRoleId(biz.gen, data); err != nil {
-		return err
-	}
-
-	if err := biz.repo.CheckFeatureExist(ctx, data); err != nil {
 		return err
 	}
 
@@ -71,7 +63,7 @@ func (biz *createRoleStore) CreateRole(
 	return nil
 }
 
-func handleRoleId(gen generator.IdGenerator, data *rolemodel.RoleCreate) error {
+func handleRoleId(gen generator.IdGenerator, data *rolemodel.ReqCreateRole) error {
 	id, err := gen.GenerateId()
 	if err != nil {
 		return err

@@ -6,7 +6,7 @@ import (
 	"context"
 )
 
-func (s *sqlStore) CreateListImportNoteDetail(
+func (s *sqlStore) CreateListRoleFeature(
 	ctx context.Context,
 	data []rolefeaturemodel.RoleFeature) error {
 	db := s.db

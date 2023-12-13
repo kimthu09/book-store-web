@@ -1,0 +1,14 @@
+package rolemodel
+
+import (
+	"book-store-management-backend/common"
+)
+
+type ResSeeDetailRole struct {
+	Id   string `json:"id" gorm:"column:id;" example:"role id"`
+	Name string `json:"name" gorm:"column:name;" example:"admin"`
+}
+
+func (*ResSeeDetailRole) TableName() string {
+	return common.TableRole
+}

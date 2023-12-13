@@ -132,6 +132,13 @@ definitions:
         example: Tôi là Bêtô
         type: string
     type: object
+  booktitlemodel.ResBookTitleDetail:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
   booktitlemodel.ResCreateBookTitle:
     properties:
       id:
@@ -223,6 +230,35 @@ definitions:
     x-enum-varnames:
     - Pay
     - Debt
+  featuremodel.Feature:
+    properties:
+      description:
+        example: Xem nhân viên
+        type: string
+      id:
+        example: feature id
+        type: string
+    type: object
+  featuremodel.ResFeatureDetail:
+    properties:
+      description:
+        example: Xem nhân viên
+        type: string
+      id:
+        example: feature id
+        type: string
+      isHas:
+        example: true
+        type: boolean
+    type: object
+  featuremodel.ResListFeature:
+    properties:
+      data:
+        description: Data contains the detailed information about features.
+        items:
+          $ref: '#/definitions/featuremodel.Feature'
+        type: array
+    type: object
   filter.SupplierDebtFilter:
     properties:
       from:
@@ -589,6 +625,66 @@ definitions:
       paging:
         $ref: '#/definitions/common.Paging'
     type: object
+  rolemodel.ReqCreateRole:
+    properties:
+      features:
+        items:
+          type: string
+        type: array
+      name:
+        example: user
+        type: string
+    type: object
+  rolemodel.ReqUpdateRole:
+    properties:
+      features:
+        items:
+          type: string
+        type: array
+      name:
+        example: nếu tên không đổi thì không cần trường này
+        type: string
+    type: object
+  rolemodel.ResCreateRole:
+    properties:
+      data:
+        example: "123"
+        type: string
+    type: object
+  rolemodel.ResListFeatureByRole:
+    properties:
+      data:
+        description: Data contains list of feature of role.
+        items:
+          $ref: '#/definitions/featuremodel.ResFeatureDetail'
+        type: array
+    type: object
+  rolemodel.ResListRole:
+    properties:
+      data:
+        description: Data contains the detailed information about roles.
+        items:
+          $ref: '#/definitions/rolemodel.SimpleRole'
+        type: array
+    type: object
+  rolemodel.ResSeeDetailRole:
+    properties:
+      id:
+        example: role id
+        type: string
+      name:
+        example: admin
+        type: string
+    type: object
+  rolemodel.SimpleRole:
+    properties:
+      id:
+        example: role id
+        type: string
+      name:
+        example: admin
+        type: string
+    type: object
   supplierdebtmodel.SupplierDebt:
     properties:
       createAt:
@@ -650,28 +746,6 @@ definitions:
         example: "1234567890"
         type: string
     type: object
-  suppliermodel.ResDebtSupplier:
-    properties:
-      debt:
-        example: -100000
-        type: number
-      debtHistory:
-        items:
-          $ref: '#/definitions/supplierdebtmodel.SupplierDebt'
-        type: array
-      email:
-        example: a@gmail.com
-        type: string
-      id:
-        example: "123"
-        type: string
-      name:
-        example: Nguyễn Văn A
-        type: string
-      phone:
-        example: "0123456789"
-        type: string
-    type: object
   suppliermodel.ResListSupplier:
     properties:
       data:
@@ -691,13 +765,32 @@ definitions:
   suppliermodel.ResSeeDebtSupplier:
     properties:
       data:
-        allOf:
-        - $ref: '#/definitions/suppliermodel.ResDebtSupplier'
         description: Data contains the detailed information about supplier's debts.
+        items:
+          $ref: '#/definitions/supplierdebtmodel.SupplierDebt'
+        type: array
       filter:
         allOf:
         - $ref: '#/definitions/filter.SupplierDebtFilter'
         description: Filter contains the filter parameters used to retrieve debts.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  suppliermodel.ResSeeImportNoteSupplier:
+    properties:
+      data:
+        description: Data contains the detailed information about supplier's import
+          notes.
+        items:
+          $ref: '#/definitions/importnotemodel.ImportNote'
+        type: array
+      filter:
+        allOf:
+        - $ref: '#/definitions/filter.SupplierImportFilter'
+        description: Filter contains the filter parameters used to retrieve import
+          notes.
       paging:
         allOf:
         - $ref: '#/definitions/common.Paging'
@@ -755,23 +848,99 @@ definitions:
         example: Nguyễn Văn A
         type: string
       roleId:
-        example: user
+        example: role id
         type: string
     type: object
   usermodel.ReqLoginUser:
     properties:
       email:
-        example: b@gmail.com
+        example: admin@gmail.com
         type: string
       password:
         example: app123
         type: string
+    type: object
+  usermodel.ReqResetPasswordUser:
+    properties:
+      userSenderPass:
+        example: mật khẩu người gửi
+        type: string
+    type: object
+  usermodel.ReqUpdateInfoUser:
+    properties:
+      address:
+        example: bỏ trường này nếu không muốn update địa chỉ
+        type: string
+      name:
+        example: bỏ trường này nếu không muốn update tên
+        type: string
+      phone:
+        example: bỏ trường này nếu không muốn update sđt
+        type: string
+    type: object
+  usermodel.ReqUpdatePasswordUser:
+    properties:
+      newPassword:
+        example: mật khẩu mới
+        type: string
+      oldPassword:
+        example: mật khẩu cũ
+        type: string
+    type: object
+  usermodel.ReqUpdateRoleUser:
+    properties:
+      roleId:
+        example: role id
+        type: string
+    type: object
+  usermodel.ReqUpdateStatusUsers:
+    properties:
+      isActive:
+        example: true
+        type: boolean
+      userIds:
+        items:
+          type: string
+        type: array
     type: object
   usermodel.ResCreateUser:
     properties:
       data:
         example: "123"
         type: string
+    type: object
+  usermodel.ResListUser:
+    properties:
+      data:
+        description: Data contains list of user.
+        items:
+          $ref: '#/definitions/usermodel.ResUser'
+        type: array
+      filter:
+        allOf:
+        - $ref: '#/definitions/filter.SupplierImportFilter'
+        description: Filter contains the filter parameters used to retrieve user.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  usermodel.ResUser:
+    properties:
+      email:
+        example: b@gmail.com
+        type: string
+      id:
+        example: user id
+        type: string
+      isActive:
+        example: true
+        type: boolean
+      name:
+        example: Nguyễn Văn B
+        type: string
+      role:
+        $ref: '#/definitions/rolemodel.SimpleRole'
     type: object
   usermodel.SimpleUser:
     properties:
@@ -982,6 +1151,26 @@ paths:
       summary: Create category with name
       tags:
       - categories
+  /features:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list feature
+          schema:
+            $ref: '#/definitions/featuremodel.ResListFeature'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List feature
+      tags:
+      - features
   /importNotes:
     get:
       consumes:
@@ -1332,6 +1521,135 @@ paths:
       summary: Create publisher with name
       tags:
       - publishers
+  /roles:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list role
+          schema:
+            $ref: '#/definitions/rolemodel.ResListRole'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List role
+      tags:
+      - roles
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: role need to create
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/rolemodel.ReqCreateRole'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: role id
+          schema:
+            $ref: '#/definitions/rolemodel.ResCreateRole'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Create role
+      tags:
+      - roles
+  /roles/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: role id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: detailed information of role
+          schema:
+            $ref: '#/definitions/rolemodel.ResSeeDetailRole'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See detail information of role
+      tags:
+      - roles
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: role id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: role info to update
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/rolemodel.ReqUpdateRole'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Update info role
+      tags:
+      - roles
+  /roles/{id}/features:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: role id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list feature by role
+          schema:
+            $ref: '#/definitions/rolemodel.ResListFeatureByRole'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List feature by role
+      tags:
+      - roles
   /suppliers:
     get:
       consumes:
@@ -1517,7 +1835,7 @@ paths:
         "200":
           description: supplier
           schema:
-            $ref: '#/definitions/suppliermodel.ResSeeDebtSupplier'
+            $ref: '#/definitions/suppliermodel.ResSeeImportNoteSupplier'
         "400":
           description: error
           schema:
@@ -1560,6 +1878,46 @@ paths:
       tags:
       - suppliers
   /users:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: true
+        in: query
+        name: active
+        type: boolean
+      - example: id, name, phone, email, address
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list user
+          schema:
+            $ref: '#/definitions/usermodel.ResListUser'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List user
+      tags:
+      - users
     post:
       consumes:
       - application/json
@@ -1584,6 +1942,161 @@ paths:
       security:
       - BearerAuth: []
       summary: Create user
+      tags:
+      - users
+  /users/{id}/info:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: user info to update
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqUpdateInfoUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Update info user
+      tags:
+      - users
+  /users/{id}/password:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: old and new password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqUpdatePasswordUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Update password user
+      tags:
+      - users
+  /users/{id}/reset:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: sender's password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqResetPasswordUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Reset password user
+      tags:
+      - users
+  /users/{id}/role:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: role id want to update
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqUpdateRoleUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Change role user
+      tags:
+      - users
+  /users/status:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: list user id and status want to be updated
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqUpdateStatusUsers'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Change status users
       tags:
       - users
 securityDefinitions:

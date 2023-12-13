@@ -7,14 +7,13 @@ import (
 )
 
 func (s *sqlStore) ListRole(
-	ctx context.Context) ([]rolemodel.Role, error) {
-	var result []rolemodel.Role
+	ctx context.Context) ([]rolemodel.SimpleRole, error) {
+	var result []rolemodel.SimpleRole
 	db := s.db
 
 	db = db.Table(common.TableRole)
 
 	if err := db.
-		Preload("RoleFeatures").
 		Find(&result).
 		Error; err != nil {
 		return nil, common.ErrDB(err)
