@@ -4,7 +4,6 @@ import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/appctx"
 	"book-store-management-backend/component/tokenprovider/jwt"
-	"book-store-management-backend/module/role/rolemodel"
 	"book-store-management-backend/module/user/userstore"
 	"errors"
 	"fmt"
@@ -15,7 +14,7 @@ import (
 type Requester interface {
 	GetUserId() string
 	GetEmail() string
-	GetRole() rolemodel.Role
+	GetRoleId() string
 	IsHasFeature(featureCode string) bool
 }
 
@@ -49,7 +48,7 @@ func RequireAuth(appCtx appctx.AppContext) func(ctx *gin.Context) {
 
 		db := appCtx.GetMainDBConnection()
 
-		store := userstore.NewSQLStore(db)
+		userStore := userstore.NewSQLStore(db)
 
 		payload, err := tokenProvider.Validate(token)
 
@@ -57,7 +56,7 @@ func RequireAuth(appCtx appctx.AppContext) func(ctx *gin.Context) {
 			panic(err)
 		}
 
-		user, err := store.FindUser(
+		user, err := userStore.FindUser(
 			c.Request.Context(),
 			map[string]interface{}{
 				"id": payload.UserId,

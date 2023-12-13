@@ -4,18 +4,19 @@ import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/module/role/rolemodel"
 	"errors"
-	"fmt"
 )
 
 type User struct {
-	Id       string         `json:"id" gorm:"column:id;"`
-	Name     string         `json:"name" gorm:"column:name;"`
-	Email    string         `json:"email" gorm:"column:email;"`
+	Id       string         `json:"id" gorm:"column:id;" example:"user id"`
+	Name     string         `json:"name" gorm:"column:name;" example:"Nguyễn Văn B"`
+	Email    string         `json:"email" gorm:"column:email;" example:"b@gmail.com"`
+	Phone    string         `json:"phone" gorm:"column:phone;" example:"0919199112"`
+	Address  string         `json:"address" gorm:"column:address;" example:"HCM"`
 	Password string         `json:"-" gorm:"column:password;"`
 	Salt     string         `json:"-" gorm:"column:salt;"`
-	RoleId   string         `json:"roleId" gorm:"column:roleId;"`
-	Role     rolemodel.Role `json:"-" gorm:"foreignkey:roleId"`
-	IsActive bool           `json:"isActive" gorm:"column:isActive;"`
+	RoleId   string         `json:"-" gorm:"column:roleId;"`
+	Role     rolemodel.Role `json:"role" gorm:"foreignkey:roleId"`
+	IsActive bool           `json:"isActive" gorm:"column:isActive;" example:"true"`
 }
 
 func (u *User) GetUserId() string {
@@ -26,12 +27,11 @@ func (u *User) GetEmail() string {
 	return u.Email
 }
 
-func (u *User) GetRole() rolemodel.Role {
-	return u.Role
+func (u *User) GetRoleId() string {
+	return u.RoleId
 }
 
 func (u *User) IsHasFeature(featureCode string) bool {
-	fmt.Println(featureCode)
 	for _, v := range u.Role.RoleFeatures {
 		if v.FeatureId == featureCode {
 			return true
@@ -45,6 +45,11 @@ func (*User) TableName() string {
 }
 
 var (
+	ErrUserIdInvalid = common.NewCustomError(
+		errors.New("id of user is invalid"),
+		"id of user is empty",
+		"ErrUserIdInvalid",
+	)
 	ErrUserNameEmpty = common.NewCustomError(
 		errors.New("name of user is empty"),
 		"name of user is empty",

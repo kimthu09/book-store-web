@@ -10,7 +10,6 @@ import (
 )
 
 type CreateUserRepo interface {
-	CheckRoleExist(ctx context.Context, roleId string) error
 	CreateUser(ctx context.Context, data *usermodel.ReqCreateUser) error
 }
 
@@ -37,15 +36,11 @@ func NewCreateUserBiz(
 func (biz *createUserBiz) CreateUser(
 	ctx context.Context,
 	data *usermodel.ReqCreateUser) error {
-	if biz.requester.GetRole().Id != common.RoleAdminId {
+	if biz.requester.GetRoleId() != common.RoleAdminId {
 		return usermodel.ErrUserCreateNoPermission
 	}
 
 	if err := data.Validate(); err != nil {
-		return err
-	}
-
-	if err := biz.repo.CheckRoleExist(ctx, data.RoleId); err != nil {
 		return err
 	}
 

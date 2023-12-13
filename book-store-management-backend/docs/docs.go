@@ -3102,9 +3102,26 @@ const docTemplate = `{
                 }
             }
         },
+        "usermodel.Filter": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "searchKey": {
+                    "type": "string",
+                    "example": "id, name, phone, email, address"
+                }
+            }
+        },
         "usermodel.ReqCreateUser": {
             "type": "object",
             "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "HCM"
+                },
                 "email": {
                     "type": "string",
                     "example": "a@gmail.com"
@@ -3112,6 +3129,10 @@ const docTemplate = `{
                 "name": {
                     "type": "string",
                     "example": "Nguyễn Văn A"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "0919199112"
                 },
                 "roleId": {
                     "type": "string",
@@ -3218,7 +3239,7 @@ const docTemplate = `{
                     "description": "Filter contains the filter parameters used to retrieve user.",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/filter.SupplierImportFilter"
+                            "$ref": "#/definitions/usermodel.Filter"
                         }
                     ]
                 },
@@ -3235,6 +3256,10 @@ const docTemplate = `{
         "usermodel.ResUser": {
             "type": "object",
             "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "HCM"
+                },
                 "email": {
                     "type": "string",
                     "example": "b@gmail.com"
@@ -3250,6 +3275,10 @@ const docTemplate = `{
                 "name": {
                     "type": "string",
                     "example": "Nguyễn Văn B"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "0919199112"
                 },
                 "role": {
                     "$ref": "#/definitions/rolemodel.SimpleRole"

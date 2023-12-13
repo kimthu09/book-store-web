@@ -839,13 +839,28 @@ definitions:
       refreshToken:
         $ref: '#/definitions/tokenprovider.Token'
     type: object
+  usermodel.Filter:
+    properties:
+      active:
+        example: true
+        type: boolean
+      searchKey:
+        example: id, name, phone, email, address
+        type: string
+    type: object
   usermodel.ReqCreateUser:
     properties:
+      address:
+        example: HCM
+        type: string
       email:
         example: a@gmail.com
         type: string
       name:
         example: Nguyễn Văn A
+        type: string
+      phone:
+        example: "0919199112"
         type: string
       roleId:
         example: role id
@@ -918,7 +933,7 @@ definitions:
         type: array
       filter:
         allOf:
-        - $ref: '#/definitions/filter.SupplierImportFilter'
+        - $ref: '#/definitions/usermodel.Filter'
         description: Filter contains the filter parameters used to retrieve user.
       paging:
         allOf:
@@ -927,6 +942,9 @@ definitions:
     type: object
   usermodel.ResUser:
     properties:
+      address:
+        example: HCM
+        type: string
       email:
         example: b@gmail.com
         type: string
@@ -938,6 +956,9 @@ definitions:
         type: boolean
       name:
         example: Nguyễn Văn B
+        type: string
+      phone:
+        example: "0919199112"
         type: string
       role:
         $ref: '#/definitions/rolemodel.SimpleRole'

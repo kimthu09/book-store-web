@@ -3,8 +3,6 @@ package ginuser
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/appctx"
-	"book-store-management-backend/component/generator"
-	"book-store-management-backend/component/hasher"
 	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/user/userbiz"
 	"book-store-management-backend/module/user/usermodel"
@@ -16,34 +14,32 @@ import (
 
 // @BasePath /v1
 // @Security BearerAuth
-// @Summary Create user
+// @Summary Change status users
 // @Tags users
 // @Accept json
 // @Produce json
-// @Param user body usermodel.ReqCreateUser true "user need to create"
-// @Response 200 {object} usermodel.ResCreateUser "user id"
+// @Param user body usermodel.ReqUpdateStatusUsers true "list user id and status want to be updated"
+// @Response 200 {object} common.ResSuccess "status of response"
 // @Response 400 {object} common.AppError "error"
-// @Router /users [post]
-func CreateUser(appCtx appctx.AppContext) gin.HandlerFunc {
+// @Router /users/status [patch]
+func ChangeStatusUsers(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var data usermodel.ReqCreateUser
+		var data usermodel.ReqUpdateStatusUsers
 
 		if err := c.ShouldBind(&data); err != nil {
-			c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(err))
+			panic(common.ErrInvalidRequest(err))
 		}
 
 		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
 
 		db := appCtx.GetMainDBConnection().Begin()
 
-		userStore := userstore.NewSQLStore(db)
-		repo := userrepo.NewCreateUserRepo(userStore)
+		store := userstore.NewSQLStore(db)
+		repo := userrepo.NewChangeStatusUserRepo(store)
 
-		md5 := hasher.NewMd5Hash()
-		gen := generator.NewShortIdGenerator()
-		biz := userbiz.NewCreateUserBiz(gen, repo, md5, requester)
+		business := userbiz.NewChangeStatusUserBiz(repo, requester)
 
-		if err := biz.CreateUser(c.Request.Context(), &data); err != nil {
+		if err := business.ChangeStatusUser(c.Request.Context(), &data); err != nil {
 			db.Rollback()
 			panic(err)
 		}
@@ -53,6 +49,6 @@ func CreateUser(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data.Id))
+		c.JSON(http.StatusOK, common.SimpleSuccessResponse(true))
 	}
 }
