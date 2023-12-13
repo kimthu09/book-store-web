@@ -331,6 +331,39 @@ const docTemplate = `{
                 }
             }
         },
+        "/features": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "features"
+                ],
+                "summary": "List feature",
+                "responses": {
+                    "200": {
+                        "description": "list feature",
+                        "schema": {
+                            "$ref": "#/definitions/featuremodel.ResListFeature"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
         "/importNotes": {
             "get": {
                 "security": [
@@ -887,6 +920,214 @@ const docTemplate = `{
                 }
             }
         },
+        "/roles": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "roles"
+                ],
+                "summary": "List role",
+                "responses": {
+                    "200": {
+                        "description": "list role",
+                        "schema": {
+                            "$ref": "#/definitions/rolemodel.ResListRole"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "roles"
+                ],
+                "summary": "Create role",
+                "parameters": [
+                    {
+                        "description": "role need to create",
+                        "name": "role",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/rolemodel.ReqCreateRole"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "role id",
+                        "schema": {
+                            "$ref": "#/definitions/rolemodel.ResCreateRole"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/roles/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "roles"
+                ],
+                "summary": "See detail information of role",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "role id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "detailed information of role",
+                        "schema": {
+                            "$ref": "#/definitions/rolemodel.ResSeeDetailRole"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "roles"
+                ],
+                "summary": "Update info role",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "role id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "role info to update",
+                        "name": "role",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/rolemodel.ReqUpdateRole"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/roles/{id}/features": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "roles"
+                ],
+                "summary": "List feature by role",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "role id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "list feature by role",
+                        "schema": {
+                            "$ref": "#/definitions/rolemodel.ResListFeatureByRole"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
         "/suppliers": {
             "get": {
                 "security": [
@@ -1183,7 +1424,7 @@ const docTemplate = `{
                     "200": {
                         "description": "supplier",
                         "schema": {
-                            "$ref": "#/definitions/suppliermodel.ResSeeDebtSupplier"
+                            "$ref": "#/definitions/suppliermodel.ResSeeImportNoteSupplier"
                         }
                     },
                     "400": {
@@ -1247,6 +1488,69 @@ const docTemplate = `{
             }
         },
         "/users": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "List user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 11,
+                        "name": "total",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "example": true,
+                        "name": "active",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "id, name, phone, email, address",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "list user",
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.ResListUser"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -1279,6 +1583,254 @@ const docTemplate = `{
                         "description": "user id",
                         "schema": {
                             "$ref": "#/definitions/usermodel.ResCreateUser"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/status": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Change status users",
+                "parameters": [
+                    {
+                        "description": "list user id and status want to be updated",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.ReqUpdateStatusUsers"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/info": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Update info user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "user info to update",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.ReqUpdateInfoUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/password": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Update password user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "old and new password",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.ReqUpdatePasswordUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/reset": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Reset password user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "sender's password",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.ReqResetPasswordUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/role": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Change role user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "role id want to update",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.ReqUpdateRoleUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
                         }
                     },
                     "400": {
@@ -1488,6 +2040,17 @@ const docTemplate = `{
                 }
             }
         },
+        "booktitlemodel.ResBookTitleDetail": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "booktitlemodel.ResCreateBookTitle": {
             "type": "object",
             "properties": {
@@ -1623,6 +2186,48 @@ const docTemplate = `{
                 "Pay",
                 "Debt"
             ]
+        },
+        "featuremodel.Feature": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "example": "Xem nhân viên"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "feature id"
+                }
+            }
+        },
+        "featuremodel.ResFeatureDetail": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "example": "Xem nhân viên"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "feature id"
+                },
+                "isHas": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "featuremodel.ResListFeature": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains the detailed information about features.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/featuremodel.Feature"
+                    }
+                }
+            }
         },
         "filter.SupplierDebtFilter": {
             "type": "object",
@@ -2174,6 +2779,123 @@ const docTemplate = `{
                 }
             }
         },
+        "rolefeaturemodel.SimpleRoleFeature": {
+            "type": "object",
+            "properties": {
+                "featureId": {
+                    "type": "string",
+                    "example": "feature id"
+                }
+            }
+        },
+        "rolemodel.ReqCreateRole": {
+            "type": "object",
+            "properties": {
+                "features": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string",
+                    "example": "user"
+                }
+            }
+        },
+        "rolemodel.ReqUpdateRole": {
+            "type": "object",
+            "properties": {
+                "features": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string",
+                    "example": "nếu tên không đổi thì không cần trường này"
+                }
+            }
+        },
+        "rolemodel.ResCreateRole": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string",
+                    "example": "123"
+                }
+            }
+        },
+        "rolemodel.ResListFeatureByRole": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains list of feature of role.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/featuremodel.ResFeatureDetail"
+                    }
+                }
+            }
+        },
+        "rolemodel.ResListRole": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains the detailed information about roles.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/rolemodel.Role"
+                    }
+                }
+            }
+        },
+        "rolemodel.ResSeeDetailRole": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "role id"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "admin"
+                }
+            }
+        },
+        "rolemodel.Role": {
+            "type": "object",
+            "properties": {
+                "features": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/rolefeaturemodel.SimpleRoleFeature"
+                    }
+                },
+                "id": {
+                    "type": "string",
+                    "example": "role id"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "admin"
+                }
+            }
+        },
+        "rolemodel.SimpleRole": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "role id"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "admin"
+                }
+            }
+        },
         "supplierdebtmodel.SupplierDebt": {
             "type": "object",
             "properties": {
@@ -2262,37 +2984,6 @@ const docTemplate = `{
                 }
             }
         },
-        "suppliermodel.ResDebtSupplier": {
-            "type": "object",
-            "properties": {
-                "debt": {
-                    "type": "number",
-                    "example": -100000
-                },
-                "debtHistory": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/supplierdebtmodel.SupplierDebt"
-                    }
-                },
-                "email": {
-                    "type": "string",
-                    "example": "a@gmail.com"
-                },
-                "id": {
-                    "type": "string",
-                    "example": "123"
-                },
-                "name": {
-                    "type": "string",
-                    "example": "Nguyễn Văn A"
-                },
-                "phone": {
-                    "type": "string",
-                    "example": "0123456789"
-                }
-            }
-        },
         "suppliermodel.ResListSupplier": {
             "type": "object",
             "properties": {
@@ -2326,17 +3017,44 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "description": "Data contains the detailed information about supplier's debts.",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/suppliermodel.ResDebtSupplier"
-                        }
-                    ]
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/supplierdebtmodel.SupplierDebt"
+                    }
                 },
                 "filter": {
                     "description": "Filter contains the filter parameters used to retrieve debts.",
                     "allOf": [
                         {
                             "$ref": "#/definitions/filter.SupplierDebtFilter"
+                        }
+                    ]
+                },
+                "paging": {
+                    "description": "Paging provides information about pagination.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/common.Paging"
+                        }
+                    ]
+                }
+            }
+        },
+        "suppliermodel.ResSeeImportNoteSupplier": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains the detailed information about supplier's import notes.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/importnotemodel.ImportNote"
+                    }
+                },
+                "filter": {
+                    "description": "Filter contains the filter parameters used to retrieve import notes.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/filter.SupplierImportFilter"
                         }
                     ]
                 },
@@ -2425,7 +3143,7 @@ const docTemplate = `{
                 },
                 "roleId": {
                     "type": "string",
-                    "example": "user"
+                    "example": "role id"
                 }
             }
         },
@@ -2434,11 +3152,74 @@ const docTemplate = `{
             "properties": {
                 "email": {
                     "type": "string",
-                    "example": "b@gmail.com"
+                    "example": "admin@gmail.com"
                 },
                 "password": {
                     "type": "string",
                     "example": "app123"
+                }
+            }
+        },
+        "usermodel.ReqResetPasswordUser": {
+            "type": "object",
+            "properties": {
+                "userSenderPass": {
+                    "type": "string",
+                    "example": "mật khẩu người gửi"
+                }
+            }
+        },
+        "usermodel.ReqUpdateInfoUser": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "bỏ trường này nếu không muốn update địa chỉ"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "bỏ trường này nếu không muốn update tên"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "bỏ trường này nếu không muốn update sđt"
+                }
+            }
+        },
+        "usermodel.ReqUpdatePasswordUser": {
+            "type": "object",
+            "properties": {
+                "newPassword": {
+                    "type": "string",
+                    "example": "mật khẩu mới"
+                },
+                "oldPassword": {
+                    "type": "string",
+                    "example": "mật khẩu cũ"
+                }
+            }
+        },
+        "usermodel.ReqUpdateRoleUser": {
+            "type": "object",
+            "properties": {
+                "roleId": {
+                    "type": "string",
+                    "example": "role id"
+                }
+            }
+        },
+        "usermodel.ReqUpdateStatusUsers": {
+            "type": "object",
+            "properties": {
+                "isActive": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "userIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
@@ -2448,6 +3229,58 @@ const docTemplate = `{
                 "data": {
                     "type": "string",
                     "example": "123"
+                }
+            }
+        },
+        "usermodel.ResListUser": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains list of user.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/usermodel.ResUser"
+                    }
+                },
+                "filter": {
+                    "description": "Filter contains the filter parameters used to retrieve user.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/filter.SupplierImportFilter"
+                        }
+                    ]
+                },
+                "paging": {
+                    "description": "Paging provides information about pagination.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/common.Paging"
+                        }
+                    ]
+                }
+            }
+        },
+        "usermodel.ResUser": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "b@gmail.com"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "user id"
+                },
+                "isActive": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Nguyễn Văn B"
+                },
+                "role": {
+                    "$ref": "#/definitions/rolemodel.SimpleRole"
                 }
             }
         },

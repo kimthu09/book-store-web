@@ -49,6 +49,13 @@ func ValidateNotNilId(id *string) bool {
 	return true
 }
 
+func ValidateFeatureCode(id *string) bool {
+	if id == nil || len(*id) == 0 || len(*id) > MaxLengthOfFeatureCode {
+		return false
+	}
+	return true
+}
+
 func ValidateId(id *string) bool {
 	if id == nil || len(*id) == 0 {
 		return true

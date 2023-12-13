@@ -4,18 +4,129 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcd0db1b-7464-48d1-92cb-22a4f9dac902" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/module/booktitle/booktitlemodel/res_book_title_detail.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/booktitle/booktitlerepo/detail_book_title.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/booktitle/booktitlestore/detail_book_title.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/module/booktitle/booktitletransport/get_book_title_detail.go" afterDir="false" />
+    <list default="true" id="bcd0db1b-7464-48d1-92cb-22a4f9dac902" name="Changes" comment="fix: update database">
+      <change afterPath="$PROJECT_DIR$/module/book/bookmodel/book_update_amount.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/book/bookmodel/book_update_price.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/book/bookstore/update_price.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/book/bookstore/update_quantity.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/feature/featurebiz/list_feature.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/feature/featuremodel/feature.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/feature/featuremodel/res_feature_detail.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/feature/featuremodel/res_list_feature.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/feature/featurestore/list.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/feature/featurestore/store.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/feature/featuretransport/ginfeature/list_feature.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/feature/featuretransport/ginfeature/route.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/rolebiz/list_feature_by_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/rolebiz/list_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/rolebiz/see_detail_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/rolebiz/update_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/rolemodel/res_create_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/rolemodel/res_list_feature_by_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/rolemodel/res_list_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/rolemodel/res_see_detail_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/rolemodel/simple_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/rolerepo/create_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/rolerepo/list_feature_by_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/rolerepo/list_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/rolerepo/see_detail_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/rolerepo/update_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/rolestore/update.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/roletransport/ginrole/create_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/roletransport/ginrole/list_feature_by_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/roletransport/ginrole/list_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/roletransport/ginrole/route.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/roletransport/ginrole/see_detail_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/role/roletransport/ginrole/update_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/rolefeature/rolefeaturemodel/simple_role_feature.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/supplier/supplierrepo/see_supplier_detail.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/userbiz/change_role_user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/userbiz/change_status_users.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/userbiz/list_user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/userbiz/reset_password.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/userbiz/update_info_user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/userbiz/update_password.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/usermodel/filter.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/usermodel/req_reset_password_user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/usermodel/req_update_info_user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/usermodel/req_update_password_user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/usermodel/req_update_role_user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/usermodel/req_update_status_user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/usermodel/req_update_status_users.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/usermodel/res_list_user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/usermodel/res_user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/userrepo/change_role_user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/userrepo/change_status_users.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/userrepo/list_user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/userrepo/reset_password.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/userrepo/update_info_user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/userrepo/update_password.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/userstore/list.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/userstore/update_info.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/userstore/update_password.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/userstore/update_role.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/userstore/update_status.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/usertransport/ginuser/change_role_user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/usertransport/ginuser/change_status_users.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/usertransport/ginuser/list_user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/usertransport/ginuser/reset_password.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/usertransport/ginuser/update_info_user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module/user/usertransport/ginuser/update_password.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e8859fd8-ccac-4a18-80e3-6e71133bf950.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module/booktitle/booktitletransport/route.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/booktitle/booktitletransport/route.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/const.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/const.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/paging.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/paging.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/validator.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/validator.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/docs.go" beforeDir="false" afterPath="$PROJECT_DIR$/docs/docs.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/swagger.json" beforeDir="false" afterPath="$PROJECT_DIR$/docs/swagger.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/swagger.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/swagger.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/authorize.go" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/authorize.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/book/bookstore/store.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/book/bookstore/store.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/inventorychecknote/inventorychecknoterepo/create_inventory_check_note.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/inventorychecknote/inventorychecknoterepo/create_inventory_check_note.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/role/rolebiz/create_role.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/role/rolebiz/create_role.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/role/rolemodel/role.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/role/rolemodel/role.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/role/rolemodel/role_create.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/role/rolemodel/req_create_role.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/role/rolemodel/role_update.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/role/rolemodel/req_update_role.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/role/rolestore/create.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/role/rolestore/create.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/role/rolestore/find.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/role/rolestore/find.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/role/rolestore/list.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/role/rolestore/list.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/rolefeature/rolefeaturemodel/role_feature.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/rolefeature/rolefeaturemodel/role_feature.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/rolefeature/rolefeaturestore/create.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/rolefeature/rolefeaturestore/create_list.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/rolefeature/rolefeaturestore/create_list.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/rolefeature/rolefeaturestore/find.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/book/bookstore/find.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/rolefeature/rolefeaturestore/find_list_features.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/rolefeature/rolefeaturestore/find_list.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/supplier/supplierbiz/see_supplier_debt.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/supplier/supplierbiz/see_supplier_debt.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/supplier/supplierbiz/see_supplier_import_note.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/supplier/supplierbiz/see_supplier_import_note.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/supplier/suppliermodel/res_debt_supplier.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/supplier/suppliermodel/res_import_note_supplier.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/supplier/suppliermodel/res_see_debt_supplier.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/supplier/suppliermodel/res_see_debt_supplier.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/supplier/suppliermodel/res_see_import_note_supplier.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/supplier/suppliermodel/res_see_import_note_supplier.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/supplier/supplierrepo/see_supplier_debt.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/supplier/supplierrepo/see_supplier_debt.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/supplier/supplierrepo/see_supplier_import_note.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/supplier/supplierrepo/see_supplier_import_note.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/supplier/suppliertransport/ginsupplier/list_supplier.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/supplier/suppliertransport/ginsupplier/list_supplier.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/supplier/suppliertransport/ginsupplier/see_supplier_debt.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/supplier/suppliertransport/ginsupplier/see_supplier_debt.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/supplier/suppliertransport/ginsupplier/see_supplier_import_note.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/supplier/suppliertransport/ginsupplier/see_supplier_import_note.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/user/userbiz/create_user.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/user/userbiz/create_user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/user/usermodel/req_create_user.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/user/usermodel/req_create_user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/user/usermodel/req_login_user.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/user/usermodel/req_login_user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/user/usermodel/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/user/usermodel/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/user/userrepo/create_user.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/user/userrepo/create_user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/user/usertransport/ginuser/create_user.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/user/usertransport/ginuser/create_user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module/user/usertransport/ginuser/route.go" beforeDir="false" afterPath="$PROJECT_DIR$/module/user/usertransport/ginuser/route.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../book-store-management/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../book-store-management/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../book-store-management/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../book-store-management/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -24,9 +135,26 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" url="file:///usr/lib/go-1.21" />
+  <component name="GOROOT" url="file://C:/Program Files/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;NLNM-0-0&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="86a46854-913b-439d-b072-d6672e46d0b8" />
+        <option name="url" value="https://github.com/kimthu09/book-store-web.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -37,33 +165,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultGoTemplateProperty": "Go File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
-    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "quoc",
-    "go.import.settings.migrated": "true",
-    "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/home/quocv/src/uit/book-store-web/book-store-management-backend/module/book/bookmodel",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;mai&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/book-store-web/book-store-management-backend/module/role/rolestore&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\book-store-web\book-store-management-backend\module\role\rolestore" />
       <recent name="$PROJECT_DIR$/module/book/bookmodel" />
       <recent name="$PROJECT_DIR$/module/book/booktransport" />
     </key>
@@ -78,6 +207,10 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix: update database" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: update database" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

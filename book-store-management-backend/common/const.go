@@ -18,6 +18,7 @@ const (
 	TableInventoryCheckNoteDetail string = "InventoryCheckNoteDetail"
 	TableRole                     string = "Role"
 	TableRoleFeature              string = "RoleFeature"
+	TableFeature                  string = "Feature"
 )
 
 // FEATURE CODE
@@ -45,18 +46,25 @@ const (
 	PublisherCreateFeatureCode = "PUBLISHER_CREATE"
 	PublisherViewFeatureCode   = "PUBLISHER_VIEW"
 
-	ImportNoteViewFeatureCode           = "IMP_VIEW"
-	ImportNoteCreateFeatureCode         = "IMP_CREATE"
-	ImportNoteChangeStatusFeatureCode   = "IMP_UP_STATE"
-	InventoryCheckNoteViewFeatureCode   = "INV_VIEW"
-	InventoryCheckNoteCreateFeatureCode = "INV_CREATE"
-	SupplierViewFeatureCode             = "SUP_VIEW"
-	SupplierCreateFeatureCode           = "SUP_CREATE"
-	SupplierPayFeatureCode              = "SUP_PAY"
-	SupplierUpdateInfoFeatureCode       = "SUP_UP_INFO"
+	ImportNoteViewFeatureCode         = "IMPORT_NOTE_VIEW"
+	ImportNoteCreateFeatureCode       = "IMPORT_NOTE_CREATE"
+	ImportNoteChangeStatusFeatureCode = "IMPORT_NOTE_STATUS"
+
+	InventoryCheckNoteViewFeatureCode   = "INVENTORY_NOTE_VIEW"
+	InventoryCheckNoteCreateFeatureCode = "INVENTORY_NOTE_CREATE"
+
+	SupplierViewFeatureCode       = "SUPPLIER_VIEW"
+	SupplierCreateFeatureCode     = "SUPPLIER_CREATE"
+	SupplierPayFeatureCode        = "SUPPLIER_PAY"
+	SupplierUpdateInfoFeatureCode = "SUPPLIER_UPDATE_INFO"
+
+	UserViewFeatureCode         = "USER_VIEW"
+	UserUpdateInfoFeatureCode   = "USER_UPDATE_INFO"
+	UserUpdateStatusFeatureCode = "USER_UPDATE_STATE"
 )
 
 const MaxLengthIdCanGenerate = 12
+const MaxLengthOfFeatureCode = 30
 
 const RoleAdminId = "admin"
 
