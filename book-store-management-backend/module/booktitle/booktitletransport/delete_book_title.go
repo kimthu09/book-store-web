@@ -7,7 +7,6 @@ import (
 	"book-store-management-backend/module/booktitle/booktitlebiz"
 	booktitlerepo "book-store-management-backend/module/booktitle/booktitlerepo"
 	"book-store-management-backend/module/booktitle/booktitlestore"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -34,7 +33,10 @@ func DeleteBookTitle(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		biz := booktitlebiz.NewDeleteBookBiz(requester, repo)
 
-		fmt.Println(biz)
+		err := biz.DeleteBookTitle(c.Request.Context(), bookId)
+		if err != nil {
+			panic(err)
+		}
 
 		if err := biz.DeleteBookTitle(c.Request.Context(), bookId); err != nil {
 			panic(err)
