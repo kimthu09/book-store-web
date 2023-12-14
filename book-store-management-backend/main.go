@@ -55,7 +55,7 @@ func main() {
 		log.Fatalln("Error when loading config:", err)
 	}
 
-	db, err := connectDatabaseWithRetryIn10s(cfg)
+	db, err := connectDatabaseWithRetryIn30s(cfg)
 	if err != nil {
 		log.Fatalln("Error when connecting to database:", err)
 	}
@@ -107,11 +107,11 @@ func loadConfig() (*appConfig, error) {
 	}, nil
 }
 
-func connectDatabaseWithRetryIn10s(cfg *appConfig) (*gorm.DB, error) {
+func connectDatabaseWithRetryIn30s(cfg *appConfig) (*gorm.DB, error) {
 	var db *gorm.DB
 	var err error
 
-	deadline := time.Now().Add(10 * time.Second)
+	deadline := time.Now().Add(30 * time.Second)
 
 	for time.Now().Before(deadline) {
 		log.Println("Connecting to database...")
