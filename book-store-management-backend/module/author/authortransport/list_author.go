@@ -3,7 +3,6 @@ package authortransport
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/appctx"
-	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/author/authorbiz"
 	"book-store-management-backend/module/author/authormodel"
 	"book-store-management-backend/module/author/authorrepo"
@@ -13,7 +12,6 @@ import (
 )
 
 // @BasePath /v1
-// @Security BearerAuth
 // @Summary Get all authors
 // @Tags authors
 // @Accept json
@@ -38,10 +36,8 @@ func ListAuthor(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		store := authorstore.NewSQLStore(appCtx.GetMainDBConnection())
 		repo := authorrepo.NewListAuthorRepo(store)
-		
-		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
 
-		biz := authorbiz.NewListAuthorRepo(repo, requester)
+		biz := authorbiz.NewListAuthorRepo(repo)
 
 		result, err := biz.ListAuthor(c.Request.Context(), &filter, &paging)
 

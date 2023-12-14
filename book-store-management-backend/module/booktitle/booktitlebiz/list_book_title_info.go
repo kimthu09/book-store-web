@@ -2,7 +2,6 @@ package booktitlebiz
 
 import (
 	"book-store-management-backend/common"
-	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/booktitle/booktitlemodel"
 	"context"
 )
@@ -12,19 +11,14 @@ type ListBookTitleRepo interface {
 }
 
 type listBookTitleBiz struct {
-	repo      ListBookTitleRepo
-	requester middleware.Requester
+	repo ListBookTitleRepo
 }
 
-func NewListBookTitleBiz(repo ListBookTitleRepo, requester middleware.Requester) *listBookTitleBiz {
-	return &listBookTitleBiz{repo: repo, requester: requester}
+func NewListBookTitleBiz(repo ListBookTitleRepo) *listBookTitleBiz {
+	return &listBookTitleBiz{repo: repo}
 }
 
 func (biz *listBookTitleBiz) ListBookTitle(ctx context.Context, filter *booktitlemodel.Filter, paging *common.Paging) ([]booktitlemodel.BookTitle, error) {
-	if !biz.requester.IsHasFeature(common.BookTitleViewFeatureCode) {
-		return nil, booktitlemodel.ErrBookTitleViewNoPermission
-	}
-
 	result, err := biz.repo.ListBookTitle(ctx, filter, paging)
 	if err != nil {
 		return nil, err

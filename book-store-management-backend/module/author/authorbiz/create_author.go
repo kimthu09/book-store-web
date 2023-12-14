@@ -1,9 +1,7 @@
 package authorbiz
 
 import (
-	"book-store-management-backend/common"
 	"book-store-management-backend/component/generator"
-	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/author/authormodel"
 	"context"
 )
@@ -13,24 +11,18 @@ type CreateAuthorRepo interface {
 }
 
 type createAuthorBiz struct {
-	gen       generator.IdGenerator
-	repo      CreateAuthorRepo
-	requester middleware.Requester
+	gen  generator.IdGenerator
+	repo CreateAuthorRepo
 }
 
-func NewCreateAuthorBiz(gen generator.IdGenerator, repo CreateAuthorRepo, requester middleware.Requester) *createAuthorBiz {
+func NewCreateAuthorBiz(gen generator.IdGenerator, repo CreateAuthorRepo) *createAuthorBiz {
 	return &createAuthorBiz{
-		gen:       gen,
-		repo:      repo,
-		requester: requester,
+		gen:  gen,
+		repo: repo,
 	}
 }
 
 func (biz *createAuthorBiz) CreateAuthor(ctx context.Context, data *authormodel.Author) error {
-	if !biz.requester.IsHasFeature(common.AuthorCreateFeatureCode) {
-		return authormodel.ErrAuthorCreateNoPermission
-	}
-
 	if err := data.Validate(); err != nil {
 		return err
 	}

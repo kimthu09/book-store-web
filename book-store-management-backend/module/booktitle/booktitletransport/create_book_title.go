@@ -4,7 +4,6 @@ import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/appctx"
 	"book-store-management-backend/component/generator"
-	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/author/authorrepo"
 	"book-store-management-backend/module/author/authorstore"
 	"book-store-management-backend/module/booktitle/booktitlebiz"
@@ -19,7 +18,6 @@ import (
 
 // CreateBookTitle
 // @BasePath /v1
-// @Security BearerAuth
 // @Summary Create booktitle name, desc, authors, categories.
 // @Tags booktitles
 // @Accept json
@@ -34,8 +32,6 @@ func CreateBookTitle(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(common.ErrInvalidRequest(err))
 		}
 
-		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
-
 		db := appCtx.GetMainDBConnection().Begin()
 
 		store := booktitlestore.NewSQLStore(db)
@@ -48,7 +44,7 @@ func CreateBookTitle(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		gen := generator.NewShortIdGenerator()
 
-		biz := booktitlebiz.NewCreateBookTitleBiz(gen, repo, authorRepo, categoryRepo, requester)
+		biz := booktitlebiz.NewCreateBookTitleBiz(gen, repo, authorRepo, categoryRepo)
 
 		var resData booktitlemodel.ResCreateBookTitle
 

@@ -11,7 +11,6 @@ import (
 )
 
 // @BasePath /v1
-// @Security BearerAuth
 // @Summary Get all booktitle detail
 // @Tags booktitles
 // @Accept json

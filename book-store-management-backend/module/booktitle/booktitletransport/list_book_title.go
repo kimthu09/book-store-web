@@ -3,7 +3,6 @@ package booktitletransport
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/appctx"
-	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/booktitle/booktitlebiz"
 	"book-store-management-backend/module/booktitle/booktitlemodel"
 	booktitlerepo "book-store-management-backend/module/booktitle/booktitlerepo"
@@ -12,7 +11,6 @@ import (
 )
 
 // @BasePath /v1
-// @Security BearerAuth
 // @Summary Get all booktitles
 // @Tags booktitles
 // @Accept json
@@ -38,9 +36,7 @@ func ListBookTitle(appCtx appctx.AppContext) gin.HandlerFunc {
 		store := booktitlestore.NewSQLStore(appCtx.GetMainDBConnection())
 		repo := booktitlerepo.NewListBookTitleRepo(store)
 
-		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
-
-		biz := booktitlebiz.NewListBookTitleBiz(repo, requester)
+		biz := booktitlebiz.NewListBookTitleBiz(repo)
 		data, err := biz.ListBookTitle(c.Request.Context(), &filter, &paging)
 
 		if err != nil {

@@ -1,9 +1,7 @@
 package categorybiz
 
 import (
-	"book-store-management-backend/common"
 	"book-store-management-backend/component/generator"
-	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/category/categorymodel"
 	"context"
 )
@@ -13,24 +11,18 @@ type CreateCategoryRepo interface {
 }
 
 type createCategoryBiz struct {
-	gen       generator.IdGenerator
-	repo      CreateCategoryRepo
-	requester middleware.Requester
+	gen  generator.IdGenerator
+	repo CreateCategoryRepo
 }
 
-func NewCreateCategoryBiz(gen generator.IdGenerator, repo CreateCategoryRepo, requester middleware.Requester) *createCategoryBiz {
+func NewCreateCategoryBiz(gen generator.IdGenerator, repo CreateCategoryRepo) *createCategoryBiz {
 	return &createCategoryBiz{
-		gen:       gen,
-		repo:      repo,
-		requester: requester,
+		gen:  gen,
+		repo: repo,
 	}
 }
 
 func (biz *createCategoryBiz) CreateCategory(ctx context.Context, data *categorymodel.Category) error {
-	if !biz.requester.IsHasFeature(common.CategoryCreateFeatureCode) {
-		return categorymodel.ErrCategoryCreateNoPermission
-	}
-
 	if err := data.Validate(); err != nil {
 		return err
 	}

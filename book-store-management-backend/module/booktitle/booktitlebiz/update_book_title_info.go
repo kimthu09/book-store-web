@@ -1,8 +1,6 @@
 package booktitlebiz
 
 import (
-	"book-store-management-backend/common"
-	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/booktitle/booktitlemodel"
 	booktitlestore "book-store-management-backend/module/booktitle/booktitlestore"
 	"context"
@@ -13,34 +11,23 @@ type updateBookRepo interface {
 }
 
 type updateBookBiz struct {
-	requester     middleware.Requester
-	repo          updateBookRepo
-	authorRepo    authorRepo
-	publisherRepo publisherRepo
-	categoryRepo  categoryRepo
+	repo         updateBookRepo
+	authorRepo   authorRepo
+	categoryRepo categoryRepo
 }
 
 func NewUpdateBookBiz(
 	repo updateBookRepo,
 	authorRepo authorRepo,
-	publisherRepo publisherRepo,
-	categoryRepo categoryRepo,
-	requester middleware.Requester,
-) *updateBookBiz {
+	categoryRepo categoryRepo) *updateBookBiz {
 	return &updateBookBiz{
-		repo:          repo,
-		authorRepo:    authorRepo,
-		publisherRepo: publisherRepo,
-		categoryRepo:  categoryRepo,
-		requester:     requester,
+		repo:         repo,
+		authorRepo:   authorRepo,
+		categoryRepo: categoryRepo,
 	}
 }
 
 func (biz *updateBookBiz) UpdateBookTitle(ctx context.Context, id string, reqData *booktitlemodel.ReqUpdateBookInfo) error {
-	if !biz.requester.IsHasFeature(common.BookTitleUpdateFeatureCode) {
-		return booktitlemodel.ErrBookTitleUpdateNoPermission
-	}
-
 	err := biz.repo.UpdateBookTitle(ctx, id, &booktitlestore.BookTitleDBModel{
 		Name:        reqData.Name,
 		Description: reqData.Description,

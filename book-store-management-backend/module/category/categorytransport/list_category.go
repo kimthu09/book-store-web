@@ -3,7 +3,6 @@ package categorytransport
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/appctx"
-	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/category/categorybiz"
 	"book-store-management-backend/module/category/categorymodel"
 	"book-store-management-backend/module/category/categoryrepo"
@@ -14,7 +13,6 @@ import (
 )
 
 // @BasePath /v1
-// @Security BearerAuth
 // @Summary Get all categories
 // @Tags categories
 // @Accept json
@@ -38,9 +36,7 @@ func ListCategory(appCtx appctx.AppContext) gin.HandlerFunc {
 		store := categorystore.NewSQLStore(appCtx.GetMainDBConnection())
 		repo := categoryrepo.NewListCategoryRepo(store)
 
-		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
-
-		biz := categorybiz.NewListCategoryRepo(repo, requester)
+		biz := categorybiz.NewListCategoryRepo(repo)
 
 		result, err := biz.ListCategory(c.Request.Context(), &filter, &paging)
 

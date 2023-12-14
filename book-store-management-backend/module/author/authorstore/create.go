@@ -14,6 +14,8 @@ func (s *sqlStore) CreateAuthor(ctx context.Context, data *authormodel.Author) e
 			switch key := gormErr.GetDuplicateErrorKey("PRIMARY"); key {
 			case "PRIMARY":
 				return authormodel.ErrAuthorIdDuplicate
+			case "name":
+				return authormodel.ErrAuthorNameDuplicate
 			}
 		}
 		return common.ErrDB(err)

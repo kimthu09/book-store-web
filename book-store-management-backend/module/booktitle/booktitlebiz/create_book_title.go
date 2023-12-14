@@ -3,7 +3,6 @@ package booktitlebiz
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/generator"
-	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/booktitle/booktitlemodel"
 	"context"
 )
@@ -29,29 +28,22 @@ type createBookTitleBiz struct {
 	repo         CreateBookTitleRepo
 	authorRepo   authorRepo
 	categoryRepo categoryRepo
-	requester    middleware.Requester
 }
 
 func NewCreateBookTitleBiz(
 	gen generator.IdGenerator,
 	repo CreateBookTitleRepo,
 	authorRepo authorRepo,
-	categoryRepo categoryRepo,
-	requester middleware.Requester) *createBookTitleBiz {
+	categoryRepo categoryRepo) *createBookTitleBiz {
 	return &createBookTitleBiz{
 		gen:          gen,
 		repo:         repo,
 		authorRepo:   authorRepo,
 		categoryRepo: categoryRepo,
-		requester:    requester,
 	}
 }
 
 func (biz *createBookTitleBiz) CreateBookTitle(ctx context.Context, reqData *booktitlemodel.ReqCreateBookTitle, resData *booktitlemodel.ResCreateBookTitle) error {
-	if !biz.requester.IsHasFeature(common.BookTitleCreateFeatureCode) {
-		return booktitlemodel.ErrBookTitleCreateNoPermission
-	}
-
 	data := &booktitlemodel.BookTitle{
 		ID:          nil,
 		Name:        reqData.Name,

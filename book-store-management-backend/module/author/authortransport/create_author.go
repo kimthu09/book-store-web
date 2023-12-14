@@ -4,7 +4,6 @@ import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/appctx"
 	"book-store-management-backend/component/generator"
-	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/author/authorbiz"
 	"book-store-management-backend/module/author/authormodel"
 	"book-store-management-backend/module/author/authorrepo"
@@ -14,7 +13,6 @@ import (
 )
 
 // @BasePath /v1
-// @Security BearerAuth
 // @Summary Create author with name
 // @Tags authors
 // @Accept json
@@ -29,14 +27,13 @@ func CreateAuthor(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(common.ErrInvalidRequest(err))
 		}
 
-		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
 		db := appCtx.GetMainDBConnection().Begin()
 		store := authorstore.NewSQLStore(db)
 		repo := authorrepo.NewCreateAuthorRepo(store)
 
 		gen := generator.NewShortIdGenerator()
 
-		business := authorbiz.NewCreateAuthorBiz(gen, repo, requester)
+		business := authorbiz.NewCreateAuthorBiz(gen, repo)
 
 		tmpData := authormodel.Author{
 			Name: data.Name,

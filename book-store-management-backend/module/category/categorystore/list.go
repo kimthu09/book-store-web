@@ -22,7 +22,6 @@ func (s *sqlStore) ListCategory(ctx context.Context, filter *categorymodel.Filte
 	db = dbTemp
 
 	if err := db.
-		Limit(int(paging.Limit)).
 		Order("name").
 		Find(&result).Error; err != nil {
 		return nil, common.ErrDB(err)

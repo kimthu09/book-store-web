@@ -4,7 +4,6 @@ import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/appctx"
 	"book-store-management-backend/component/generator"
-	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/category/categorybiz"
 	"book-store-management-backend/module/category/categorymodel"
 	"book-store-management-backend/module/category/categoryrepo"
@@ -15,7 +14,6 @@ import (
 )
 
 // @BasePath /v1
-// @Security BearerAuth
 // @Summary Create category with name
 // @Tags categories
 // @Accept json
@@ -30,14 +28,13 @@ func CreateCategory(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(common.ErrInvalidRequest(err))
 		}
 
-		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
 		db := appCtx.GetMainDBConnection().Begin()
 		store := categorystore.NewSQLStore(db)
 		repo := categoryrepo.NewCreateCategoryRepo(store)
 
 		gen := generator.NewShortIdGenerator()
 
-		business := categorybiz.NewCreateCategoryBiz(gen, repo, requester)
+		business := categorybiz.NewCreateCategoryBiz(gen, repo)
 
 		tmpData := categorymodel.Category{
 			Name: data.Name,

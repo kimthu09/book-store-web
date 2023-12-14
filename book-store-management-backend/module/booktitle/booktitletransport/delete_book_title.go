@@ -3,7 +3,6 @@ package booktitletransport
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/appctx"
-	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/booktitle/booktitlebiz"
 	booktitlerepo "book-store-management-backend/module/booktitle/booktitlerepo"
 	"book-store-management-backend/module/booktitle/booktitlestore"
@@ -13,7 +12,6 @@ import (
 )
 
 // @BasePath /v1
-// @Security BearerAuth
 // @Summary Delete booktitle by id
 // @Tags booktitles
 // @Accept json
@@ -27,12 +25,10 @@ func DeleteBookTitle(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(common.ErrInvalidRequest(nil))
 		}
 
-		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
-
 		store := booktitlestore.NewSQLStore(appCtx.GetMainDBConnection())
 		repo := booktitlerepo.NewDeleteBookRepo(store)
 
-		biz := booktitlebiz.NewDeleteBookBiz(requester, repo)
+		biz := booktitlebiz.NewDeleteBookBiz(repo)
 
 		fmt.Println(biz)
 
