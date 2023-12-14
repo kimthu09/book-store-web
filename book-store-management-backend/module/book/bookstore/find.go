@@ -1,18 +1,18 @@
-package rolefeaturestore
+package bookstore
 
 import (
 	"book-store-management-backend/common"
-	"book-store-management-backend/module/rolefeature/rolefeaturemodel"
+	"book-store-management-backend/module/book/bookmodel"
 	"context"
 	"errors"
 	"gorm.io/gorm"
 )
 
-func (s *sqlStore) FindRoleFeature(
+func (s *sqlStore) FindBook(
 	ctx context.Context,
 	conditions map[string]interface{},
-	moreKeys ...string) (*rolefeaturemodel.RoleFeature, error) {
-	var data rolefeaturemodel.RoleFeature
+	moreKeys ...string) (*bookmodel.Book, error) {
+	var data bookmodel.Book
 	db := s.db
 
 	for i := range moreKeys {

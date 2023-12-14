@@ -30,8 +30,8 @@ type ChangeStatusImportNoteRepo interface {
 	) ([]importnotedetailmodel.ImportNoteDetail, error)
 	HandleBookQuantity(
 		ctx context.Context,
-		bookTotalQuantityNeedUpdate map[string]int,
-	) error
+		importNoteId string,
+		bookTotalQuantityNeedUpdate map[string]int) error
 }
 
 type changeStatusImportNoteRepo struct {
@@ -97,7 +97,7 @@ func (biz *changeStatusImportNoteRepo) ChangeStatusImportNote(
 		}
 
 		mapBookQuantity := getMapBookTotalQuantityNeedUpdated(importNoteDetails)
-		if err := biz.repo.HandleBookQuantity(ctx, mapBookQuantity); err != nil {
+		if err := biz.repo.HandleBookQuantity(ctx, importNoteId, mapBookQuantity); err != nil {
 			return err
 		}
 	}

@@ -1,24 +1,29 @@
 package importnotemodel
 
 import (
+	"book-store-management-backend/common"
 	"book-store-management-backend/module/importnotedetail/importnotedetailmodel"
 	"book-store-management-backend/module/user/usermodel"
 	"time"
 )
 
 type ResDetailImportNote struct {
-	Id           string                                   `json:"id" gorm:"column:id;" example:"import note id"`
-	SupplierId   string                                   `json:"-" gorm:"column:supplierId;"`
-	Supplier     SimpleSupplier                           `json:"supplier" gorm:"foreignKey:SupplierId;references:Id"`
-	TotalPrice   float32                                  `json:"totalPrice" gorm:"column:totalPrice;" example:"120000"`
-	Status       *ImportNoteStatus                        `json:"status" gorm:"column:status;" example:"Done"`
-	CreateBy     string                                   `json:"-" gorm:"column:createBy;"`
-	CreateByUser usermodel.SimpleUser                     `json:"createBy" gorm:"foreignKey:CreateBy"`
-	CloseBy      *string                                  `json:"-" gorm:"column:closeBy;"`
-	CloseByUser  *usermodel.SimpleUser                    `json:"closeBy" gorm:"foreignKey:CloseBy"`
-	CreateAt     *time.Time                               `json:"createAt" gorm:"column:createAt;" example:"2023-12-03T15:02:19.62113565Z"`
-	CloseAt      *time.Time                               `json:"closeAt" gorm:"column:closeAt;" example:"2023-12-03T15:02:19.62113565Z"`
-	Details      []importnotedetailmodel.ImportNoteDetail `json:"details"`
+	Id            string                                   `json:"id" gorm:"column:id;" example:"import note id"`
+	SupplierId    string                                   `json:"-" gorm:"column:supplierId;"`
+	Supplier      SimpleSupplier                           `json:"supplier" gorm:"foreignKey:SupplierId;references:Id"`
+	TotalPrice    int                                      `json:"totalPrice" gorm:"column:totalPrice;" example:"120000"`
+	Status        *ImportNoteStatus                        `json:"status" gorm:"column:status;" example:"Done"`
+	CreatedBy     string                                   `json:"-" gorm:"column:createdBy;"`
+	CreatedByUser usermodel.SimpleUser                     `json:"createdBy" gorm:"foreignKey:CreatedBy"`
+	ClosedBy      *string                                  `json:"-" gorm:"column:closedBy;"`
+	ClosedByUser  *usermodel.SimpleUser                    `json:"closedBy" gorm:"foreignKey:ClosedBy"`
+	CreatedAt     *time.Time                               `json:"createdAt" gorm:"column:createdAt;" example:"2023-12-03T15:02:19.62113565Z"`
+	ClosedAt      *time.Time                               `json:"closedAt" gorm:"column:closedAt;" example:"2023-12-03T15:02:19.62113565Z"`
+	Details       []importnotedetailmodel.ImportNoteDetail `json:"details"`
+}
+
+func (*ResDetailImportNote) TableName() string {
+	return common.TableImportNote
 }
 
 func GetResDetailImportNoteFromImportNote(importNote *ImportNote) *ResDetailImportNote {
@@ -28,11 +33,11 @@ func GetResDetailImportNoteFromImportNote(importNote *ImportNote) *ResDetailImpo
 	src.Supplier = importNote.Supplier
 	src.TotalPrice = importNote.TotalPrice
 	src.Status = importNote.Status
-	src.CreateBy = importNote.CreateBy
-	src.CreateByUser = importNote.CreateByUser
-	src.CloseBy = importNote.CloseBy
-	src.CloseByUser = importNote.CloseByUser
-	src.CreateAt = importNote.CreateAt
-	src.CloseAt = importNote.CloseAt
+	src.CreatedBy = importNote.CreatedBy
+	src.CreatedByUser = importNote.CreatedByUser
+	src.ClosedBy = importNote.ClosedBy
+	src.ClosedByUser = importNote.ClosedByUser
+	src.CreatedAt = importNote.CreatedAt
+	src.ClosedAt = importNote.ClosedAt
 	return &src
 }

@@ -8,20 +8,13 @@ import (
 
 func (s *sqlStore) ListImportNoteDetail(
 	ctx context.Context,
-	importNoteId string,
-	paging *common.Paging) ([]importnotedetailmodel.ImportNoteDetail, error) {
+	importNoteId string) ([]importnotedetailmodel.ImportNoteDetail, error) {
 	var result []importnotedetailmodel.ImportNoteDetail
 	db := s.db
 
 	db = db.Table(common.TableImportNoteDetail)
 
 	db = db.Where("importNoteId = ?", importNoteId)
-
-	dbTemp, errPaging := common.HandlePaging(db, paging)
-	if errPaging != nil {
-		return nil, errPaging
-	}
-	db = dbTemp
 
 	if err := db.
 		Preload("Book").

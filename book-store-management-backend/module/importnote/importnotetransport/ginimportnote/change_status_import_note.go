@@ -11,6 +11,7 @@ import (
 	"book-store-management-backend/module/importnote/importnoterepo"
 	"book-store-management-backend/module/importnote/importnotestore"
 	"book-store-management-backend/module/importnotedetail/importnotedetailstore"
+	"book-store-management-backend/module/stockchangehistory/stockchangehistorystore"
 	"book-store-management-backend/module/supplier/supplierstore"
 	"book-store-management-backend/module/supplierdebt/supplierdebtstore"
 	"errors"
@@ -43,7 +44,7 @@ func ChangeStatusImportNote(appCtx appctx.AppContext) gin.HandlerFunc {
 		}
 
 		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
-		data.CloseBy = requester.GetUserId()
+		data.ClosedBy = requester.GetUserId()
 
 		db := appCtx.GetMainDBConnection().Begin()
 
@@ -52,6 +53,7 @@ func ChangeStatusImportNote(appCtx appctx.AppContext) gin.HandlerFunc {
 		bookStore := bookstore.NewSQLStore(db)
 		supplierStore := supplierstore.NewSQLStore(db)
 		supplierDebtStore := supplierdebtstore.NewSQLStore(db)
+		stockChangeHistoryStore := stockchangehistorystore.NewSQLStore(db)
 
 		repo := importnoterepo.NewChangeStatusImportNoteRepo(
 			importNoteStore,
@@ -59,6 +61,7 @@ func ChangeStatusImportNote(appCtx appctx.AppContext) gin.HandlerFunc {
 			bookStore,
 			supplierStore,
 			supplierDebtStore,
+			stockChangeHistoryStore,
 		)
 
 		gen := generator.NewShortIdGenerator()

@@ -8,17 +8,17 @@ import (
 )
 
 type ImportNote struct {
-	Id           string                `json:"id" gorm:"column:id;" example:"import note id"`
-	SupplierId   string                `json:"-" gorm:"column:supplierId;"`
-	Supplier     SimpleSupplier        `json:"supplier" gorm:"foreignKey:SupplierId;references:Id"`
-	TotalPrice   float32               `json:"totalPrice" gorm:"column:totalPrice;" example:"120000"`
-	Status       *ImportNoteStatus     `json:"status" gorm:"column:status;" example:"Done"`
-	CreateBy     string                `json:"-" gorm:"column:createBy;"`
-	CreateByUser usermodel.SimpleUser  `json:"createBy" gorm:"foreignKey:CreateBy"`
-	CloseBy      *string               `json:"-" gorm:"column:closeBy;"`
-	CloseByUser  *usermodel.SimpleUser `json:"closeBy" gorm:"foreignKey:CloseBy"`
-	CreateAt     *time.Time            `json:"createAt" gorm:"column:createAt;" example:"2023-12-03T15:02:19.62113565Z"`
-	CloseAt      *time.Time            `json:"closeAt" gorm:"column:closeAt;" example:"2023-12-03T15:02:19.62113565Z"`
+	Id            string                `json:"id" gorm:"column:id;" example:"import note id"`
+	SupplierId    string                `json:"-" gorm:"column:supplierId;"`
+	Supplier      SimpleSupplier        `json:"supplier" gorm:"foreignKey:SupplierId;references:Id"`
+	TotalPrice    int                   `json:"totalPrice" gorm:"column:totalPrice;" example:"120000"`
+	Status        *ImportNoteStatus     `json:"status" gorm:"column:status;" example:"Done"`
+	CreatedBy     string                `json:"-" gorm:"column:createdBy;"`
+	CreatedByUser usermodel.SimpleUser  `json:"createdBy" gorm:"foreignKey:CreatedBy"`
+	ClosedBy      *string               `json:"-" gorm:"column:closedBy;"`
+	ClosedByUser  *usermodel.SimpleUser `json:"closedBy" gorm:"foreignKey:ClosedBy"`
+	CreatedAt     *time.Time            `json:"createdAt" gorm:"column:createdAt;" example:"2023-12-03T15:02:19.62113565Z"`
+	ClosedAt      *time.Time            `json:"closedAt" gorm:"column:closedAt;" example:"2023-12-03T15:02:19.62113565Z"`
 }
 
 type SimpleSupplier struct {

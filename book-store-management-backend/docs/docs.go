@@ -403,37 +403,37 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "example": 1709500431,
-                        "name": "closeAtFrom",
+                        "name": "closedAtFrom",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "example": 1709500431,
-                        "name": "closeAtTo",
+                        "name": "closedAtTo",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "example": "user name",
-                        "name": "closeBy",
+                        "name": "closedBy",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "example": 1709500431,
-                        "name": "createAtFrom",
+                        "name": "createdAtFrom",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "example": 1709500431,
-                        "name": "createAtTo",
+                        "name": "createdAtTo",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "example": "user name",
-                        "name": "createBy",
+                        "name": "createdBy",
                         "in": "query"
                     },
                     {
@@ -549,24 +549,6 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "example": 10,
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "example": 1,
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "example": 11,
-                        "name": "total",
-                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -673,19 +655,19 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "example": 1709500431,
-                        "name": "createAtFrom",
+                        "name": "createdAtFrom",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "example": 1709500431,
-                        "name": "createAtTo",
+                        "name": "createdAtTo",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "example": "user name",
-                        "name": "createBy",
+                        "name": "createdBy",
                         "in": "query"
                     },
                     {
@@ -1242,6 +1224,46 @@ const docTemplate = `{
             }
         },
         "/suppliers/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "suppliers"
+                ],
+                "summary": "See detail of supplier",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "supplier id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "supplier",
+                        "schema": {
+                            "$ref": "#/definitions/suppliermodel.Supplier"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            },
             "patch": {
                 "security": [
                     {
@@ -2285,11 +2307,11 @@ const docTemplate = `{
                     "example": true
                 },
                 "price": {
-                    "type": "number",
+                    "type": "integer",
                     "example": 60000
                 },
                 "qtyImport": {
-                    "type": "number",
+                    "type": "integer",
                     "example": 100
                 }
             }
@@ -2297,27 +2319,27 @@ const docTemplate = `{
         "importnotemodel.Filter": {
             "type": "object",
             "properties": {
-                "closeAtFrom": {
+                "closedAtFrom": {
                     "type": "integer",
                     "example": 1709500431
                 },
-                "closeAtTo": {
+                "closedAtTo": {
                     "type": "integer",
                     "example": 1709500431
                 },
-                "closeBy": {
+                "closedBy": {
                     "type": "string",
                     "example": "user name"
                 },
-                "createAtFrom": {
+                "createdAtFrom": {
                     "type": "integer",
                     "example": 1709500431
                 },
-                "createAtTo": {
+                "createdAtTo": {
                     "type": "integer",
                     "example": 1709500431
                 },
-                "createBy": {
+                "createdBy": {
                     "type": "string",
                     "example": "user name"
                 },
@@ -2346,18 +2368,18 @@ const docTemplate = `{
         "importnotemodel.ImportNote": {
             "type": "object",
             "properties": {
-                "closeAt": {
+                "closedAt": {
                     "type": "string",
                     "example": "2023-12-03T15:02:19.62113565Z"
                 },
-                "closeBy": {
+                "closedBy": {
                     "$ref": "#/definitions/usermodel.SimpleUser"
                 },
-                "createAt": {
+                "createdAt": {
                     "type": "string",
                     "example": "2023-12-03T15:02:19.62113565Z"
                 },
-                "createBy": {
+                "createdBy": {
                     "$ref": "#/definitions/usermodel.SimpleUser"
                 },
                 "id": {
@@ -2376,7 +2398,7 @@ const docTemplate = `{
                     "$ref": "#/definitions/importnotemodel.SimpleSupplier"
                 },
                 "totalPrice": {
-                    "type": "number",
+                    "type": "integer",
                     "example": 120000
                 }
             }
@@ -2438,18 +2460,18 @@ const docTemplate = `{
         "importnotemodel.ResDetailImportNote": {
             "type": "object",
             "properties": {
-                "closeAt": {
+                "closedAt": {
                     "type": "string",
                     "example": "2023-12-03T15:02:19.62113565Z"
                 },
-                "closeBy": {
+                "closedBy": {
                     "$ref": "#/definitions/usermodel.SimpleUser"
                 },
-                "createAt": {
+                "createdAt": {
                     "type": "string",
                     "example": "2023-12-03T15:02:19.62113565Z"
                 },
-                "createBy": {
+                "createdBy": {
                     "$ref": "#/definitions/usermodel.SimpleUser"
                 },
                 "details": {
@@ -2474,7 +2496,7 @@ const docTemplate = `{
                     "$ref": "#/definitions/importnotemodel.SimpleSupplier"
                 },
                 "totalPrice": {
-                    "type": "number",
+                    "type": "integer",
                     "example": 120000
                 }
             }
@@ -2515,14 +2537,6 @@ const docTemplate = `{
                     "allOf": [
                         {
                             "$ref": "#/definitions/importnotemodel.ResDetailImportNote"
-                        }
-                    ]
-                },
-                "paging": {
-                    "description": "Paging provides information about pagination.",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/common.Paging"
                         }
                     ]
                 }
@@ -2581,15 +2595,15 @@ const docTemplate = `{
         "inventorychecknotemodel.Filter": {
             "type": "object",
             "properties": {
-                "createAtFrom": {
+                "createdAtFrom": {
                     "type": "integer",
                     "example": 1709500431
                 },
-                "createAtTo": {
+                "createdAtTo": {
                     "type": "integer",
                     "example": 1709500431
                 },
-                "createBy": {
+                "createdBy": {
                     "type": "string",
                     "example": "user name"
                 },
@@ -2602,11 +2616,11 @@ const docTemplate = `{
         "inventorychecknotemodel.InventoryCheckNote": {
             "type": "object",
             "properties": {
-                "createAt": {
+                "createdAt": {
                     "type": "string",
                     "example": "2023-12-03T15:02:19.62113565Z"
                 },
-                "createBy": {
+                "createdBy": {
                     "$ref": "#/definitions/usermodel.SimpleUser"
                 },
                 "id": {
@@ -2650,11 +2664,11 @@ const docTemplate = `{
         "inventorychecknotemodel.ResDetailInventoryCheckNote": {
             "type": "object",
             "properties": {
-                "createAt": {
+                "createdAt": {
                     "type": "string",
                     "example": "2023-12-03T15:02:19.62113565Z"
                 },
-                "createBy": {
+                "createdBy": {
                     "$ref": "#/definitions/usermodel.SimpleUser"
                 },
                 "details": {
@@ -2871,13 +2885,13 @@ const docTemplate = `{
         "supplierdebtmodel.SupplierDebt": {
             "type": "object",
             "properties": {
-                "createAt": {
+                "createdAt": {
                     "type": "string",
                     "example": "1709500431"
                 },
-                "createBy": {
+                "createdBy": {
                     "type": "string",
-                    "example": "user_id"
+                    "example": "user id"
                 },
                 "id": {
                     "type": "string",
@@ -2909,7 +2923,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "debt": {
-                    "type": "number",
+                    "type": "integer",
                     "example": -100000
                 },
                 "email": {
@@ -2934,7 +2948,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "qtyUpdate": {
-                    "type": "number",
+                    "type": "integer",
                     "example": 10000
                 }
             }
@@ -3053,7 +3067,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "debt": {
-                    "type": "number",
+                    "type": "integer",
                     "example": -100000
                 },
                 "email": {
