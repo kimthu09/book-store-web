@@ -3,8 +3,9 @@ package booktitlebiz
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/middleware"
+	"book-store-management-backend/module/author/authorrepo"
 	"book-store-management-backend/module/booktitle/booktitlemodel"
-	"book-store-management-backend/module/category/categorymodel"
+	"book-store-management-backend/module/category/categoryrepo"
 	"context"
 )
 
@@ -13,13 +14,14 @@ type ListBookTitleRepo interface {
 }
 
 type listBookTitleBiz struct {
-	repo       ListBookTitleRepo
-	authorRepo authorPublicRepo
-	requester  middleware.Requester
+	repo         ListBookTitleRepo
+	authorRepo   authorrepo.AuthorPublicRepo
+	categoryRepo categoryrepo.CategoryPublicRepo
+	requester    middleware.Requester
 }
 
-func NewListBookTitleBiz(repo ListBookTitleRepo, authorRepo authorPublicRepo, requester middleware.Requester) *listBookTitleBiz {
-	return &listBookTitleBiz{repo: repo, authorRepo: authorRepo, requester: requester}
+func NewListBookTitleBiz(repo ListBookTitleRepo, authorRepo authorrepo.AuthorPublicRepo, categoryRepo categoryrepo.CategoryPublicRepo, requester middleware.Requester) *listBookTitleBiz {
+	return &listBookTitleBiz{repo: repo, authorRepo: authorRepo, categoryRepo: categoryRepo, requester: requester}
 }
 
 func (biz *listBookTitleBiz) ListBookTitle(ctx context.Context, filter *booktitlemodel.Filter, paging *common.Paging) ([]booktitlemodel.BookTitleDetail, error) {
@@ -55,12 +57,17 @@ func (biz *listBookTitleBiz) ListBookTitle(ctx context.Context, filter *booktitl
 			result[i].Authors[j].IsActive = nil
 		}
 
-		result[i].Categories = make([]categorymodel.Category, len(booktitle.CategoryIDs))
-		// TODO: get categories
-		for j, categoryID := range booktitle.CategoryIDs {
-			result[i].Categories[j].Id = categoryID
+		categories, err := biz.categoryRepo.GetByListId(ctx, booktitle.CategoryIDs)
+		if err != nil {
+			return nil, err
 		}
-
+		result[i].Categories = categories
+		for j := range result[i].Categories {
+			result[i].Categories[j].CreatedAt = nil
+			result[i].Categories[j].UpdatedAt = nil
+			result[i].Categories[j].DeletedAt = nil
+			result[i].Categories[j].IsActive = nil
+		}
 	}
 
 	return result, nil

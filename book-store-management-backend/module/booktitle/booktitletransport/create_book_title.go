@@ -43,7 +43,7 @@ func CreateBookTitle(appCtx appctx.AppContext) gin.HandlerFunc {
 		categoryStore := categorystore.NewSQLStore(db)
 
 		repo := booktitlerepo.NewCreateBookRepo(store)
-		authorRepo := authorrepo.NewExistAuthorRepo(authorStore)
+		authorRepo := authorrepo.NewAuthorPublicRepo(authorStore)
 		categoryRepo := categoryrepo.NewExistCategoryRepo(categoryStore)
 
 		gen := generator.NewShortIdGenerator()

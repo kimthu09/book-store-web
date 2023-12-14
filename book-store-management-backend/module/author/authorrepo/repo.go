@@ -6,11 +6,13 @@ import (
 )
 
 type AuthorStore interface {
+	CheckExistByID(ctx context.Context, id string) (bool, error)
 	GetByListId(ctx context.Context, idList []string) ([]authormodel.Author, error)
 }
 
 type AuthorPublicRepo interface {
 	GetByListId(ctx context.Context, ids []string) ([]authormodel.Author, error)
+	IsExistAuthorId(ctx context.Context, authorId string) bool
 }
 
 type authorPublicRepo struct {
@@ -27,4 +29,14 @@ func (repo *authorPublicRepo) GetByListId(ctx context.Context, ids []string) ([]
 		return nil, err
 	}
 	return result, nil
+}
+
+func (repo *authorPublicRepo) IsExistAuthorId(ctx context.Context, authorId string) bool {
+	isExist, err := repo.store.CheckExistByID(ctx, authorId)
+
+	if err != nil {
+		return false
+	}
+
+	return isExist
 }

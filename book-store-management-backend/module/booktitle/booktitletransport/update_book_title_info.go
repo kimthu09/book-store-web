@@ -41,7 +41,7 @@ func UpdateBookTitleInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 		categoryStore := categorystore.NewSQLStore(db)
 
 		repo := booktitlerepo.NewUpdateBookRepo(store)
-		authorRepo := authorrepo.NewExistAuthorRepo(authorStore)
+		authorRepo := authorrepo.NewAuthorPublicRepo(authorStore)
 		publisherRepo := publisherrepo.NewExistPublisherRepo(publisherStore)
 		categoryRepo := categoryrepo.NewExistCategoryRepo(categoryStore)
 

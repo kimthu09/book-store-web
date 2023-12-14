@@ -10,6 +10,8 @@ import (
 	"book-store-management-backend/module/booktitle/booktitlemodel"
 	"book-store-management-backend/module/booktitle/booktitlerepo"
 	"book-store-management-backend/module/booktitle/booktitlestore"
+	"book-store-management-backend/module/category/categoryrepo"
+	"book-store-management-backend/module/category/categorystore"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -42,13 +44,15 @@ func ListBookTitle(appCtx appctx.AppContext) gin.HandlerFunc {
 		db := appCtx.GetMainDBConnection()
 		store := booktitlestore.NewSQLStore(db)
 		authorStore := authorstore.NewSQLStore(db)
+		categoryStore := categorystore.NewSQLStore(db)
 
 		repo := booktitlerepo.NewListBookTitleRepo(store)
 		authorRepo := authorrepo.NewAuthorPublicRepo(authorStore)
+		categoryRepo := categoryrepo.NewCategoryPublicRepo(categoryStore)
 
 		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
 
-		biz := booktitlebiz.NewListBookTitleBiz(repo, authorRepo, requester)
+		biz := booktitlebiz.NewListBookTitleBiz(repo, authorRepo, categoryRepo, requester)
 		data, err := biz.ListBookTitle(c.Request.Context(), &filter, &paging)
 
 		if err != nil {
