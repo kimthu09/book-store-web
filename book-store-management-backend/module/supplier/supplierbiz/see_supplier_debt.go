@@ -5,6 +5,7 @@ import (
 	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/supplier/suppliermodel"
 	"book-store-management-backend/module/supplier/suppliermodel/filter"
+	"book-store-management-backend/module/supplierdebt/supplierdebtmodel"
 	"context"
 )
 
@@ -13,7 +14,7 @@ type SeeSupplierDebtRepo interface {
 		ctx context.Context,
 		supplierId string,
 		filter *filter.SupplierDebtFilter,
-		paging *common.Paging) (*suppliermodel.ResDebtSupplier, error)
+		paging *common.Paging) ([]supplierdebtmodel.SupplierDebt, error)
 }
 
 type seeSupplierDebtBiz struct {
@@ -34,7 +35,7 @@ func (biz *seeSupplierDebtBiz) SeeSupplierDebt(
 	ctx context.Context,
 	supplierId string,
 	filterSupplierDebt *filter.SupplierDebtFilter,
-	paging *common.Paging) (*suppliermodel.ResDebtSupplier, error) {
+	paging *common.Paging) ([]supplierdebtmodel.SupplierDebt, error) {
 	if !biz.requester.IsHasFeature(common.SupplierViewFeatureCode) {
 		return nil, suppliermodel.ErrSupplierViewNoPermission
 	}

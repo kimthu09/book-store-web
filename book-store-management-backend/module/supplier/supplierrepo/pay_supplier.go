@@ -40,7 +40,7 @@ func NewUpdatePayRepo(
 
 func (repo *paySupplierRepo) GetDebtSupplier(
 	ctx context.Context,
-	supplierId string) (*float32, error) {
+	supplierId string) (*int, error) {
 	supplier, err := repo.supplierStore.FindSupplier(
 		ctx, map[string]interface{}{"id": supplierId},
 	)

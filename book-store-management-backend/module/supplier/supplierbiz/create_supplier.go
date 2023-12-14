@@ -43,8 +43,6 @@ func (biz *createSupplierBiz) CreateSupplier(
 		return err
 	}
 
-	data.Round()
-
 	if err := handleSupplierId(biz.gen, data); err != nil {
 		return err
 	}

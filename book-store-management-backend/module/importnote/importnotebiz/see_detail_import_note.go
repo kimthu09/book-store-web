@@ -11,7 +11,6 @@ type SeeDetailImportNoteRepo interface {
 	SeeDetailImportNote(
 		ctx context.Context,
 		importNoteId string,
-		paging *common.Paging,
 	) (*importnotemodel.ResDetailImportNote, error)
 }
 
@@ -28,16 +27,14 @@ func NewSeeDetailImportNoteBiz(
 
 func (biz *seeDetailImportNoteBiz) SeeDetailImportNote(
 	ctx context.Context,
-	importNoteId string,
-	paging *common.Paging) (*importnotemodel.ResDetailImportNote, error) {
+	importNoteId string) (*importnotemodel.ResDetailImportNote, error) {
 	if !biz.requester.IsHasFeature(common.ImportNoteViewFeatureCode) {
 		return nil, importnotemodel.ErrImportNoteViewNoPermission
 	}
 
 	importNote, err := biz.repo.SeeDetailImportNote(
 		ctx,
-		importNoteId,
-		paging)
+		importNoteId)
 
 	if err != nil {
 		return nil, err

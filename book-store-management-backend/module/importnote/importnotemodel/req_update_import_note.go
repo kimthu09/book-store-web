@@ -3,10 +3,10 @@ package importnotemodel
 import "book-store-management-backend/common"
 
 type ReqUpdateImportNote struct {
-	CloseBy    string            `json:"-" gorm:"column:closeBy;"`
+	ClosedBy   string            `json:"-" gorm:"column:closedBy;"`
 	Id         string            `json:"-" gorm:"-"`
 	SupplierId string            `json:"-" gorm:"-"`
-	TotalPrice float32           `json:"-" gorm:"-"`
+	TotalPrice int               `json:"-" gorm:"-"`
 	Status     *ImportNoteStatus `json:"status" gorm:"column:status;" example:"Done"`
 }
 

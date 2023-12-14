@@ -19,6 +19,9 @@ const (
 	TableRole                     string = "Role"
 	TableRoleFeature              string = "RoleFeature"
 	TableFeature                  string = "Feature"
+	TableStockChangeHistory       string = "StockChangeHistory"
+	TableInvoice                  string = "Invoice"
+	TableInvoiceDetail            string = "InvoiceDetail"
 )
 
 // FEATURE CODE
@@ -61,6 +64,9 @@ const (
 	UserViewFeatureCode         = "USER_VIEW"
 	UserUpdateInfoFeatureCode   = "USER_UPDATE_INFO"
 	UserUpdateStatusFeatureCode = "USER_UPDATE_STATE"
+
+	InvoiceViewFeatureCode   = "INVOICE_VIEW"
+	InvoiceCreateFeatureCode = "INVOICE_CREATE"
 )
 
 const MaxLengthIdCanGenerate = 12

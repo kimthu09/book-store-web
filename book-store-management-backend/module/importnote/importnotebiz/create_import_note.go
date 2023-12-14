@@ -9,22 +9,14 @@ import (
 )
 
 type CreateImportNoteRepo interface {
-	CheckBook(
-		ctx context.Context,
-		bookId string,
-	) error
-	CheckSupplier(
-		ctx context.Context,
-		supplierId string,
-	) error
 	HandleCreateImportNote(
 		ctx context.Context,
 		data *importnotemodel.ReqCreateImportNote,
 	) error
-	UpdatePriceBook(
+	UpdateImportPriceBook(
 		ctx context.Context,
 		bookId string,
-		price float32,
+		price int,
 	) error
 }
 
@@ -56,19 +48,7 @@ func (biz *createImportNoteBiz) CreateImportNote(
 		return err
 	}
 
-	data.Round()
-
-	for _, v := range data.ImportNoteDetails {
-		if err := biz.repo.CheckBook(ctx, v.BookId); err != nil {
-			return err
-		}
-	}
-
 	if err := handleImportNoteCreateId(biz.gen, data); err != nil {
-		return err
-	}
-
-	if err := biz.repo.CheckSupplier(ctx, data.SupplierId); err != nil {
 		return err
 	}
 
@@ -80,7 +60,7 @@ func (biz *createImportNoteBiz) CreateImportNote(
 
 	for _, v := range data.ImportNoteDetails {
 		if v.IsReplacePrice {
-			if err := biz.repo.UpdatePriceBook(
+			if err := biz.repo.UpdateImportPriceBook(
 				ctx, v.BookId, v.Price,
 			); err != nil {
 				return err
@@ -107,7 +87,7 @@ func handleImportNoteCreateId(
 }
 
 func handleTotalPrice(data *importnotemodel.ReqCreateImportNote) {
-	var totalPrice float32 = 0
+	var totalPrice int = 0
 	for _, importNoteDetail := range data.ImportNoteDetails {
 		totalPrice += importNoteDetail.Price * importNoteDetail.QuantityImport
 	}

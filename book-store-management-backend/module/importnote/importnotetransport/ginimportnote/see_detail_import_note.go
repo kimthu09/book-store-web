@@ -19,20 +19,12 @@ import (
 // @Accept json
 // @Produce json
 // @Param id path string true "import note id"
-// @Param page query common.Paging false "page"
 // @Response 200 {object} importnotemodel.ResSeeDetailImportNote "import note"
 // @Response 400 {object} common.AppError "error"
 // @Router /importNotes/{id} [get]
 func SeeDetailImportNote(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		importNoteId := c.Param("id")
-
-		var paging common.Paging
-		if err := c.ShouldBind(&paging); err != nil {
-			panic(common.ErrInvalidRequest(err))
-		}
-
-		paging.Fulfill()
 
 		importNoteDetailStore := importnotedetailstore.NewSQLStore(appCtx.GetMainDBConnection())
 		importNoteStore := importnotestore.NewSQLStore(appCtx.GetMainDBConnection())
@@ -44,12 +36,12 @@ func SeeDetailImportNote(appCtx appctx.AppContext) gin.HandlerFunc {
 		biz := importnotebiz.NewSeeDetailImportNoteBiz(
 			repo, requester)
 
-		result, err := biz.SeeDetailImportNote(c.Request.Context(), importNoteId, &paging)
+		result, err := biz.SeeDetailImportNote(c.Request.Context(), importNoteId)
 
 		if err != nil {
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common.NewSuccessResponse(result, &paging, nil))
+		c.JSON(http.StatusOK, common.SimpleSuccessResponse(result))
 	}
 }

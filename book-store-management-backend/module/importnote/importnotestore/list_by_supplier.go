@@ -13,7 +13,8 @@ func (s *sqlStore) ListAllImportNoteBySupplier(
 	supplierId string,
 	filter *filter.SupplierImportFilter,
 	ctx context.Context,
-	paging *common.Paging) ([]importnotemodel.ImportNote, error) {
+	paging *common.Paging,
+	moreKeys ...string) ([]importnotemodel.ImportNote, error) {
 	var result []importnotemodel.ImportNote
 	db := s.db
 
@@ -26,6 +27,10 @@ func (s *sqlStore) ListAllImportNoteBySupplier(
 		return nil, errPaging
 	}
 	db = dbTemp
+
+	for i := range moreKeys {
+		db = db.Preload(moreKeys[i])
+	}
 
 	if err := db.
 		Where("supplierId = ?", supplierId).
@@ -42,11 +47,11 @@ func handleSupplierImportFilter(
 	if filterSupplierDebt != nil {
 		if filterSupplierDebt.DateFrom != nil {
 			timeFrom := time.Unix(*filterSupplierDebt.DateFrom, 0)
-			db = db.Where("createAt >= ?", timeFrom)
+			db = db.Where("createdAt >= ?", timeFrom)
 		}
 		if filterSupplierDebt.DateTo != nil {
 			timeTo := time.Unix(*filterSupplierDebt.DateTo, 0)
-			db = db.Where("createAt <= ?", timeTo)
+			db = db.Where("createdAt <= ?", timeTo)
 		}
 	}
 }

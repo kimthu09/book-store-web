@@ -3,6 +3,7 @@ package supplierbiz
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/middleware"
+	"book-store-management-backend/module/importnote/importnotemodel"
 	"book-store-management-backend/module/supplier/suppliermodel"
 	"book-store-management-backend/module/supplier/suppliermodel/filter"
 	"context"
@@ -13,7 +14,7 @@ type SeeSupplierImportNoteRepo interface {
 		ctx context.Context,
 		supplierId string,
 		filter *filter.SupplierImportFilter,
-		paging *common.Paging) (*suppliermodel.ResImportNoteSupplier, error)
+		paging *common.Paging) ([]importnotemodel.ImportNote, error)
 }
 
 type seeSupplierImportNoteBiz struct {
@@ -34,16 +35,16 @@ func (biz *seeSupplierImportNoteBiz) SeeSupplierImportNote(
 	ctx context.Context,
 	supplierId string,
 	filter *filter.SupplierImportFilter,
-	paging *common.Paging) (*suppliermodel.ResImportNoteSupplier, error) {
+	paging *common.Paging) ([]importnotemodel.ImportNote, error) {
 	if !biz.requester.IsHasFeature(common.SupplierViewFeatureCode) {
 		return nil, suppliermodel.ErrSupplierViewNoPermission
 	}
 
-	supplier, err := biz.repo.SeeSupplierImportNote(
+	importNotes, err := biz.repo.SeeSupplierImportNote(
 		ctx, supplierId, filter, paging)
 	if err != nil {
 		return nil, err
 	}
 
-	return supplier, nil
+	return importNotes, nil
 }
