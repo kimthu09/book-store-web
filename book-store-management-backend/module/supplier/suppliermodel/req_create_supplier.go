@@ -7,7 +7,7 @@ type ReqCreateSupplier struct {
 	Name  string  `json:"name" gorm:"column:name;" example:"Nguyễn Văn A"`
 	Email string  `json:"email" gorm:"column:email;" example:"a@gmail.com"`
 	Phone string  `json:"phone" gorm:"column:phone;" example:"0123456789"`
-	Debt  float32 `json:"debt" gorm:"column:debt" example:"-100000"`
+	Debt  int     `json:"debt" gorm:"column:debt" example:"-100000"`
 }
 
 func (*ReqCreateSupplier) TableName() string {
@@ -31,8 +31,4 @@ func (data *ReqCreateSupplier) Validate() *common.AppError {
 		return ErrSupplierInitDebtInvalid
 	}
 	return nil
-}
-
-func (data *ReqCreateSupplier) Round() {
-	common.CustomRound(&data.Debt)
 }

@@ -15,7 +15,7 @@ type PaySupplierStoreRepo interface {
 	GetDebtSupplier(
 		ctx context.Context,
 		supplierId string,
-	) (*float32, error)
+	) (*int, error)
 	CreateSupplierDebt(
 		ctx context.Context,
 		data *supplierdebtmodel.SupplierDebtCreate,
@@ -55,8 +55,6 @@ func (biz *paySupplierBiz) PaySupplier(
 	if err := validateSupplierUpdateDebt(data); err != nil {
 		return nil, err
 	}
-
-	data.Round()
 
 	debtCurrent, errGetDebt := biz.repo.GetDebtSupplier(ctx, supplierId)
 	if errGetDebt != nil {
@@ -101,7 +99,7 @@ func validateSupplierUpdateDebt(data *suppliermodel.ReqUpdateDebtSupplier) error
 func getSupplierDebtCreate(
 	gen generator.IdGenerator,
 	supplierId string,
-	currentDebt float32,
+	currentDebt int,
 	data *suppliermodel.ReqUpdateDebtSupplier,
 ) (*supplierdebtmodel.SupplierDebtCreate, error) {
 	qtyPay := *data.QuantityUpdate
@@ -119,7 +117,7 @@ func getSupplierDebtCreate(
 		Quantity:     qtyPay,
 		QuantityLeft: qtyLeft,
 		DebtType:     &debtType,
-		CreateBy:     data.CreateBy,
+		CreatedBy:    data.CreatedBy,
 	}
 
 	return &supplierDebtCreate, nil

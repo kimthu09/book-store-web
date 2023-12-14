@@ -12,8 +12,8 @@ type SupplierDebt struct {
 	Quantity     float32        `json:"qty" gorm:"column:qty;" example:"-70000"`
 	QuantityLeft float32        `json:"qtyLeft" gorm:"column:qtyLeft;" example:"-100000"`
 	DebtType     *enum.DebtType `json:"type" gorm:"column:type;" example:"Debt"`
-	CreateBy     string         `json:"createBy" gorm:"column:createBy;" example:"user_id"`
-	CreateAt     *time.Time     `json:"createAt" gorm:"column:createAt;" example:"1709500431"`
+	CreatedBy    string         `json:"createdBy" gorm:"column:createdBy;" example:"user id"`
+	CreatedAt    *time.Time     `json:"createdAt" gorm:"column:createdAt;" example:"1709500431"`
 }
 
 func (*SupplierDebt) TableName() string {

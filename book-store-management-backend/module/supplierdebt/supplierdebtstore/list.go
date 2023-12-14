@@ -30,7 +30,7 @@ func (s *sqlStore) ListSupplierDebt(
 	db = dbTemp
 
 	if err := db.
-		Order("createAt desc").
+		Order("createdAt desc").
 		Find(&result).Error; err != nil {
 		return nil, common.ErrDB(err)
 	}
@@ -44,11 +44,11 @@ func handleFilter(
 	if filterSupplierDebt != nil {
 		if filterSupplierDebt.DateFrom != nil {
 			timeFrom := time.Unix(*filterSupplierDebt.DateFrom, 0)
-			db = db.Where("createAt >= ?", timeFrom)
+			db = db.Where("createdAt >= ?", timeFrom)
 		}
 		if filterSupplierDebt.DateTo != nil {
 			timeTo := time.Unix(*filterSupplierDebt.DateTo, 0)
-			db = db.Where("createAt <= ?", timeTo)
+			db = db.Where("createdAt <= ?", timeTo)
 		}
 	}
 }

@@ -3,8 +3,8 @@ package suppliermodel
 import "book-store-management-backend/common"
 
 type ReqUpdateDebtSupplier struct {
-	QuantityUpdate *float32 `json:"qtyUpdate" gorm:"-" example:"10000"`
-	CreateBy       string   `json:"-" gorm:"-"`
+	QuantityUpdate *int   `json:"qtyUpdate" gorm:"-" example:"10000"`
+	CreatedBy      string `json:"-" gorm:"-"`
 }
 
 func (*ReqUpdateDebtSupplier) TableName() string {
@@ -19,8 +19,4 @@ func (data *ReqUpdateDebtSupplier) Validate() *common.AppError {
 		return ErrSupplierDebtPayIsInvalid
 	}
 	return nil
-}
-
-func (data *ReqUpdateDebtSupplier) Round() {
-	common.CustomRound(data.QuantityUpdate)
 }
