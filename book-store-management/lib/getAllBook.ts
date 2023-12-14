@@ -7,7 +7,7 @@ export default async function getAllBooks(page: number) {
   const uniqueParam = `cacheBuster=${new Date().getTime()}`;
 
   const res = await fetch(
-    `http://192.168.1.33:8080/v1/booktitles?page=${page}&${uniqueParam}`,
+    `http://localhost:8080/v1/booktitles?page=${page}&${uniqueParam}`,
     {
       headers: {
         accept: "application/json",

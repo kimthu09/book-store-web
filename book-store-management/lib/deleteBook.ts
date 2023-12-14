@@ -2,11 +2,10 @@ import { apiKey } from "@/constants";
 import axios from "axios";
 
 export default async function deleteBook(bookId: string) {
-  const url = `http://192.168.1.33:8080/v1/booktitles/${bookId}`;
+  const url = `http://localhost:8080/v1/booktitles/${bookId}`;
 
   const headers = {
     accept: "application/json",
-    Authorization: apiKey,
     // Add other headers as needed
   };
 

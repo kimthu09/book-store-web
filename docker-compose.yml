@@ -31,13 +31,3 @@ services:
       - bsm-mysql
     links:
       - bsm-mysql
-
-  bsm-fe:
-    image: lebaotriet/nodejs-18
-    container_name: bsm-fe
-    volumes:
-      - ./book-store-management:/data
-      - ./book-store-management/entrypoint.sh:/entrypoint.sh
-    ports:
-      - 3000:3000
-    working_dir: /data
