@@ -4,13 +4,17 @@ import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/appctx"
 	"book-store-management-backend/middleware"
+	"book-store-management-backend/module/author/authorrepo"
+	"book-store-management-backend/module/author/authorstore"
 	"book-store-management-backend/module/booktitle/booktitlebiz"
 	"book-store-management-backend/module/booktitle/booktitlemodel"
-	booktitlerepo "book-store-management-backend/module/booktitle/booktitlerepo"
-	booktitlestore "book-store-management-backend/module/booktitle/booktitlestore"
+	"book-store-management-backend/module/booktitle/booktitlerepo"
+	"book-store-management-backend/module/booktitle/booktitlestore"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
+// ListBookTitle
 // @BasePath /v1
 // @Security BearerAuth
 // @Summary Get all booktitles
@@ -35,18 +39,22 @@ func ListBookTitle(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		paging.Fulfill()
 
-		store := booktitlestore.NewSQLStore(appCtx.GetMainDBConnection())
+		db := appCtx.GetMainDBConnection()
+		store := booktitlestore.NewSQLStore(db)
+		authorStore := authorstore.NewSQLStore(db)
+
 		repo := booktitlerepo.NewListBookTitleRepo(store)
+		authorRepo := authorrepo.NewAuthorPublicRepo(authorStore)
 
 		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
 
-		biz := booktitlebiz.NewListBookTitleBiz(repo, requester)
+		biz := booktitlebiz.NewListBookTitleBiz(repo, authorRepo, requester)
 		data, err := biz.ListBookTitle(c.Request.Context(), &filter, &paging)
 
 		if err != nil {
 			panic(err)
 		}
 
-		c.JSON(200, common.NewSuccessResponse(data, paging, filter))
+		c.JSON(http.StatusOK, common.NewSuccessResponse(data, paging, filter))
 	}
 }

@@ -37,6 +37,6 @@ func GetBookTitleDetail(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		c.JSON(200, common.SimpleSuccessResponse(data))
+		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data))
 	}
 }
