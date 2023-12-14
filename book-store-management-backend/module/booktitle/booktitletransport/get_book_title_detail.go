@@ -3,8 +3,14 @@ package booktitletransport
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/appctx"
+	"book-store-management-backend/middleware"
+	"book-store-management-backend/module/author/authorrepo"
+	"book-store-management-backend/module/author/authorstore"
+	"book-store-management-backend/module/booktitle/booktitlebiz"
 	"book-store-management-backend/module/booktitle/booktitlerepo"
 	"book-store-management-backend/module/booktitle/booktitlestore"
+	"book-store-management-backend/module/category/categoryrepo"
+	"book-store-management-backend/module/category/categorystore"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
@@ -29,10 +35,19 @@ func GetBookTitleDetail(appCtx appctx.AppContext) gin.HandlerFunc {
 			return
 		}
 
-		store := booktitlestore.NewSQLStore(appCtx.GetMainDBConnection())
-		repo := booktitlerepo.NewDetailBookTitleRepo(store)
+		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
 
-		data, err := repo.DetailBookTitle(c.Request.Context(), id)
+		db := appCtx.GetMainDBConnection()
+		store := booktitlestore.NewSQLStore(db)
+		authorStore := authorstore.NewSQLStore(db)
+		categoryStore := categorystore.NewSQLStore(db)
+
+		repo := booktitlerepo.NewDetailBookTitleRepo(store)
+		authorRepo := authorrepo.NewAuthorPublicRepo(authorStore)
+		categoryRepo := categoryrepo.NewCategoryPublicRepo(categoryStore)
+
+		biz := booktitlebiz.NewGetBookTitleDetailBiz(repo, authorRepo, categoryRepo, requester)
+		data, err := biz.GetBookTitleDetail(c.Request.Context(), id)
 		if err != nil {
 			panic(err)
 		}

@@ -12,6 +12,10 @@ type ListBookStore interface {
 	ListBookTitle(ctx context.Context, filter *booktitlemodel.Filter, propertiesContainSearchKey []string, paging *common.Paging) ([]booktitlestore.BookTitleDBModel, error)
 }
 
+type ListBookTitleRepo interface {
+	ListBookTitle(ctx context.Context, filter *booktitlemodel.Filter, paging *common.Paging) ([]booktitlemodel.BookTitle, error)
+}
+
 type listBookTitleRepo struct {
 	store ListBookStore
 }

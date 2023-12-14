@@ -5,22 +5,19 @@ import (
 	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/author/authorrepo"
 	"book-store-management-backend/module/booktitle/booktitlemodel"
+	"book-store-management-backend/module/booktitle/booktitlerepo"
 	"book-store-management-backend/module/category/categoryrepo"
 	"context"
 )
 
-type ListBookTitleRepo interface {
-	ListBookTitle(ctx context.Context, filter *booktitlemodel.Filter, paging *common.Paging) ([]booktitlemodel.BookTitle, error)
-}
-
 type listBookTitleBiz struct {
-	repo         ListBookTitleRepo
+	repo         booktitlerepo.ListBookTitleRepo
 	authorRepo   authorrepo.AuthorPublicRepo
 	categoryRepo categoryrepo.CategoryPublicRepo
 	requester    middleware.Requester
 }
 
-func NewListBookTitleBiz(repo ListBookTitleRepo, authorRepo authorrepo.AuthorPublicRepo, categoryRepo categoryrepo.CategoryPublicRepo, requester middleware.Requester) *listBookTitleBiz {
+func NewListBookTitleBiz(repo booktitlerepo.ListBookTitleRepo, authorRepo authorrepo.AuthorPublicRepo, categoryRepo categoryrepo.CategoryPublicRepo, requester middleware.Requester) *listBookTitleBiz {
 	return &listBookTitleBiz{repo: repo, authorRepo: authorRepo, categoryRepo: categoryRepo, requester: requester}
 }
 

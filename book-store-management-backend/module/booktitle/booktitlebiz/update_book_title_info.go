@@ -3,40 +3,36 @@ package booktitlebiz
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/middleware"
+	"book-store-management-backend/module/author/authorrepo"
 	"book-store-management-backend/module/booktitle/booktitlemodel"
+	"book-store-management-backend/module/booktitle/booktitlerepo"
 	booktitlestore "book-store-management-backend/module/booktitle/booktitlestore"
+	"book-store-management-backend/module/category/categoryrepo"
 	"context"
 )
 
-type updateBookRepo interface {
-	UpdateBookTitle(ctx context.Context, id string, data *booktitlestore.BookTitleDBModel) error
-}
-
-type updateBookBiz struct {
-	requester     middleware.Requester
-	repo          updateBookRepo
-	authorRepo    authorRepo
-	publisherRepo publisherRepo
-	categoryRepo  categoryRepo
+type updateBookTitleBiz struct {
+	requester    middleware.Requester
+	repo         booktitlerepo.UpdateBookTitleRepo
+	authorRepo   authorrepo.AuthorPublicRepo
+	categoryRepo categoryrepo.CategoryPublicRepo
 }
 
 func NewUpdateBookBiz(
-	repo updateBookRepo,
-	authorRepo authorRepo,
-	publisherRepo publisherRepo,
-	categoryRepo categoryRepo,
+	repo booktitlerepo.UpdateBookTitleRepo,
+	authorRepo authorrepo.AuthorPublicRepo,
+	categoryRepo categoryrepo.CategoryPublicRepo,
 	requester middleware.Requester,
-) *updateBookBiz {
-	return &updateBookBiz{
-		repo:          repo,
-		authorRepo:    authorRepo,
-		publisherRepo: publisherRepo,
-		categoryRepo:  categoryRepo,
-		requester:     requester,
+) *updateBookTitleBiz {
+	return &updateBookTitleBiz{
+		repo:         repo,
+		authorRepo:   authorRepo,
+		categoryRepo: categoryRepo,
+		requester:    requester,
 	}
 }
 
-func (biz *updateBookBiz) UpdateBookTitle(ctx context.Context, id string, reqData *booktitlemodel.ReqUpdateBookInfo) error {
+func (biz *updateBookTitleBiz) UpdateBookTitle(ctx context.Context, id string, reqData *booktitlemodel.ReqUpdateBookInfo) error {
 	if !biz.requester.IsHasFeature(common.BookTitleUpdateFeatureCode) {
 		return booktitlemodel.ErrBookTitleUpdateNoPermission
 	}
