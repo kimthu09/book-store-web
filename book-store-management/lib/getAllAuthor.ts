@@ -15,7 +15,7 @@ const fetcher = (url: string) =>
 
 export default function getAllAuthor() {
   const { data, error, isLoading } = useSWR(
-    "http://localhost:8080/v1/authors",
+    "http://localhost:8080/v1/authors?limit=1000",
     fetcher,
     {
       dedupingInterval: 1,

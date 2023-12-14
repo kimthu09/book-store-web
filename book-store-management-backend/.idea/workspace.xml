@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcd0db1b-7464-48d1-92cb-22a4f9dac902" name="Changes" comment="fix: handle duplicate author's name error">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../sql/seminar.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../sql/seminar.sql" afterDir="false" />
+    <list default="true" id="bcd0db1b-7464-48d1-92cb-22a4f9dac902" name="Changes" comment="update code">
+      <change beforePath="$PROJECT_DIR$/../book-store-management/lib/getAllAuthor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../book-store-management/lib/getAllAuthor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../book-store-management/lib/getAllCategory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../book-store-management/lib/getAllCategory.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,9 +131,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update: swagger" />
-    <MESSAGE value="update code" />
     <MESSAGE value="fix: handle duplicate author's name error" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: handle duplicate author's name error" />
+    <MESSAGE value="update code" />
+    <option name="LAST_COMMIT_MESSAGE" value="update code" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
