@@ -53,9 +53,10 @@ import CategoryList from "../category-list";
 import Link from "next/link";
 import { ExportBookList } from "../excel-export";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
-import deleteBook from "@/lib/deleteBook";
+import deleteBook from "@/lib/book/deleteBook";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "../ui/use-toast";
+import Paging from "../paging";
 
 function idToName(id: string) {
   if (id === "name") {
@@ -237,6 +238,7 @@ export function BookTable({
                     console.log(responseData);
                     if (responseData.data) {
                       toast({
+                        variant: "success",
                         title: "Thành công",
                         description: "Sản phẩm đã có trạng thái ngừng bán",
                       });
@@ -424,26 +426,15 @@ export function BookTable({
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => router.push(`/books?page=${Number(page) - 1}`)}
-            disabled={Number(page) <= 1}
-          >
-            <LuChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => router.push(`/books?page=${Number(page) + 1}`)}
-            disabled={Number(page) >= totalPage}
-
-            // disabled={!table.getCanNextPage()}
-          >
-            <LuChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
+        <Paging
+          page={page}
+          totalPage={totalPage}
+          onNavigateBack={() => router.push(`/books?page=${Number(page) - 1}`)}
+          onNavigateNext={() => router.push(`/books?page=${Number(page) + 1}`)}
+          onPageSelect={(selectedPage) =>
+            router.push(`/books?page=${selectedPage}`)
+          }
+        />
       </div>
     </div>
   );

@@ -25,14 +25,4 @@ export default function getAllCategory() {
     isLoading,
     isError: error,
   };
-  // const res = await fetch("http://localhost:8080/v1/categories", {
-  //   headers: {
-  //     accept: "application/json",
-  //     Authorization: apiKey,
-  //   },
-  // });
-  // if (!res.ok) {
-  //   throw new Error("Failed to fetch data");
-  // }
-  // return res.json().then((json) => json.data);
 }

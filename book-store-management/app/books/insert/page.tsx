@@ -16,41 +16,44 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import createBook from "@/lib/createBook";
-import getAllAuthor from "@/lib/getAllAuthor";
-import getAllCategory from "@/lib/getAllCategory";
+import createBook from "@/lib/book/createBook";
+import getAllAuthor from "@/lib/book/getAllAuthor";
+import getAllCategory from "@/lib/book/getAllCategory";
 import Link from "next/link";
 import { useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { AiOutlineClose } from "react-icons/ai";
 import { LuCheck } from "react-icons/lu";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import Loading from "@/components/loading";
+import { required } from "@/constants";
 
-export type FormValues = {
-  name: string;
-  desc: string;
-  idBook: string;
-  authorIds: {
-    idAuthor: string;
-  }[];
-
-  categoryIds: {
-    idCate: string;
-  }[];
-};
+const FormSchema = z.object({
+  idBook: z.string().max(12, "Tối đa 12 ký tự"),
+  name: required,
+  desc: z.string(),
+  authorIds: z
+    .array(z.object({ idAuthor: z.string() }))
+    .nonempty("Vui lòng chọn ít nhất một tác giả"),
+  categoryIds: z
+    .array(z.object({ idCate: z.string() }))
+    .nonempty("Vui lòng chọn ít nhất một thể loại"),
+});
 
 const InsertNewBook = () => {
   const { toast } = useToast();
-
-  const form = useForm<FormValues>({
-    defaultValues: {
-      idBook: "",
-      name: "",
-      desc: "",
-      categoryIds: [],
-    },
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
   });
   const [creating, setCreating] = useState(true);
-  const { register, handleSubmit, control, watch } = form;
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors },
+  } = form;
 
   const {
     fields: fieldsCate,
@@ -71,22 +74,8 @@ const InsertNewBook = () => {
     control: control,
     name: "authorIds",
   });
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     console.log(data);
-    if (data.categoryIds.length < 1) {
-      toast({
-        title: "Chưa chọn thể loại",
-        description: "Vui lòng chọn ít nhất một thể loại",
-      });
-      return;
-    }
-    if (data.authorIds.length < 1) {
-      toast({
-        title: "Chưa chọn tác giả",
-        description: "Vui lòng chọn ít nhất một tác giả",
-      });
-      return;
-    }
     const response: Promise<any> = createBook({
       id: data.idBook,
       name: data.name,
@@ -95,13 +84,13 @@ const InsertNewBook = () => {
       authorIds: data.authorIds.map((item) => item.idAuthor),
     });
     const responseData = await response;
-    console.log("hi there... " + JSON.stringify(responseData));
     if (responseData.hasOwnProperty("data")) {
       if (responseData.data.id != "") {
         setCreating(false);
       }
     } else {
       toast({
+        variant: "destructive",
         title: "Mã sách đã tồn tại",
         description: "Vui lòng nhập một mã sách khác",
       });
@@ -117,7 +106,7 @@ const InsertNewBook = () => {
   if (isError || isAuthorError) return <div>Failed to load</div>;
   if (!categories || !authors) {
     console.log(categories);
-    return <div>Loading...</div>;
+    return <Loading />;
   } else
     return (
       <div className="col items-center">
@@ -147,10 +136,20 @@ const InsertNewBook = () => {
                       // value={!isNew ? book.id : ""}
                       // readOnly={!isNew}
                     />
+                    {errors.idBook && (
+                      <span className="error___message">
+                        {errors.idBook.message}
+                      </span>
+                    )}
                   </div>
                   <div className="flex-1">
                     <Label>Tên sách</Label>
-                    <Input required {...register("name")}></Input>
+                    <Input {...register("name")}></Input>
+                    {errors.name && (
+                      <span className="error___message">
+                        {errors.name.message}
+                      </span>
+                    )}
                   </div>
 
                   <div>
@@ -169,6 +168,11 @@ const InsertNewBook = () => {
                         }
                       }}
                     />
+                    {errors.categoryIds && (
+                      <span className="error___message">
+                        {errors.categoryIds.message}
+                      </span>
+                    )}
                     <div className="flex flex-wrap gap-2 mt-3">
                       {fieldsCate.map((cate, index) => (
                         <div
@@ -212,6 +216,11 @@ const InsertNewBook = () => {
                         }
                       }}
                     />
+                    {errors.authorIds && (
+                      <span className="error___message">
+                        {errors.authorIds.message}
+                      </span>
+                    )}
                     <div className="flex flex-wrap gap-2 mt-3">
                       {fieldsAuthor.map((author, index) => (
                         <div
