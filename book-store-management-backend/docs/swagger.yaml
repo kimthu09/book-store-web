@@ -85,7 +85,7 @@ definitions:
       id:
         type: string
       isActive:
-        type: integer
+        type: boolean
       name:
         type: string
       updatedAt:
@@ -235,6 +235,9 @@ definitions:
       description:
         example: Xem nhân viên
         type: string
+      groupName:
+        example: Nhân viên
+        type: string
       id:
         example: feature id
         type: string
@@ -243,6 +246,9 @@ definitions:
     properties:
       description:
         example: Xem nhân viên
+        type: string
+      groupName:
+        example: Nhân viên
         type: string
       id:
         example: feature id
@@ -647,14 +653,6 @@ definitions:
         example: "123"
         type: string
     type: object
-  rolemodel.ResListFeatureByRole:
-    properties:
-      data:
-        description: Data contains list of feature of role.
-        items:
-          $ref: '#/definitions/featuremodel.ResFeatureDetail'
-        type: array
-    type: object
   rolemodel.ResListRole:
     properties:
       data:
@@ -665,6 +663,11 @@ definitions:
     type: object
   rolemodel.ResSeeDetailRole:
     properties:
+      data:
+        description: Data contains the detailed information about features.
+        items:
+          $ref: '#/definitions/featuremodel.ResFeatureDetail'
+        type: array
       id:
         example: role id
         type: string
@@ -1627,32 +1630,6 @@ paths:
       security:
       - BearerAuth: []
       summary: Update info role
-      tags:
-      - roles
-  /roles/{id}/features:
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: role id
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: list feature by role
-          schema:
-            $ref: '#/definitions/rolemodel.ResListFeatureByRole'
-        "400":
-          description: error
-          schema:
-            $ref: '#/definitions/common.AppError'
-      security:
-      - BearerAuth: []
-      summary: List feature by role
       tags:
       - roles
   /suppliers:
