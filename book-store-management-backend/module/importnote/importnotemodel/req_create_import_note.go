@@ -7,9 +7,9 @@ import (
 
 type ReqCreateImportNote struct {
 	Id                *string                                        `json:"id" gorm:"column:id;" example:""`
-	TotalPrice        float32                                        `json:"-" gorm:"column:totalPrice;"`
+	TotalPrice        int                                            `json:"-" gorm:"column:totalPrice;"`
 	SupplierId        string                                         `json:"supplierId" gorm:"column:supplierId" example:"supplier id"`
-	CreateBy          string                                         `json:"-" gorm:"column:createBy;"`
+	CreatedBy         string                                         `json:"-" gorm:"column:createdBy;"`
 	ImportNoteDetails []importnotedetailmodel.ImportNoteDetailCreate `json:"details" gorm:"-"`
 }
 
@@ -39,10 +39,4 @@ func (data *ReqCreateImportNote) Validate() *common.AppError {
 		}
 	}
 	return nil
-}
-
-func (data *ReqCreateImportNote) Round() {
-	for i := range data.ImportNoteDetails {
-		data.ImportNoteDetails[i].Round()
-	}
 }

@@ -299,29 +299,29 @@ definitions:
         type: boolean
       price:
         example: 60000
-        type: number
+        type: integer
       qtyImport:
         example: 100
-        type: number
+        type: integer
     type: object
   importnotemodel.Filter:
     properties:
-      closeAtFrom:
+      closedAtFrom:
         example: 1709500431
         type: integer
-      closeAtTo:
+      closedAtTo:
         example: 1709500431
         type: integer
-      closeBy:
+      closedBy:
         example: user name
         type: string
-      createAtFrom:
+      createdAtFrom:
         example: 1709500431
         type: integer
-      createAtTo:
+      createdAtTo:
         example: 1709500431
         type: integer
-      createBy:
+      createdBy:
         example: user name
         type: string
       maxPrice:
@@ -342,15 +342,15 @@ definitions:
     type: object
   importnotemodel.ImportNote:
     properties:
-      closeAt:
+      closedAt:
         example: "2023-12-03T15:02:19.62113565Z"
         type: string
-      closeBy:
+      closedBy:
         $ref: '#/definitions/usermodel.SimpleUser'
-      createAt:
+      createdAt:
         example: "2023-12-03T15:02:19.62113565Z"
         type: string
-      createBy:
+      createdBy:
         $ref: '#/definitions/usermodel.SimpleUser'
       id:
         example: import note id
@@ -363,7 +363,7 @@ definitions:
         $ref: '#/definitions/importnotemodel.SimpleSupplier'
       totalPrice:
         example: 120000
-        type: number
+        type: integer
     type: object
   importnotemodel.ImportNoteStatus:
     enum:
@@ -403,15 +403,15 @@ definitions:
     type: object
   importnotemodel.ResDetailImportNote:
     properties:
-      closeAt:
+      closedAt:
         example: "2023-12-03T15:02:19.62113565Z"
         type: string
-      closeBy:
+      closedBy:
         $ref: '#/definitions/usermodel.SimpleUser'
-      createAt:
+      createdAt:
         example: "2023-12-03T15:02:19.62113565Z"
         type: string
-      createBy:
+      createdBy:
         $ref: '#/definitions/usermodel.SimpleUser'
       details:
         items:
@@ -428,7 +428,7 @@ definitions:
         $ref: '#/definitions/importnotemodel.SimpleSupplier'
       totalPrice:
         example: 120000
-        type: number
+        type: integer
     type: object
   importnotemodel.ResListImportNote:
     properties:
@@ -453,10 +453,6 @@ definitions:
         allOf:
         - $ref: '#/definitions/importnotemodel.ResDetailImportNote'
         description: Data contains the detailed information about import note details.
-      paging:
-        allOf:
-        - $ref: '#/definitions/common.Paging'
-        description: Paging provides information about pagination.
     type: object
   importnotemodel.SimpleSupplier:
     properties:
@@ -495,13 +491,13 @@ definitions:
     type: object
   inventorychecknotemodel.Filter:
     properties:
-      createAtFrom:
+      createdAtFrom:
         example: 1709500431
         type: integer
-      createAtTo:
+      createdAtTo:
         example: 1709500431
         type: integer
-      createBy:
+      createdBy:
         example: user name
         type: string
       searchKey:
@@ -510,10 +506,10 @@ definitions:
     type: object
   inventorychecknotemodel.InventoryCheckNote:
     properties:
-      createAt:
+      createdAt:
         example: "2023-12-03T15:02:19.62113565Z"
         type: string
-      createBy:
+      createdBy:
         $ref: '#/definitions/usermodel.SimpleUser'
       id:
         example: inventory check note id
@@ -543,10 +539,10 @@ definitions:
     type: object
   inventorychecknotemodel.ResDetailInventoryCheckNote:
     properties:
-      createAt:
+      createdAt:
         example: "2023-12-03T15:02:19.62113565Z"
         type: string
-      createBy:
+      createdBy:
         $ref: '#/definitions/usermodel.SimpleUser'
       details:
         items:
@@ -687,11 +683,11 @@ definitions:
     type: object
   supplierdebtmodel.SupplierDebt:
     properties:
-      createAt:
+      createdAt:
         example: "1709500431"
         type: string
-      createBy:
-        example: user_id
+      createdBy:
+        example: user id
         type: string
       id:
         example: debt001
@@ -714,7 +710,7 @@ definitions:
     properties:
       debt:
         example: -100000
-        type: number
+        type: integer
       email:
         example: a@gmail.com
         type: string
@@ -732,7 +728,7 @@ definitions:
     properties:
       qtyUpdate:
         example: 10000
-        type: number
+        type: integer
     type: object
   suppliermodel.ReqUpdateInfoSupplier:
     properties:
@@ -806,7 +802,7 @@ definitions:
     properties:
       debt:
         example: -100000
-        type: number
+        type: integer
       email:
         example: a@gmail.com
         type: string
@@ -1211,27 +1207,27 @@ paths:
         type: integer
       - example: 1709500431
         in: query
-        name: closeAtFrom
+        name: closedAtFrom
         type: integer
       - example: 1709500431
         in: query
-        name: closeAtTo
+        name: closedAtTo
         type: integer
       - example: user name
         in: query
-        name: closeBy
+        name: closedBy
         type: string
       - example: 1709500431
         in: query
-        name: createAtFrom
+        name: createdAtFrom
         type: integer
       - example: 1709500431
         in: query
-        name: createAtTo
+        name: createdAtTo
         type: integer
       - example: user name
         in: query
-        name: createBy
+        name: createdBy
         type: string
       - example: 1000
         in: query
@@ -1305,18 +1301,6 @@ paths:
         name: id
         required: true
         type: string
-      - example: 10
-        in: query
-        name: limit
-        type: integer
-      - example: 1
-        in: query
-        name: page
-        type: integer
-      - example: 11
-        in: query
-        name: total
-        type: integer
       produces:
       - application/json
       responses:
@@ -1383,15 +1367,15 @@ paths:
         type: integer
       - example: 1709500431
         in: query
-        name: createAtFrom
+        name: createdAtFrom
         type: integer
       - example: 1709500431
         in: query
-        name: createAtTo
+        name: createdAtTo
         type: integer
       - example: user name
         in: query
-        name: createBy
+        name: createdBy
         type: string
       - example: ""
         in: query
@@ -1743,6 +1727,31 @@ paths:
       tags:
       - suppliers
   /suppliers/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: supplier id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: supplier
+          schema:
+            $ref: '#/definitions/suppliermodel.Supplier'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See detail of supplier
+      tags:
+      - suppliers
     patch:
       consumes:
       - application/json

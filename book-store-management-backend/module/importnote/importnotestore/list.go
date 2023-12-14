@@ -28,9 +28,9 @@ func (s *sqlStore) ListImportNote(
 
 	if err := db.
 		Preload("Supplier").
-		Preload("CreateByUser").
-		Preload("CloseByUser").
-		Order("createAt desc").
+		Preload("CreatedByUser").
+		Preload("ClosedByUser").
+		Order("createdAt desc").
 		Find(&result).Error; err != nil {
 		return nil, common.ErrDB(err)
 	}
@@ -55,36 +55,36 @@ func handleFilter(
 		if filter.MaxPrice != nil {
 			db = db.Where("totalPrice <= ?", filter.MaxPrice)
 		}
-		if filter.DateFromCreateAt != nil {
-			timeFrom := time.Unix(*filter.DateFromCreateAt, 0)
-			db = db.Where("createAt >= ?", timeFrom)
+		if filter.DateFromCreatedAt != nil {
+			timeFrom := time.Unix(*filter.DateFromCreatedAt, 0)
+			db = db.Where("createdAt >= ?", timeFrom)
 		}
-		if filter.DateToCreateAt != nil {
-			timeTo := time.Unix(*filter.DateToCreateAt, 0)
-			db = db.Where("createAt <= ?", timeTo)
+		if filter.DateToCreatedAt != nil {
+			timeTo := time.Unix(*filter.DateToCreatedAt, 0)
+			db = db.Where("createdAt <= ?", timeTo)
 		}
-		if filter.DateFromCloseAt != nil {
-			timeFrom := time.Unix(*filter.DateFromCloseAt, 0)
-			db = db.Where("closeAt >= ?", timeFrom)
+		if filter.DateFromClosedAt != nil {
+			timeFrom := time.Unix(*filter.DateFromClosedAt, 0)
+			db = db.Where("closedAt >= ?", timeFrom)
 		}
-		if filter.DateToCloseAt != nil {
-			timeTo := time.Unix(*filter.DateToCloseAt, 0)
-			db = db.Where("closeAt <= ?", timeTo)
+		if filter.DateToClosedAt != nil {
+			timeTo := time.Unix(*filter.DateToClosedAt, 0)
+			db = db.Where("closedAt <= ?", timeTo)
 		}
 		if filter.Supplier != nil {
 			db = db.
-				Joins("JOIN Supplier ON ResDetailImportNote.supplierId = Supplier.id").
+				Joins("JOIN Supplier ON ImportNote.supplierId = Supplier.id").
 				Where("Supplier.name LIKE ?", "%"+*filter.Supplier+"%")
 		}
-		if filter.CreateBy != nil {
+		if filter.CreatedBy != nil {
 			db = db.
-				Joins("JOIN MUser AS CreateByUser ON ResDetailImportNote.createBy = CreateByUser.id").
-				Where("CloseByUser.name LIKE ?", "%"+*filter.CreateBy+"%")
+				Joins("JOIN MUser AS CreatedByUser ON ImportNote.createdBy = CreatedByUser.id").
+				Where("CreatedByUser.name LIKE ?", "%"+*filter.CreatedBy+"%")
 		}
-		if filter.CloseBy != nil {
+		if filter.ClosedBy != nil {
 			db = db.
-				Joins("JOIN MUser AS CloseByUser ON ResDetailImportNote.closeBy = CloseByUser.id").
-				Where("CloseByUser.name LIKE ?", "%"+*filter.CloseBy+"%")
+				Joins("JOIN MUser AS ClosedByUser ON ImportNote.closedBy = ClosedByUser.id").
+				Where("ClosedByUser.name LIKE ?", "%"+*filter.ClosedBy+"%")
 		}
 	}
 }
