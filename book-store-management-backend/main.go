@@ -8,9 +8,8 @@ import (
 	"book-store-management-backend/module/book/booktransport"
 	booktitletransport "book-store-management-backend/module/booktitle/booktitletransport"
 	"book-store-management-backend/module/feature/featuretransport/ginfeature"
-	"book-store-management-backend/module/importnote/importnotetransport/ginimportnote"
-	"book-store-management-backend/module/inventorychecknote/inventorychecknotetransport/gininventorychecknote"
 	"book-store-management-backend/module/role/roletransport/ginrole"
+	"time"
 
 	"book-store-management-backend/module/category/categorytransport"
 	"book-store-management-backend/module/publisher/publishertransport"
@@ -62,10 +61,12 @@ func main() {
 		log.Fatalln("Error when loading config:", err)
 	}
 
-	db, err := connectDatabase(cfg)
+	fmt.Println("Connecting to database...")
+	db, err := connectDatabaseWithRetryIn10s(cfg)
 	if err != nil {
 		log.Fatalln("Error when connecting to database:", err)
 	}
+
 	if cfg.Env == "dev" {
 		db = db.Debug()
 	}
@@ -92,8 +93,8 @@ func main() {
 		booktitletransport.SetupRoutes(v1, appCtx)
 		booktransport.SetupRoutes(v1, appCtx)
 		publishertransport.SetupRoutes(v1, appCtx)
-		ginimportnote.SetupRoutes(v1, appCtx)
-		gininventorychecknote.SetupRoutes(v1, appCtx)
+		//ginimportnote.SetupRoutes(v1, appCtx)
+		//gininventorychecknote.SetupRoutes(v1, appCtx)
 		ginsupplier.SetupRoutes(v1, appCtx)
 		ginrole.SetupRoutes(v1, appCtx)
 		ginfeature.SetupRoutes(v1, appCtx)
@@ -120,6 +121,25 @@ func loadConfig() (*appConfig, error) {
 		DBDatabase: env["DB_DATABASE"],
 		SecretKey:  env["SECRET_KEY"],
 	}, nil
+}
+
+func connectDatabaseWithRetryIn10s(cfg *appConfig) (*gorm.DB, error) {
+	var db *gorm.DB
+	var err error
+
+	deadline := time.Now().Add(10 * time.Second)
+
+	for time.Now().Before(deadline) {
+		log.Println("Connecting to database...")
+		db, err = connectDatabase(cfg)
+		if err == nil {
+			return db, nil
+		}
+		// Wait for 1 second before retrying
+		time.Sleep(1 * time.Second)
+	}
+
+	return nil, fmt.Errorf("failed to connect to database after retrying for 10 seconds: %w", err)
 }
 
 func connectDatabase(cfg *appConfig) (*gorm.DB, error) {
