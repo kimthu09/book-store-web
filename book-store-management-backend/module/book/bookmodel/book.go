@@ -19,7 +19,7 @@ type Book struct {
 	CreatedAt *time.Time `json:"createdAt,omitempty" gorm:"createdAt; column:createdAt;"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty" gorm:"updatedAt; column:updatedAt;"`
 	DeletedAt *time.Time `json:"deletedAt,omitempty" gorm:"deletedAt; column:deletedAt;"`
-	IsActive  *int       `json:"isActive,omitempty" gorm:"isActive; column:isActive; default:1"`
+	IsActive  *bool      `json:"isActive,omitempty" gorm:"isActive; column:isActive; default:1"`
 }
 
 func (*Book) TableName() string {
