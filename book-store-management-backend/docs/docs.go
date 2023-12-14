@@ -1068,48 +1068,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/roles/{id}/features": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "roles"
-                ],
-                "summary": "List feature by role",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "role id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "list feature by role",
-                        "schema": {
-                            "$ref": "#/definitions/rolemodel.ResListFeatureByRole"
-                        }
-                    },
-                    "400": {
-                        "description": "error",
-                        "schema": {
-                            "$ref": "#/definitions/common.AppError"
-                        }
-                    }
-                }
-            }
-        },
         "/suppliers": {
             "get": {
                 "security": [
@@ -1995,7 +1953,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "isActive": {
-                    "type": "integer"
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"
@@ -2216,6 +2174,10 @@ const docTemplate = `{
                     "type": "string",
                     "example": "Xem nhân viên"
                 },
+                "groupName": {
+                    "type": "string",
+                    "example": "Nhân viên"
+                },
                 "id": {
                     "type": "string",
                     "example": "feature id"
@@ -2228,6 +2190,10 @@ const docTemplate = `{
                 "description": {
                     "type": "string",
                     "example": "Xem nhân viên"
+                },
+                "groupName": {
+                    "type": "string",
+                    "example": "Nhân viên"
                 },
                 "id": {
                     "type": "string",
@@ -2832,18 +2798,6 @@ const docTemplate = `{
                 }
             }
         },
-        "rolemodel.ResListFeatureByRole": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "description": "Data contains list of feature of role.",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/featuremodel.ResFeatureDetail"
-                    }
-                }
-            }
-        },
         "rolemodel.ResListRole": {
             "type": "object",
             "properties": {
@@ -2859,6 +2813,13 @@ const docTemplate = `{
         "rolemodel.ResSeeDetailRole": {
             "type": "object",
             "properties": {
+                "data": {
+                    "description": "Data contains the detailed information about features.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/featuremodel.ResFeatureDetail"
+                    }
+                },
                 "id": {
                     "type": "string",
                     "example": "role id"
