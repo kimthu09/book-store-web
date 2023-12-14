@@ -13,6 +13,5 @@ func SetupRoutes(router *gin.RouterGroup, appCtx appctx.AppContext) {
 		roles.POST("", CreateRole(appCtx))
 		roles.PATCH("/:id", UpdateRole(appCtx))
 		roles.GET("/:id", SeeDetailRole(appCtx))
-		roles.GET("/:id/features", ListFeatureByRole(appCtx))
 	}
 }
