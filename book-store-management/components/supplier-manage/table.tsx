@@ -38,7 +38,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Supplier } from "@/types";
-import { suppliers } from "@/constants";
 // import FilterSheet from "./filter-sheet";
 import {
   Dialog,
@@ -54,8 +53,10 @@ import { ExportSupplierList } from "./excel-export";
 import { Label } from "../ui/label";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import Link from "next/link";
+import Paging from "../paging";
+import { useRouter, useSearchParams } from "next/navigation";
 
-const data: Supplier[] = suppliers;
+// const data: Supplier[] = suppliers;
 
 export const columns: ColumnDef<Supplier>[] = [
   {
@@ -82,7 +83,7 @@ export const columns: ColumnDef<Supplier>[] = [
     header: () => {
       return <span className="font-semibold">ID</span>;
     },
-    cell: ({ row }) => <div className="capitalize">{row.getValue("id")}</div>,
+    cell: ({ row }) => <div>{row.getValue("id")}</div>,
   },
   {
     accessorKey: "name",
@@ -107,7 +108,7 @@ export const columns: ColumnDef<Supplier>[] = [
       return <div className="font-semibold">Email</div>;
     },
     cell: ({ row }) => (
-      <div className="capitalize lg:max-w-[16rem] max-w-[3rem] truncate">
+      <div className="lg:max-w-[16rem] max-w-[3rem] truncate">
         {row.getValue("email")}
       </div>
     ),
@@ -150,29 +151,31 @@ export const columns: ColumnDef<Supplier>[] = [
       return <div className="text-right font-medium">{formatted}</div>;
     },
   },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const supplier = row.original;
-      return (
-        <div className="flex justify-end">
-          <Link
-            href={{
-              pathname: "supplier/detail",
-              query: {
-                id: supplier.id,
-              },
-            }}
-          >
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-      );
-    },
-  },
+  // {
+  //   id: "actions",
+  //   enableHiding: false,
+  //   cell: ({ row }) => {
+  //     const supplier = row.original;
+  //     return (
+  //       <div className="flex justify-end">
+  //         <Link
+  //           href={{
+  //             pathname: "supplier/detail",
+  //             query: {
+  //               id: supplier.id,
+  //             },
+  //           }}
+  //         >
+  //           <Button variant="ghost" className="h-8 w-8 p-0">
+  //             <DotsHorizontalIcon className="h-4 w-4" />
+  //           </Button>
+  //         </Link>
+  //       </div>
+  //     );
+  //   },
+  //   size: 1,
+  //   maxSize: 2,
+  // },
 ];
 
 function idToName(id: string) {
@@ -188,7 +191,16 @@ function idToName(id: string) {
   return id;
 }
 
-export function SupplierTable() {
+export function SupplierTable({
+  data,
+  totalPage,
+}: {
+  data: Supplier[];
+  totalPage: number;
+}) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const page = searchParams.get("page") ?? "1";
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -212,10 +224,10 @@ export function SupplierTable() {
     },
   });
 
-  const [exportOption, setExportOption] = useState("");
+  const [exportOption, setExportOption] = useState("all");
   const handleExport = () => {
     if (exportOption === "all") {
-      ExportSupplierList(suppliers, "Suppliers.xlsx");
+      ExportSupplierList(data, "Suppliers.xlsx");
     }
     if (table.getFilteredSelectedRowModel().rows.length < 1) {
       //TODO: show notification
@@ -314,7 +326,13 @@ export function SupplierTable() {
         </DropdownMenu>
 
         <div className="flex-1">
-          <Input placeholder="Tìm kiếm nhà cung cấp" />
+          <Input
+            placeholder="Tìm kiếm nhà cung cấp"
+            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn("name")?.setFilterValue(event.target.value)
+            }
+          />
         </div>
 
         <DropdownMenu>
@@ -374,7 +392,14 @@ export function SupplierTable() {
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      onClick={() => {
+                        if (!cell.id.includes("select")) {
+                          router.push(`/supplier/${row.getValue("id")}`);
+                        }
+                      }}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -401,24 +426,19 @@ export function SupplierTable() {
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
+        <Paging
+          page={page}
+          totalPage={totalPage}
+          onNavigateBack={() =>
+            router.push(`/supplier?page=${Number(page) - 1}`)
+          }
+          onNavigateNext={() =>
+            router.push(`/supplier?page=${Number(page) + 1}`)
+          }
+          onPageSelect={(selectedPage) =>
+            router.push(`/supplier?page=${selectedPage}`)
+          }
+        />
       </div>
     </div>
   );
