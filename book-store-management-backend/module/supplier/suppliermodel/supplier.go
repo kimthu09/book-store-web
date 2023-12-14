@@ -6,11 +6,11 @@ import (
 )
 
 type Supplier struct {
-	Id    string  `json:"id" gorm:"column:id;" example:"123"`
-	Name  string  `json:"name" gorm:"column:name;" example:"Nguyễn Văn A"`
-	Email string  `json:"email" gorm:"column:email;" example:"a@gmail.com"`
-	Phone string  `json:"phone" gorm:"column:phone;" example:"0123456789"`
-	Debt  float32 `json:"debt" gorm:"column:debt;" example:"-100000"`
+	Id    string `json:"id" gorm:"column:id;" example:"123"`
+	Name  string `json:"name" gorm:"column:name;" example:"Nguyễn Văn A"`
+	Email string `json:"email" gorm:"column:email;" example:"a@gmail.com"`
+	Phone string `json:"phone" gorm:"column:phone;" example:"0123456789"`
+	Debt  int    `json:"debt" gorm:"column:debt;" example:"-100000"`
 }
 
 func (*Supplier) TableName() string {

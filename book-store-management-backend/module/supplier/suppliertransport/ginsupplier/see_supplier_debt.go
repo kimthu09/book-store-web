@@ -7,7 +7,6 @@ import (
 	"book-store-management-backend/module/supplier/supplierbiz"
 	"book-store-management-backend/module/supplier/suppliermodel/filter"
 	"book-store-management-backend/module/supplier/supplierrepo"
-	"book-store-management-backend/module/supplier/supplierstore"
 	"book-store-management-backend/module/supplierdebt/supplierdebtstore"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -42,9 +41,8 @@ func SeeSupplierDebt(appCtx appctx.AppContext) gin.HandlerFunc {
 		paging.Fulfill()
 
 		supplierDebtStore := supplierdebtstore.NewSQLStore(appCtx.GetMainDBConnection())
-		supplierStore := supplierstore.NewSQLStore(appCtx.GetMainDBConnection())
 
-		repo := supplierrepo.NewSeeSupplierDebtRepo(supplierDebtStore, supplierStore)
+		repo := supplierrepo.NewSeeSupplierDebtRepo(supplierDebtStore)
 		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
 
 		biz := supplierbiz.NewSeeSupplierDebtBiz(repo, requester)

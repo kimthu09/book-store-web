@@ -8,7 +8,6 @@ import (
 	"book-store-management-backend/module/supplier/supplierbiz"
 	"book-store-management-backend/module/supplier/suppliermodel/filter"
 	"book-store-management-backend/module/supplier/supplierrepo"
-	"book-store-management-backend/module/supplier/supplierstore"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -21,8 +20,8 @@ import (
 // @Produce json
 // @Param id path string true "supplier id"
 // @Param page query common.Paging false "page"
-// @Param filter query filter.SupplierDebtFilter false "filter"
-// @Response 200 {object} suppliermodel.ResSeeDebtSupplier "supplier"
+// @Param filter query filter.SupplierImportFilter false "filter"
+// @Response 200 {object} suppliermodel.ResSeeImportNoteSupplier "supplier"
 // @Response 400 {object} common.AppError "error"
 // @Router /suppliers/{id}/importNotes [get]
 func SeeSupplierImportNote(appCtx appctx.AppContext) gin.HandlerFunc {
@@ -42,9 +41,8 @@ func SeeSupplierImportNote(appCtx appctx.AppContext) gin.HandlerFunc {
 		paging.Fulfill()
 
 		importNoteStore := importnotestore.NewSQLStore(appCtx.GetMainDBConnection())
-		supplierStore := supplierstore.NewSQLStore(appCtx.GetMainDBConnection())
 
-		repo := supplierrepo.NewSeeSupplierImportNoteRepo(importNoteStore, supplierStore)
+		repo := supplierrepo.NewSeeSupplierImportNoteRepo(importNoteStore)
 		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
 
 		biz := supplierbiz.NewSeeSupplierImportNoteBiz(repo, requester)
