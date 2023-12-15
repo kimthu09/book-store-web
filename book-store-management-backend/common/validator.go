@@ -164,19 +164,3 @@ func ValidatePositiveNumber(number interface{}) bool {
 		return false
 	}
 }
-
-func ValidateMonthYearReport(month int, year int) bool {
-	date := time.Date(
-		year, time.Month(month), 1,
-		0, 0, 0, 0, time.UTC)
-
-	now := time.Now()
-
-	if date.Year() != year || int(date.Month()) != month {
-		return false
-	} else if year > now.Year() ||
-		(year == now.Year() && month > int(now.Month())) {
-		return false
-	}
-	return true
-}
