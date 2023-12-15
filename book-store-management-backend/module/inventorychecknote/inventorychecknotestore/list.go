@@ -27,8 +27,8 @@ func (s *sqlStore) ListInventoryCheckNote(
 	db = dbTemp
 
 	if err := db.
-		Preload("CreateByUser").
-		Order("createAt desc").
+		Preload("CreatedByUser").
+		Order("createdAt desc").
 		Find(&result).Error; err != nil {
 		return nil, common.ErrDB(err)
 	}
@@ -44,18 +44,18 @@ func handleFilter(
 		if filter.SearchKey != "" {
 			db = common.GetWhereClause(db, filter.SearchKey, propertiesContainSearchKey)
 		}
-		if filter.DateFromCreateAt != nil {
-			timeFrom := time.Unix(*filter.DateFromCreateAt, 0)
-			db = db.Where("createAt >= ?", timeFrom)
+		if filter.DateFromCreatedAt != nil {
+			timeFrom := time.Unix(*filter.DateFromCreatedAt, 0)
+			db = db.Where("createdAt >= ?", timeFrom)
 		}
-		if filter.DateToCreateAt != nil {
-			timeTo := time.Unix(*filter.DateToCreateAt, 0)
-			db = db.Where("createAt <= ?", timeTo)
+		if filter.DateToCreatedAt != nil {
+			timeTo := time.Unix(*filter.DateToCreatedAt, 0)
+			db = db.Where("createdAt <= ?", timeTo)
 		}
-		if filter.CreateBy != nil {
+		if filter.CreatedBy != nil {
 			db = db.
-				Joins("JOIN MUser ON InventoryCheckNote.createBy = MUser.id").
-				Where("MUser.name LIKE ?", "%"+*filter.CreateBy+"%")
+				Joins("JOIN MUser ON InventoryCheckNote.createdBy = MUser.id").
+				Where("MUser.name LIKE ?", "%"+*filter.CreatedBy+"%")
 		}
 	}
 }
