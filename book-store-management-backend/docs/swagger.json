@@ -846,7 +846,42 @@
                         "name": "id",
                         "in": "path",
                         "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "inventory check note",
+                        "schema": {
+                            "$ref": "#/definitions/inventorychecknotemodel.ResSeeDetailInventoryCheckNote"
+                        }
                     },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/invoices": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "invoices"
+                ],
+                "summary": "List invoice",
+                "parameters": [
                     {
                         "type": "integer",
                         "example": 10,
@@ -864,13 +899,118 @@
                         "example": 11,
                         "name": "total",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "user name",
+                        "name": "createdBy",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "name": "maxPrice",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "name": "minPrice",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "search",
+                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "inventory check note",
+                        "description": "list invoice",
                         "schema": {
-                            "$ref": "#/definitions/inventorychecknotemodel.ResSeeDetailInventoryCheckNote"
+                            "$ref": "#/definitions/invoicemodel.ResListInvoice"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "invoices"
+                ],
+                "summary": "Create invoice",
+                "parameters": [
+                    {
+                        "description": "invoice need to create",
+                        "name": "invoice",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/invoicemodel.ReqCreateInvoice"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "invoice id",
+                        "schema": {
+                            "$ref": "#/definitions/invoicemodel.ResCreateInvoice"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/invoices/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "invoices"
+                ],
+                "summary": "See detail invoice",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "invoice id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "invoice",
+                        "schema": {
+                            "$ref": "#/definitions/invoicemodel.ResSeeDetailInvoice"
                         }
                     },
                     "400": {
@@ -984,6 +1124,138 @@
                         "description": "publisher id",
                         "schema": {
                             "$ref": "#/definitions/publishermodel.ResCreatePublisher"
+                        }
+                    }
+                }
+            }
+        },
+        "/reports/debt": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reports"
+                ],
+                "summary": "Find supplier debt report",
+                "parameters": [
+                    {
+                        "description": "time from and time to",
+                        "name": "condition",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/supplierdebtreportmodel.ReqFindSupplierDebtReport"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "supplier debt report",
+                        "schema": {
+                            "$ref": "#/definitions/supplierdebtreportmodel.ResFindSupplierDebtReport"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/reports/sale": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reports"
+                ],
+                "summary": "Find sale report",
+                "parameters": [
+                    {
+                        "description": "time from and time to",
+                        "name": "condition",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/salereportmodel.ReqFindSaleReport"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sale report",
+                        "schema": {
+                            "$ref": "#/definitions/salereportmodel.ResFindSaleReport"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/reports/stock": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reports"
+                ],
+                "summary": "Find stock report",
+                "parameters": [
+                    {
+                        "description": "time from and time to",
+                        "name": "condition",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/stockreportmodel.ReqFindStockReport"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "stock report",
+                        "schema": {
+                            "$ref": "#/definitions/stockreportmodel.ResFindStockReport"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
                         }
                     }
                 }
@@ -2657,11 +2929,15 @@
             "properties": {
                 "id": {
                     "type": "string",
-                    "example": "supplier id"
+                    "example": "123"
                 },
                 "name": {
                     "type": "string",
                     "example": "Nguyễn Văn A"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "0123456789"
                 }
             }
         },
@@ -2850,6 +3126,181 @@
                 }
             }
         },
+        "invoicedetailmodel.InvoiceDetail": {
+            "type": "object",
+            "properties": {
+                "book": {
+                    "$ref": "#/definitions/bookmodel.SimpleBook"
+                },
+                "qty": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "unitPrice": {
+                    "type": "integer",
+                    "example": 60000
+                }
+            }
+        },
+        "invoicedetailmodel.ReqCreateInvoiceDetail": {
+            "type": "object",
+            "properties": {
+                "bookId": {
+                    "type": "string",
+                    "example": "book id"
+                },
+                "qty": {
+                    "type": "integer",
+                    "example": 2
+                }
+            }
+        },
+        "invoicemodel.Filter": {
+            "type": "object",
+            "properties": {
+                "createdBy": {
+                    "type": "string",
+                    "example": "user name"
+                },
+                "maxPrice": {
+                    "type": "number"
+                },
+                "minPrice": {
+                    "type": "number"
+                },
+                "searchKey": {
+                    "type": "string"
+                }
+            }
+        },
+        "invoicemodel.Invoice": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                },
+                "createdBy": {
+                    "$ref": "#/definitions/usermodel.SimpleUser"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "123"
+                },
+                "totalPrice": {
+                    "type": "number",
+                    "example": 120000
+                }
+            }
+        },
+        "invoicemodel.ReqCreateInvoice": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/invoicedetailmodel.ReqCreateInvoiceDetail"
+                    }
+                }
+            }
+        },
+        "invoicemodel.ResCreateInvoice": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/invoicemodel.ResCreateInvoiceData"
+                }
+            }
+        },
+        "invoicemodel.ResCreateInvoiceData": {
+            "type": "object",
+            "properties": {
+                "createdBy": {
+                    "$ref": "#/definitions/usermodel.SimpleUser"
+                },
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/invoicedetailmodel.ReqCreateInvoiceDetail"
+                    }
+                },
+                "id": {
+                    "type": "string",
+                    "example": "123"
+                },
+                "total": {
+                    "type": "integer",
+                    "example": 120000
+                }
+            }
+        },
+        "invoicemodel.ResDetailInvoice": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                },
+                "createdBy": {
+                    "$ref": "#/definitions/usermodel.SimpleUser"
+                },
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/invoicedetailmodel.InvoiceDetail"
+                    }
+                },
+                "id": {
+                    "type": "string",
+                    "example": "123"
+                },
+                "totalPrice": {
+                    "type": "number",
+                    "example": 120000
+                }
+            }
+        },
+        "invoicemodel.ResListInvoice": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains list of invoice.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/invoicemodel.Invoice"
+                    }
+                },
+                "filter": {
+                    "description": "Filter contains the filter parameters used to retrieve invoice.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/invoicemodel.Filter"
+                        }
+                    ]
+                },
+                "paging": {
+                    "description": "Paging provides information about pagination.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/common.Paging"
+                        }
+                    ]
+                }
+            }
+        },
+        "invoicemodel.ResSeeDetailInvoice": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains the detailed information about invoice details.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/invoicemodel.ResDetailInvoice"
+                        }
+                    ]
+                }
+            }
+        },
         "publishermodel.Filter": {
             "type": "object",
             "properties": {
@@ -2987,6 +3438,148 @@
                 }
             }
         },
+        "salereportetailmodel.SaleReportDetail": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "book": {
+                    "$ref": "#/definitions/bookmodel.SimpleBook"
+                },
+                "totalSales": {
+                    "type": "integer",
+                    "example": 100000
+                }
+            }
+        },
+        "salereportmodel.ReqFindSaleReport": {
+            "type": "object",
+            "properties": {
+                "timeFrom": {
+                    "type": "integer",
+                    "example": 1701388800
+                },
+                "timeTo": {
+                    "type": "integer",
+                    "example": 1704067199
+                }
+            }
+        },
+        "salereportmodel.ResFindSaleReport": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains the detailed information about sale report",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/salereportmodel.SaleReport"
+                        }
+                    ]
+                }
+            }
+        },
+        "salereportmodel.SaleReport": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/salereportetailmodel.SaleReportDetail"
+                    }
+                },
+                "timeFrom": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                },
+                "timeTo": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                },
+                "total": {
+                    "type": "integer",
+                    "example": 100000
+                }
+            }
+        },
+        "stockreportdetailmodel.StockReportDetail": {
+            "type": "object",
+            "properties": {
+                "book": {
+                    "$ref": "#/definitions/bookmodel.SimpleBook"
+                },
+                "final": {
+                    "type": "integer",
+                    "example": 30
+                },
+                "import": {
+                    "type": "integer",
+                    "example": 100
+                },
+                "initial": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "modify": {
+                    "type": "integer",
+                    "example": -60
+                },
+                "sell": {
+                    "type": "integer",
+                    "example": -10
+                }
+            }
+        },
+        "stockreportmodel.ReqFindStockReport": {
+            "type": "object",
+            "properties": {
+                "timeFrom": {
+                    "type": "integer",
+                    "example": 1701388800
+                },
+                "timeTo": {
+                    "type": "integer",
+                    "example": 1704067199
+                }
+            }
+        },
+        "stockreportmodel.ResFindStockReport": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains the detailed information about stock report",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/stockreportmodel.StockReport"
+                        }
+                    ]
+                }
+            }
+        },
+        "stockreportmodel.StockReport": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/stockreportdetailmodel.StockReportDetail"
+                    }
+                },
+                "id": {
+                    "type": "string",
+                    "example": "report id"
+                },
+                "timeFrom": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                },
+                "timeTo": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                }
+            }
+        },
         "supplierdebtmodel.SupplierDebt": {
             "type": "object",
             "properties": {
@@ -2995,19 +3588,18 @@
                     "example": "1709500431"
                 },
                 "createdBy": {
-                    "type": "string",
-                    "example": "user id"
+                    "$ref": "#/definitions/usermodel.SimpleUser"
                 },
                 "id": {
                     "type": "string",
                     "example": "debt001"
                 },
                 "qty": {
-                    "type": "number",
+                    "type": "integer",
                     "example": -70000
                 },
                 "qtyLeft": {
-                    "type": "number",
+                    "type": "integer",
                     "example": -100000
                 },
                 "supplierId": {
@@ -3021,6 +3613,78 @@
                         }
                     ],
                     "example": "Debt"
+                }
+            }
+        },
+        "supplierdebtreportdetailmodel.SupplierDebtReportDetail": {
+            "type": "object",
+            "properties": {
+                "debt": {
+                    "type": "integer",
+                    "example": -40000
+                },
+                "final": {
+                    "type": "integer",
+                    "example": 80000
+                },
+                "initial": {
+                    "type": "integer",
+                    "example": 100000
+                },
+                "pay": {
+                    "type": "integer",
+                    "example": 20000
+                },
+                "supplier": {
+                    "$ref": "#/definitions/importnotemodel.SimpleSupplier"
+                }
+            }
+        },
+        "supplierdebtreportmodel.ReqFindSupplierDebtReport": {
+            "type": "object",
+            "properties": {
+                "timeFrom": {
+                    "type": "integer",
+                    "example": 1701388800
+                },
+                "timeTo": {
+                    "type": "integer",
+                    "example": 1704067199
+                }
+            }
+        },
+        "supplierdebtreportmodel.ResFindSupplierDebtReport": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains the detailed information about supplier debt report",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/supplierdebtreportmodel.SupplierDebtReport"
+                        }
+                    ]
+                }
+            }
+        },
+        "supplierdebtreportmodel.SupplierDebtReport": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/supplierdebtreportdetailmodel.SupplierDebtReportDetail"
+                    }
+                },
+                "id": {
+                    "type": "string"
+                },
+                "timeFrom": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                },
+                "timeTo": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
                 }
             }
         },
@@ -3052,6 +3716,10 @@
         "suppliermodel.ReqUpdateDebtSupplier": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "supplier debt id"
+                },
                 "qtyUpdate": {
                     "type": "integer",
                     "example": 10000

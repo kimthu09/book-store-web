@@ -52,6 +52,8 @@ func (biz *paySupplierBiz) PaySupplier(
 		return nil, suppliermodel.ErrSupplierPayNoPermission
 	}
 
+	data.CreatedBy = biz.requester.GetUserId()
+
 	if err := validateSupplierUpdateDebt(data); err != nil {
 		return nil, err
 	}
@@ -105,14 +107,14 @@ func getSupplierDebtCreate(
 	qtyPay := *data.QuantityUpdate
 	qtyLeft := currentDebt + qtyPay
 
-	id, errGenerateId := gen.GenerateId()
+	id, errGenerateId := gen.IdProcess(data.Id)
 	if errGenerateId != nil {
 		return nil, errGenerateId
 	}
 
 	debtType := enum.Pay
 	supplierDebtCreate := supplierdebtmodel.SupplierDebtCreate{
-		Id:           id,
+		Id:           *id,
 		SupplierId:   supplierId,
 		Quantity:     qtyPay,
 		QuantityLeft: qtyLeft,

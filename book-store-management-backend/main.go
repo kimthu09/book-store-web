@@ -9,7 +9,6 @@ import (
 	booktitletransport "book-store-management-backend/module/booktitle/booktitletransport"
 	"book-store-management-backend/module/feature/featuretransport/ginfeature"
 	"book-store-management-backend/module/role/roletransport/ginrole"
-	"gorm.io/driver/mysql"
 	"time"
 
 	"book-store-management-backend/module/category/categorytransport"
@@ -25,6 +24,7 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -92,12 +92,18 @@ func main() {
 		booktitletransport.SetupRoutes(v1, appCtx)
 		booktransport.SetupRoutes(v1, appCtx)
 		publishertransport.SetupRoutes(v1, appCtx)
-		//ginimportnote.SetupRoutes(v1, appCtx)
-		//gininventorychecknote.SetupRoutes(v1, appCtx)
+		ginimportnote.SetupRoutes(v1, appCtx)
+		gininventorychecknote.SetupRoutes(v1, appCtx)
 		ginsupplier.SetupRoutes(v1, appCtx)
 		ginrole.SetupRoutes(v1, appCtx)
 		ginfeature.SetupRoutes(v1, appCtx)
 		ginuser.SetupRoutes(v1, appCtx)
+		report := v1.Group("/reports")
+		{
+			ginstockreports.SetupRoutes(report, appCtx)
+			ginsupplierdebtreport.SetupRoutes(report, appCtx)
+			ginsalereport.SetupRoutes(report, appCtx)
+		}
 	}
 
 	if err := r.Run(fmt.Sprintf(":%s", cfg.Port)); err != nil {
@@ -156,7 +162,7 @@ func CORSMiddleware() gin.HandlerFunc {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE, PATCH")
 
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(http.StatusNoContent)

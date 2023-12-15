@@ -503,10 +503,13 @@ definitions:
   importnotemodel.SimpleSupplier:
     properties:
       id:
-        example: supplier id
+        example: "123"
         type: string
       name:
         example: Nguyễn Văn A
+        type: string
+      phone:
+        example: "0123456789"
         type: string
     type: object
   inventorychecknotedetailmodel.InventoryCheckNoteDetail:
@@ -633,6 +636,120 @@ definitions:
         - $ref: '#/definitions/common.Paging'
         description: Paging provides information about pagination.
     type: object
+  invoicedetailmodel.InvoiceDetail:
+    properties:
+      book:
+        $ref: '#/definitions/bookmodel.SimpleBook'
+      qty:
+        example: 2
+        type: integer
+      unitPrice:
+        example: 60000
+        type: integer
+    type: object
+  invoicedetailmodel.ReqCreateInvoiceDetail:
+    properties:
+      bookId:
+        example: book id
+        type: string
+      qty:
+        example: 2
+        type: integer
+    type: object
+  invoicemodel.Filter:
+    properties:
+      createdBy:
+        example: user name
+        type: string
+      maxPrice:
+        type: number
+      minPrice:
+        type: number
+      searchKey:
+        type: string
+    type: object
+  invoicemodel.Invoice:
+    properties:
+      createdAt:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      createdBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      id:
+        example: "123"
+        type: string
+      totalPrice:
+        example: 120000
+        type: number
+    type: object
+  invoicemodel.ReqCreateInvoice:
+    properties:
+      details:
+        items:
+          $ref: '#/definitions/invoicedetailmodel.ReqCreateInvoiceDetail'
+        type: array
+    type: object
+  invoicemodel.ResCreateInvoice:
+    properties:
+      data:
+        $ref: '#/definitions/invoicemodel.ResCreateInvoiceData'
+    type: object
+  invoicemodel.ResCreateInvoiceData:
+    properties:
+      createdBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      details:
+        items:
+          $ref: '#/definitions/invoicedetailmodel.ReqCreateInvoiceDetail'
+        type: array
+      id:
+        example: "123"
+        type: string
+      total:
+        example: 120000
+        type: integer
+    type: object
+  invoicemodel.ResDetailInvoice:
+    properties:
+      createdAt:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      createdBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      details:
+        items:
+          $ref: '#/definitions/invoicedetailmodel.InvoiceDetail'
+        type: array
+      id:
+        example: "123"
+        type: string
+      totalPrice:
+        example: 120000
+        type: number
+    type: object
+  invoicemodel.ResListInvoice:
+    properties:
+      data:
+        description: Data contains list of invoice.
+        items:
+          $ref: '#/definitions/invoicemodel.Invoice'
+        type: array
+      filter:
+        allOf:
+        - $ref: '#/definitions/invoicemodel.Filter'
+        description: Filter contains the filter parameters used to retrieve invoice.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  invoicemodel.ResSeeDetailInvoice:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/invoicemodel.ResDetailInvoice'
+        description: Data contains the detailed information about invoice details.
+    type: object
   publishermodel.Filter:
     properties:
       searchKey:
@@ -724,23 +841,117 @@ definitions:
         example: admin
         type: string
     type: object
+  salereportetailmodel.SaleReportDetail:
+    properties:
+      amount:
+        example: 10
+        type: integer
+      book:
+        $ref: '#/definitions/bookmodel.SimpleBook'
+      totalSales:
+        example: 100000
+        type: integer
+    type: object
+  salereportmodel.ReqFindSaleReport:
+    properties:
+      timeFrom:
+        example: 1701388800
+        type: integer
+      timeTo:
+        example: 1704067199
+        type: integer
+    type: object
+  salereportmodel.ResFindSaleReport:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/salereportmodel.SaleReport'
+        description: Data contains the detailed information about sale report
+    type: object
+  salereportmodel.SaleReport:
+    properties:
+      details:
+        items:
+          $ref: '#/definitions/salereportetailmodel.SaleReportDetail'
+        type: array
+      timeFrom:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      timeTo:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      total:
+        example: 100000
+        type: integer
+    type: object
+  stockreportdetailmodel.StockReportDetail:
+    properties:
+      book:
+        $ref: '#/definitions/bookmodel.SimpleBook'
+      final:
+        example: 30
+        type: integer
+      import:
+        example: 100
+        type: integer
+      initial:
+        example: 0
+        type: integer
+      modify:
+        example: -60
+        type: integer
+      sell:
+        example: -10
+        type: integer
+    type: object
+  stockreportmodel.ReqFindStockReport:
+    properties:
+      timeFrom:
+        example: 1701388800
+        type: integer
+      timeTo:
+        example: 1704067199
+        type: integer
+    type: object
+  stockreportmodel.ResFindStockReport:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/stockreportmodel.StockReport'
+        description: Data contains the detailed information about stock report
+    type: object
+  stockreportmodel.StockReport:
+    properties:
+      details:
+        items:
+          $ref: '#/definitions/stockreportdetailmodel.StockReportDetail'
+        type: array
+      id:
+        example: report id
+        type: string
+      timeFrom:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      timeTo:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+    type: object
   supplierdebtmodel.SupplierDebt:
     properties:
       createdAt:
         example: "1709500431"
         type: string
       createdBy:
-        example: user id
-        type: string
+        $ref: '#/definitions/usermodel.SimpleUser'
       id:
         example: debt001
         type: string
       qty:
         example: -70000
-        type: number
+        type: integer
       qtyLeft:
         example: -100000
-        type: number
+        type: integer
       supplierId:
         example: "123"
         type: string
@@ -748,6 +959,54 @@ definitions:
         allOf:
         - $ref: '#/definitions/enum.DebtType'
         example: Debt
+    type: object
+  supplierdebtreportdetailmodel.SupplierDebtReportDetail:
+    properties:
+      debt:
+        example: -40000
+        type: integer
+      final:
+        example: 80000
+        type: integer
+      initial:
+        example: 100000
+        type: integer
+      pay:
+        example: 20000
+        type: integer
+      supplier:
+        $ref: '#/definitions/importnotemodel.SimpleSupplier'
+    type: object
+  supplierdebtreportmodel.ReqFindSupplierDebtReport:
+    properties:
+      timeFrom:
+        example: 1701388800
+        type: integer
+      timeTo:
+        example: 1704067199
+        type: integer
+    type: object
+  supplierdebtreportmodel.ResFindSupplierDebtReport:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/supplierdebtreportmodel.SupplierDebtReport'
+        description: Data contains the detailed information about supplier debt report
+    type: object
+  supplierdebtreportmodel.SupplierDebtReport:
+    properties:
+      details:
+        items:
+          $ref: '#/definitions/supplierdebtreportdetailmodel.SupplierDebtReportDetail'
+        type: array
+      id:
+        type: string
+      timeFrom:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      timeTo:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
     type: object
   suppliermodel.ReqCreateSupplier:
     properties:
@@ -769,6 +1028,9 @@ definitions:
     type: object
   suppliermodel.ReqUpdateDebtSupplier:
     properties:
+      id:
+        example: supplier debt id
+        type: string
       qtyUpdate:
         example: 10000
         type: integer
@@ -1535,18 +1797,6 @@ paths:
         name: id
         required: true
         type: string
-      - example: 10
-        in: query
-        name: limit
-        type: integer
-      - example: 1
-        in: query
-        name: page
-        type: integer
-      - example: 11
-        in: query
-        name: total
-        type: integer
       produces:
       - application/json
       responses:
@@ -1563,6 +1813,104 @@ paths:
       summary: See detail inventory check note
       tags:
       - inventoryCheckNotes
+  /invoices:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: user name
+        in: query
+        name: createdBy
+        type: string
+      - in: query
+        name: maxPrice
+        type: number
+      - in: query
+        name: minPrice
+        type: number
+      - in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list invoice
+          schema:
+            $ref: '#/definitions/invoicemodel.ResListInvoice'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List invoice
+      tags:
+      - invoices
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: invoice need to create
+        in: body
+        name: invoice
+        required: true
+        schema:
+          $ref: '#/definitions/invoicemodel.ReqCreateInvoice'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: invoice id
+          schema:
+            $ref: '#/definitions/invoicemodel.ResCreateInvoice'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Create invoice
+      tags:
+      - invoices
+  /invoices/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: invoice id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: invoice
+          schema:
+            $ref: '#/definitions/invoicemodel.ResSeeDetailInvoice'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See detail invoice
+      tags:
+      - invoices
   /login:
     post:
       consumes:
@@ -1628,6 +1976,87 @@ paths:
       summary: Create publisher with name
       tags:
       - publishers
+  /reports/debt:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: time from and time to
+        in: body
+        name: condition
+        required: true
+        schema:
+          $ref: '#/definitions/supplierdebtreportmodel.ReqFindSupplierDebtReport'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: supplier debt report
+          schema:
+            $ref: '#/definitions/supplierdebtreportmodel.ResFindSupplierDebtReport'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Find supplier debt report
+      tags:
+      - reports
+  /reports/sale:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: time from and time to
+        in: body
+        name: condition
+        required: true
+        schema:
+          $ref: '#/definitions/salereportmodel.ReqFindSaleReport'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: sale report
+          schema:
+            $ref: '#/definitions/salereportmodel.ResFindSaleReport'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Find sale report
+      tags:
+      - reports
+  /reports/stock:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: time from and time to
+        in: body
+        name: condition
+        required: true
+        schema:
+          $ref: '#/definitions/stockreportmodel.ReqFindStockReport'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: stock report
+          schema:
+            $ref: '#/definitions/stockreportmodel.ResFindStockReport'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Find stock report
+      tags:
+      - reports
   /roles:
     get:
       consumes:

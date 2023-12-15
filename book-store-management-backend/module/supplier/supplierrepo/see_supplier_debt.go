@@ -12,7 +12,8 @@ type ListSupplierDebtStore interface {
 		ctx context.Context,
 		supplierId string,
 		filterSupplierDebt *filter.SupplierDebtFilter,
-		paging *common.Paging) ([]supplierdebtmodel.SupplierDebt, error)
+		paging *common.Paging,
+		moreKeys ...string) ([]supplierdebtmodel.SupplierDebt, error)
 }
 
 type seeSupplierDebtRepo struct {
@@ -37,6 +38,7 @@ func (biz *seeSupplierDebtRepo) SeeSupplierDebt(
 		supplierId,
 		filterSupplierDebt,
 		paging,
+		"CreatedByUser",
 	)
 	if errDebts != nil {
 		return nil, errDebts

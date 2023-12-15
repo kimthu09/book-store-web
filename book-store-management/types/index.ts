@@ -18,13 +18,22 @@ export type Book = {
 };
 export type ImportNote = {
   id: string;
-  supplierId: string;
+  supplier: {
+    id: string;
+    name: string;
+  };
   totalPrice: number;
   status: StatusNote;
-  createBy: string;
-  closeBy?: string;
-  createAt: Date;
-  closeAt?: Date;
+  createdBy: {
+    id: string;
+    name: string;
+  };
+  closedBy?: {
+    id: string;
+    name: string;
+  };
+  createdAt: Date;
+  closedAt?: Date;
 };
 
 export type ImportDetail = {
@@ -42,18 +51,22 @@ export type Supplier = {
   debt: number;
 };
 export type SupplierDebt = {
+  createdAt: Date;
+  createdBy: {
+    id: string;
+    name: string;
+  };
   id: string;
-  idSupplier: string;
-  amount: number;
-  amountLeft: number;
-  createBy: string;
-  createAt: Date;
+  qty: number;
+  qtyLeft: number;
+  supplierId: string;
+  type: string;
 };
 
 export enum StatusNote {
-  Inprogress = "Đang xử lý",
-  Done = "Đã nhập",
-  Cancel = "Đã huỷ",
+  Inprogress = "InProgress",
+  Done = "Done",
+  Cancel = "Cancel",
 }
 export enum StatusActive {
   Active = "Đang giao dịch",
@@ -67,6 +80,31 @@ export type Category = {
 export type Author = {
   id: string;
   name: string;
+};
+export type Publisher = {
+  id: string;
+  name: string;
+};
+
+export type Staff = {
+  address?: string;
+  email: string;
+  id: string;
+  isActive: boolean;
+  name: string;
+  phone?: string;
+  role: {
+    id: string;
+    name: string;
+  };
+};
+export type Role = {
+  id: string;
+  name: string;
+};
+export type RoleFunction = {
+  id: string;
+  description: string;
 };
 export interface CategoryListProps {
   checkedCategory: Array<string>;
@@ -98,4 +136,14 @@ export type SidebarItem = {
   icon?: IconType;
   submenu?: boolean;
   subMenuItems?: SidebarItem[];
+};
+export interface RoleListProps {
+  role: string;
+  setRole: (role: string) => void;
+}
+
+export type PagingProps = {
+  page: number;
+  limit: number;
+  total: number;
 };

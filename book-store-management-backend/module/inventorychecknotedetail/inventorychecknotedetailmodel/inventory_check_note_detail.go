@@ -22,12 +22,12 @@ func (*InventoryCheckNoteDetail) TableName() string {
 var (
 	ErrInventoryCheckDetailBookIdInvalid = common.NewCustomError(
 		errors.New("id of book is invalid"),
-		"id of book is is invalid",
+		"Mã của sách không hợp lệ",
 		"ErrInventoryCheckDetailBookIdInvalid",
 	)
 	ErrInventoryCheckDifferenceIsInvalid = common.NewCustomError(
 		errors.New("difference is invalid"),
-		"difference is is invalid",
+		"Số lượng chỉnh sửa không hợp lệ",
 		"ErrInventoryCheckDifferenceIsInvalid",
 	)
 )

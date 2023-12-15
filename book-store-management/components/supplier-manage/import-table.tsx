@@ -25,11 +25,20 @@ import {
 } from "@/components/ui/table";
 import { ImportNote, StatusNote } from "@/types";
 import { useState } from "react";
+import Paging, { PagingProps } from "../paging";
+import getSupplierImportNote from "@/lib/supplier/getSupplierImportNote";
+import Loading from "../loading";
+import ExportDialog from "./export-dialog";
+import { ExportImportNote } from "./export-import-note";
+import getAllSupplierNote from "@/lib/supplier/getAllSupplierNote";
+import { toast } from "../ui/use-toast";
 
 export const columns: ColumnDef<ImportNote>[] = [
   {
     accessorKey: "createAt",
-    accessorFn: (row) => row.createAt.toLocaleDateString("vi-VN"),
+    accessorFn: (row) => {
+      return new Date(row.createdAt).toLocaleDateString("vi-VN");
+    },
     header: ({ column }) => {
       return (
         <div className="flex justify-end max-w-[8rem]">
@@ -86,12 +95,13 @@ export const columns: ColumnDef<ImportNote>[] = [
     },
   },
   {
-    accessorKey: "createBy",
+    accessorKey: "createdBy",
+    accessorFn: (row) => row.createdBy.name,
     header: () => {
       return <div className="font-semibold flex justify-center">Người tạo</div>;
     },
     cell: ({ row }) => (
-      <div className="leading-6 text-center">{row.getValue("createBy")}</div>
+      <div className="leading-6 text-center">{row.getValue("createdBy")}</div>
     ),
   },
   {
@@ -108,22 +118,41 @@ export const columns: ColumnDef<ImportNote>[] = [
       return (
         <div className="flex justify-center min-w-0">
           <div
-            className={`leading-6 rounded-full text-center px-2 w-[80%] max-w-[6rem] truncate whitespace-nowrap ${
+            className={`leading-5 border rounded-full text-center px-2 w-[80%] max-w-[6rem] truncate whitespace-nowrap ${
               status === StatusNote.Done
-                ? "bg-green-500 text-white"
+                ? "bg-green-200 text-green-600 border-green-500"
                 : status === StatusNote.Inprogress
-                ? "bg-blue-100 text-blue-700"
-                : "bg-rose-100 text-rose-500"
+                ? "bg-blue-200 text-blue-600 border-blue-500"
+                : "bg-rose-100 text-rose-600 border-rose-500"
             }`}
           >
-            {row.getValue("status")}
+            {status === StatusNote.Done
+              ? "Hoàn thành"
+              : status === StatusNote.Inprogress
+              ? "Đang xử lý"
+              : "Đã hủy"}
           </div>
         </div>
       );
     },
   },
 ];
-export function ImportTable({ data }: { data: ImportNote[] }) {
+export function ImportTable({ supplierId }: { supplierId: string }) {
+  const [pageIndex, setPageIndex] = useState(1);
+
+  const {
+    data: importNotes,
+    isLoading,
+    isError,
+  } = getSupplierImportNote({
+    idSupplier: supplierId,
+    page: pageIndex,
+  });
+  const data = importNotes?.data;
+  const totalPage = Math.ceil(
+    importNotes?.paging.total / importNotes?.paging.limit
+  );
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -147,76 +176,111 @@ export function ImportTable({ data }: { data: ImportNote[] }) {
     },
   });
 
-  return (
-    <div className="flex flex-col">
-      <div className="flex items-center gap-2"></div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+  const [exportOption, setExportOption] = useState("all");
+  const handleExport = async () => {
+    if (exportOption === "all") {
+      const importNoteData: Promise<{
+        data: ImportNote[];
+        paging: PagingProps;
+      }> = getAllSupplierNote({ idSupplier: supplierId });
+      const notesToExport = await importNoteData;
+      if (notesToExport.data.length < 1) {
+        toast({
+          variant: "destructive",
+          title: "Có lỗi",
+          description: "Không có phiếu nhập nào",
+        });
+      } else {
+        ExportImportNote(
+          notesToExport.data,
+          `NCC${supplierId} Danh sách phiếu nhập.xlsx`
+        );
+      }
+    } else {
+      if (data.length < 1) {
+        toast({
+          variant: "destructive",
+          title: "Có lỗi",
+          description: "Không có phiếu nhập nào",
+        });
+      } else {
+        ExportImportNote(data, `NCC${supplierId} Danh sách phiếu nhập.xlsx`);
+      }
+    }
+  };
+  if (isLoading) {
+    return <Loading />;
+  } else {
+    console.log(importNotes);
+    return (
+      <div className="flex flex-col">
+        <ExportDialog
+          handleExport={handleExport}
+          setExportOption={setExportOption}
+          isImport
+        />
+        <div className="flex items-center gap-2"></div>
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  Chưa có đơn nhập nào.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    Chưa có đơn nhập nào.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <Paging
+            page={pageIndex.toString()}
+            onNavigateNext={() => setPageIndex((prev) => prev + 1)}
+            onNavigateBack={() => setPageIndex((prev) => prev - 1)}
+            totalPage={totalPage}
+            onPageSelect={(selectedPage) => {
+              setPageIndex(+selectedPage);
+            }}
+            onNavigateFirst={() => setPageIndex(1)}
+            onNavigateLast={() => setPageIndex(totalPage)}
+          />
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }

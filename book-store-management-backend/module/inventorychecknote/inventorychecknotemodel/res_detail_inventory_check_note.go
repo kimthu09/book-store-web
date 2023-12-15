@@ -10,9 +10,9 @@ type ResDetailInventoryCheckNote struct {
 	Id                  string                                                   `json:"id" gorm:"column:id;" example:"inventory check note id"`
 	QuantityDifferent   int                                                      `json:"qtyDifferent" gorm:"column:qtyDifferent;" example:"100"`
 	QuantityAfterAdjust int                                                      `json:"qtyAfterAdjust" gorm:"column:qtyAfterAdjust;" example:"200"`
-	CreateBy            string                                                   `json:"-" gorm:"column:createBy;"`
-	CreateByUser        usermodel.SimpleUser                                     `json:"createBy" gorm:"foreignKey:CreateBy;references:Id"`
-	CreateAt            *time.Time                                               `json:"createAt" gorm:"column:createAt;" example:"2023-12-03T15:02:19.62113565Z"`
+	CreatedBy           string                                                   `json:"-" gorm:"column:createdBy;"`
+	CreatedByUser       usermodel.SimpleUser                                     `json:"createdBy" gorm:"foreignKey:CreatedBy;references:Id"`
+	CreatedAt           *time.Time                                               `json:"createdAt" gorm:"column:createdAt;" example:"2023-12-03T15:02:19.62113565Z"`
 	Details             []inventorychecknotedetailmodel.InventoryCheckNoteDetail `json:"details"`
 }
 
@@ -21,8 +21,8 @@ func GetResDetailInventoryCheckNoteFromInventoryCheckNote(inventoryCheckNote *In
 	src.Id = inventoryCheckNote.Id
 	src.QuantityDifferent = inventoryCheckNote.QuantityDifferent
 	src.QuantityAfterAdjust = inventoryCheckNote.QuantityAfterAdjust
-	src.CreateBy = inventoryCheckNote.CreateBy
-	src.CreateByUser = inventoryCheckNote.CreateByUser
-	src.CreateAt = inventoryCheckNote.CreateAt
+	src.CreatedBy = inventoryCheckNote.CreatedBy
+	src.CreatedByUser = inventoryCheckNote.CreatedByUser
+	src.CreatedAt = inventoryCheckNote.CreatedAt
 	return &src
 }

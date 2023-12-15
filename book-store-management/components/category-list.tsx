@@ -17,7 +17,8 @@ import { AiFillPlusCircle } from "react-icons/ai";
 import { cn } from "@/lib/utils";
 import { CategoryListProps } from "@/types";
 import { Checkbox } from "./ui/checkbox";
-import getAllCategory from "@/lib/getAllCategory";
+import getAllCategory from "@/lib/book/getAllCategory";
+import Loading from "./loading";
 
 const CategoryList = ({
   checkedCategory,
@@ -27,17 +28,16 @@ const CategoryList = ({
 }: CategoryListProps) => {
   const [openCategory, setOpenCategory] = useState(false);
   // const [newCategory, setNewCategory] = useState("");
-  const { categories, isLoading, isError } = getAllCategory();
+  const { categories, isLoading, isError } = getAllCategory({ limit: 1000 });
 
   if (isError) return <div>Failed to load</div>;
-  if (!categories) {
-    console.log(categories);
+  if (isLoading) {
+    return <Loading />;
   } else
     return (
       <DropdownMenu open={openCategory} onOpenChange={setOpenCategory}>
         <DropdownMenuTrigger asChild>
           <Button
-            id="cateList"
             variant="outline"
             role="combobox"
             aria-expanded={openCategory}
@@ -69,7 +69,7 @@ const CategoryList = ({
               )}
             </CommandEmpty>
             <CommandGroup className="overflow-y-auto">
-              {categories.map((item) => (
+              {categories?.data.map((item: any) => (
                 <CommandItem
                   value={item.name}
                   key={item.id}

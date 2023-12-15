@@ -11,6 +11,7 @@ import (
 	"book-store-management-backend/module/inventorychecknote/inventorychecknoterepo"
 	"book-store-management-backend/module/inventorychecknote/inventorychecknotestore"
 	"book-store-management-backend/module/inventorychecknotedetail/inventorychecknotedetailstore"
+	"book-store-management-backend/module/stockchangehistory/stockchangehistorystore"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -34,18 +35,20 @@ func CreateInventoryCheckNote(appCtx appctx.AppContext) gin.HandlerFunc {
 		}
 
 		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
-		data.CreateBy = requester.GetUserId()
+		data.CreatedBy = requester.GetUserId()
 
 		db := appCtx.GetMainDBConnection().Begin()
 
 		inventoryCheckNoteStore := inventorychecknotestore.NewSQLStore(db)
 		inventoryCheckNoteDetailStore := inventorychecknotedetailstore.NewSQLStore(db)
 		bookStore := bookstore.NewSQLStore(db)
+		stockChangeHistoryStore := stockchangehistorystore.NewSQLStore(db)
 
 		repo := inventorychecknoterepo.NewCreateInventoryCheckNoteRepo(
 			inventoryCheckNoteStore,
 			inventoryCheckNoteDetailStore,
 			bookStore,
+			stockChangeHistoryStore,
 		)
 
 		gen := generator.NewShortIdGenerator()

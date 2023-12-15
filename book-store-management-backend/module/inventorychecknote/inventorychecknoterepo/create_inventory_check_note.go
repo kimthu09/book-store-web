@@ -4,6 +4,7 @@ import (
 	"book-store-management-backend/module/book/bookmodel"
 	"book-store-management-backend/module/inventorychecknote/inventorychecknotemodel"
 	"book-store-management-backend/module/inventorychecknotedetail/inventorychecknotedetailmodel"
+	"book-store-management-backend/module/stockchangehistory/stockchangehistorymodel"
 	"context"
 )
 
@@ -34,20 +35,29 @@ type UpdateBookStore interface {
 	) (*bookmodel.Book, error)
 }
 
+type StockChangeHistoryStore interface {
+	CreateLisStockChangeHistory(
+		ctx context.Context,
+		data []stockchangehistorymodel.StockChangeHistory) error
+}
+
 type createInventoryCheckNoteRepo struct {
 	inventoryCheckNoteStore       CreateInventoryCheckNoteStore
 	inventoryCheckNoteDetailStore CreateInventoryCheckNoteDetailStore
 	bookStore                     UpdateBookStore
+	stockChangeHistoryStore       StockChangeHistoryStore
 }
 
 func NewCreateInventoryCheckNoteRepo(
 	inventoryCheckNoteStore CreateInventoryCheckNoteStore,
 	inventoryCheckNoteDetailStore CreateInventoryCheckNoteDetailStore,
-	bookStore UpdateBookStore) *createInventoryCheckNoteRepo {
+	bookStore UpdateBookStore,
+	stockChangeHistoryStore StockChangeHistoryStore) *createInventoryCheckNoteRepo {
 	return &createInventoryCheckNoteRepo{
 		inventoryCheckNoteStore:       inventoryCheckNoteStore,
 		inventoryCheckNoteDetailStore: inventoryCheckNoteDetailStore,
 		bookStore:                     bookStore,
+		stockChangeHistoryStore:       stockChangeHistoryStore,
 	}
 }
 
@@ -71,6 +81,8 @@ func (repo *createInventoryCheckNoteRepo) HandleBookQuantity(
 	data *inventorychecknotemodel.ReqCreateInventoryCheckNote) error {
 	qtyDiff := 0
 	qtyAfter := 0
+
+	var history []stockchangehistorymodel.StockChangeHistory
 	for i, value := range data.Details {
 		book, errGetBook := repo.bookStore.FindBook(
 			ctx, map[string]interface{}{"id": value.BookId})
@@ -78,8 +90,8 @@ func (repo *createInventoryCheckNoteRepo) HandleBookQuantity(
 			return errGetBook
 		}
 
-		data.Details[i].Initial = book.Quantity
-		data.Details[i].Final = book.Quantity + value.Difference
+		data.Details[i].Initial = *book.Quantity
+		data.Details[i].Final = *book.Quantity + value.Difference
 		qtyDiff += value.Difference
 		qtyAfter += data.Details[i].Final
 
@@ -88,12 +100,26 @@ func (repo *createInventoryCheckNoteRepo) HandleBookQuantity(
 		}
 
 		bookUpdate := bookmodel.BookUpdateQuantity{QuantityUpdate: value.Difference}
-
 		if err := repo.bookStore.UpdateQuantityBook(
 			ctx, value.BookId, &bookUpdate,
 		); err != nil {
 			return err
 		}
+
+		typeChange := stockchangehistorymodel.Modify
+		stockChangeHistory := stockchangehistorymodel.StockChangeHistory{
+			Id:           *data.Id,
+			BookId:       data.Details[i].BookId,
+			Quantity:     value.Difference,
+			QuantityLeft: value.Difference + *book.Quantity,
+			Type:         &typeChange,
+		}
+		history = append(history, stockChangeHistory)
+	}
+
+	if err := repo.stockChangeHistoryStore.CreateLisStockChangeHistory(
+		ctx, history); err != nil {
+		return err
 	}
 
 	data.QuantityDifferent = qtyDiff

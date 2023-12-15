@@ -1,9 +1,10 @@
 import React from "react";
+import LoadingSpinner from "./ui/loading-spinner";
 
 const Loading = () => {
   return (
-    <div className="text-center">
-      <h1 className="text-primary">Loading...</h1>
+    <div className="flex justify-center gap-5 flex-col items-center p-6">
+      <LoadingSpinner className={"h-12 w-12 text-primary"} />
       <p>Vui lòng đợi trong giây lát</p>
     </div>
   );

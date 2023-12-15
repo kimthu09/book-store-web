@@ -1,11 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  CaretSortIcon,
-  ChevronDownIcon,
-  DotsHorizontalIcon,
-} from "@radix-ui/react-icons";
+import { CaretSortIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -26,7 +22,6 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -38,7 +33,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Supplier } from "@/types";
-import { suppliers } from "@/constants";
 // import FilterSheet from "./filter-sheet";
 import {
   Dialog,
@@ -53,9 +47,8 @@ import { Input } from "../ui/input";
 import { ExportSupplierList } from "./excel-export";
 import { Label } from "../ui/label";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import Link from "next/link";
-
-const data: Supplier[] = suppliers;
+import Paging from "../paging";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export const columns: ColumnDef<Supplier>[] = [
   {
@@ -82,7 +75,7 @@ export const columns: ColumnDef<Supplier>[] = [
     header: () => {
       return <span className="font-semibold">ID</span>;
     },
-    cell: ({ row }) => <div className="capitalize">{row.getValue("id")}</div>,
+    cell: ({ row }) => <div>{row.getValue("id")}</div>,
   },
   {
     accessorKey: "name",
@@ -107,7 +100,7 @@ export const columns: ColumnDef<Supplier>[] = [
       return <div className="font-semibold">Email</div>;
     },
     cell: ({ row }) => (
-      <div className="capitalize lg:max-w-[16rem] max-w-[3rem] truncate">
+      <div className="lg:max-w-[16rem] max-w-[3rem] truncate">
         {row.getValue("email")}
       </div>
     ),
@@ -150,29 +143,6 @@ export const columns: ColumnDef<Supplier>[] = [
       return <div className="text-right font-medium">{formatted}</div>;
     },
   },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const supplier = row.original;
-      return (
-        <div className="flex justify-end">
-          <Link
-            href={{
-              pathname: "supplier/detail",
-              query: {
-                id: supplier.id,
-              },
-            }}
-          >
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-      );
-    },
-  },
 ];
 
 function idToName(id: string) {
@@ -188,7 +158,16 @@ function idToName(id: string) {
   return id;
 }
 
-export function SupplierTable() {
+export function SupplierTable({
+  data,
+  totalPage,
+}: {
+  data: Supplier[];
+  totalPage: number;
+}) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const page = searchParams.get("page") ?? "1";
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -212,10 +191,10 @@ export function SupplierTable() {
     },
   });
 
-  const [exportOption, setExportOption] = useState("");
+  const [exportOption, setExportOption] = useState("all");
   const handleExport = () => {
     if (exportOption === "all") {
-      ExportSupplierList(suppliers, "Suppliers.xlsx");
+      ExportSupplierList(data, "Suppliers.xlsx");
     }
     if (table.getFilteredSelectedRowModel().rows.length < 1) {
       //TODO: show notification
@@ -229,101 +208,69 @@ export function SupplierTable() {
   return (
     <div className="w-full">
       <div className="flex items-center py-4 gap-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="w-40 justify-between">
-              Chọn thao tác <ChevronDownIcon className="ml-2 h-4 w-4" />
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="lg:px-3 px-2" variant={"outline"}>
+              Xuất danh sách
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="max-h-44 w-40">
-            <Dialog>
-              <DialogTrigger asChild>
-                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                  Xuất danh sách
-                </DropdownMenuItem>
-              </DialogTrigger>
-              <DialogOverlay>
-                <DialogContent className="p-0">
-                  <DialogTitle className="p-6 pb-0">
-                    Xuất file danh sách nhà cung cấp
-                  </DialogTitle>
-                  <div className="flex flex-col border-y-[1px] p-6 gap-4">
-                    <Label>Giới hạn kết quả xuất</Label>
-                    <RadioGroup
-                      defaultValue="all"
-                      onValueChange={(e: string) => setExportOption(e)}
-                    >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="all" id="r1" />
-                        <Label htmlFor="r1" className="font-normal">
-                          Tất cả các nhà cung cấp
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="comfortable" id="r2" />
-                        <Label className="font-normal" htmlFor="r2">
-                          Các nhà cung cấp được chọn
-                        </Label>
-                      </div>
-                    </RadioGroup>
-                  </div>
+          </DialogTrigger>
+          <DialogContent className="p-0">
+            <DialogTitle className="p-6 pb-0">
+              Xuất file danh sách nhà cung cấp
+            </DialogTitle>
+            <div className="flex flex-col border-y-[1px] p-6 gap-4">
+              <Label>Giới hạn kết quả xuất</Label>
+              <RadioGroup
+                defaultValue="all"
+                onValueChange={(e: string) => setExportOption(e)}
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="all" id="r1" />
+                  <Label htmlFor="r1" className="font-normal">
+                    Tất cả các nhà cung cấp
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="comfortable" id="r2" />
+                  <Label className="font-normal" htmlFor="r2">
+                    Các nhà cung cấp được chọn
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
 
-                  <DialogClose className="ml-auto p-6 pt-0">
-                    <div className="flex gap-4">
-                      <Button type="button" variant={"outline"}>
-                        Thoát
-                      </Button>
+            <DialogClose className="ml-auto p-6 pt-0">
+              <div className="flex gap-4">
+                <Button type="button" variant={"outline"}>
+                  Thoát
+                </Button>
 
-                      <Button type="button" onClick={() => handleExport()}>
-                        Hoàn tất
-                      </Button>
-                    </div>
-                  </DialogClose>
-                </DialogContent>
-              </DialogOverlay>
-            </Dialog>
-
-            <Dialog>
-              <DialogTrigger asChild>
-                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                  Chuyển trạng thái
-                </DropdownMenuItem>
-              </DialogTrigger>
-              <DialogOverlay>
-                <DialogContent className="p-0">
-                  <DialogTitle className="p-6 pb-0">
-                    Chuyển trạng thái nhà cung cấp
-                  </DialogTitle>
-                  <div className="flex flex-col border-y-[1px] p-6">
-                    <p>Chọn trạng thái muốn chuyển</p>
-                    <div className="mt-4 flex-1 ">
-                      {/* <CategoryList
-                        category={category}
-                        setCategory={setCategory}
-                      /> */}
-                    </div>
-                  </div>
-
-                  <DialogClose className="ml-auto p-6 pt-0">
-                    <Button type="submit">Hoàn tất</Button>
-                  </DialogClose>
-                </DialogContent>
-              </DialogOverlay>
-            </Dialog>
-          </DropdownMenuContent>
-        </DropdownMenu>
+                <Button type="button" onClick={() => handleExport()}>
+                  Hoàn tất
+                </Button>
+              </div>
+            </DialogClose>
+          </DialogContent>
+        </Dialog>
 
         <div className="flex-1">
-          <Input placeholder="Tìm kiếm nhà cung cấp" />
+          <Input
+            placeholder="Tìm kiếm nhà cung cấp"
+            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn("name")?.setFilterValue(event.target.value)
+            }
+          />
         </div>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              Cột hiển thị <ChevronDownIcon className="ml-2 h-4 w-4" />
+            <Button variant="outline" className="lg:px-3 px-2">
+              Cột hiển thị
+              <ChevronDownIcon className="ml-1 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
+          <DropdownMenuContent className="DropdownMenuContent">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -343,8 +290,6 @@ export function SupplierTable() {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-
-        <div className="ml-auto">{/* <FilterSheet /> */}</div>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -374,7 +319,14 @@ export function SupplierTable() {
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      onClick={() => {
+                        if (!cell.id.includes("select")) {
+                          router.push(`/supplier/${row.getValue("id")}`);
+                        }
+                      }}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -401,24 +353,21 @@ export function SupplierTable() {
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
+        <Paging
+          page={page}
+          totalPage={totalPage}
+          onNavigateBack={() =>
+            router.push(`/supplier?page=${Number(page) - 1}`)
+          }
+          onNavigateNext={() =>
+            router.push(`/supplier?page=${Number(page) + 1}`)
+          }
+          onPageSelect={(selectedPage) =>
+            router.push(`/supplier?page=${selectedPage}`)
+          }
+          onNavigateFirst={() => router.push(`/supplier?page=${1}`)}
+          onNavigateLast={() => router.push(`/supplier?page=${totalPage}`)}
+        />
       </div>
     </div>
   );

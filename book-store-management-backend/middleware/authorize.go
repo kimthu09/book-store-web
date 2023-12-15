@@ -14,6 +14,7 @@ import (
 type Requester interface {
 	GetUserId() string
 	GetEmail() string
+	GetName() string
 	GetRoleId() string
 	IsHasFeature(featureCode string) bool
 }

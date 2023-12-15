@@ -19,20 +19,12 @@ import (
 // @Accept json
 // @Produce json
 // @Param id path string true "inventory check note id"
-// @Param page query common.Paging false "page"
 // @Response 200 {object} inventorychecknotemodel.ResSeeDetailInventoryCheckNote "inventory check note"
 // @Response 400 {object} common.AppError "error"
 // @Router /inventoryCheckNotes/{id} [get]
 func SeeDetailInventoryCheckNote(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		inventoryCheckNoteId := c.Param("id")
-
-		var paging common.Paging
-		if err := c.ShouldBind(&paging); err != nil {
-			panic(common.ErrInvalidRequest(err))
-		}
-
-		paging.Fulfill()
 
 		inventoryCheckNoteStore :=
 			inventorychecknotestore.NewSQLStore(appCtx.GetMainDBConnection())
@@ -46,12 +38,12 @@ func SeeDetailInventoryCheckNote(appCtx appctx.AppContext) gin.HandlerFunc {
 		biz := inventorychecknotebiz.NewSeeDetailImportNoteBiz(repo, requester)
 
 		result, err := biz.SeeDetailInventoryCheckNote(
-			c.Request.Context(), inventoryCheckNoteId, &paging)
+			c.Request.Context(), inventoryCheckNoteId)
 
 		if err != nil {
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common.NewSuccessResponse(result, &paging, nil))
+		c.JSON(http.StatusOK, common.SimpleSuccessResponse(result))
 	}
 }

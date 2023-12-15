@@ -17,7 +17,7 @@ import { AiFillPlusCircle } from "react-icons/ai";
 import { cn } from "@/lib/utils";
 import { AuthorListProps } from "@/types";
 import { Checkbox } from "./ui/checkbox";
-import getAllAuthor from "@/lib/getAllAuthor";
+import getAllAuthor from "@/lib/book/getAllAuthor";
 
 const AuthorList = ({
   checkedAuthor,
@@ -26,7 +26,7 @@ const AuthorList = ({
   readonly,
 }: AuthorListProps) => {
   const [openAuthor, setOpenAuthor] = useState(false);
-  const { authors, isLoading, isError } = getAllAuthor();
+  const { authors, isLoading, isError } = getAllAuthor({ limit: 1000 });
 
   if (isError) return <div>Failed to load</div>;
   if (!authors) {
@@ -36,7 +36,6 @@ const AuthorList = ({
       <DropdownMenu open={openAuthor} onOpenChange={setOpenAuthor}>
         <DropdownMenuTrigger asChild>
           <Button
-            id="cateList"
             variant="outline"
             role="combobox"
             aria-expanded={openAuthor}
