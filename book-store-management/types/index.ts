@@ -28,7 +28,7 @@ export type ImportNote = {
     id: string;
     name: string;
   };
-  closedBy: {
+  closedBy?: {
     id: string;
     name: string;
   };
@@ -52,7 +52,10 @@ export type Supplier = {
 };
 export type SupplierDebt = {
   createdAt: Date;
-  createdBy: string;
+  createdBy: {
+    id: string;
+    name: string;
+  };
   id: string;
   qty: number;
   qtyLeft: number;
@@ -61,9 +64,9 @@ export type SupplierDebt = {
 };
 
 export enum StatusNote {
-  Inprogress = "Đang xử lý",
-  Done = "Đã nhập",
-  Cancel = "Đã huỷ",
+  Inprogress = "InProgress",
+  Done = "Done",
+  Cancel = "Cancel",
 }
 export enum StatusActive {
   Active = "Đang giao dịch",
@@ -75,6 +78,10 @@ export type Category = {
 };
 
 export type Author = {
+  id: string;
+  name: string;
+};
+export type Publisher = {
   id: string;
   name: string;
 };

@@ -96,12 +96,12 @@ const InsertNewBook = () => {
       });
     }
   };
-  const { categories, isLoading, isError } = getAllCategory();
+  const { categories, isLoading, isError } = getAllCategory({ limit: 1000 });
   const {
     authors,
     isLoading: isAuthorLoading,
     isError: isAuthorError,
-  } = getAllAuthor();
+  } = getAllAuthor({ limit: 1000 });
 
   if (isError || isAuthorError) return <div>Failed to load</div>;
   if (!categories || !authors) {
@@ -180,8 +180,9 @@ const InsertNewBook = () => {
                           className="rounded-xl flex  px-3 py-1 h-fit outline-none text-sm text-primary  bg-blue-100 items-center gap-1 group"
                         >
                           {
-                            categories.find((item) => item.id === cate.idCate)
-                              ?.name
+                            categories.data.find(
+                              (item: any) => item.id === cate.idCate
+                            )?.name
                           }
                           <div className="cursor-pointer w-4">
                             <AiOutlineClose className="group-hover:hidden" />
@@ -228,8 +229,9 @@ const InsertNewBook = () => {
                           className="rounded-xl flex  px-3 py-1 h-fit outline-none text-sm text-primary  bg-blue-100 items-center gap-1 group"
                         >
                           {
-                            authors.find((item) => item.id === author.idAuthor)
-                              ?.name
+                            authors.data.find(
+                              (item: any) => item.id === author.idAuthor
+                            )?.name
                           }
                           <div className="cursor-pointer w-4">
                             <AiOutlineClose className="group-hover:hidden" />
@@ -283,7 +285,7 @@ const InsertNewBook = () => {
               <AlertDialogTitle>Đã thêm thành công</AlertDialogTitle>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <Link href={"/books"}>
+              <Link href={"/product/books"}>
                 <AlertDialogAction>OK</AlertDialogAction>
               </Link>
             </AlertDialogFooter>
