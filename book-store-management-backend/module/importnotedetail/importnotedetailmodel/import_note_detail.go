@@ -21,17 +21,17 @@ func (*ImportNoteDetail) TableName() string {
 var (
 	ErrImportDetailBookIdInvalid = common.NewCustomError(
 		errors.New("id of book is invalid"),
-		"id of book is invalid",
+		"Mã của sách không hợp lệ",
 		"ErrImportDetailBookIdInvalid",
 	)
 	ErrImportDetailPriceIsNegativeNumber = common.NewCustomError(
-		errors.New("price of ingredient is negative number"),
-		"price of ingredient is negative number",
+		errors.New("price of book is negative number"),
+		"Giá nhập sách không được là số âm",
 		"ErrImportDetailPriceIsNegativeNumber",
 	)
 	ErrImportDetailQuantityImportIsNotPositiveNumber = common.NewCustomError(
 		errors.New("quantity import is not positive number"),
-		"quantity import is not positive number",
+		"Số lượng nhập sách phải là số dương",
 		"ErrImportDetailQuantityImportIsNotPositiveNumber",
 	)
 )

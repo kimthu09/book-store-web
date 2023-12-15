@@ -36,7 +36,6 @@ func PaySupplier(appCtx appctx.AppContext) gin.HandlerFunc {
 		}
 
 		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
-		data.CreatedBy = requester.GetUserId()
 
 		db := appCtx.GetMainDBConnection().Begin()
 

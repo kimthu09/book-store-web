@@ -9,7 +9,7 @@ type ReqCreateInventoryCheckNote struct {
 	Id                  *string                                                        `json:"id" gorm:"column:id;" example:""`
 	QuantityDifferent   int                                                            `json:"-" gorm:"column:qtyDifferent;"`
 	QuantityAfterAdjust int                                                            `json:"-" gorm:"column:qtyAfterAdjust;"`
-	CreateBy            string                                                         `json:"-" gorm:"column:createBy;"`
+	CreatedBy           string                                                         `json:"-" gorm:"column:createdBy;"`
 	Details             []inventorychecknotedetailmodel.InventoryCheckNoteDetailCreate `json:"details" gorm:"-"`
 }
 

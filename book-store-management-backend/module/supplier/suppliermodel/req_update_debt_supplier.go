@@ -3,8 +3,9 @@ package suppliermodel
 import "book-store-management-backend/common"
 
 type ReqUpdateDebtSupplier struct {
-	QuantityUpdate *int   `json:"qtyUpdate" gorm:"-" example:"10000"`
-	CreatedBy      string `json:"-" gorm:"-"`
+	Id             *string `json:"id" gorm:"-" example:"supplier debt id"`
+	QuantityUpdate *int    `json:"qtyUpdate" gorm:"-" example:"10000"`
+	CreatedBy      string  `json:"-" gorm:"-"`
 }
 
 func (*ReqUpdateDebtSupplier) TableName() string {
@@ -12,6 +13,9 @@ func (*ReqUpdateDebtSupplier) TableName() string {
 }
 
 func (data *ReqUpdateDebtSupplier) Validate() *common.AppError {
+	if !common.ValidateId(data.Id) {
+		return ErrSupplierDebtIdInvalid
+	}
 	if data.QuantityUpdate == nil {
 		return ErrSupplierDebtPayNotExist
 	}
