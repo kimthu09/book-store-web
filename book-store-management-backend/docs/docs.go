@@ -748,19 +748,19 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "example": 1709500431,
-                        "name": "createAtFrom",
+                        "name": "createdAtFrom",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "example": 1709500431,
-                        "name": "createAtTo",
+                        "name": "createdAtTo",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "example": "user name",
-                        "name": "createBy",
+                        "name": "createdBy",
                         "in": "query"
                     },
                     {
@@ -859,164 +859,6 @@ const docTemplate = `{
                         "description": "inventory check note",
                         "schema": {
                             "$ref": "#/definitions/inventorychecknotemodel.ResSeeDetailInventoryCheckNote"
-                        }
-                    },
-                    "400": {
-                        "description": "error",
-                        "schema": {
-                            "$ref": "#/definitions/common.AppError"
-                        }
-                    }
-                }
-            }
-        },
-        "/invoices": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "invoices"
-                ],
-                "summary": "List invoice",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "example": 10,
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "example": 1,
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "example": 11,
-                        "name": "total",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "user name",
-                        "name": "createdBy",
-                        "in": "query"
-                    },
-                    {
-                        "type": "number",
-                        "name": "maxPrice",
-                        "in": "query"
-                    },
-                    {
-                        "type": "number",
-                        "name": "minPrice",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "search",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "list invoice",
-                        "schema": {
-                            "$ref": "#/definitions/invoicemodel.ResListInvoice"
-                        }
-                    },
-                    "400": {
-                        "description": "error",
-                        "schema": {
-                            "$ref": "#/definitions/common.AppError"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "invoices"
-                ],
-                "summary": "Create invoice",
-                "parameters": [
-                    {
-                        "description": "invoice need to create",
-                        "name": "invoice",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/invoicemodel.ReqCreateInvoice"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "invoice id",
-                        "schema": {
-                            "$ref": "#/definitions/invoicemodel.ResCreateInvoice"
-                        }
-                    },
-                    "400": {
-                        "description": "error",
-                        "schema": {
-                            "$ref": "#/definitions/common.AppError"
-                        }
-                    }
-                }
-            }
-        },
-        "/invoices/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "invoices"
-                ],
-                "summary": "See detail invoice",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "invoice id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "invoice",
-                        "schema": {
-                            "$ref": "#/definitions/invoicemodel.ResSeeDetailInvoice"
                         }
                     },
                     "400": {
@@ -2987,15 +2829,15 @@ const docTemplate = `{
         "inventorychecknotemodel.Filter": {
             "type": "object",
             "properties": {
-                "createAtFrom": {
+                "createdAtFrom": {
                     "type": "integer",
                     "example": 1709500431
                 },
-                "createAtTo": {
+                "createdAtTo": {
                     "type": "integer",
                     "example": 1709500431
                 },
-                "createBy": {
+                "createdBy": {
                     "type": "string",
                     "example": "user name"
                 },
@@ -3008,11 +2850,11 @@ const docTemplate = `{
         "inventorychecknotemodel.InventoryCheckNote": {
             "type": "object",
             "properties": {
-                "createAt": {
+                "createdAt": {
                     "type": "string",
                     "example": "2023-12-03T15:02:19.62113565Z"
                 },
-                "createBy": {
+                "createdBy": {
                     "$ref": "#/definitions/usermodel.SimpleUser"
                 },
                 "id": {
@@ -3056,11 +2898,11 @@ const docTemplate = `{
         "inventorychecknotemodel.ResDetailInventoryCheckNote": {
             "type": "object",
             "properties": {
-                "createAt": {
+                "createdAt": {
                     "type": "string",
                     "example": "2023-12-03T15:02:19.62113565Z"
                 },
-                "createBy": {
+                "createdBy": {
                     "$ref": "#/definitions/usermodel.SimpleUser"
                 },
                 "details": {
@@ -3127,181 +2969,6 @@ const docTemplate = `{
                     "allOf": [
                         {
                             "$ref": "#/definitions/common.Paging"
-                        }
-                    ]
-                }
-            }
-        },
-        "invoicedetailmodel.InvoiceDetail": {
-            "type": "object",
-            "properties": {
-                "book": {
-                    "$ref": "#/definitions/bookmodel.SimpleBook"
-                },
-                "qty": {
-                    "type": "integer",
-                    "example": 2
-                },
-                "unitPrice": {
-                    "type": "integer",
-                    "example": 60000
-                }
-            }
-        },
-        "invoicedetailmodel.ReqCreateInvoiceDetail": {
-            "type": "object",
-            "properties": {
-                "bookId": {
-                    "type": "string",
-                    "example": "book id"
-                },
-                "qty": {
-                    "type": "integer",
-                    "example": 2
-                }
-            }
-        },
-        "invoicemodel.Filter": {
-            "type": "object",
-            "properties": {
-                "createdBy": {
-                    "type": "string",
-                    "example": "user name"
-                },
-                "maxPrice": {
-                    "type": "number"
-                },
-                "minPrice": {
-                    "type": "number"
-                },
-                "searchKey": {
-                    "type": "string"
-                }
-            }
-        },
-        "invoicemodel.Invoice": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string",
-                    "example": "2023-12-03T15:02:19.62113565Z"
-                },
-                "createdBy": {
-                    "$ref": "#/definitions/usermodel.SimpleUser"
-                },
-                "id": {
-                    "type": "string",
-                    "example": "123"
-                },
-                "totalPrice": {
-                    "type": "number",
-                    "example": 120000
-                }
-            }
-        },
-        "invoicemodel.ReqCreateInvoice": {
-            "type": "object",
-            "properties": {
-                "details": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/invoicedetailmodel.ReqCreateInvoiceDetail"
-                    }
-                }
-            }
-        },
-        "invoicemodel.ResCreateInvoice": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/invoicemodel.ResCreateInvoiceData"
-                }
-            }
-        },
-        "invoicemodel.ResCreateInvoiceData": {
-            "type": "object",
-            "properties": {
-                "createdBy": {
-                    "$ref": "#/definitions/usermodel.SimpleUser"
-                },
-                "details": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/invoicedetailmodel.ReqCreateInvoiceDetail"
-                    }
-                },
-                "id": {
-                    "type": "string",
-                    "example": "123"
-                },
-                "total": {
-                    "type": "integer",
-                    "example": 120000
-                }
-            }
-        },
-        "invoicemodel.ResDetailInvoice": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string",
-                    "example": "2023-12-03T15:02:19.62113565Z"
-                },
-                "createdBy": {
-                    "$ref": "#/definitions/usermodel.SimpleUser"
-                },
-                "details": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/invoicedetailmodel.InvoiceDetail"
-                    }
-                },
-                "id": {
-                    "type": "string",
-                    "example": "123"
-                },
-                "totalPrice": {
-                    "type": "number",
-                    "example": 120000
-                }
-            }
-        },
-        "invoicemodel.ResListInvoice": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "description": "Data contains list of invoice.",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/invoicemodel.Invoice"
-                    }
-                },
-                "filter": {
-                    "description": "Filter contains the filter parameters used to retrieve invoice.",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/invoicemodel.Filter"
-                        }
-                    ]
-                },
-                "paging": {
-                    "description": "Paging provides information about pagination.",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/common.Paging"
-                        }
-                    ]
-                }
-            }
-        },
-        "invoicemodel.ResSeeDetailInvoice": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "description": "Data contains the detailed information about invoice details.",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/invoicemodel.ResDetailInvoice"
                         }
                     ]
                 }
