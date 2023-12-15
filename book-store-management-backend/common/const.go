@@ -20,6 +20,10 @@ const (
 	TableStockChangeHistory       string = "StockChangeHistory"
 	TableInvoice                  string = "Invoice"
 	TableInvoiceDetail            string = "InvoiceDetail"
+	TableSupplierDebtReport       string = "SupplierDebtReport"
+	TableSupplierDebtReportDetail string = "SupplierDebtReportDetail"
+	TableStockReport              string = "StockReport"
+	TableStockReportDetail        string = "StockReportDetail"
 )
 
 // FEATURE CODE
@@ -65,6 +69,10 @@ const (
 
 	InvoiceViewFeatureCode   = "INVOICE_VIEW"
 	InvoiceCreateFeatureCode = "INVOICE_CREATE"
+
+	SupplierDebtReportViewFeatureCode = "REPORT_VIEW_SUPPLIER"
+	StockReportViewFeatureCode        = "REPORT_VIEW_STOCK"
+	SaleReportViewFeatureCode         = "REPORT_VIEW_SALE"
 )
 
 const MaxLengthIdCanGenerate = 12
