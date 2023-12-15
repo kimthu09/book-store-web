@@ -9,6 +9,7 @@ import (
 	booktitletransport "book-store-management-backend/module/booktitle/booktitletransport"
 	"book-store-management-backend/module/feature/featuretransport/ginfeature"
 	"book-store-management-backend/module/role/roletransport/ginrole"
+	"gorm.io/driver/mysql"
 	"time"
 
 	"book-store-management-backend/module/category/categorytransport"
@@ -24,7 +25,6 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -124,6 +124,14 @@ func loadConfig() (*appConfig, error) {
 
 func connectDatabaseWithRetryIn30s(cfg *appConfig) (*gorm.DB, error) {
 	const timeRetry = 30 * time.Second
+	var connectDatabase = func(cfg *appConfig) (*gorm.DB, error) {
+		dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", cfg.DBUsername, cfg.DBPassword, cfg.DBHost, cfg.DBDatabase)
+		db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+		if err != nil {
+			return nil, fmt.Errorf("failed to connect to database: %w", err)
+		}
+		return db.Debug(), nil
+	}
 
 	var db *gorm.DB
 	var err error
@@ -136,20 +144,10 @@ func connectDatabaseWithRetryIn30s(cfg *appConfig) (*gorm.DB, error) {
 		if err == nil {
 			return db, nil
 		}
-		// Wait for 1 second before retrying
-		time.Sleep(1 * time.Second)
+		time.Sleep(time.Second)
 	}
 
 	return nil, fmt.Errorf("failed to connect to database after retrying for 10 seconds: %w", err)
-}
-
-func connectDatabase(cfg *appConfig) (*gorm.DB, error) {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", cfg.DBUsername, cfg.DBPassword, cfg.DBHost, cfg.DBDatabase)
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		return nil, fmt.Errorf("failed to connect to database: %w", err)
-	}
-	return db.Debug(), nil
 }
 
 func CORSMiddleware() gin.HandlerFunc {
