@@ -21,15 +21,6 @@ type ImportNote struct {
 	ClosedAt      *time.Time            `json:"closedAt" gorm:"column:closedAt;" example:"2023-12-03T15:02:19.62113565Z"`
 }
 
-type SimpleSupplier struct {
-	Id   string `json:"id" gorm:"column:id;" example:"supplier id"`
-	Name string `json:"name" gorm:"column:name;" example:"Nguyễn Văn A"`
-}
-
-func (*SimpleSupplier) TableName() string {
-	return common.TableSupplier
-}
-
 func (*ImportNote) TableName() string {
 	return common.TableImportNote
 }
