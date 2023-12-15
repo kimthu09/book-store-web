@@ -28,13 +28,13 @@ func (data *ReqCreateImportNote) Validate() *common.AppError {
 		return ErrImportNoteDetailsEmpty
 	}
 
-	mapIngredientUpdatePriceTimes := make(map[string]int)
+	mapBookUpdatePriceTimes := make(map[string]int)
 	for _, importNoteDetail := range data.ImportNoteDetails {
 		if err := importNoteDetail.Validate(); err != nil {
 			return err
 		}
-		mapIngredientUpdatePriceTimes[importNoteDetail.BookId]++
-		if mapIngredientUpdatePriceTimes[importNoteDetail.BookId] > 1 {
+		mapBookUpdatePriceTimes[importNoteDetail.BookId]++
+		if mapBookUpdatePriceTimes[importNoteDetail.BookId] > 1 {
 			return ErrImportNoteHasSameBook
 		}
 	}

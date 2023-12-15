@@ -154,7 +154,9 @@ func (repo *changeStatusImportNoteRepo) UpdateDebtSupplier(
 	importNote *importnotemodel.ReqUpdateImportNote) error {
 	qtyUpdate := -importNote.TotalPrice
 	supplierUpdateDebt := suppliermodel.ReqUpdateDebtSupplier{
+		Id:             &importNote.Id,
 		QuantityUpdate: &qtyUpdate,
+		CreatedBy:      importNote.ClosedBy,
 	}
 	if err := repo.supplierStore.UpdateSupplierDebt(
 		ctx, importNote.SupplierId, &supplierUpdateDebt,

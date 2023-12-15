@@ -37,46 +37,46 @@ func (*ImportNote) TableName() string {
 var (
 	ErrImportNoteIdInvalid = common.NewCustomError(
 		errors.New("id of import note is invalid"),
-		"id of import note is invalid",
+		"Mã của phiếu nhập không hợp lệ",
 		"ErrImportNoteIdInvalid",
 	)
 	ErrImportNoteSupplierIdInvalid = common.NewCustomError(
 		errors.New("id of supplier is invalid"),
-		"id of supplier is invalid",
+		"Mã của nhà cung cấp hợp lệ",
 		"ErrImportNoteSupplierIdInvalid",
 	)
 	ErrImportNoteDetailsEmpty = common.NewCustomError(
 		errors.New("list import note details are empty"),
-		"list import note details are empty",
+		"Danh sách sản phẩm muốn nhập đang trống",
 		"ErrImportNoteDetailsEmpty",
 	)
 	ErrImportNoteStatusEmpty = common.NewCustomError(
 		errors.New("import's status is empty"),
-		"import's status is empty",
+		"Trạng thái phiếu nhập muốn chuyển sang đang trống",
 		"ErrImportNoteStatusEmpty",
 	)
 	ErrImportNoteStatusInvalid = common.NewCustomError(
 		errors.New("import's status is invalid"),
-		"import's status is invalid",
+		"Trạng thái phiếu nhập muốn chuyển sang không hợp lệ",
 		"ErrImportNoteStatusInvalid",
 	)
 	ErrImportNoteHasSameBook = common.NewCustomError(
 		errors.New("import note has duplicate book"),
-		"import note has duplicate book",
+		"Trong phiếu nhập đang có 2 sách giống nhau",
 		"ErrImportNoteHasSameBook",
 	)
 	ErrImportNoteClosed = common.NewCustomError(
 		errors.New("import note has been closed"),
-		"import note has been closed",
+		"Phiếu nhập đã đóng",
 		"ErrImportNoteClosed",
 	)
 	ErrImportNoteCreateNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to create import note"),
+		errors.New("Bạn không có quyền tạo phiếu nhập mới"),
 	)
 	ErrImportNoteChangeStatusNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to change status import note"),
+		errors.New("Bạn không có quyền thay đổi trạng thái phiếu nhập"),
 	)
 	ErrImportNoteViewNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to view import note"),
+		errors.New("Bạn không có quyền xem phiếu nhập"),
 	)
 )

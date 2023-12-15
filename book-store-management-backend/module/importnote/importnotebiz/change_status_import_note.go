@@ -70,18 +70,19 @@ func (biz *changeStatusImportNoteRepo) ChangeStatusImportNote(
 	data.Id = importNoteId
 	data.TotalPrice = importNote.TotalPrice
 	data.SupplierId = importNote.SupplierId
+	data.ClosedBy = biz.requester.GetUserId()
 
 	if *importNote.Status != importnotemodel.InProgress {
 		return importnotemodel.ErrImportNoteClosed
 	}
 
 	if *data.Status == importnotemodel.Done {
-		supplierDebtId, errGenerateId := biz.gen.GenerateId()
+		supplierDebtId, errGenerateId := biz.gen.IdProcess(&data.Id)
 		if errGenerateId != nil {
 			return errGenerateId
 		}
 
-		if err := biz.repo.CreateSupplierDebt(ctx, supplierDebtId, data); err != nil {
+		if err := biz.repo.CreateSupplierDebt(ctx, *supplierDebtId, data); err != nil {
 			return err
 		}
 

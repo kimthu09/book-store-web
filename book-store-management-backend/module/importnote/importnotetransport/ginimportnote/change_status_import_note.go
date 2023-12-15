@@ -44,7 +44,6 @@ func ChangeStatusImportNote(appCtx appctx.AppContext) gin.HandlerFunc {
 		}
 
 		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
-		data.ClosedBy = requester.GetUserId()
 
 		db := appCtx.GetMainDBConnection().Begin()
 
