@@ -29,7 +29,9 @@ import { useState } from "react";
 export const columns: ColumnDef<ImportNote>[] = [
   {
     accessorKey: "createAt",
-    accessorFn: (row) => row.createAt.toLocaleDateString("vi-VN"),
+    accessorFn: (row) => {
+      return new Date(row.createdAt).toLocaleDateString("vi-VN");
+    },
     header: ({ column }) => {
       return (
         <div className="flex justify-end max-w-[8rem]">
@@ -86,12 +88,13 @@ export const columns: ColumnDef<ImportNote>[] = [
     },
   },
   {
-    accessorKey: "createBy",
+    accessorKey: "createdBy",
+    accessorFn: (row) => row.createdBy.name,
     header: () => {
       return <div className="font-semibold flex justify-center">Người tạo</div>;
     },
     cell: ({ row }) => (
-      <div className="leading-6 text-center">{row.getValue("createBy")}</div>
+      <div className="leading-6 text-center">{row.getValue("createdBy")}</div>
     ),
   },
   {
