@@ -1,7 +1,5 @@
 package common
 
-import "time"
-
 // TABLE NAME
 const (
 	TableAuthor                   string = "Author"
@@ -77,7 +75,3 @@ const RoleAdminId = "admin"
 const DefaultPass = "app123"
 
 const CurrentUserStr = "current_user"
-
-var (
-	VietNamLocation = time.FixedZone("UTC+7", 7*60*60)
-)

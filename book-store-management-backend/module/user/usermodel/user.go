@@ -27,6 +27,10 @@ func (u *User) GetEmail() string {
 	return u.Email
 }
 
+func (u *User) GetName() string {
+	return u.Name
+}
+
 func (u *User) GetRoleId() string {
 	return u.RoleId
 }
@@ -47,80 +51,80 @@ func (*User) TableName() string {
 var (
 	ErrUserIdInvalid = common.NewCustomError(
 		errors.New("id of user is invalid"),
-		"id of user is empty",
+		"Mã của người dùng không hợp lệ",
 		"ErrUserIdInvalid",
 	)
 	ErrUserNameEmpty = common.NewCustomError(
 		errors.New("name of user is empty"),
-		"name of user is empty",
+		"Tên của người dùng đang trống",
 		"ErrUserNameEmpty",
 	)
 	ErrUserEmailInvalid = common.NewCustomError(
 		errors.New("email is invalid"),
-		"email is invalid",
+		"Email của người dùng không hợp lệ",
 		"ErrUserEmailInvalid",
 	)
 	ErrUserRoleInvalid = common.NewCustomError(
 		errors.New("role is invalid"),
-		"role is invalid",
+		"Quyền của người dùng không hợp lệ",
 		"ErrUserRoleInvalid",
 	)
 	ErrUserPhoneInvalid = common.NewCustomError(
 		errors.New("phone of user is invalid"),
-		"phone of user is invalid",
+		"Số điện thoại của người dùng không hợp lệ",
 		"ErrUserPhoneInvalid",
 	)
 	ErrUserEmailOrPasswordInvalid = common.NewCustomError(
 		errors.New("email or password invalid"),
-		"email or password invalid",
+		"Email hoặc mật khẩu không hợp lệ",
 		"ErrUserEmailOrPasswordInvalid",
 	)
 	ErrUserEmailDuplicated = common.NewCustomError(
 		errors.New("email is duplicated"),
-		"email is duplicated",
+		"Email người dùng đã tồn tại",
 		"ErrUserEmailDuplicated",
 	)
 	ErrUserSenderPassInvalid = common.NewCustomError(
 		errors.New("pass of user sender is invalid"),
-		"pass of user sender is invalid",
+		"Mật khẩu người gửi không hợp lệ",
 		"ErrUserSenderPassInvalid",
 	)
 	ErrUserUpdatedPassInvalid = common.NewCustomError(
 		errors.New("pass of user is invalid"),
-		"pass of user is invalid",
+		"Mật khẩu mới không hợp lệ",
 		"ErrUserUpdatedPassInvalid",
 	)
 	ErrUserInactive = common.NewCustomError(
 		errors.New("user has been inactive"),
-		"user has been inactive",
+		"Người dùng đã ngừng hoạt động",
 		"ErrUserInactive",
 	)
 	ErrUserStatusEmpty = common.NewCustomError(
 		errors.New("user status is empty"),
-		"user status is empty",
+		"Trạng thái của người dùng đang trống",
 		"ErrUserStatusEmpty",
 	)
 	ErrUserCreateNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to create user"),
+		errors.New("Bạn không có quyền tạo người dùng mới"),
 	)
 	ErrUserUpdateInfoNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to update info user"),
+		errors.New("Bạn không có quyền chỉnh sửa thông tin người dùng"),
 	)
 	ErrUserUpdateRoleNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to update role user"),
+		errors.New("Bạn không có quyền chỉnh sửa quyền người dùng"),
 	)
 	ErrUserUpdateStatusNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to update status user"),
+		errors.New("Bạn không có quyền chỉnh sửa trạng thái người dùng"),
 	)
 	ErrUserResetPasswordNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to reset password user"),
+		errors.New("Bạn không có quyền làm mới mật khẩu người dùng"),
 	)
 	ErrUserViewNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to view user"),
+		errors.New("Bạn không có quyền xem người dùng"),
 	)
 	ErrUserSenderPasswordWrong = common.NewCustomError(
 		errors.New("password of user sender is wrong"),
-		"your password is not right",
+		"Mật khẩu bạn nhập đã sai",
 		"ErrUserSenderPasswordWrong",
 	)
 )
