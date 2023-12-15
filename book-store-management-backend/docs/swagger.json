@@ -1,6 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
+        "description": "This is a sample server Book Store Management API server.",
         "title": "Book Store Management API",
         "contact": {
             "name": "Bui Vi Quoc",

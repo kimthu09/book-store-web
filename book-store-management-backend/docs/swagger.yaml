@@ -991,6 +991,7 @@ info:
     email: 21520095@gm.uit.edu.vn
     name: Bui Vi Quoc
     url: https://www.facebook.com/bviquoc/
+  description: This is a sample server Book Store Management API server.
   title: Book Store Management API
   version: "1.0"
 paths:

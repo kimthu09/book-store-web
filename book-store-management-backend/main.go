@@ -41,20 +41,19 @@ type appConfig struct {
 }
 
 // @title           Book Store Management API
+// @description     This is a sample server Book Store Management API server.
 // @version         1.0
 
 // @contact.name   Bui Vi Quoc
 // @contact.url    https://www.facebook.com/bviquoc/
 // @contact.email  21520095@gm.uit.edu.vn
 
-// @host      localhost:8080
+// @host localhost:8080
 // @BasePath  /v1
 
 // @securityDefinitions.apikey BearerAuth
 // @in header
 // @name Authorization
-// @externalDocs.description  OpenAPI
-// @externalDocs.url          https://swagger.io/resources/open-api/
 func main() {
 	cfg, err := loadConfig()
 	if err != nil {
@@ -62,7 +61,7 @@ func main() {
 	}
 
 	fmt.Println("Connecting to database...")
-	db, err := connectDatabaseWithRetryIn10s(cfg)
+	db, err := connectDatabaseWithRetryIn30s(cfg)
 	if err != nil {
 		log.Fatalln("Error when connecting to database:", err)
 	}
@@ -123,11 +122,13 @@ func loadConfig() (*appConfig, error) {
 	}, nil
 }
 
-func connectDatabaseWithRetryIn10s(cfg *appConfig) (*gorm.DB, error) {
+func connectDatabaseWithRetryIn30s(cfg *appConfig) (*gorm.DB, error) {
+	const timeRetry = 30 * time.Second
+
 	var db *gorm.DB
 	var err error
 
-	deadline := time.Now().Add(10 * time.Second)
+	deadline := time.Now().Add(timeRetry)
 
 	for time.Now().Before(deadline) {
 		log.Println("Connecting to database...")

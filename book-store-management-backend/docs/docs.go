@@ -3347,7 +3347,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/v1",
 	Schemes:          []string{},
 	Title:            "Book Store Management API",
-	Description:      "",
+	Description:      "This is a sample server Book Store Management API server.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
