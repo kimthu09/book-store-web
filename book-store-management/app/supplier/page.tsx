@@ -21,7 +21,7 @@ async function SupplierManage({
         <CreateDialog />
       </div>
 
-      <div className="my-4 p-3 sha bg-white shadow-[0_1px_3px_0_rgba(0,0,0,0.2)]">
+      <div className="my-3 p-3 sha bg-white shadow-[0_1px_3px_0_rgba(0,0,0,0.2)]">
         <Suspense fallback={<Loading />}>
           <TableLayout searchParams={searchParams} />
         </Suspense>

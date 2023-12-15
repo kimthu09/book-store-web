@@ -27,6 +27,11 @@ import { SupplierDebt } from "@/types";
 import { useState } from "react";
 import getSupplierDebt from "@/lib/supplier/getSupplierDebt";
 import Loading from "../loading";
+import Paging, { PagingProps } from "../paging";
+import ExportDialog from "./export-dialog";
+import getAllSupplierDebt from "@/lib/supplier/getAllSupplierDebt";
+import { toast } from "../ui/use-toast";
+import { ExportDebtNote } from "./export-debt-note";
 
 export const columns: ColumnDef<SupplierDebt>[] = [
   {
@@ -117,6 +122,7 @@ export const columns: ColumnDef<SupplierDebt>[] = [
 
   {
     accessorKey: "createdBy",
+    accessorFn: (row) => row.createdBy.name,
     header: () => {
       return <div className="font-semibold flex justify-center">Người tạo</div>;
     },
@@ -124,17 +130,58 @@ export const columns: ColumnDef<SupplierDebt>[] = [
       <div className="leading-6 text-center">{row.getValue("createdBy")}</div>
     ),
   },
+  {
+    accessorKey: "type",
+    header: () => {
+      return (
+        <div className="font-semibold whitespace-nowrap flex justify-center">
+          Trạng thái
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      const status = row.getValue("type");
+      return (
+        <div className="flex justify-center min-w-0">
+          <div
+            className={`leading-5 rounded-full text-center px-2 w-[80%] max-w-[5rem] truncate whitespace-nowrap border ${
+              status === "Pay"
+                ? "bg-green-200 border-green-500 text-green-600"
+                : "bg-blue-200 border-blue-500 text-blue-600"
+            }`}
+          >
+            {status === "Pay" ? "Nhập" : "Trả nợ"}
+          </div>
+        </div>
+      );
+    },
+  },
 ];
-export function DebtTable({ supplierId }: { supplierId: string }) {
+export function DebtTable({
+  supplierId,
+  pageIndex,
+  setPageIndex,
+}: {
+  supplierId: string;
+  pageIndex: number;
+  setPageIndex: (page: number) => void;
+}) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-
-  const { data, isLoading, isError } = getSupplierDebt({
+  // const [pageIndex, setPageIndex] = useState(1);
+  const {
+    mutate: mutate,
+    data: debts,
+    isLoading,
+    isError,
+  } = getSupplierDebt({
     idSupplier: supplierId,
-    page: 1,
+    page: pageIndex,
   });
+  const data = debts?.data;
+  const totalPage = Math.ceil(debts?.paging.total / debts?.paging.limit);
   const table = useReactTable({
     data,
     columns,
@@ -153,11 +200,49 @@ export function DebtTable({ supplierId }: { supplierId: string }) {
       rowSelection,
     },
   });
+
+  const [exportOption, setExportOption] = useState("all");
+  const handleExport = async () => {
+    if (exportOption === "all") {
+      const debtNoteData: Promise<{
+        data: SupplierDebt[];
+        paging: PagingProps;
+      }> = getAllSupplierDebt({ idSupplier: supplierId });
+      const notesToExport = await debtNoteData;
+      if (notesToExport.data.length < 1) {
+        toast({
+          variant: "destructive",
+          title: "Có lỗi",
+          description: "Không có phiếu nợ nào",
+        });
+      } else {
+        ExportDebtNote(
+          notesToExport.data,
+          `NCC${supplierId} Danh sách phiếu nợ.xlsx`
+        );
+      }
+    } else {
+      if (data.length < 1) {
+        toast({
+          variant: "destructive",
+          title: "Có lỗi",
+          description: "Không có phiếu nợ nào",
+        });
+      } else {
+        ExportDebtNote(data, `NCC${supplierId} Danh sách phiếu nợ.xlsx`);
+      }
+    }
+  };
   if (isLoading) {
     return <Loading />;
-  } else
+  } else {
     return (
       <div className="flex flex-col">
+        <ExportDialog
+          handleExport={handleExport}
+          setExportOption={setExportOption}
+          isImport={false}
+        />
         <div className="flex items-center gap-2"></div>
         <div className="rounded-md border">
           <Table>
@@ -199,7 +284,7 @@ export function DebtTable({ supplierId }: { supplierId: string }) {
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    Chưa có đơn nhập nào.
+                    Chưa có phiếu nợ nào.
                   </TableCell>
                 </TableRow>
               )}
@@ -207,25 +292,19 @@ export function DebtTable({ supplierId }: { supplierId: string }) {
           </Table>
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
-          <div className="space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Next
-            </Button>
-          </div>
+          <Paging
+            page={pageIndex.toString()}
+            onNavigateNext={() => setPageIndex(pageIndex + 1)}
+            onNavigateBack={() => setPageIndex(pageIndex - 1)}
+            totalPage={totalPage}
+            onPageSelect={(selectedPage) => {
+              setPageIndex(+selectedPage);
+            }}
+            onNavigateFirst={() => setPageIndex(1)}
+            onNavigateLast={() => setPageIndex(totalPage)}
+          />
         </div>
       </div>
     );
+  }
 }

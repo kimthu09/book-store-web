@@ -18,7 +18,7 @@ export default function Sidebar() {
   return (
     <div className="md:flex hidden z-20">
       <aside
-        className={`bg-white h-screen p-1 transition-all shadow-md overflow-hidden ${
+        className={`bg-white h-screen p-1 transition-all shadow-md overflow-auto ${
           isCollapse ? "w-[3.8rem]" : "w-64"
         }`}
       >

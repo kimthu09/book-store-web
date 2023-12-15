@@ -1,7 +1,11 @@
 import React from "react";
 import { Button } from "./ui/button";
-import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
-import { WeekNumberLabel } from "react-day-picker";
+import {
+  LuChevronLeft,
+  LuChevronRight,
+  LuChevronsLeft,
+  LuChevronsRight,
+} from "react-icons/lu";
 import {
   Select,
   SelectContent,
@@ -16,6 +20,8 @@ export interface PagingProps {
   totalPage: number;
   onNavigateBack: () => void;
   onNavigateNext: () => void;
+  onNavigateFirst: () => void;
+  onNavigateLast: () => void;
   onPageSelect: (selectedPage: string) => void;
 }
 
@@ -24,11 +30,21 @@ const Paging = ({
   totalPage,
   onNavigateBack,
   onNavigateNext,
+  onNavigateFirst,
+  onNavigateLast,
   onPageSelect,
 }: PagingProps) => {
   const pageArray = Array.from({ length: totalPage }, (value, key) => key + 1);
   return (
     <div className="flex gap-2">
+      <Button
+        variant="outline"
+        size="icon"
+        onClick={onNavigateFirst}
+        disabled={Number(page) <= 1}
+      >
+        <LuChevronsLeft className="h-4 w-4" />
+      </Button>
       <Button
         variant="outline"
         size="icon"
@@ -66,6 +82,14 @@ const Paging = ({
         disabled={Number(page) >= totalPage}
       >
         <LuChevronRight className="h-4 w-4" />
+      </Button>
+      <Button
+        variant="outline"
+        size="icon"
+        onClick={onNavigateLast}
+        disabled={Number(page) >= totalPage}
+      >
+        <LuChevronsRight className="h-4 w-4" />
       </Button>
     </div>
   );
