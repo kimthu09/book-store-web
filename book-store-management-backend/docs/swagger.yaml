@@ -2,9 +2,17 @@ basePath: /v1
 definitions:
   authormodel.Author:
     properties:
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
       id:
         type: string
+      isActive:
+        type: boolean
       name:
+        type: string
+      updatedAt:
         type: string
     type: object
   authormodel.Filter:
@@ -66,15 +74,15 @@ definitions:
         example: Doraemon
         type: string
     type: object
-  booktitlemodel.BookTitle:
+  booktitlemodel.BookTitleDetail:
     properties:
-      authorIds:
+      authors:
         items:
-          type: string
+          $ref: '#/definitions/authormodel.Author'
         type: array
-      categoryIds:
+      categories:
         items:
-          type: string
+          $ref: '#/definitions/categorymodel.Category'
         type: array
       createdAt:
         type: string
@@ -134,10 +142,8 @@ definitions:
     type: object
   booktitlemodel.ResBookTitleDetail:
     properties:
-      id:
-        type: string
-      name:
-        type: string
+      data:
+        $ref: '#/definitions/booktitlemodel.BookTitleDetail'
     type: object
   booktitlemodel.ResCreateBookTitle:
     properties:
@@ -148,7 +154,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/booktitlemodel.BookTitle'
+          $ref: '#/definitions/booktitlemodel.BookTitleDetail'
         type: array
       filter:
         $ref: '#/definitions/booktitlemodel.Filter'
@@ -157,9 +163,17 @@ definitions:
     type: object
   categorymodel.Category:
     properties:
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
       id:
         type: string
+      isActive:
+        type: boolean
       name:
+        type: string
+      updatedAt:
         type: string
     type: object
   categorymodel.Filter:
@@ -497,13 +511,13 @@ definitions:
     type: object
   inventorychecknotemodel.Filter:
     properties:
-      createdAtFrom:
+      createAtFrom:
         example: 1709500431
         type: integer
-      createdAtTo:
+      createAtTo:
         example: 1709500431
         type: integer
-      createdBy:
+      createBy:
         example: user name
         type: string
       searchKey:
@@ -512,10 +526,10 @@ definitions:
     type: object
   inventorychecknotemodel.InventoryCheckNote:
     properties:
-      createdAt:
+      createAt:
         example: "2023-12-03T15:02:19.62113565Z"
         type: string
-      createdBy:
+      createBy:
         $ref: '#/definitions/usermodel.SimpleUser'
       id:
         example: inventory check note id
@@ -545,10 +559,10 @@ definitions:
     type: object
   inventorychecknotemodel.ResDetailInventoryCheckNote:
     properties:
-      createdAt:
+      createAt:
         example: "2023-12-03T15:02:19.62113565Z"
         type: string
-      createdBy:
+      createBy:
         $ref: '#/definitions/usermodel.SimpleUser'
       details:
         items:
@@ -1133,6 +1147,28 @@ paths:
       summary: Delete booktitle by id
       tags:
       - booktitles
+  /booktitles/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Booktitle ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/booktitlemodel.ResBookTitleDetail'
+      security:
+      - BearerAuth: []
+      summary: Get booktitle detail by id
+      tags:
+      - booktitles
   /categories:
     get:
       consumes:
@@ -1370,15 +1406,15 @@ paths:
         type: integer
       - example: 1709500431
         in: query
-        name: createdAtFrom
+        name: createAtFrom
         type: integer
       - example: 1709500431
         in: query
-        name: createdAtTo
+        name: createAtTo
         type: integer
       - example: user name
         in: query
-        name: createdBy
+        name: createBy
         type: string
       - example: ""
         in: query

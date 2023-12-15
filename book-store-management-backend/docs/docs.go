@@ -268,6 +268,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/booktitles/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "booktitles"
+                ],
+                "summary": "Get booktitle detail by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Booktitle ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/booktitlemodel.ResBookTitleDetail"
+                        }
+                    }
+                }
+            }
+        },
         "/categories": {
             "get": {
                 "security": [
@@ -655,19 +691,19 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "example": 1709500431,
-                        "name": "createdAtFrom",
+                        "name": "createAtFrom",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "example": 1709500431,
-                        "name": "createdAtTo",
+                        "name": "createAtTo",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "example": "user name",
-                        "name": "createdBy",
+                        "name": "createBy",
                         "in": "query"
                     },
                     {
@@ -1827,10 +1863,22 @@ const docTemplate = `{
         "authormodel.Author": {
             "type": "object",
             "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
+                "isActive": {
+                    "type": "boolean"
+                },
                 "name": {
+                    "type": "string"
+                },
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -1925,19 +1973,19 @@ const docTemplate = `{
                 }
             }
         },
-        "booktitlemodel.BookTitle": {
+        "booktitlemodel.BookTitleDetail": {
             "type": "object",
             "properties": {
-                "authorIds": {
+                "authors": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/definitions/authormodel.Author"
                     }
                 },
-                "categoryIds": {
+                "categories": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/definitions/categorymodel.Category"
                     }
                 },
                 "createdAt": {
@@ -2023,11 +2071,8 @@ const docTemplate = `{
         "booktitlemodel.ResBookTitleDetail": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
+                "data": {
+                    "$ref": "#/definitions/booktitlemodel.BookTitleDetail"
                 }
             }
         },
@@ -2045,7 +2090,7 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/booktitlemodel.BookTitle"
+                        "$ref": "#/definitions/booktitlemodel.BookTitleDetail"
                     }
                 },
                 "filter": {
@@ -2059,10 +2104,22 @@ const docTemplate = `{
         "categorymodel.Category": {
             "type": "object",
             "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
+                "isActive": {
+                    "type": "boolean"
+                },
                 "name": {
+                    "type": "string"
+                },
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -2561,15 +2618,15 @@ const docTemplate = `{
         "inventorychecknotemodel.Filter": {
             "type": "object",
             "properties": {
-                "createdAtFrom": {
+                "createAtFrom": {
                     "type": "integer",
                     "example": 1709500431
                 },
-                "createdAtTo": {
+                "createAtTo": {
                     "type": "integer",
                     "example": 1709500431
                 },
-                "createdBy": {
+                "createBy": {
                     "type": "string",
                     "example": "user name"
                 },
@@ -2582,11 +2639,11 @@ const docTemplate = `{
         "inventorychecknotemodel.InventoryCheckNote": {
             "type": "object",
             "properties": {
-                "createdAt": {
+                "createAt": {
                     "type": "string",
                     "example": "2023-12-03T15:02:19.62113565Z"
                 },
-                "createdBy": {
+                "createBy": {
                     "$ref": "#/definitions/usermodel.SimpleUser"
                 },
                 "id": {
@@ -2630,11 +2687,11 @@ const docTemplate = `{
         "inventorychecknotemodel.ResDetailInventoryCheckNote": {
             "type": "object",
             "properties": {
-                "createdAt": {
+                "createAt": {
                     "type": "string",
                     "example": "2023-12-03T15:02:19.62113565Z"
                 },
-                "createdBy": {
+                "createBy": {
                     "$ref": "#/definitions/usermodel.SimpleUser"
                 },
                 "details": {

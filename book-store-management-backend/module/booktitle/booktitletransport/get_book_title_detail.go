@@ -7,6 +7,7 @@ import (
 	"book-store-management-backend/module/author/authorrepo"
 	"book-store-management-backend/module/author/authorstore"
 	"book-store-management-backend/module/booktitle/booktitlebiz"
+	"book-store-management-backend/module/booktitle/booktitlemodel"
 	"book-store-management-backend/module/booktitle/booktitlerepo"
 	"book-store-management-backend/module/booktitle/booktitlestore"
 	"book-store-management-backend/module/category/categoryrepo"
@@ -18,13 +19,13 @@ import (
 
 // @BasePath /v1
 // @Security BearerAuth
-// @Summary Get all booktitle detail
+// @Summary Get booktitle detail by id
 // @Tags booktitles
 // @Accept json
 // @Produce json
-// @Param page query common.Paging false "page"
+// @Param id path string true "Booktitle ID"
 // @Response 200 {object} booktitlemodel.ResBookTitleDetail
-// @Router /booktitles [get]
+// @Router /booktitles/{id} [get]
 func GetBookTitleDetail(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := strings.Trim(c.Param("id"), " ")
@@ -52,6 +53,6 @@ func GetBookTitleDetail(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data))
+		c.JSON(http.StatusOK, booktitlemodel.NewResBookTitleDetail(*data))
 	}
 }
