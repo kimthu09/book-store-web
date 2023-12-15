@@ -294,6 +294,63 @@
                         "schema": {
                             "$ref": "#/definitions/booktitlemodel.ResBookTitleDetail"
                         }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/booktitles/{id}/info": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "booktitles"
+                ],
+                "summary": "Update info booktitle",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "booktitle id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "booktitle info to update",
+                        "name": "booktitle",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/booktitlemodel.ReqUpdateBookInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
                     }
                 }
             }
@@ -2027,6 +2084,42 @@
             }
         },
         "booktitlemodel.ReqCreateBookTitle": {
+            "type": "object",
+            "properties": {
+                "authorIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "tgnna"
+                    ]
+                },
+                "categoryIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "dmtt",
+                        "dmtruyen"
+                    ]
+                },
+                "desc": {
+                    "type": "string",
+                    "example": "Tôi Là Bêtô là tác phẩm của nhà văn chuyên viết cho thanh thiếu niên Nguyễn Nhật Ánh."
+                },
+                "id": {
+                    "type": "string",
+                    "example": "bookId"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Tôi là Bêtô"
+                }
+            }
+        },
+        "booktitlemodel.ReqUpdateBookInfo": {
             "type": "object",
             "properties": {
                 "authorIds": {

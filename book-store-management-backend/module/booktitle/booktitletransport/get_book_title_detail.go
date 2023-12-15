@@ -17,6 +17,7 @@ import (
 	"strings"
 )
 
+// GetBookTitleDetail
 // @BasePath /v1
 // @Security BearerAuth
 // @Summary Get booktitle detail by id
@@ -25,6 +26,7 @@ import (
 // @Produce json
 // @Param id path string true "Booktitle ID"
 // @Response 200 {object} booktitlemodel.ResBookTitleDetail
+// @Response 400 {object} common.AppError "error"
 // @Router /booktitles/{id} [get]
 func GetBookTitleDetail(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
