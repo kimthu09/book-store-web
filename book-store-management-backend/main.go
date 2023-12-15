@@ -8,7 +8,12 @@ import (
 	"book-store-management-backend/module/book/booktransport"
 	booktitletransport "book-store-management-backend/module/booktitle/booktitletransport"
 	"book-store-management-backend/module/feature/featuretransport/ginfeature"
+	"book-store-management-backend/module/importnote/importnotetransport/ginimportnote"
+	"book-store-management-backend/module/inventorychecknote/inventorychecknotetransport/gininventorychecknote"
 	"book-store-management-backend/module/role/roletransport/ginrole"
+	"book-store-management-backend/module/salereport/salereporttransport/ginsalereport"
+	ginstockreports "book-store-management-backend/module/stockreport/stockreporttransport/ginstockreport"
+	"book-store-management-backend/module/supplierdebtreport/supplierdebtreporttransport/ginsupplierdebtreport"
 	"time"
 
 	"book-store-management-backend/module/category/categorytransport"
@@ -98,6 +103,7 @@ func main() {
 		ginrole.SetupRoutes(v1, appCtx)
 		ginfeature.SetupRoutes(v1, appCtx)
 		ginuser.SetupRoutes(v1, appCtx)
+
 		report := v1.Group("/reports")
 		{
 			ginstockreports.SetupRoutes(report, appCtx)
