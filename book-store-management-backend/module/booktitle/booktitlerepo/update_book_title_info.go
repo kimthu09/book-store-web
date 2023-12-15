@@ -5,6 +5,10 @@ import (
 	"context"
 )
 
+type UpdateBookTitleRepo interface {
+	UpdateBookTitle(ctx context.Context, id string, data *booktitlestore.BookTitleDBModel) error
+}
+
 type updateBookStore interface {
 	UpdateBookTitle(ctx context.Context, id string, data *booktitlestore.BookTitleDBModel) error
 }

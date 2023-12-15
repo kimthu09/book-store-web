@@ -11,6 +11,10 @@ type DetailBookTitleStore interface {
 	DetailBookTitle(ctx context.Context, id string) (*booktitlestore.BookTitleDBModel, error)
 }
 
+type DetailBookTitleRepo interface {
+	DetailBookTitle(ctx context.Context, id string) (*booktitlemodel.BookTitle, error)
+}
+
 type detailBookTitleRepo struct {
 	store DetailBookTitleStore
 }

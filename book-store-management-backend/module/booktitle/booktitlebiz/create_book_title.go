@@ -4,7 +4,9 @@ import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/generator"
 	"book-store-management-backend/middleware"
+	"book-store-management-backend/module/author/authorrepo"
 	"book-store-management-backend/module/booktitle/booktitlemodel"
+	"book-store-management-backend/module/category/categoryrepo"
 	"context"
 )
 
@@ -12,31 +14,19 @@ type CreateBookTitleRepo interface {
 	CreateBookTitle(ctx context.Context, data *booktitlemodel.BookTitle) error
 }
 
-type authorRepo interface {
-	IsExistAuthorId(ctx context.Context, authorId string) bool
-}
-
-type publisherRepo interface {
-	IsExistPublisherId(ctx context.Context, publisherId string) bool
-}
-
-type categoryRepo interface {
-	IsExistCategoryId(ctx context.Context, categoryId string) bool
-}
-
 type createBookTitleBiz struct {
 	gen          generator.IdGenerator
 	repo         CreateBookTitleRepo
-	authorRepo   authorRepo
-	categoryRepo categoryRepo
+	authorRepo   authorrepo.AuthorPublicRepo
+	categoryRepo categoryrepo.CategoryPublicRepo
 	requester    middleware.Requester
 }
 
 func NewCreateBookTitleBiz(
 	gen generator.IdGenerator,
 	repo CreateBookTitleRepo,
-	authorRepo authorRepo,
-	categoryRepo categoryRepo,
+	authorRepo authorrepo.AuthorPublicRepo,
+	categoryRepo categoryrepo.CategoryPublicRepo,
 	requester middleware.Requester) *createBookTitleBiz {
 	return &createBookTitleBiz{
 		gen:          gen,
@@ -79,7 +69,7 @@ func (biz *createBookTitleBiz) CreateBookTitle(ctx context.Context, reqData *boo
 	}
 
 	if err := biz.repo.CreateBookTitle(ctx, data); err != nil {
-		return err
+		return common.ErrDB(err)
 	}
 	resData.Id = *data.ID
 	return nil

@@ -1,6 +1,8 @@
 package booktitlerepo
 
-import "context"
+import (
+	"context"
+)
 
 type DeleteBookStore interface {
 	DeleteBookTitle(ctx context.Context, id string) error

@@ -12,8 +12,6 @@ import (
 	"book-store-management-backend/module/booktitle/booktitlestore"
 	"book-store-management-backend/module/category/categoryrepo"
 	"book-store-management-backend/module/category/categorystore"
-	"book-store-management-backend/module/publisher/publisherrepo"
-	"book-store-management-backend/module/publisher/publisherstore"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -23,6 +21,8 @@ func UpdateBookTitleInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Param("id")
 		var reqData booktitlemodel.ReqUpdateBookInfo
+
+		panic(common.ErrInvalidRequest(error(fmt.Errorf("this api is not implemented"))))
 
 		if err := c.ShouldBind(&reqData); err != nil || id == "" {
 			panic(common.ErrInvalidRequest(err))
@@ -37,15 +37,13 @@ func UpdateBookTitleInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 		db := appCtx.GetMainDBConnection().Begin()
 		store := booktitlestore.NewSQLStore(db)
 		authorStore := authorstore.NewSQLStore(db)
-		publisherStore := publisherstore.NewSQLStore(db)
 		categoryStore := categorystore.NewSQLStore(db)
 
 		repo := booktitlerepo.NewUpdateBookRepo(store)
-		authorRepo := authorrepo.NewExistAuthorRepo(authorStore)
-		publisherRepo := publisherrepo.NewExistPublisherRepo(publisherStore)
-		categoryRepo := categoryrepo.NewExistCategoryRepo(categoryStore)
+		authorRepo := authorrepo.NewAuthorPublicRepo(authorStore)
+		categoryRepo := categoryrepo.NewCategoryPublicRepo(categoryStore)
 
-		biz := booktitlebiz.NewUpdateBookBiz(repo, authorRepo, publisherRepo, categoryRepo, requester)
+		biz := booktitlebiz.NewUpdateBookBiz(repo, authorRepo, categoryRepo, requester)
 
 		err := biz.UpdateBookTitle(c.Request.Context(), id, &reqData)
 		if err != nil {
