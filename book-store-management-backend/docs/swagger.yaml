@@ -636,6 +636,120 @@ definitions:
         - $ref: '#/definitions/common.Paging'
         description: Paging provides information about pagination.
     type: object
+  invoicedetailmodel.InvoiceDetail:
+    properties:
+      book:
+        $ref: '#/definitions/bookmodel.SimpleBook'
+      qty:
+        example: 2
+        type: integer
+      unitPrice:
+        example: 60000
+        type: integer
+    type: object
+  invoicedetailmodel.ReqCreateInvoiceDetail:
+    properties:
+      bookId:
+        example: book id
+        type: string
+      qty:
+        example: 2
+        type: integer
+    type: object
+  invoicemodel.Filter:
+    properties:
+      createdBy:
+        example: user name
+        type: string
+      maxPrice:
+        type: number
+      minPrice:
+        type: number
+      searchKey:
+        type: string
+    type: object
+  invoicemodel.Invoice:
+    properties:
+      createdAt:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      createdBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      id:
+        example: "123"
+        type: string
+      totalPrice:
+        example: 120000
+        type: number
+    type: object
+  invoicemodel.ReqCreateInvoice:
+    properties:
+      details:
+        items:
+          $ref: '#/definitions/invoicedetailmodel.ReqCreateInvoiceDetail'
+        type: array
+    type: object
+  invoicemodel.ResCreateInvoice:
+    properties:
+      data:
+        $ref: '#/definitions/invoicemodel.ResCreateInvoiceData'
+    type: object
+  invoicemodel.ResCreateInvoiceData:
+    properties:
+      createdBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      details:
+        items:
+          $ref: '#/definitions/invoicedetailmodel.ReqCreateInvoiceDetail'
+        type: array
+      id:
+        example: "123"
+        type: string
+      total:
+        example: 120000
+        type: integer
+    type: object
+  invoicemodel.ResDetailInvoice:
+    properties:
+      createdAt:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      createdBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      details:
+        items:
+          $ref: '#/definitions/invoicedetailmodel.InvoiceDetail'
+        type: array
+      id:
+        example: "123"
+        type: string
+      totalPrice:
+        example: 120000
+        type: number
+    type: object
+  invoicemodel.ResListInvoice:
+    properties:
+      data:
+        description: Data contains list of invoice.
+        items:
+          $ref: '#/definitions/invoicemodel.Invoice'
+        type: array
+      filter:
+        allOf:
+        - $ref: '#/definitions/invoicemodel.Filter'
+        description: Filter contains the filter parameters used to retrieve invoice.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  invoicemodel.ResSeeDetailInvoice:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/invoicemodel.ResDetailInvoice'
+        description: Data contains the detailed information about invoice details.
+    type: object
   publishermodel.Filter:
     properties:
       searchKey:
@@ -1699,6 +1813,104 @@ paths:
       summary: See detail inventory check note
       tags:
       - inventoryCheckNotes
+  /invoices:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: user name
+        in: query
+        name: createdBy
+        type: string
+      - in: query
+        name: maxPrice
+        type: number
+      - in: query
+        name: minPrice
+        type: number
+      - in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list invoice
+          schema:
+            $ref: '#/definitions/invoicemodel.ResListInvoice'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List invoice
+      tags:
+      - invoices
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: invoice need to create
+        in: body
+        name: invoice
+        required: true
+        schema:
+          $ref: '#/definitions/invoicemodel.ReqCreateInvoice'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: invoice id
+          schema:
+            $ref: '#/definitions/invoicemodel.ResCreateInvoice'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Create invoice
+      tags:
+      - invoices
+  /invoices/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: invoice id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: invoice
+          schema:
+            $ref: '#/definitions/invoicemodel.ResSeeDetailInvoice'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See detail invoice
+      tags:
+      - invoices
   /login:
     post:
       consumes:

@@ -10,6 +10,7 @@ import (
 	"book-store-management-backend/module/feature/featuretransport/ginfeature"
 	"book-store-management-backend/module/importnote/importnotetransport/ginimportnote"
 	"book-store-management-backend/module/inventorychecknote/inventorychecknotetransport/gininventorychecknote"
+	"book-store-management-backend/module/invoice/invoicetransport/gininvoice"
 	"book-store-management-backend/module/role/roletransport/ginrole"
 	"book-store-management-backend/module/salereport/salereporttransport/ginsalereport"
 	ginstockreports "book-store-management-backend/module/stockreport/stockreporttransport/ginstockreport"
@@ -97,6 +98,7 @@ func main() {
 		booktitletransport.SetupRoutes(v1, appCtx)
 		booktransport.SetupRoutes(v1, appCtx)
 		publishertransport.SetupRoutes(v1, appCtx)
+		gininvoice.SetupRoutes(v1, appCtx)
 		ginimportnote.SetupRoutes(v1, appCtx)
 		gininventorychecknote.SetupRoutes(v1, appCtx)
 		ginsupplier.SetupRoutes(v1, appCtx)
