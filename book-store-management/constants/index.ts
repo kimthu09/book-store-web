@@ -17,7 +17,7 @@ import { FaRegHandshake } from "react-icons/fa";
 import { z } from "zod";
 
 export const apiKey =
-  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXJJZCI6ImczVzIxQTdTUiIsInJvbGUiOiIifSwiZXhwIjoxNzA1MTY1MjQzLCJpYXQiOjE3MDI1NzMyNDN9.bDwKkz9OZdwp15HDCESuQ0zoMOXHbCGWfN59u4Y9KkI";
+  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXJJZCI6ImczVzIxQTdTUiIsInJvbGUiOiIifSwiZXhwIjoxNzA1MTk3NDIxLCJpYXQiOjE3MDI2MDU0MjF9.SJxvTYBk6fNodXd_8M0vqM4hjJpCg5MkonTtbLjOtNU";
 export const required = z.string().min(1, "Không để trống trường này");
 
 export const statuses = [
@@ -44,9 +44,16 @@ export const noteStatus = [
 ];
 export const sidebarItems: SidebarItem[] = [
   {
-    title: "Quản lý sách",
-    href: "/books",
+    title: "Quản lý sản phẩm",
+    href: "/product",
     icon: GrBook,
+    submenu: true,
+    subMenuItems: [
+      { title: "Danh sách sách", href: "/product/books" },
+      { title: "Thể loại", href: "/product/categories" },
+      { title: "Tác giả", href: "/product/authors" },
+      { title: "Nhà xuất bản", href: "/product/publishers" },
+    ],
   },
   {
     title: "Quản lý kho",

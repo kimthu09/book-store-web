@@ -1,5 +1,5 @@
 import { apiKey } from "@/constants";
-import { Category } from "@/types";
+import { Category, PagingProps } from "@/types";
 import useSWR from "swr";
 
 const fetcher = (url: string) =>
@@ -12,16 +12,29 @@ const fetcher = (url: string) =>
     .then((res) => {
       return res.json();
     })
-    .then((json) => json.data);
+    .then((json) => {
+      return {
+        paging: json.paging,
+        data: json.data,
+      };
+    });
 
-export default function getAllCategory() {
+export default function getAllCategory({
+  page,
+  limit,
+}: {
+  page?: string;
+  limit?: number;
+}) {
   const { data, error, isLoading } = useSWR(
-    "http://localhost:8080/v1/categories",
+    `http://localhost:8080/v1/categories?page=${page ?? 1}&limit=${
+      limit ?? 10
+    }`,
     fetcher
   );
 
   return {
-    categories: data as Category[],
+    categories: data,
     isLoading,
     isError: error,
   };

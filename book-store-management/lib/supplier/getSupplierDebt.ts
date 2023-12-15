@@ -1,4 +1,5 @@
 import { apiKey } from "@/constants";
+import { PagingProps, SupplierDebt } from "@/types";
 import useSWR from "swr";
 
 const fetcher = (url: string) =>
@@ -11,7 +12,12 @@ const fetcher = (url: string) =>
     .then((res) => {
       return res.json();
     })
-    .then((json) => json.data);
+    .then((json) => {
+      return {
+        paging: json.paging,
+        data: json.data,
+      };
+    });
 
 export default function getSupplierDebt({
   idSupplier,
@@ -20,7 +26,7 @@ export default function getSupplierDebt({
   idSupplier: string;
   page: number;
 }) {
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading, mutate, isValidating } = useSWR(
     `http://localhost:8080/v1/suppliers/${idSupplier}/debts?page=${page}`,
     fetcher
   );
@@ -28,5 +34,7 @@ export default function getSupplierDebt({
     data: data,
     isLoading,
     isError: error,
+    mutate: mutate,
+    isValidating: isValidating,
   };
 }

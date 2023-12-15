@@ -28,10 +28,10 @@ const CategoryList = ({
 }: CategoryListProps) => {
   const [openCategory, setOpenCategory] = useState(false);
   // const [newCategory, setNewCategory] = useState("");
-  const { categories, isLoading, isError } = getAllCategory();
+  const { categories, isLoading, isError } = getAllCategory({ limit: 1000 });
 
   if (isError) return <div>Failed to load</div>;
-  if (!categories) {
+  if (isLoading) {
     return <Loading />;
   } else
     return (
@@ -69,7 +69,7 @@ const CategoryList = ({
               )}
             </CommandEmpty>
             <CommandGroup className="overflow-y-auto">
-              {categories.map((item) => (
+              {categories?.data.map((item: any) => (
                 <CommandItem
                   value={item.name}
                   key={item.id}

@@ -1,11 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  CaretSortIcon,
-  ChevronDownIcon,
-  DotsHorizontalIcon,
-} from "@radix-ui/react-icons";
+import { CaretSortIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -26,7 +22,6 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -52,11 +47,8 @@ import { Input } from "../ui/input";
 import { ExportSupplierList } from "./excel-export";
 import { Label } from "../ui/label";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import Link from "next/link";
 import Paging from "../paging";
 import { useRouter, useSearchParams } from "next/navigation";
-
-// const data: Supplier[] = suppliers;
 
 export const columns: ColumnDef<Supplier>[] = [
   {
@@ -151,31 +143,6 @@ export const columns: ColumnDef<Supplier>[] = [
       return <div className="text-right font-medium">{formatted}</div>;
     },
   },
-  // {
-  //   id: "actions",
-  //   enableHiding: false,
-  //   cell: ({ row }) => {
-  //     const supplier = row.original;
-  //     return (
-  //       <div className="flex justify-end">
-  //         <Link
-  //           href={{
-  //             pathname: "supplier/detail",
-  //             query: {
-  //               id: supplier.id,
-  //             },
-  //           }}
-  //         >
-  //           <Button variant="ghost" className="h-8 w-8 p-0">
-  //             <DotsHorizontalIcon className="h-4 w-4" />
-  //           </Button>
-  //         </Link>
-  //       </div>
-  //     );
-  //   },
-  //   size: 1,
-  //   maxSize: 2,
-  // },
 ];
 
 function idToName(id: string) {
@@ -241,89 +208,50 @@ export function SupplierTable({
   return (
     <div className="w-full">
       <div className="flex items-center py-4 gap-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="w-40 justify-between">
-              Chọn thao tác <ChevronDownIcon className="ml-2 h-4 w-4" />
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="lg:px-3 px-2" variant={"outline"}>
+              Xuất danh sách
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="max-h-44 w-40">
-            <Dialog>
-              <DialogTrigger asChild>
-                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                  Xuất danh sách
-                </DropdownMenuItem>
-              </DialogTrigger>
-              <DialogOverlay>
-                <DialogContent className="p-0">
-                  <DialogTitle className="p-6 pb-0">
-                    Xuất file danh sách nhà cung cấp
-                  </DialogTitle>
-                  <div className="flex flex-col border-y-[1px] p-6 gap-4">
-                    <Label>Giới hạn kết quả xuất</Label>
-                    <RadioGroup
-                      defaultValue="all"
-                      onValueChange={(e: string) => setExportOption(e)}
-                    >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="all" id="r1" />
-                        <Label htmlFor="r1" className="font-normal">
-                          Tất cả các nhà cung cấp
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="comfortable" id="r2" />
-                        <Label className="font-normal" htmlFor="r2">
-                          Các nhà cung cấp được chọn
-                        </Label>
-                      </div>
-                    </RadioGroup>
-                  </div>
+          </DialogTrigger>
+          <DialogContent className="p-0">
+            <DialogTitle className="p-6 pb-0">
+              Xuất file danh sách nhà cung cấp
+            </DialogTitle>
+            <div className="flex flex-col border-y-[1px] p-6 gap-4">
+              <Label>Giới hạn kết quả xuất</Label>
+              <RadioGroup
+                defaultValue="all"
+                onValueChange={(e: string) => setExportOption(e)}
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="all" id="r1" />
+                  <Label htmlFor="r1" className="font-normal">
+                    Tất cả các nhà cung cấp
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="comfortable" id="r2" />
+                  <Label className="font-normal" htmlFor="r2">
+                    Các nhà cung cấp được chọn
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
 
-                  <DialogClose className="ml-auto p-6 pt-0">
-                    <div className="flex gap-4">
-                      <Button type="button" variant={"outline"}>
-                        Thoát
-                      </Button>
+            <DialogClose className="ml-auto p-6 pt-0">
+              <div className="flex gap-4">
+                <Button type="button" variant={"outline"}>
+                  Thoát
+                </Button>
 
-                      <Button type="button" onClick={() => handleExport()}>
-                        Hoàn tất
-                      </Button>
-                    </div>
-                  </DialogClose>
-                </DialogContent>
-              </DialogOverlay>
-            </Dialog>
-
-            <Dialog>
-              <DialogTrigger asChild>
-                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                  Chuyển trạng thái
-                </DropdownMenuItem>
-              </DialogTrigger>
-              <DialogOverlay>
-                <DialogContent className="p-0">
-                  <DialogTitle className="p-6 pb-0">
-                    Chuyển trạng thái nhà cung cấp
-                  </DialogTitle>
-                  <div className="flex flex-col border-y-[1px] p-6">
-                    <p>Chọn trạng thái muốn chuyển</p>
-                    <div className="mt-4 flex-1 ">
-                      {/* <CategoryList
-                        category={category}
-                        setCategory={setCategory}
-                      /> */}
-                    </div>
-                  </div>
-
-                  <DialogClose className="ml-auto p-6 pt-0">
-                    <Button type="submit">Hoàn tất</Button>
-                  </DialogClose>
-                </DialogContent>
-              </DialogOverlay>
-            </Dialog>
-          </DropdownMenuContent>
-        </DropdownMenu>
+                <Button type="button" onClick={() => handleExport()}>
+                  Hoàn tất
+                </Button>
+              </div>
+            </DialogClose>
+          </DialogContent>
+        </Dialog>
 
         <div className="flex-1">
           <Input
@@ -337,11 +265,12 @@ export function SupplierTable({
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              Cột hiển thị <ChevronDownIcon className="ml-2 h-4 w-4" />
+            <Button variant="outline" className="lg:px-3 px-2">
+              Cột hiển thị
+              <ChevronDownIcon className="ml-1 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
+          <DropdownMenuContent className="DropdownMenuContent">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -361,8 +290,6 @@ export function SupplierTable({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-
-        <div className="ml-auto">{/* <FilterSheet /> */}</div>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -438,6 +365,8 @@ export function SupplierTable({
           onPageSelect={(selectedPage) =>
             router.push(`/supplier?page=${selectedPage}`)
           }
+          onNavigateFirst={() => router.push(`/supplier?page=${1}`)}
+          onNavigateLast={() => router.push(`/supplier?page=${totalPage}`)}
         />
       </div>
     </div>
