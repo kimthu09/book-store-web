@@ -6,12 +6,14 @@ export default async function getAllBooks(page: number) {
       accept: "application/json",
       Authorization: apiKey,
     },
+    next: {
+      revalidate: 0,
+    },
   });
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
   return res.json().then((json) => {
-    console.log(json);
     return {
       paging: json.paging,
       data: json.data,

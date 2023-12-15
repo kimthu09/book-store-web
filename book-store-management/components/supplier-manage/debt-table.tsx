@@ -23,13 +23,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ImportNote, StatusNote, SupplierDebt } from "@/types";
+import { SupplierDebt } from "@/types";
 import { useState } from "react";
+import getSupplierDebt from "@/lib/supplier/getSupplierDebt";
+import Loading from "../loading";
 
 export const columns: ColumnDef<SupplierDebt>[] = [
   {
-    accessorKey: "createAt",
-    accessorFn: (row) => row.createAt.toLocaleDateString("vi-VN"),
+    accessorKey: "createdAt",
+    accessorFn: (row) => new Date(row.createdAt).toLocaleDateString("vi-VN"),
     header: ({ column }) => {
       return (
         <div className="flex justify-end max-w-[8rem]">
@@ -47,7 +49,7 @@ export const columns: ColumnDef<SupplierDebt>[] = [
     },
     cell: ({ row }) => (
       <div className="leading-6 flex justify-end max-w-[6rem]">
-        {row.getValue("createAt")}
+        {row.getValue("createdAt")}
       </div>
     ),
   },
@@ -59,7 +61,7 @@ export const columns: ColumnDef<SupplierDebt>[] = [
     cell: ({ row }) => <div className="leading-6">{row.getValue("id")}</div>,
   },
   {
-    accessorKey: "amountLeft",
+    accessorKey: "qty",
     header: ({ column }) => (
       <div className="flex justify-end">
         <Button
@@ -67,14 +69,14 @@ export const columns: ColumnDef<SupplierDebt>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="p-1"
         >
-          <span className="font-semibold">Đã trả</span>
+          <span className="font-semibold">Giá trị</span>
 
           <CaretSortIcon className="h-4 w-4" />
         </Button>
       </div>
     ),
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amountLeft"));
+      const amount = parseFloat(row.getValue("qty"));
 
       // Format the amount as a dollar amount
       const formatted = new Intl.NumberFormat("vi-VN", {
@@ -86,7 +88,7 @@ export const columns: ColumnDef<SupplierDebt>[] = [
     },
   },
   {
-    accessorKey: "amount",
+    accessorKey: "qtyLeft",
     header: ({ column }) => (
       <div className="flex justify-end">
         <Button
@@ -94,14 +96,14 @@ export const columns: ColumnDef<SupplierDebt>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="p-1"
         >
-          <span className="font-semibold">Tổng tiền</span>
+          <span className="font-semibold">Còn lại</span>
 
           <CaretSortIcon className="h-4 w-4" />
         </Button>
       </div>
     ),
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
+      const amount = parseFloat(row.getValue("qtyLeft"));
 
       // Format the amount as a dollar amount
       const formatted = new Intl.NumberFormat("vi-VN", {
@@ -112,21 +114,27 @@ export const columns: ColumnDef<SupplierDebt>[] = [
       return <div className="text-right font-medium">{formatted}</div>;
     },
   },
+
   {
-    accessorKey: "createBy",
+    accessorKey: "createdBy",
     header: () => {
       return <div className="font-semibold flex justify-center">Người tạo</div>;
     },
     cell: ({ row }) => (
-      <div className="leading-6 text-center">{row.getValue("createBy")}</div>
+      <div className="leading-6 text-center">{row.getValue("createdBy")}</div>
     ),
   },
 ];
-export function DebtTable({ data }: { data: SupplierDebt[] }) {
+export function DebtTable({ supplierId }: { supplierId: string }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+
+  const { data, isLoading, isError } = getSupplierDebt({
+    idSupplier: supplierId,
+    page: 1,
+  });
   const table = useReactTable({
     data,
     columns,
@@ -145,77 +153,79 @@ export function DebtTable({ data }: { data: SupplierDebt[] }) {
       rowSelection,
     },
   });
-
-  return (
-    <div className="flex flex-col">
-      <div className="flex items-center gap-2"></div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+  if (isLoading) {
+    return <Loading />;
+  } else
+    return (
+      <div className="flex flex-col">
+        <div className="flex items-center gap-2"></div>
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  Chưa có đơn nhập nào.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    Chưa có đơn nhập nào.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <div className="space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
 }
