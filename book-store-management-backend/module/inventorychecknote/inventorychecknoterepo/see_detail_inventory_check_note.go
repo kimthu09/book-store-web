@@ -1,7 +1,6 @@
 package inventorychecknoterepo
 
 import (
-	"book-store-management-backend/common"
 	"book-store-management-backend/module/inventorychecknote/inventorychecknotemodel"
 	"book-store-management-backend/module/inventorychecknotedetail/inventorychecknotedetailmodel"
 	"context"
@@ -10,8 +9,7 @@ import (
 type SeeDetailInventoryCheckNoteStore interface {
 	ListInventoryCheckNoteDetail(
 		ctx context.Context,
-		inventoryCheckNoteId string,
-		paging *common.Paging) ([]inventorychecknotedetailmodel.InventoryCheckNoteDetail, error)
+		inventoryCheckNoteId string) ([]inventorychecknotedetailmodel.InventoryCheckNoteDetail, error)
 }
 
 type FindInventoryCheckNoteStore interface {
@@ -38,13 +36,12 @@ func NewSeeDetailInventoryCheckNoteRepo(
 
 func (repo *seeDetailInventoryCheckNoteRepo) SeeDetailInventoryCheckNote(
 	ctx context.Context,
-	inventoryCheckNoteId string,
-	paging *common.Paging) (*inventorychecknotemodel.ResDetailInventoryCheckNote, error) {
+	inventoryCheckNoteId string) (*inventorychecknotemodel.ResDetailInventoryCheckNote, error) {
 	inventoryCheckNote, errInventoryCheckNote :=
 		repo.inventoryCheckNoteStore.FindInventoryCheckNote(
 			ctx,
 			map[string]interface{}{"id": inventoryCheckNoteId},
-			"CreateByUser")
+			"CreatedByUser")
 	if errInventoryCheckNote != nil {
 		return nil, errInventoryCheckNote
 	}
@@ -54,7 +51,6 @@ func (repo *seeDetailInventoryCheckNoteRepo) SeeDetailInventoryCheckNote(
 	details, errInventoryCheckNoteDetail := repo.inventoryCheckNoteDetailStore.ListInventoryCheckNoteDetail(
 		ctx,
 		inventoryCheckNoteId,
-		paging,
 	)
 	if errInventoryCheckNoteDetail != nil {
 		return nil, errInventoryCheckNoteDetail
