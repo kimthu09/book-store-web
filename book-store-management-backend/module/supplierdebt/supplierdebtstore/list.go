@@ -13,7 +13,8 @@ func (s *sqlStore) ListSupplierDebt(
 	ctx context.Context,
 	supplierId string,
 	filterSupplierDebt *filter.SupplierDebtFilter,
-	paging *common.Paging) ([]supplierdebtmodel.SupplierDebt, error) {
+	paging *common.Paging,
+	moreKeys ...string) ([]supplierdebtmodel.SupplierDebt, error) {
 	var result []supplierdebtmodel.SupplierDebt
 	db := s.db
 
@@ -28,6 +29,10 @@ func (s *sqlStore) ListSupplierDebt(
 		return nil, errPaging
 	}
 	db = dbTemp
+
+	for i := range moreKeys {
+		db = db.Preload(moreKeys[i])
+	}
 
 	if err := db.
 		Order("createdAt desc").
