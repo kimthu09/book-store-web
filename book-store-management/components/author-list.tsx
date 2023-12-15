@@ -26,7 +26,7 @@ const AuthorList = ({
   readonly,
 }: AuthorListProps) => {
   const [openAuthor, setOpenAuthor] = useState(false);
-  const { authors, isLoading, isError } = getAllAuthor();
+  const { authors, isLoading, isError } = getAllAuthor({ limit: 1000 });
 
   if (isError) return <div>Failed to load</div>;
   if (!authors) {
