@@ -1,5 +1,4 @@
 import { apiKey } from "@/constants";
-import { Supplier } from "@/types";
 import useSWR from "swr";
 
 const fetcher = (url: string) =>
@@ -8,21 +7,33 @@ const fetcher = (url: string) =>
       accept: "application/json",
       Authorization: apiKey,
     },
-    cache: "no-store",
   })
     .then((res) => {
       return res.json();
     })
-    .then((json) => json.data);
+    .then((json) => {
+      return {
+        paging: json.paging,
+        data: json.data,
+      };
+    });
 
-export default function getSupplier(idSupplier: string) {
+export default function getAllPublisher({
+  page,
+  limit,
+}: {
+  page?: string;
+  limit?: number;
+}) {
   const { data, error, isLoading } = useSWR(
-    `http://localhost:8080/v1/suppliers/${idSupplier}`,
+    `http://localhost:8080/v1/publishers?page=${page ?? 1}&limit=${
+      limit ?? 10
+    }`,
     fetcher
   );
 
   return {
-    data: data as Supplier,
+    publishers: data,
     isLoading,
     isError: error,
   };
