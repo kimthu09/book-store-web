@@ -11,6 +11,9 @@ import (
 	"book-store-management-backend/module/importnote/importnotetransport/ginimportnote"
 	"book-store-management-backend/module/inventorychecknote/inventorychecknotetransport/gininventorychecknote"
 	"book-store-management-backend/module/role/roletransport/ginrole"
+	"book-store-management-backend/module/salereport/salereporttransport/ginsalereport"
+	ginstockreports "book-store-management-backend/module/stockreport/stockreporttransport/ginstockreport"
+	"book-store-management-backend/module/supplierdebtreport/supplierdebtreporttransport/ginsupplierdebtreport"
 	"time"
 
 	"book-store-management-backend/module/category/categorytransport"
@@ -97,11 +100,16 @@ func main() {
 		publishertransport.SetupRoutes(v1, appCtx)
 		ginimportnote.SetupRoutes(v1, appCtx)
 		gininventorychecknote.SetupRoutes(v1, appCtx)
-		//gininvoice.SetupRoutes(v1, appCtx)
 		ginsupplier.SetupRoutes(v1, appCtx)
 		ginrole.SetupRoutes(v1, appCtx)
 		ginfeature.SetupRoutes(v1, appCtx)
 		ginuser.SetupRoutes(v1, appCtx)
+		report := v1.Group("/reports")
+		{
+			ginstockreports.SetupRoutes(report, appCtx)
+			ginsupplierdebtreport.SetupRoutes(report, appCtx)
+			ginsalereport.SetupRoutes(report, appCtx)
+		}
 	}
 
 	if err := r.Run(fmt.Sprintf(":%s", cfg.Port)); err != nil {
@@ -160,7 +168,7 @@ func CORSMiddleware() gin.HandlerFunc {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE, PATCH")
 
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(http.StatusNoContent)

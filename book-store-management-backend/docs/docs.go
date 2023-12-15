@@ -1042,6 +1042,138 @@ const docTemplate = `{
                 }
             }
         },
+        "/reports/debt": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reports"
+                ],
+                "summary": "Find supplier debt report",
+                "parameters": [
+                    {
+                        "description": "time from and time to",
+                        "name": "condition",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/supplierdebtreportmodel.ReqFindSupplierDebtReport"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "supplier debt report",
+                        "schema": {
+                            "$ref": "#/definitions/supplierdebtreportmodel.ResFindSupplierDebtReport"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/reports/sale": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reports"
+                ],
+                "summary": "Find sale report",
+                "parameters": [
+                    {
+                        "description": "time from and time to",
+                        "name": "condition",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/salereportmodel.ReqFindSaleReport"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sale report",
+                        "schema": {
+                            "$ref": "#/definitions/salereportmodel.ResFindSaleReport"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/reports/stock": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reports"
+                ],
+                "summary": "Find stock report",
+                "parameters": [
+                    {
+                        "description": "time from and time to",
+                        "name": "condition",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/stockreportmodel.ReqFindStockReport"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "stock report",
+                        "schema": {
+                            "$ref": "#/definitions/stockreportmodel.ResFindStockReport"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
         "/roles": {
             "get": {
                 "security": [
@@ -2677,11 +2809,15 @@ const docTemplate = `{
             "properties": {
                 "id": {
                     "type": "string",
-                    "example": "supplier id"
+                    "example": "123"
                 },
                 "name": {
                     "type": "string",
                     "example": "Nguyễn Văn A"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "0123456789"
                 }
             }
         },
@@ -2881,7 +3017,7 @@ const docTemplate = `{
                     "example": 2
                 },
                 "unitPrice": {
-                    "type": "number",
+                    "type": "integer",
                     "example": 60000
                 }
             }
@@ -2896,10 +3032,6 @@ const docTemplate = `{
                 "qty": {
                     "type": "integer",
                     "example": 2
-                },
-                "unitPrice": {
-                    "type": "integer",
-                    "example": 60000
                 }
             }
         },
@@ -3186,6 +3318,148 @@ const docTemplate = `{
                 }
             }
         },
+        "salereportetailmodel.SaleReportDetail": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "book": {
+                    "$ref": "#/definitions/bookmodel.SimpleBook"
+                },
+                "totalSales": {
+                    "type": "integer",
+                    "example": 100000
+                }
+            }
+        },
+        "salereportmodel.ReqFindSaleReport": {
+            "type": "object",
+            "properties": {
+                "timeFrom": {
+                    "type": "integer",
+                    "example": 1701388800
+                },
+                "timeTo": {
+                    "type": "integer",
+                    "example": 1704067199
+                }
+            }
+        },
+        "salereportmodel.ResFindSaleReport": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains the detailed information about sale report",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/salereportmodel.SaleReport"
+                        }
+                    ]
+                }
+            }
+        },
+        "salereportmodel.SaleReport": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/salereportetailmodel.SaleReportDetail"
+                    }
+                },
+                "timeFrom": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                },
+                "timeTo": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                },
+                "total": {
+                    "type": "integer",
+                    "example": 100000
+                }
+            }
+        },
+        "stockreportdetailmodel.StockReportDetail": {
+            "type": "object",
+            "properties": {
+                "book": {
+                    "$ref": "#/definitions/bookmodel.SimpleBook"
+                },
+                "final": {
+                    "type": "integer",
+                    "example": 30
+                },
+                "import": {
+                    "type": "integer",
+                    "example": 100
+                },
+                "initial": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "modify": {
+                    "type": "integer",
+                    "example": -60
+                },
+                "sell": {
+                    "type": "integer",
+                    "example": -10
+                }
+            }
+        },
+        "stockreportmodel.ReqFindStockReport": {
+            "type": "object",
+            "properties": {
+                "timeFrom": {
+                    "type": "integer",
+                    "example": 1701388800
+                },
+                "timeTo": {
+                    "type": "integer",
+                    "example": 1704067199
+                }
+            }
+        },
+        "stockreportmodel.ResFindStockReport": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains the detailed information about stock report",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/stockreportmodel.StockReport"
+                        }
+                    ]
+                }
+            }
+        },
+        "stockreportmodel.StockReport": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/stockreportdetailmodel.StockReportDetail"
+                    }
+                },
+                "id": {
+                    "type": "string",
+                    "example": "report id"
+                },
+                "timeFrom": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                },
+                "timeTo": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                }
+            }
+        },
         "supplierdebtmodel.SupplierDebt": {
             "type": "object",
             "properties": {
@@ -3201,11 +3475,11 @@ const docTemplate = `{
                     "example": "debt001"
                 },
                 "qty": {
-                    "type": "number",
+                    "type": "integer",
                     "example": -70000
                 },
                 "qtyLeft": {
-                    "type": "number",
+                    "type": "integer",
                     "example": -100000
                 },
                 "supplierId": {
@@ -3219,6 +3493,78 @@ const docTemplate = `{
                         }
                     ],
                     "example": "Debt"
+                }
+            }
+        },
+        "supplierdebtreportdetailmodel.SupplierDebtReportDetail": {
+            "type": "object",
+            "properties": {
+                "debt": {
+                    "type": "integer",
+                    "example": -40000
+                },
+                "final": {
+                    "type": "integer",
+                    "example": 80000
+                },
+                "initial": {
+                    "type": "integer",
+                    "example": 100000
+                },
+                "pay": {
+                    "type": "integer",
+                    "example": 20000
+                },
+                "supplier": {
+                    "$ref": "#/definitions/importnotemodel.SimpleSupplier"
+                }
+            }
+        },
+        "supplierdebtreportmodel.ReqFindSupplierDebtReport": {
+            "type": "object",
+            "properties": {
+                "timeFrom": {
+                    "type": "integer",
+                    "example": 1701388800
+                },
+                "timeTo": {
+                    "type": "integer",
+                    "example": 1704067199
+                }
+            }
+        },
+        "supplierdebtreportmodel.ResFindSupplierDebtReport": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains the detailed information about supplier debt report",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/supplierdebtreportmodel.SupplierDebtReport"
+                        }
+                    ]
+                }
+            }
+        },
+        "supplierdebtreportmodel.SupplierDebtReport": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/supplierdebtreportdetailmodel.SupplierDebtReportDetail"
+                    }
+                },
+                "id": {
+                    "type": "string"
+                },
+                "timeFrom": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                },
+                "timeTo": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
                 }
             }
         },
