@@ -15,20 +15,34 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strings"
 )
 
+// UpdateBookTitleInfo
+// @BasePath /v1
+// @Security BearerAuth
+// @Summary Update info booktitle
+// @Tags booktitles
+// @Accept json
+// @Produce json
+// @Param id path string true "booktitle id"
+// @Param booktitle body booktitlemodel.ReqUpdateBookInfo true "booktitle info to update"
+// @Response 200 {object} common.ResSuccess "status of response"
+// @Response 400 {object} common.AppError "error"
+// @Router /booktitles/{id}/info [patch]
 func UpdateBookTitleInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		id := c.Param("id")
+		id := strings.Trim(c.Param("id"), " ")
 		var reqData booktitlemodel.ReqUpdateBookInfo
 
-		panic(common.ErrInvalidRequest(error(fmt.Errorf("this api is not implemented"))))
-
-		if err := c.ShouldBind(&reqData); err != nil || id == "" {
+		if err := c.ShouldBind(&reqData); err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
-
-		reqData.Id = &id
+		if id == "" {
+			panic(common.ErrInvalidRequest(fmt.Errorf("id is empty")))
+			return
+		}
+		reqData.Id = id
 
 		fmt.Println(reqData)
 
@@ -54,6 +68,6 @@ func UpdateBookTitleInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 			db.Rollback()
 			panic(err)
 		}
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse(true))
+		c.JSON(http.StatusOK, common.ResSuccess{IsSuccess: true})
 	}
 }

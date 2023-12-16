@@ -74,15 +74,15 @@ definitions:
         example: Doraemon
         type: string
     type: object
-  booktitlemodel.BookTitle:
+  booktitlemodel.BookTitleDetail:
     properties:
-      authorIds:
+      authors:
         items:
-          type: string
+          $ref: '#/definitions/authormodel.Author'
         type: array
-      categoryIds:
+      categories:
         items:
-          type: string
+          $ref: '#/definitions/categorymodel.Category'
         type: array
       createdAt:
         type: string
@@ -140,12 +140,36 @@ definitions:
         example: Tôi là Bêtô
         type: string
     type: object
-  booktitlemodel.ResBookTitleDetail:
+  booktitlemodel.ReqUpdateBookInfo:
     properties:
+      authorIds:
+        example:
+        - tgnna
+        items:
+          type: string
+        type: array
+      categoryIds:
+        example:
+        - dmtt
+        - dmtruyen
+        items:
+          type: string
+        type: array
+      desc:
+        example: Tôi Là Bêtô là tác phẩm của nhà văn chuyên viết cho thanh thiếu niên
+          Nguyễn Nhật Ánh.
+        type: string
       id:
+        example: bookId
         type: string
       name:
+        example: Tôi là Bêtô
         type: string
+    type: object
+  booktitlemodel.ResBookTitleDetail:
+    properties:
+      data:
+        $ref: '#/definitions/booktitlemodel.BookTitleDetail'
     type: object
   booktitlemodel.ResCreateBookTitle:
     properties:
@@ -156,7 +180,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/booktitlemodel.BookTitle'
+          $ref: '#/definitions/booktitlemodel.BookTitleDetail'
         type: array
       filter:
         $ref: '#/definitions/booktitlemodel.Filter'
@@ -1255,6 +1279,7 @@ info:
     email: 21520095@gm.uit.edu.vn
     name: Bui Vi Quoc
     url: https://www.facebook.com/bviquoc/
+  description: This is a sample server Book Store Management API server.
   title: Book Store Management API
   version: "1.0"
 paths:
@@ -1409,6 +1434,64 @@ paths:
       security:
       - BearerAuth: []
       summary: Delete booktitle by id
+      tags:
+      - booktitles
+  /booktitles/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Booktitle ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/booktitlemodel.ResBookTitleDetail'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Get booktitle detail by id
+      tags:
+      - booktitles
+  /booktitles/{id}/info:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: booktitle id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: booktitle info to update
+        in: body
+        name: booktitle
+        required: true
+        schema:
+          $ref: '#/definitions/booktitlemodel.ReqUpdateBookInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Update info booktitle
       tags:
       - booktitles
   /categories:

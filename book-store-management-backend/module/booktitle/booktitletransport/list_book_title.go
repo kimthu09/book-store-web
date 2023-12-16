@@ -59,6 +59,6 @@ func ListBookTitle(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common.NewSuccessResponse(data, paging, filter))
+		c.JSON(http.StatusOK, booktitlemodel.NewResListBookTitle(data, paging, filter))
 	}
 }

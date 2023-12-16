@@ -10,6 +10,7 @@ import (
 	"book-store-management-backend/module/feature/featuretransport/ginfeature"
 	"book-store-management-backend/module/importnote/importnotetransport/ginimportnote"
 	"book-store-management-backend/module/inventorychecknote/inventorychecknotetransport/gininventorychecknote"
+	"book-store-management-backend/module/invoice/invoicetransport/gininvoice"
 	"book-store-management-backend/module/role/roletransport/ginrole"
 	"book-store-management-backend/module/salereport/salereporttransport/ginsalereport"
 	ginstockreports "book-store-management-backend/module/stockreport/stockreporttransport/ginstockreport"
@@ -46,20 +47,19 @@ type appConfig struct {
 }
 
 // @title           Book Store Management API
+// @description     This is a sample server Book Store Management API server.
 // @version         1.0
 
 // @contact.name   Bui Vi Quoc
 // @contact.url    https://www.facebook.com/bviquoc/
 // @contact.email  21520095@gm.uit.edu.vn
 
-// @host      localhost:8080
+// @host localhost:8080
 // @BasePath  /v1
 
 // @securityDefinitions.apikey BearerAuth
 // @in header
 // @name Authorization
-// @externalDocs.description  OpenAPI
-// @externalDocs.url          https://swagger.io/resources/open-api/
 func main() {
 	cfg, err := loadConfig()
 	if err != nil {
@@ -67,7 +67,7 @@ func main() {
 	}
 
 	fmt.Println("Connecting to database...")
-	db, err := connectDatabaseWithRetryIn10s(cfg)
+	db, err := connectDatabaseWithRetryIn30s(cfg)
 	if err != nil {
 		log.Fatalln("Error when connecting to database:", err)
 	}
@@ -98,12 +98,14 @@ func main() {
 		booktitletransport.SetupRoutes(v1, appCtx)
 		booktransport.SetupRoutes(v1, appCtx)
 		publishertransport.SetupRoutes(v1, appCtx)
+		gininvoice.SetupRoutes(v1, appCtx)
 		ginimportnote.SetupRoutes(v1, appCtx)
 		gininventorychecknote.SetupRoutes(v1, appCtx)
 		ginsupplier.SetupRoutes(v1, appCtx)
 		ginrole.SetupRoutes(v1, appCtx)
 		ginfeature.SetupRoutes(v1, appCtx)
 		ginuser.SetupRoutes(v1, appCtx)
+
 		report := v1.Group("/reports")
 		{
 			ginstockreports.SetupRoutes(report, appCtx)
@@ -134,11 +136,21 @@ func loadConfig() (*appConfig, error) {
 	}, nil
 }
 
-func connectDatabaseWithRetryIn10s(cfg *appConfig) (*gorm.DB, error) {
+func connectDatabaseWithRetryIn30s(cfg *appConfig) (*gorm.DB, error) {
+	const timeRetry = 30 * time.Second
+	var connectDatabase = func(cfg *appConfig) (*gorm.DB, error) {
+		dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", cfg.DBUsername, cfg.DBPassword, cfg.DBHost, cfg.DBDatabase)
+		db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+		if err != nil {
+			return nil, fmt.Errorf("failed to connect to database: %w", err)
+		}
+		return db.Debug(), nil
+	}
+
 	var db *gorm.DB
 	var err error
 
-	deadline := time.Now().Add(10 * time.Second)
+	deadline := time.Now().Add(timeRetry)
 
 	for time.Now().Before(deadline) {
 		log.Println("Connecting to database...")
@@ -146,20 +158,10 @@ func connectDatabaseWithRetryIn10s(cfg *appConfig) (*gorm.DB, error) {
 		if err == nil {
 			return db, nil
 		}
-		// Wait for 1 second before retrying
-		time.Sleep(1 * time.Second)
+		time.Sleep(time.Second)
 	}
 
 	return nil, fmt.Errorf("failed to connect to database after retrying for 10 seconds: %w", err)
-}
-
-func connectDatabase(cfg *appConfig) (*gorm.DB, error) {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", cfg.DBUsername, cfg.DBPassword, cfg.DBHost, cfg.DBDatabase)
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		return nil, fmt.Errorf("failed to connect to database: %w", err)
-	}
-	return db.Debug(), nil
 }
 
 func CORSMiddleware() gin.HandlerFunc {

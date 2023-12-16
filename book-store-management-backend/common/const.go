@@ -67,8 +67,10 @@ const (
 	UserUpdateInfoFeatureCode   = "USER_UPDATE_INFO"
 	UserUpdateStatusFeatureCode = "USER_UPDATE_STATE"
 
-	InvoiceViewFeatureCode   = "INVOICE_VIEW"
 	InvoiceCreateFeatureCode = "INVOICE_CREATE"
+	InvoiceViewFeatureCode   = "INVOICE_VIEW"
+	InvoiceUpdateFeatureCode = "INVOICE_UPDATE"
+	InvoiceDeleteFeatureCode = "INVOICE_DELETE"
 
 	SupplierDebtReportViewFeatureCode = "REPORT_VIEW_SUPPLIER"
 	StockReportViewFeatureCode        = "REPORT_VIEW_STOCK"

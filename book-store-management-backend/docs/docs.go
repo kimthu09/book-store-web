@@ -268,6 +268,99 @@ const docTemplate = `{
                 }
             }
         },
+        "/booktitles/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "booktitles"
+                ],
+                "summary": "Get booktitle detail by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Booktitle ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/booktitlemodel.ResBookTitleDetail"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/booktitles/{id}/info": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "booktitles"
+                ],
+                "summary": "Update info booktitle",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "booktitle id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "booktitle info to update",
+                        "name": "booktitle",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/booktitlemodel.ReqUpdateBookInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
         "/categories": {
             "get": {
                 "security": [
@@ -2209,19 +2302,19 @@ const docTemplate = `{
                 }
             }
         },
-        "booktitlemodel.BookTitle": {
+        "booktitlemodel.BookTitleDetail": {
             "type": "object",
             "properties": {
-                "authorIds": {
+                "authors": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/definitions/authormodel.Author"
                     }
                 },
-                "categoryIds": {
+                "categories": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/definitions/categorymodel.Category"
                     }
                 },
                 "createdAt": {
@@ -2304,14 +2397,47 @@ const docTemplate = `{
                 }
             }
         },
+        "booktitlemodel.ReqUpdateBookInfo": {
+            "type": "object",
+            "properties": {
+                "authorIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "tgnna"
+                    ]
+                },
+                "categoryIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "dmtt",
+                        "dmtruyen"
+                    ]
+                },
+                "desc": {
+                    "type": "string",
+                    "example": "Tôi Là Bêtô là tác phẩm của nhà văn chuyên viết cho thanh thiếu niên Nguyễn Nhật Ánh."
+                },
+                "id": {
+                    "type": "string",
+                    "example": "bookId"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Tôi là Bêtô"
+                }
+            }
+        },
         "booktitlemodel.ResBookTitleDetail": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
+                "data": {
+                    "$ref": "#/definitions/booktitlemodel.BookTitleDetail"
                 }
             }
         },
@@ -2329,7 +2455,7 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/booktitlemodel.BookTitle"
+                        "$ref": "#/definitions/booktitlemodel.BookTitleDetail"
                     }
                 },
                 "filter": {
@@ -3982,7 +4108,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/v1",
 	Schemes:          []string{},
 	Title:            "Book Store Management API",
-	Description:      "",
+	Description:      "This is a sample server Book Store Management API server.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
