@@ -1,7 +1,24 @@
 import { apiKey } from "@/constants";
-import axios, { isCancel, AxiosError } from "axios";
-export default async function getAllSupplier(page: number) {
-  const res = await fetch(`http://localhost:8080/v1/suppliers?page=${page}`, {
+
+export type FilterProps = {
+  page: number;
+  maxDebt?: string;
+  minDebt?: string;
+  search?: string;
+};
+export default async function getAllSupplier({
+  page,
+  maxDebt,
+  minDebt,
+  search,
+}: FilterProps) {
+  const maxString = maxDebt ? `&maxDebt=${maxDebt}` : "";
+  const minString = minDebt ? `&minDebt=${minDebt}` : "";
+  const searchString = search ? `&search=${search}` : "";
+  const url = `http://localhost:8080/v1/suppliers?page=${page}${maxString}${minString}${searchString}`;
+  console.log(url);
+
+  const res = await fetch(url, {
     headers: {
       accept: "application/json",
       Authorization: apiKey,

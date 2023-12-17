@@ -11,9 +11,6 @@ async function SupplierManage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const supplierData: Promise<{ data: Supplier[]; paging: PagingProps }> =
-    getAllSupplier(1);
-  const suppliers = await supplierData;
   return (
     <div className="col">
       <div className="flex flex-row justify-between ">
