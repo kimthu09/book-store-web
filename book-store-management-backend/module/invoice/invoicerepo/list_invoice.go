@@ -30,7 +30,7 @@ func (repo *listInvoiceRepo) ListInvoice(
 	result, err := repo.store.ListInvoice(
 		ctx,
 		filter,
-		[]string{"id"},
+		[]string{"Invoice.id"},
 		paging,
 		"CreatedByUser")
 
