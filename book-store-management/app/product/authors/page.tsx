@@ -1,5 +1,8 @@
 import { AuthorTable } from "@/components/book-manage/author-table";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Tác giả",
+};
 const AuthorPage = ({
   searchParams,
 }: {
