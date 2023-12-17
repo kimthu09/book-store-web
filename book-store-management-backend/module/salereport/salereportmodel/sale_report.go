@@ -8,9 +8,10 @@ import (
 )
 
 type SaleReport struct {
-	TimeFrom time.Time                               `json:"timeFrom" gorm:"column:timeFrom" example:"2023-12-03T15:02:19.62113565Z"`
-	TimeTo   time.Time                               `json:"timeTo" gorm:"column:timeTo" example:"2023-12-03T15:02:19.62113565Z"`
-	Total    int                                     `json:"total" example:"100000"`
+	TimeFrom time.Time                               `json:"timeFrom" gorm:"-" example:"2023-12-03T15:02:19.62113565Z"`
+	TimeTo   time.Time                               `json:"timeTo" gorm:"-" example:"2023-12-03T15:02:19.62113565Z"`
+	Total    int                                     `json:"total" gorm:"-" example:"100000"`
+	Amount   int                                     `json:"amount" gorm:"-" example:"10"`
 	Details  []salereportetailmodel.SaleReportDetail `json:"details"`
 }
 

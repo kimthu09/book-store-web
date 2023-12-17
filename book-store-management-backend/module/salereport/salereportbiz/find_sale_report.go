@@ -66,6 +66,7 @@ func (biz *findSaleReportBiz) FindSaleReport(
 	}
 
 	total := 0
+	totalAmount := 0
 	mapBookAmount := make(map[string]int)
 	mapBookName := make(map[string]string)
 	mapBookSales := make(map[string]int)
@@ -81,7 +82,9 @@ func (biz *findSaleReportBiz) FindSaleReport(
 			mapBookName[detail.BookId] = detail.Book.Name
 			totalInvoiceDetail := detail.UnitPrice * detail.Quantity
 			mapBookSales[detail.BookId] += totalInvoiceDetail
+
 			total += totalInvoiceDetail
+			totalAmount += detail.Quantity
 		}
 	}
 
@@ -104,6 +107,7 @@ func (biz *findSaleReportBiz) FindSaleReport(
 		TimeFrom: timeFrom,
 		TimeTo:   timeTo,
 		Total:    total,
+		Amount:   totalAmount,
 		Details:  details,
 	}
 

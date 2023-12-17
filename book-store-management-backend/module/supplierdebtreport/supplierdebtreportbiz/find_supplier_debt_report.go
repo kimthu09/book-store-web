@@ -119,6 +119,10 @@ func (biz *findSupplierDebtReportBiz) FindSupplierDebtReport(
 
 	allDetails := make([]supplierdebtreportdetailmodel.SupplierDebtReportDetail, 0)
 	allDetailCreates := make([]supplierdebtreportdetailmodel.ReqCreateSupplierDebtReportDetail, 0)
+	totalInitial := 0
+	totalDebt := 0
+	totalPay := 0
+	totalFinal := 0
 	for _, supplier := range allSupplier {
 		supplierDebts, err := biz.supplierDebtStore.ListAllSupplierDebtForReport(
 			ctx, supplier.Id, timeFrom, timeTo)
@@ -158,7 +162,7 @@ func (biz *findSupplierDebtReportBiz) FindSupplierDebtReport(
 			initial = final - debtAmount - payAmount
 		}
 
-		if debtAmount != 0 || payAmount != 0 {
+		if initial != 0 && (debtAmount != 0 || payAmount != 0) {
 			detailCreate := supplierdebtreportdetailmodel.ReqCreateSupplierDebtReportDetail{
 				ReportId:   reportId,
 				SupplierId: supplier.Id,
@@ -184,10 +188,19 @@ func (biz *findSupplierDebtReportBiz) FindSupplierDebtReport(
 			}
 			allDetails = append(allDetails, detail)
 		}
+
+		totalInitial += initial
+		totalDebt += debtAmount
+		totalPay += payAmount
+		totalFinal += final
 	}
 
 	data.Id = reportId
 	data.Details = allDetailCreates
+	data.Initial = totalInitial
+	data.Debt = totalDebt
+	data.Pay = totalPay
+	data.Final = totalFinal
 	if reportId != "" {
 		if err := biz.supplierDebtReportStore.CreateSupplierDebtReport(
 			ctx, data,
@@ -200,6 +213,10 @@ func (biz *findSupplierDebtReportBiz) FindSupplierDebtReport(
 		Id:       reportId,
 		TimeFrom: timeFrom,
 		TimeTo:   timeTo,
+		Initial:  totalInitial,
+		Debt:     totalDebt,
+		Pay:      totalPay,
+		Final:    totalFinal,
 		Details:  allDetails,
 	}
 

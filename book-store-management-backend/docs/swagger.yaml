@@ -870,6 +870,9 @@ definitions:
     type: object
   salereportmodel.SaleReport:
     properties:
+      amount:
+        example: 10
+        type: integer
       details:
         items:
           $ref: '#/definitions/salereportetailmodel.SaleReportDetail'
@@ -995,12 +998,24 @@ definitions:
     type: object
   supplierdebtreportmodel.SupplierDebtReport:
     properties:
+      debt:
+        example: -40000
+        type: integer
       details:
         items:
           $ref: '#/definitions/supplierdebtreportdetailmodel.SupplierDebtReportDetail'
         type: array
+      final:
+        example: -120000
+        type: integer
       id:
         type: string
+      initial:
+        example: -100000
+        type: integer
+      pay:
+        example: 20000
+        type: integer
       timeFrom:
         example: "2023-12-03T15:02:19.62113565Z"
         type: string
