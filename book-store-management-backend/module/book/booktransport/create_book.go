@@ -31,6 +31,7 @@ func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
 		}
 
 		db := appCtx.GetMainDBConnection().Begin()
+
 		gen := generator.NewShortIdGenerator()
 		store := bookstore.NewSQLStore(db)
 		repo := bookrepo.NewCreateBookRepo(store)
