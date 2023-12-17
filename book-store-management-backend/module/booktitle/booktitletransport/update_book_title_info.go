@@ -32,6 +32,7 @@ import (
 // @Router /booktitles/{id}/info [patch]
 func UpdateBookTitleInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		fmt.Println(c.Param("id"))
 		id := strings.Trim(c.Param("id"), " ")
 		var reqData booktitlemodel.ReqUpdateBookInfo
 
@@ -42,13 +43,11 @@ func UpdateBookTitleInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(common.ErrInvalidRequest(fmt.Errorf("id is empty")))
 			return
 		}
-		reqData.Id = id
-
-		fmt.Println(reqData)
 
 		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
 
 		db := appCtx.GetMainDBConnection().Begin()
+
 		store := booktitlestore.NewSQLStore(db)
 		authorStore := authorstore.NewSQLStore(db)
 		categoryStore := categorystore.NewSQLStore(db)
@@ -61,6 +60,7 @@ func UpdateBookTitleInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		err := biz.UpdateBookTitle(c.Request.Context(), id, &reqData)
 		if err != nil {
+			db.Rollback()
 			panic(err)
 		}
 
@@ -68,6 +68,7 @@ func UpdateBookTitleInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 			db.Rollback()
 			panic(err)
 		}
+
 		c.JSON(http.StatusOK, common.ResSuccess{IsSuccess: true})
 	}
 }

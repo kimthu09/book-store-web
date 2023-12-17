@@ -33,12 +33,14 @@ func (repo *listBookTitleRepo) ListBookTitle(ctx context.Context, filter *bookti
 
 	result := make([]booktitlemodel.BookTitle, len(resultDbModel))
 	for i, v := range resultDbModel {
+		authorIds := strings.Split(*v.AuthorIDs, "|")
+		categoryIds := strings.Split(*v.CategoryIDs, "|")
 		result[i] = booktitlemodel.BookTitle{
 			ID:          v.ID,
-			Name:        *v.Name,
-			Description: *v.Description,
-			AuthorIDs:   strings.Split(*v.AuthorIDs, "|"),
-			CategoryIDs: strings.Split(*v.CategoryIDs, "|"),
+			Name:        v.Name,
+			Description: v.Description,
+			AuthorIDs:   &authorIds,
+			CategoryIDs: &categoryIds,
 			CreatedAt:   v.CreatedAt,
 			UpdatedAt:   v.UpdatedAt,
 			DeletedAt:   v.DeletedAt,

@@ -9,8 +9,9 @@ import (
 func (store *sqlStore) DeleteBookTitle(ctx context.Context, id string) error {
 	db := store.db.Table(common.TableBookTitle).Where("id = ?", id)
 
-	if db.Error != nil {
-		return common.ErrDB(db.Error)
+	numRows := db.Find(&BookTitleDBModel{}).RowsAffected
+	if numRows == 0 {
+		return booktitlemodel.ErrBookTitleIdInvalid
 	}
 
 	db = db.Updates(map[string]interface{}{
@@ -21,8 +22,5 @@ func (store *sqlStore) DeleteBookTitle(ctx context.Context, id string) error {
 	if db.Error != nil {
 		return common.ErrDB(db.Error)
 	}
-	if db.RowsAffected == 0 {
-		return booktitlemodel.ErrBookTitleNotFound
-	}
-	return db.Error
+	return nil
 }

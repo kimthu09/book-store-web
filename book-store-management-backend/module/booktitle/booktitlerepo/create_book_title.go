@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+type CreateBookTitleRepo interface {
+	CreateBookTitle(ctx context.Context, data *booktitlemodel.BookTitle) error
+}
+
 type CreateBookStore interface {
 	CreateBookTitle(ctx context.Context, bookGeneral *booktitlestore.BookTitleDBModel) error
 }
@@ -20,12 +24,12 @@ func NewCreateBookRepo(store CreateBookStore) *createBookRepo {
 }
 
 func (repo *createBookRepo) CreateBookTitle(ctx context.Context, data *booktitlemodel.BookTitle) error {
-	strAuthorIDs := strings.Join(data.AuthorIDs, "|")
-	strCategoryIDs := strings.Join(data.CategoryIDs, "|")
+	strAuthorIDs := strings.Join(*data.AuthorIDs, "|")
+	strCategoryIDs := strings.Join(*data.CategoryIDs, "|")
 	dbData := booktitlestore.BookTitleDBModel{
 		ID:          data.ID,
-		Name:        &data.Name,
-		Description: &data.Description,
+		Name:        data.Name,
+		Description: data.Description,
 		AuthorIDs:   &strAuthorIDs,
 		CategoryIDs: &strCategoryIDs,
 	}

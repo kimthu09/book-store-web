@@ -26,6 +26,7 @@ import (
 // @Produce json
 // @Param booktitle body booktitlemodel.ReqCreateBookTitle true "Create booktitle"
 // @Response 200 {object} booktitlemodel.ResCreateBookTitle "booktitle id"
+// @Response 400 {object} common.AppError "error"
 // @Router /booktitles [post]
 func CreateBookTitle(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {

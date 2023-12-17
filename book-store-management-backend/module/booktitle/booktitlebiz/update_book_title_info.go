@@ -6,16 +6,15 @@ import (
 	"book-store-management-backend/module/author/authorrepo"
 	"book-store-management-backend/module/booktitle/booktitlemodel"
 	"book-store-management-backend/module/booktitle/booktitlerepo"
-	booktitlestore "book-store-management-backend/module/booktitle/booktitlestore"
 	"book-store-management-backend/module/category/categoryrepo"
 	"context"
 )
 
 type updateBookTitleBiz struct {
-	requester    middleware.Requester
 	repo         booktitlerepo.UpdateBookTitleRepo
 	authorRepo   authorrepo.AuthorPublicRepo
 	categoryRepo categoryrepo.CategoryPublicRepo
+	requester    middleware.Requester
 }
 
 func NewUpdateBookBiz(
@@ -37,14 +36,35 @@ func (biz *updateBookTitleBiz) UpdateBookTitle(ctx context.Context, id string, r
 		return booktitlemodel.ErrBookTitleUpdateNoPermission
 	}
 
-	err := biz.repo.UpdateBookTitle(ctx, id, &booktitlestore.BookTitleDBModel{
+	data := &booktitlemodel.BookTitle{
+		ID:          &id,
 		Name:        reqData.Name,
 		Description: reqData.Description,
-		AuthorIDs:   nil,
-		CategoryIDs: nil,
-	})
+		AuthorIDs:   reqData.AuthorIDs,
+		CategoryIDs: reqData.CategoryIDs,
+	}
 
-	if err != nil {
+	if data.AuthorIDs != nil && len(*data.AuthorIDs) > 0 {
+		tmpAuthorIDs := common.RemoveDuplicateStringValues(*data.AuthorIDs)
+		data.AuthorIDs = &tmpAuthorIDs
+		if err := validateAuthors(ctx, biz.authorRepo, *data.AuthorIDs); err != nil {
+			return err
+		}
+	} else {
+		data.AuthorIDs = nil
+	}
+
+	if data.CategoryIDs != nil && len(*data.CategoryIDs) > 0 {
+		tmpCategoryIDs := common.RemoveDuplicateStringValues(*data.CategoryIDs)
+		data.CategoryIDs = &tmpCategoryIDs
+		if err := validateCategories(ctx, biz.categoryRepo, *data.CategoryIDs); err != nil {
+			return err
+		}
+	} else {
+		data.CategoryIDs = nil
+	}
+
+	if err := biz.repo.UpdateBookTitle(ctx, id, data); err != nil {
 		return err
 	}
 

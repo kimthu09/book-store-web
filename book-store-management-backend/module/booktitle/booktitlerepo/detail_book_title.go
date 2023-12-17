@@ -28,13 +28,14 @@ func (repo *detailBookTitleRepo) DetailBookTitle(ctx context.Context, id string)
 	if err != nil {
 		return nil, err
 	}
-
+	authorIds := strings.Split(*rawResult.AuthorIDs, "|")
+	categoryIds := strings.Split(*rawResult.CategoryIDs, "|")
 	result := booktitlemodel.BookTitle{
 		ID:          rawResult.ID,
-		Name:        *rawResult.Name,
-		Description: *rawResult.Description,
-		AuthorIDs:   strings.Split(*rawResult.AuthorIDs, "|"),
-		CategoryIDs: strings.Split(*rawResult.CategoryIDs, "|"),
+		Name:        rawResult.Name,
+		Description: rawResult.Description,
+		AuthorIDs:   &authorIds,
+		CategoryIDs: &categoryIds,
 		CreatedAt:   rawResult.CreatedAt,
 		UpdatedAt:   rawResult.UpdatedAt,
 		DeletedAt:   rawResult.DeletedAt,
