@@ -7,7 +7,10 @@ import { Book } from "@/types";
 import Link from "next/link";
 import React, { Suspense } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Sách",
+};
 async function BookManagement({
   searchParams,
 }: {

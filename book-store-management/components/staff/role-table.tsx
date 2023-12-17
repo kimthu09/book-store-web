@@ -34,6 +34,7 @@ import getAllRole from "@/lib/staff/getAllRole";
 import Loading from "../loading";
 import { useRouter } from "next/navigation";
 import { LuChevronsLeft, LuChevronsRight } from "react-icons/lu";
+import Paging from "../paging";
 
 export const columns: ColumnDef<Role>[] = [
   {
@@ -185,24 +186,15 @@ export function RoleTable() {
             {table.getFilteredSelectedRowModel().rows.length} of{" "}
             {table.getFilteredRowModel().rows.length} row(s) selected.
           </div>
-          <div className="space-x-2">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              <LuChevronsLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              <LuChevronsRight className="h-4 w-4" />
-            </Button>
-          </div>
+          <Paging
+            totalPage={table.getPageCount()}
+            page={(table.options.state.pagination?.pageIndex! + 1).toString()}
+            onNavigateBack={() => table.previousPage()}
+            onNavigateNext={() => () => table.nextPage()}
+            onNavigateFirst={() => table.setPageIndex(0)}
+            onNavigateLast={() => table.setPageIndex(table.getPageCount() - 1)}
+            onPageSelect={(selectedPage) => table.setPageIndex(+selectedPage)}
+          ></Paging>
         </div>
       </div>
     );

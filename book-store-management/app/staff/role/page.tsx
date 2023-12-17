@@ -2,7 +2,10 @@ import { RoleTable } from "@/components/staff/role-table";
 import Link from "next/link";
 import React from "react";
 import { LuCheck } from "react-icons/lu";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Phân quyền nhân viên",
+};
 const RoleSetting = () => {
   return (
     <div className="col">

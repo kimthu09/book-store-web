@@ -1,22 +1,17 @@
+import TableLayout from "@/components/invoice/table-layout";
 import Loading from "@/components/loading";
-import CreateDialog from "@/components/supplier-manage/create";
-import TableLayout from "@/components/supplier-manage/table-layout";
-
 import { Suspense } from "react";
-import { Metadata } from "next";
-export const metadata: Metadata = {
-  title: "Quản lý nhà cung cấp",
-};
-async function SupplierManage({
+
+const Invoice = ({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
-}) {
+}) => {
   return (
     <div className="col">
       <div className="flex flex-row justify-between ">
-        <h1>Danh sách nhà cung cấp</h1>
-        <CreateDialog />
+        <h1>Danh sách hóa đơn</h1>
+        {/* <CreateDialog /> */}
       </div>
 
       <div className="my-3 p-3 sha bg-white shadow-[0_1px_3px_0_rgba(0,0,0,0.2)]">
@@ -26,6 +21,6 @@ async function SupplierManage({
       </div>
     </div>
   );
-}
+};
 
-export default SupplierManage;
+export default Invoice;

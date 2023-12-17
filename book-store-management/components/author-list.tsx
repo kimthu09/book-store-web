@@ -64,7 +64,7 @@ const AuthorList = ({
               )}
             </CommandEmpty>
             <CommandGroup className="overflow-y-auto">
-              {authors.map((item) => (
+              {authors.data.map((item) => (
                 <CommandItem
                   value={item.name}
                   key={item.id}
