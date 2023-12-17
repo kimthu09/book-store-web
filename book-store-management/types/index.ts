@@ -105,6 +105,7 @@ export type Role = {
 export type RoleFunction = {
   id: string;
   description: string;
+  groupName: string;
 };
 export interface CategoryListProps {
   checkedCategory: Array<string>;
