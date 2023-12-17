@@ -1,14 +1,4 @@
-import {
-  Category,
-  Book,
-  SidebarItem,
-  ImportNote,
-  StatusNote,
-  Supplier,
-  ImportDetail,
-  SupplierDebt,
-  RoleFunction,
-} from "@/types";
+import { SidebarItem } from "@/types";
 import { GrBook } from "react-icons/gr";
 import { MdOutlineWarehouse } from "react-icons/md";
 import { GoPeople, GoPerson } from "react-icons/go";
@@ -19,7 +9,7 @@ import { z } from "zod";
 export const apiKey =
   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXJJZCI6ImczVzIxQTdTUiIsInJvbGUiOiIifSwiZXhwIjoxNzA1MTk3NDIxLCJpYXQiOjE3MDI2MDU0MjF9.SJxvTYBk6fNodXd_8M0vqM4hjJpCg5MkonTtbLjOtNU";
 export const required = z.string().min(1, "Không để trống trường này");
-
+export const phoneRegex = new RegExp(/(0[3|5|7|8|9])+([0-9]{8})\b/g);
 export const statuses = [
   {
     isActive: true,
@@ -42,6 +32,7 @@ export const noteStatus = [
     label: "Đã huỷ",
   },
 ];
+
 export const sidebarItems: SidebarItem[] = [
   {
     title: "Quản lý sản phẩm",
