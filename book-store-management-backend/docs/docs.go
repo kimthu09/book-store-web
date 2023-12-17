@@ -237,6 +237,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/booktitlemodel.ResCreateBookTitle"
                         }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
                     }
                 }
             }
@@ -986,6 +992,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/invoices/nearest": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "invoices"
+                ],
+                "summary": "Get nearest invoice",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "amountNeed",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "list invoice",
+                        "schema": {
+                            "$ref": "#/definitions/invoicemodel.ResGetNearestInvoice"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
         "/invoices/{id}": {
             "get": {
                 "security": [
@@ -1607,6 +1653,39 @@ const docTemplate = `{
                         "description": "supplier id",
                         "schema": {
                             "$ref": "#/definitions/suppliermodel.ResSupplierCreate"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/suppliers/all": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "suppliers"
+                ],
+                "summary": "Get all supplier",
+                "responses": {
+                    "200": {
+                        "description": "list supplier",
+                        "schema": {
+                            "$ref": "#/definitions/suppliermodel.ResGetAllSupplier"
                         }
                     },
                     "400": {
@@ -2570,10 +2649,6 @@ const docTemplate = `{
                     "type": "string",
                     "example": "Tôi Là Bêtô là tác phẩm của nhà văn chuyên viết cho thanh thiếu niên Nguyễn Nhật Ánh."
                 },
-                "id": {
-                    "type": "string",
-                    "example": "bookId"
-                },
                 "name": {
                     "type": "string",
                     "example": "Tôi là Bêtô"
@@ -3413,6 +3488,18 @@ const docTemplate = `{
                 }
             }
         },
+        "invoicemodel.ResGetNearestInvoice": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains list of invoice.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/invoicemodel.Invoice"
+                    }
+                }
+            }
+        },
         "invoicemodel.ResListInvoice": {
             "type": "object",
             "properties": {
@@ -3941,6 +4028,18 @@ const docTemplate = `{
                 "phone": {
                     "type": "string",
                     "example": "1234567890"
+                }
+            }
+        },
+        "suppliermodel.ResGetAllSupplier": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains list of user.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/importnotemodel.SimpleSupplier"
+                    }
                 }
             }
         },
