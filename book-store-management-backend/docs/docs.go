@@ -1030,11 +1030,6 @@ const docTemplate = `{
         },
         "/login": {
             "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -1061,6 +1056,39 @@ const docTemplate = `{
                         "description": "user token",
                         "schema": {
                             "$ref": "#/definitions/usermodel.Account"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/profile": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "See profile",
+                "responses": {
+                    "200": {
+                        "description": "user",
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.User"
                         }
                     },
                     "400": {
@@ -1130,6 +1158,50 @@ const docTemplate = `{
                         "description": "publisher id",
                         "schema": {
                             "$ref": "#/definitions/publishermodel.ResCreatePublisher"
+                        }
+                    }
+                }
+            }
+        },
+        "/refreshToken": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Refresh token",
+                "parameters": [
+                    {
+                        "description": "refreshToken",
+                        "name": "refreshToken",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.ReqRefreshToken"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "user token",
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.AccountWithoutRefresh"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
                         }
                     }
                 }
@@ -1939,6 +2011,39 @@ const docTemplate = `{
                 }
             }
         },
+        "/users/all": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get all user",
+                "responses": {
+                    "200": {
+                        "description": "list user",
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.ResGetAllUser"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
         "/users/status": {
             "patch": {
                 "security": [
@@ -1972,6 +2077,48 @@ const docTemplate = `{
                         "description": "status of response",
                         "schema": {
                             "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "See user detail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "user",
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.User"
                         }
                     },
                     "400": {
@@ -3360,6 +3507,15 @@ const docTemplate = `{
                 }
             }
         },
+        "rolefeaturemodel.SimpleRoleFeature": {
+            "type": "object",
+            "properties": {
+                "featureId": {
+                    "type": "string",
+                    "example": "feature id"
+                }
+            }
+        },
         "rolemodel.ReqCreateRole": {
             "type": "object",
             "properties": {
@@ -3431,6 +3587,25 @@ const docTemplate = `{
                 }
             }
         },
+        "rolemodel.Role": {
+            "type": "object",
+            "properties": {
+                "features": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/rolefeaturemodel.SimpleRoleFeature"
+                    }
+                },
+                "id": {
+                    "type": "string",
+                    "example": "role id"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "admin"
+                }
+            }
+        },
         "rolemodel.SimpleRole": {
             "type": "object",
             "properties": {
@@ -3489,6 +3664,10 @@ const docTemplate = `{
         "salereportmodel.SaleReport": {
             "type": "object",
             "properties": {
+                "amount": {
+                    "type": "integer",
+                    "example": 10
+                },
                 "details": {
                     "type": "array",
                     "items": {
@@ -3675,14 +3854,30 @@ const docTemplate = `{
         "supplierdebtreportmodel.SupplierDebtReport": {
             "type": "object",
             "properties": {
+                "debt": {
+                    "type": "integer",
+                    "example": -40000
+                },
                 "details": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/supplierdebtreportdetailmodel.SupplierDebtReportDetail"
                     }
                 },
+                "final": {
+                    "type": "integer",
+                    "example": -120000
+                },
                 "id": {
                     "type": "string"
+                },
+                "initial": {
+                    "type": "integer",
+                    "example": -100000
+                },
+                "pay": {
+                    "type": "integer",
+                    "example": 20000
                 },
                 "timeFrom": {
                     "type": "string",
@@ -3895,6 +4090,14 @@ const docTemplate = `{
                 }
             }
         },
+        "usermodel.AccountWithoutRefresh": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "$ref": "#/definitions/tokenprovider.Token"
+                }
+            }
+        },
         "usermodel.Filter": {
             "type": "object",
             "properties": {
@@ -3943,6 +4146,14 @@ const docTemplate = `{
                 "password": {
                     "type": "string",
                     "example": "app123"
+                }
+            }
+        },
+        "usermodel.ReqRefreshToken": {
+            "type": "object",
+            "properties": {
+                "refreshToken": {
+                    "type": "string"
                 }
             }
         },
@@ -4018,6 +4229,18 @@ const docTemplate = `{
                 }
             }
         },
+        "usermodel.ResGetAllUser": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains list of user.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/usermodel.SimpleUser"
+                    }
+                }
+            }
+        },
         "usermodel.ResListUser": {
             "type": "object",
             "properties": {
@@ -4088,6 +4311,38 @@ const docTemplate = `{
                 "name": {
                     "type": "string",
                     "example": "Nguyễn Văn A"
+                }
+            }
+        },
+        "usermodel.User": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "HCM"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "b@gmail.com"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "user id"
+                },
+                "isActive": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Nguyễn Văn B"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "0919199112"
+                },
+                "role": {
+                    "$ref": "#/definitions/rolemodel.Role"
                 }
             }
         }

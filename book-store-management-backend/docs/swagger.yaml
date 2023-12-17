@@ -784,6 +784,12 @@ definitions:
       paging:
         $ref: '#/definitions/common.Paging'
     type: object
+  rolefeaturemodel.SimpleRoleFeature:
+    properties:
+      featureId:
+        example: feature id
+        type: string
+    type: object
   rolemodel.ReqCreateRole:
     properties:
       features:
@@ -832,6 +838,19 @@ definitions:
         example: admin
         type: string
     type: object
+  rolemodel.Role:
+    properties:
+      features:
+        items:
+          $ref: '#/definitions/rolefeaturemodel.SimpleRoleFeature'
+        type: array
+      id:
+        example: role id
+        type: string
+      name:
+        example: admin
+        type: string
+    type: object
   rolemodel.SimpleRole:
     properties:
       id:
@@ -870,6 +889,9 @@ definitions:
     type: object
   salereportmodel.SaleReport:
     properties:
+      amount:
+        example: 10
+        type: integer
       details:
         items:
           $ref: '#/definitions/salereportetailmodel.SaleReportDetail'
@@ -995,12 +1017,24 @@ definitions:
     type: object
   supplierdebtreportmodel.SupplierDebtReport:
     properties:
+      debt:
+        example: -40000
+        type: integer
       details:
         items:
           $ref: '#/definitions/supplierdebtreportdetailmodel.SupplierDebtReportDetail'
         type: array
+      final:
+        example: -120000
+        type: integer
       id:
         type: string
+      initial:
+        example: -100000
+        type: integer
+      pay:
+        example: 20000
+        type: integer
       timeFrom:
         example: "2023-12-03T15:02:19.62113565Z"
         type: string
@@ -1140,6 +1174,11 @@ definitions:
       refreshToken:
         $ref: '#/definitions/tokenprovider.Token'
     type: object
+  usermodel.AccountWithoutRefresh:
+    properties:
+      accessToken:
+        $ref: '#/definitions/tokenprovider.Token'
+    type: object
   usermodel.Filter:
     properties:
       active:
@@ -1174,6 +1213,11 @@ definitions:
         type: string
       password:
         example: app123
+        type: string
+    type: object
+  usermodel.ReqRefreshToken:
+    properties:
+      refreshToken:
         type: string
     type: object
   usermodel.ReqResetPasswordUser:
@@ -1225,6 +1269,14 @@ definitions:
         example: "123"
         type: string
     type: object
+  usermodel.ResGetAllUser:
+    properties:
+      data:
+        description: Data contains list of user.
+        items:
+          $ref: '#/definitions/usermodel.SimpleUser'
+        type: array
+    type: object
   usermodel.ResListUser:
     properties:
       data:
@@ -1272,6 +1324,29 @@ definitions:
       name:
         example: Nguyễn Văn A
         type: string
+    type: object
+  usermodel.User:
+    properties:
+      address:
+        example: HCM
+        type: string
+      email:
+        example: b@gmail.com
+        type: string
+      id:
+        example: user id
+        type: string
+      isActive:
+        example: true
+        type: boolean
+      name:
+        example: Nguyễn Văn B
+        type: string
+      phone:
+        example: "0919199112"
+        type: string
+      role:
+        $ref: '#/definitions/rolemodel.Role'
     type: object
 host: localhost:8080
 info:
@@ -1933,9 +2008,27 @@ paths:
           description: error
           schema:
             $ref: '#/definitions/common.AppError'
+      summary: Login
+      tags:
+      - auth
+  /profile:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: user
+          schema:
+            $ref: '#/definitions/usermodel.User'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
       security:
       - BearerAuth: []
-      summary: Login
+      summary: See profile
       tags:
       - auth
   /publishers:
@@ -1976,6 +2069,33 @@ paths:
       summary: Create publisher with name
       tags:
       - publishers
+  /refreshToken:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: refreshToken
+        in: body
+        name: refreshToken
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqRefreshToken'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: user token
+          schema:
+            $ref: '#/definitions/usermodel.AccountWithoutRefresh'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Refresh token
+      tags:
+      - auth
   /reports/debt:
     post:
       consumes:
@@ -2479,6 +2599,32 @@ paths:
       summary: Create user
       tags:
       - users
+  /users/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: user
+          schema:
+            $ref: '#/definitions/usermodel.User'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See user detail
+      tags:
+      - users
   /users/{id}/info:
     patch:
       consumes:
@@ -2605,6 +2751,26 @@ paths:
       security:
       - BearerAuth: []
       summary: Change role user
+      tags:
+      - users
+  /users/all:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list user
+          schema:
+            $ref: '#/definitions/usermodel.ResGetAllUser'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Get all user
       tags:
       - users
   /users/status:

@@ -16,8 +16,7 @@ import { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
 import createSupplier from "@/lib/supplier/createSupplier";
 import { useRouter } from "next/navigation";
-const phoneRegex = new RegExp(/(0[3|5|7|8|9])+([0-9]{8})\b/g);
-const required = z.string().min(1, "Không để trống trường này");
+import { phoneRegex, required } from "@/constants";
 
 const SupplierSchema = z.object({
   id: z.string().max(12, "Tối đa 12 ký tự"),

@@ -16,6 +16,16 @@ export type Book = {
   desc: string;
   edition: number;
 };
+
+export type Invoice = {
+  createdAt: Date;
+  createdBy: {
+    id: string;
+    name: string;
+  };
+  id: string;
+  totalPrice: number;
+};
 export type ImportNote = {
   id: string;
   supplier: {
@@ -63,6 +73,18 @@ export type SupplierDebt = {
   type: string;
 };
 
+export type DebtReportDetail = {
+  debt: number;
+  final: number;
+  initial: number;
+  pay: number;
+  supplier: {
+    id: string;
+    name: string;
+    phone: string;
+  };
+};
+
 export enum StatusNote {
   Inprogress = "InProgress",
   Done = "Done",
@@ -105,6 +127,7 @@ export type Role = {
 export type RoleFunction = {
   id: string;
   description: string;
+  groupName: string;
 };
 export interface CategoryListProps {
   checkedCategory: Array<string>;
@@ -140,6 +163,10 @@ export type SidebarItem = {
 export interface RoleListProps {
   role: string;
   setRole: (role: string) => void;
+}
+export interface StaffListProps {
+  staff: string;
+  setStaff: (role: string) => void;
 }
 
 export type PagingProps = {

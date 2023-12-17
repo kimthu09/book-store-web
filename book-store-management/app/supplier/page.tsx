@@ -2,18 +2,16 @@ import Loading from "@/components/loading";
 import CreateDialog from "@/components/supplier-manage/create";
 import TableLayout from "@/components/supplier-manage/table-layout";
 
-import getAllSupplier from "@/lib/supplier/getAllSupplier";
-import { PagingProps, Supplier } from "@/types";
 import { Suspense } from "react";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Quản lý nhà cung cấp",
+};
 async function SupplierManage({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const supplierData: Promise<{ data: Supplier[]; paging: PagingProps }> =
-    getAllSupplier(1);
-  const suppliers = await supplierData;
   return (
     <div className="col">
       <div className="flex flex-row justify-between ">

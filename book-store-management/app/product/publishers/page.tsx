@@ -1,6 +1,9 @@
 import { PublisherTable } from "@/components/book-manage/publisher-table";
-import React from "react";
 
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Nhà xuất bản",
+};
 const PublisherPage = ({
   searchParams,
 }: {

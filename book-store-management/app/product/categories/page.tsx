@@ -2,7 +2,10 @@ import { CategoryTable } from "@/components/book-manage/category-table";
 import CreateCategory from "@/components/book-manage/create-category";
 import Loading from "@/components/loading";
 import { Suspense } from "react";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Thể loại",
+};
 const CategoryPage = ({
   searchParams,
 }: {

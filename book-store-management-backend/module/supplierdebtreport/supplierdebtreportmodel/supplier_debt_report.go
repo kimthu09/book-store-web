@@ -11,6 +11,10 @@ type SupplierDebtReport struct {
 	Id       string                                                   `json:"id" gorm:"column:id;"`
 	TimeFrom time.Time                                                `json:"timeFrom" gorm:"-" example:"2023-12-03T15:02:19.62113565Z"`
 	TimeTo   time.Time                                                `json:"timeTo" gorm:"-" example:"2023-12-03T15:02:19.62113565Z"`
+	Initial  int                                                      `json:"initial" gorm:"initial" example:"-100000"`
+	Debt     int                                                      `json:"debt" gorm:"debt" example:"-40000"`
+	Pay      int                                                      `json:"pay" gorm:"pay" example:"20000"`
+	Final    int                                                      `json:"final" gorm:"final" example:"-120000"`
 	Details  []supplierdebtreportdetailmodel.SupplierDebtReportDetail `json:"details" gorm:"foreignkey:ReportId;association_foreignkey:id"`
 }
 
