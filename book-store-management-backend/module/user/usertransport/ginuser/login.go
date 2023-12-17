@@ -14,7 +14,6 @@ import (
 )
 
 // @BasePath /v1
-// @Security BearerAuth
 // @Summary Login
 // @Tags auth
 // @Accept json
