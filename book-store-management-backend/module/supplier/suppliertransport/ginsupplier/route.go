@@ -10,6 +10,7 @@ func SetupRoutes(router *gin.RouterGroup, appCtx appctx.AppContext) {
 	suppliers := router.Group("/suppliers", middleware.RequireAuth(appCtx))
 	{
 		suppliers.GET("", ListSupplier(appCtx))
+		suppliers.GET("/all", GetAllSupplier(appCtx))
 		suppliers.POST("", CreateSupplier(appCtx))
 		suppliers.GET("/:id", SeeSupplierDetail(appCtx))
 		suppliers.GET("/:id/importNotes", SeeSupplierImportNote(appCtx))
