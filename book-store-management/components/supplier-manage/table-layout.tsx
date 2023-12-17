@@ -9,9 +9,16 @@ const TableLayout = async ({
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
   const page = searchParams["page"] ?? "1";
-
+  const maxDebt = searchParams["maxDebt"] ?? undefined;
+  const minDebt = searchParams["minDebt"] ?? undefined;
+  const search = searchParams["search"] ?? undefined;
   const booksData: Promise<{ paging: PagingProps; data: Supplier[] }> =
-    getAllSupplier(Number(page));
+    getAllSupplier({
+      page: +page,
+      maxDebt: maxDebt?.toString(),
+      minDebt: minDebt?.toString(),
+      search: search?.toString(),
+    });
   const books = await booksData;
   const totalPage = Math.ceil(books.paging.total / books.paging.limit);
   return <SupplierTable data={books.data} totalPage={totalPage} />;
