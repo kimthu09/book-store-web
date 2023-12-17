@@ -17,6 +17,6 @@ func (*Feature) TableName() string {
 
 var (
 	ErrFeatureViewNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to view feature"),
+		errors.New("Bạn không có quyền xem các chức năng"),
 	)
 )

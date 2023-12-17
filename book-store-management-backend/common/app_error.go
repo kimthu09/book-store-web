@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"strings"
 )
 
 type AppError struct {
@@ -21,25 +20,6 @@ func NewErrorResponse(root error, msg, log, key string) *AppError {
 		RootErr:    root,
 		Message:    msg,
 		Log:        log,
-		Key:        key,
-	}
-}
-
-func NewFullErrorResponse(statusCode int, root error, msg, log, key string) *AppError {
-	return &AppError{
-		StatusCode: statusCode,
-		RootErr:    root,
-		Message:    msg,
-		Log:        log,
-		Key:        key,
-	}
-}
-
-func NewUnauthorized(root error, msg, key string) *AppError {
-	return &AppError{
-		StatusCode: http.StatusUnauthorized,
-		RootErr:    root,
-		Message:    msg,
 		Key:        key,
 	}
 }
@@ -67,7 +47,7 @@ func (e *AppError) Error() string {
 func ErrDB(err error) *AppError {
 	return NewErrorResponse(
 		err,
-		"something went wrong with DB",
+		"Đã có lỗi xảy ra với cơ sở dữ liệu, xin hãy thử lại sau",
 		err.Error(),
 		"DB_ERROR",
 	)
@@ -76,7 +56,7 @@ func ErrDB(err error) *AppError {
 func ErrInvalidRequest(err error) *AppError {
 	return NewErrorResponse(
 		err,
-		"invalid request",
+		"Request không hợp lệ",
 		err.Error(),
 		"ERROR_INVALID_REQUEST",
 	)
@@ -85,97 +65,33 @@ func ErrInvalidRequest(err error) *AppError {
 func ErrInternal(err error) *AppError {
 	return NewErrorResponse(
 		err,
-		"internal error",
+		"Đã có lỗi xảy ra, xin hãy thử lại sau",
 		err.Error(),
 		"ERROR_INVALID_REQUEST",
-	)
-}
-
-func ErrCannotListEntity(entity string, err error) *AppError {
-	return NewCustomError(
-		err,
-		fmt.Sprintf("Cannot delete %s", strings.ToLower(entity)),
-		fmt.Sprintf("ERR_CANNOT_DELETE_%s", entity),
-	)
-}
-
-func ErrCannotCreateEntity(entity string, err error) *AppError {
-	return NewCustomError(
-		err,
-		fmt.Sprintf("Cannot create %s", strings.ToLower(entity)),
-		fmt.Sprintf("ERR_CANNOT_CREATE_%s", entity),
-	)
-}
-
-func ErrCannotGetEntity(entity string, err error) *AppError {
-	return NewCustomError(
-		err,
-		fmt.Sprintf("Cannot get %s", strings.ToLower(entity)),
-		fmt.Sprintf("ERR_CANNOT_GET_%s", entity),
-	)
-}
-
-func ErrCannotUpdateEntity(entity string, err error) *AppError {
-	return NewCustomError(
-		err,
-		fmt.Sprintf("Cannot update %s", strings.ToLower(entity)),
-		fmt.Sprintf("ERR_CANNOT_UPDATE_%s", entity),
-	)
-}
-
-func ErrCannotDeleteEntity(entity string, err error) *AppError {
-	return NewCustomError(
-		err,
-		fmt.Sprintf("Cannot delete %s", strings.ToLower(entity)),
-		fmt.Sprintf("ERR_CANNOT_DELETE_%s", entity),
-	)
-}
-
-func ErrEntityDeleted(entity string, err error) *AppError {
-	return NewCustomError(
-		err,
-		fmt.Sprintf("%s deleted", strings.ToLower(entity)),
-		fmt.Sprintf("ERR_%s_DELETED", entity),
-	)
-}
-
-func ErrEntityExisted(entity string, err error) *AppError {
-	return NewCustomError(
-		err,
-		fmt.Sprintf("%s already exists", strings.ToLower(entity)),
-		fmt.Sprintf("ERR_%s_ALREADY_EXISTS", entity),
-	)
-}
-
-func ErrEntityNotFound(entity string, err error) *AppError {
-	return NewCustomError(
-		err,
-		fmt.Sprintf("%s not found", strings.ToLower(entity)),
-		fmt.Sprintf("ERR_%s_NOT_FOUND", entity),
 	)
 }
 
 func ErrNoPermission(err error) *AppError {
 	return NewCustomError(
 		err,
-		fmt.Sprintf("you have no permission"),
-		fmt.Sprintf("ERR_NO_PERMISSION"),
+		fmt.Sprintf(err.Error()),
+		fmt.Sprintf("ErrNoPermisstion"),
 	)
 }
 
 func ErrIdIsTooLong() *AppError {
 	return NewCustomError(
 		errIdIsTooLong,
-		fmt.Sprintf("maximum length of key is 9"),
-		fmt.Sprintf("ERR_ID_IS_TOO_LONG"),
+		fmt.Sprintf(errIdIsTooLong.Error()),
+		fmt.Sprintf("ErrIdIsTooLong"),
 	)
 }
 
 func ErrDuplicateKey(err error) *AppError {
 	return NewCustomError(
 		err,
-		fmt.Sprintf("the key has been existed"),
-		fmt.Sprintf("ERR_DUPLICATE_KEY"),
+		err.Error(),
+		fmt.Sprintf("ErrDuplicateKey"),
 	)
 }
 
@@ -183,18 +99,11 @@ func ErrRecordNotFound() *AppError {
 	return NewCustomError(
 		errRecordNotFound,
 		fmt.Sprintf(errRecordNotFound.Error()),
-		fmt.Sprintf("ERR_RECORD_NOT_FOUND"),
+		fmt.Sprintf("ErrRecordNotFound"),
 	)
 }
 
 var (
 	errRecordNotFound = errors.New("record not found")
 	errIdIsTooLong    = errors.New("id is too long")
-	errDateInvalid    = errors.New("date is not in format dd/mm/yyyy")
-)
-
-var ErrDateInvalid = NewCustomError(
-	errDateInvalid,
-	fmt.Sprintf(errDateInvalid.Error()),
-	fmt.Sprintf("ERR_DATE_INVALID"),
 )
