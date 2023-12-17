@@ -3489,6 +3489,10 @@ const docTemplate = `{
         "salereportmodel.SaleReport": {
             "type": "object",
             "properties": {
+                "amount": {
+                    "type": "integer",
+                    "example": 10
+                },
                 "details": {
                     "type": "array",
                     "items": {
@@ -3675,14 +3679,30 @@ const docTemplate = `{
         "supplierdebtreportmodel.SupplierDebtReport": {
             "type": "object",
             "properties": {
+                "debt": {
+                    "type": "integer",
+                    "example": -40000
+                },
                 "details": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/supplierdebtreportdetailmodel.SupplierDebtReportDetail"
                     }
                 },
+                "final": {
+                    "type": "integer",
+                    "example": -120000
+                },
                 "id": {
                     "type": "string"
+                },
+                "initial": {
+                    "type": "integer",
+                    "example": -100000
+                },
+                "pay": {
+                    "type": "integer",
+                    "example": 20000
                 },
                 "timeFrom": {
                     "type": "string",

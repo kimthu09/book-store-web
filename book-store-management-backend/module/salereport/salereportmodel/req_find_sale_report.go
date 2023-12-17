@@ -11,7 +11,8 @@ type ReqFindSaleReport struct {
 	TimeTo       int64                                   `json:"timeTo" gorm:"-" example:"1704067199"`
 	TimeFromTime time.Time                               `json:"-" gorm:"column:timeFrom"`
 	TimeToTime   time.Time                               `json:"-" gorm:"column:timeTo"`
-	Total        int                                     `json:"-"`
+	Amount       int                                     `json:"-" gorm:"-"`
+	Total        int                                     `json:"-" gorm:"-"`
 	Details      []salereportetailmodel.SaleReportDetail `json:"-"`
 }
 
