@@ -2,7 +2,8 @@ import { SidebarItem } from "@/types";
 import { GrBook } from "react-icons/gr";
 import { MdOutlineWarehouse } from "react-icons/md";
 import { GoPeople, GoPerson } from "react-icons/go";
-import { PiHandshake } from "react-icons/pi";
+import { AiOutlineLineChart } from "react-icons/ai";
+import { LuClipboardList } from "react-icons/lu";
 import { FaRegHandshake } from "react-icons/fa";
 import { z } from "zod";
 
@@ -34,6 +35,19 @@ export const noteStatus = [
 ];
 
 export const sidebarItems: SidebarItem[] = [
+  {
+    title: "Báo cáo",
+    href: "/report",
+    icon: AiOutlineLineChart,
+    submenu: true,
+    subMenuItems: [{ title: "Báo cáo nợ", href: "/report/debt" }],
+  },
+  {
+    title: "Hóa đơn",
+    href: "/invoice",
+    icon: LuClipboardList,
+    submenu: false,
+  },
   {
     title: "Quản lý sản phẩm",
     href: "/product",

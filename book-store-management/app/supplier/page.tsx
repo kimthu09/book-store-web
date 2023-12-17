@@ -2,10 +2,11 @@ import Loading from "@/components/loading";
 import CreateDialog from "@/components/supplier-manage/create";
 import TableLayout from "@/components/supplier-manage/table-layout";
 
-import getAllSupplier from "@/lib/supplier/getAllSupplier";
-import { PagingProps, Supplier } from "@/types";
 import { Suspense } from "react";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Quản lý nhà cung cấp",
+};
 async function SupplierManage({
   searchParams,
 }: {

@@ -429,11 +429,17 @@ export function BookTable({
         <Paging
           page={page}
           totalPage={totalPage}
-          onNavigateBack={() => router.push(`/books?page=${Number(page) - 1}`)}
-          onNavigateNext={() => router.push(`/books?page=${Number(page) + 1}`)}
-          onPageSelect={(selectedPage) =>
-            router.push(`/books?page=${selectedPage}`)
+          onNavigateBack={() =>
+            router.push(`/product/books?page=${Number(page) - 1}`)
           }
+          onNavigateNext={() =>
+            router.push(`/product/books?page=${Number(page) + 1}`)
+          }
+          onPageSelect={(selectedPage) =>
+            router.push(`/product/books?page=${selectedPage}`)
+          }
+          onNavigateLast={() => router.push(`/product/books?page=${totalPage}`)}
+          onNavigateFirst={() => router.push(`/product/books?page=${1}`)}
         />
       </div>
     </div>

@@ -16,6 +16,16 @@ export type Book = {
   desc: string;
   edition: number;
 };
+
+export type Invoice = {
+  createdAt: Date;
+  createdBy: {
+    id: string;
+    name: string;
+  };
+  id: string;
+  totalPrice: number;
+};
 export type ImportNote = {
   id: string;
   supplier: {
@@ -61,6 +71,18 @@ export type SupplierDebt = {
   qtyLeft: number;
   supplierId: string;
   type: string;
+};
+
+export type DebtReportDetail = {
+  debt: number;
+  final: number;
+  initial: number;
+  pay: number;
+  supplier: {
+    id: string;
+    name: string;
+    phone: string;
+  };
 };
 
 export enum StatusNote {
@@ -141,6 +163,10 @@ export type SidebarItem = {
 export interface RoleListProps {
   role: string;
   setRole: (role: string) => void;
+}
+export interface StaffListProps {
+  staff: string;
+  setStaff: (role: string) => void;
 }
 
 export type PagingProps = {
