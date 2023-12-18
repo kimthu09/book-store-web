@@ -22,28 +22,31 @@ func (*Author) TableName() string {
 var (
 	ErrAuthorIdInvalid = common.NewCustomError(
 		errors.New("id of Author is invalid"),
-		`id of Author is invalid`,
+		`Mã của tác giả không hợp lệ`,
 		"ErrAuthorIdInvalid",
 	)
 	ErrAuthorNameEmpty = common.NewCustomError(
 		errors.New("name of Author is empty"),
-		"name of Author is empty",
+		"Tên của tác giả đang trống",
 		"ErrAuthorNameEmpty",
 	)
 	ErrAuthorIdDuplicate = common.ErrDuplicateKey(
-		errors.New("id of Author is duplicate"),
+		errors.New("Tác giả đã tồn tại"),
+	)
+	ErrAuthorNameDuplicate = common.ErrDuplicateKey(
+		errors.New("Tên tác giả đã tồn tại"),
 	)
 	ErrAuthorCreateNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to create Author"),
+		errors.New("Bạn không có quyền tạo tác giả mới"),
 	)
 	ErrAuthorViewNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to view Author"),
+		errors.New("Bạn không có quyền xem tác giả"),
 	)
 	ErrAuthorUpdateNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to update Author"),
+		errors.New("Bạn không có quyền chỉnh sửa thông tin tác giả"),
 	)
 	ErrAuthorDeleteNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to delete Author"),
+		errors.New("Bạn không có quyền xóa tác giả"),
 	)
 )
 

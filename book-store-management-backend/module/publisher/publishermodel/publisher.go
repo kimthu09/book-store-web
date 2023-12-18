@@ -6,8 +6,8 @@ import (
 )
 
 type Publisher struct {
-	Id   string `json:"id" json:"column:id;"`
-	Name string `json:"name" json:"column:name;"`
+	Id   string `json:"id" json:"column:id;" example:"publisher id"`
+	Name string `json:"name" json:"column:name;" example:"NXB Kim Đồng"`
 }
 
 func (*Publisher) TableName() string {
@@ -17,28 +17,31 @@ func (*Publisher) TableName() string {
 var (
 	ErrPublisherIdInvalid = common.NewCustomError(
 		errors.New("id of Publisher is invalid"),
-		`id of Publisher is invalid`,
+		`id của nhà xuất bản không hợp lệ`,
 		"ErrPublisherIdInvalid",
 	)
 	ErrPublisherNameEmpty = common.NewCustomError(
 		errors.New("name of Publisher is empty"),
-		"name of Publisher is empty",
+		"Tên của nhà xuất bản đang trống",
 		"ErrPublisherNameEmpty",
 	)
 	ErrPublisherIdDuplicate = common.ErrDuplicateKey(
-		errors.New("id of Publisher is duplicate"),
+		errors.New("Id của nhà xuất bản đã tồn tại"),
+	)
+	ErrPublisherNameDuplicate = common.ErrDuplicateKey(
+		errors.New("Tên của nhà xuất bản đã tồn tại"),
 	)
 	ErrPublisherCreateNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to create Publisher"),
+		errors.New("Bạn không có quyền tạo nhà xuất bản mới"),
 	)
 	ErrPublisherViewNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to view Publisher"),
+		errors.New("Bạn không có quyền xem nhà xuất bản"),
 	)
 	ErrPublisherUpdateNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to update Publisher"),
+		errors.New("Bạn không có quyền chỉnh sửa thông tin nhà xuất bản"),
 	)
 	ErrPublisherDeleteNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to delete Publisher"),
+		errors.New("Bạn không có quyền xóa nhà xuất bản"),
 	)
 )
 

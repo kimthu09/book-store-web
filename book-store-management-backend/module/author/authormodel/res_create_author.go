@@ -1,5 +1,5 @@
 package authormodel
 
 type ResCreateAuthor struct {
-	Id string `json:"id" json:"example:authorId"`
+	Id string `json:"data" json:"example:authorId"`
 }

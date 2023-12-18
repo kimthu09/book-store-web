@@ -63,6 +63,6 @@ func CreateBookTitle(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse(resData))
+		c.JSON(http.StatusOK, resData)
 	}
 }

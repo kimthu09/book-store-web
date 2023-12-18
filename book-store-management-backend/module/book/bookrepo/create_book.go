@@ -29,7 +29,7 @@ func (repo *createBookRepo) CreateBook(ctx context.Context, data *bookmodel.Book
 		Quantity:    nil,
 		ListedPrice: data.ListedPrice,
 		SellPrice:   data.SellPrice,
-		ImportPrice: nil,
+		ImportPrice: data.ListedPrice,
 	}
 	err := repo.store.CreateBook(ctx, &dbData)
 	if err != nil {
