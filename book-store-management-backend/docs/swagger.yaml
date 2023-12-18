@@ -28,7 +28,7 @@ definitions:
     type: object
   authormodel.ResCreateAuthor:
     properties:
-      id:
+      data:
         type: string
     type: object
   authormodel.ResListAuthor:
@@ -41,6 +41,15 @@ definitions:
         $ref: '#/definitions/authormodel.Filter'
       paging:
         $ref: '#/definitions/common.Paging'
+    type: object
+  authormodel.SimpleAuthor:
+    properties:
+      id:
+        example: author id
+        type: string
+      name:
+        example: Nguyễn Văn A
+        type: string
     type: object
   bookmodel.ReqCreateBook:
     properties:
@@ -64,6 +73,41 @@ definitions:
     properties:
       id:
         type: string
+    type: object
+  bookmodel.ResGetAllBook:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/bookmodel.ResUnitBook'
+        type: array
+    type: object
+  bookmodel.ResUnitBook:
+    properties:
+      bookTitle:
+        $ref: '#/definitions/booktitlemodel.SimpleBookTitle'
+      edition:
+        example: 1
+        type: integer
+      id:
+        example: bookId
+        type: string
+      importPrice:
+        example: 100000
+        type: integer
+      listedPrice:
+        example: 100000
+        type: integer
+      name:
+        example: Cho tui 1 vé về tuổi thơ
+        type: string
+      publisher:
+        $ref: '#/definitions/publishermodel.Publisher'
+      quantity:
+        example: 100
+        type: integer
+      sellPrice:
+        example: 120000
+        type: integer
     type: object
   bookmodel.SimpleBook:
     properties:
@@ -170,7 +214,7 @@ definitions:
     type: object
   booktitlemodel.ResCreateBookTitle:
     properties:
-      id:
+      data:
         type: string
     type: object
   booktitlemodel.ResListBookTitle:
@@ -183,6 +227,23 @@ definitions:
         $ref: '#/definitions/booktitlemodel.Filter'
       paging:
         $ref: '#/definitions/common.Paging'
+    type: object
+  booktitlemodel.SimpleBookTitle:
+    properties:
+      authors:
+        items:
+          $ref: '#/definitions/authormodel.SimpleAuthor'
+        type: array
+      categories:
+        items:
+          $ref: '#/definitions/categorymodel.SimpleCategory'
+        type: array
+      desc:
+        example: Câu chuyên hay cảm động rớt nước mắt
+        type: string
+      id:
+        example: book title id
+        type: string
     type: object
   categorymodel.Category:
     properties:
@@ -212,7 +273,7 @@ definitions:
     type: object
   categorymodel.ResCreateCategory:
     properties:
-      id:
+      name:
         type: string
     type: object
   categorymodel.ResListCategory:
@@ -225,6 +286,15 @@ definitions:
         $ref: '#/definitions/categorymodel.Filter'
       paging:
         $ref: '#/definitions/common.Paging'
+    type: object
+  categorymodel.SimpleCategory:
+    properties:
+      id:
+        example: category id
+        type: string
+      name:
+        example: Tiểu thuyết
+        type: string
     type: object
   common.AppError:
     properties:
@@ -763,8 +833,10 @@ definitions:
   publishermodel.Publisher:
     properties:
       id:
+        example: publisher id
         type: string
       name:
+        example: NXB Kim Đồng
         type: string
     type: object
   publishermodel.ReqCreatePublisher:
@@ -775,7 +847,7 @@ definitions:
     type: object
   publishermodel.ResCreatePublisher:
     properties:
-      id:
+      data:
         type: string
     type: object
   publishermodel.ResListPublisher:
@@ -1439,6 +1511,26 @@ paths:
       security:
       - BearerAuth: []
       summary: Create Book
+      tags:
+      - books
+  /books/all:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list book
+          schema:
+            $ref: '#/definitions/bookmodel.ResGetAllBook'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Get all book
       tags:
       - books
   /booktitles:

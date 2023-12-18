@@ -1,5 +1,5 @@
 package booktitlemodel
 
 type ResCreateBookTitle struct {
-	Id string `json:"id" json:"example:bookTitleId"`
+	Id string `json:"data" json:"example:bookTitleId"`
 }

@@ -11,9 +11,11 @@ func (s *sqlStore) CreatePublisher(ctx context.Context, data *publishermodel.Pub
 
 	if err := db.Create(data).Error; err != nil {
 		if gormErr := common.GetGormErr(err); gormErr != nil {
-			switch key := gormErr.GetDuplicateErrorKey("PRIMARY"); key {
+			switch key := gormErr.GetDuplicateErrorKey("PRIMARY", "name"); key {
 			case "PRIMARY":
 				return publishermodel.ErrPublisherIdDuplicate
+			case "name":
+				return publishermodel.ErrPublisherNameDuplicate
 			}
 		}
 		return common.ErrDB(err)
