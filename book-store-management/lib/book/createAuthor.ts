@@ -1,8 +1,8 @@
 import { apiKey, endPoint } from "@/constants";
 import axios from "axios";
 
-export default async function createCategory({ name }: { name: string }) {
-  const url = `${endPoint}/v1/categories`;
+export default async function createAuthor({ name }: { name: string }) {
+  const url = `${endPoint}/v1/authors`;
 
   const data = {
     name: name,

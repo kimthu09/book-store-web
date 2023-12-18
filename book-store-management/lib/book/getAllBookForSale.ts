@@ -1,5 +1,4 @@
 import { apiKey, endPoint } from "@/constants";
-import { Author, PagingProps } from "@/types";
 import useSWR from "swr";
 
 const fetcher = (url: string) =>
@@ -14,25 +13,19 @@ const fetcher = (url: string) =>
     })
     .then((json) => {
       return {
-        paging: json.paging as PagingProps,
-        data: json.data as Author[],
+        paging: json.paging,
+        data: json.data,
       };
     });
 
-export default function getAllAuthor({
-  limit,
-  page,
-}: {
-  limit?: number;
-  page?: string;
-}) {
+export default function getAllBookForSale() {
   const { data, error, isLoading, mutate } = useSWR(
-    `${endPoint}/v1/authors?page=${page ?? 1}&limit=${limit ?? 10}`,
+    `${endPoint}/v1/books/all`,
     fetcher
   );
 
   return {
-    authors: data,
+    books: data,
     isLoading,
     isError: error,
     mutate: mutate,

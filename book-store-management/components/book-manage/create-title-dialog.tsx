@@ -1,6 +1,6 @@
 "use client";
 
-import AuthorList from "@/components/author-list";
+import AuthorList from "@/components/book-manage/author-list";
 import CategoryList from "@/components/book-manage/category-list";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -169,6 +169,7 @@ const CreateTitleDialog = ({
                     {/* Category select */}
                     <Label>Thể loại</Label>
                     <CategoryList
+                      canAdd
                       checkedCategory={fieldsCate.map((cate) => cate.idCate)}
                       onCheckChanged={(idCate) => {
                         const selectedIndex = fieldsCate.findIndex(
@@ -216,6 +217,7 @@ const CreateTitleDialog = ({
                     {/* Category select */}
                     <Label>Tác giả</Label>
                     <AuthorList
+                      canAdd
                       checkedAuthor={fieldsAuthor.map(
                         (author) => author.idAuthor
                       )}

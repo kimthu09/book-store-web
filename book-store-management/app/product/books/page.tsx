@@ -1,9 +1,6 @@
-import { BookTable } from "@/components/book-manage/table";
 import TableLayout from "@/components/book-manage/table-layout";
 import Loading from "@/components/loading";
 import { Button } from "@/components/ui/button";
-import getAllBooks from "@/lib/book/getAllBook";
-import { Book } from "@/types";
 import Link from "next/link";
 import React, { Suspense } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -19,7 +16,7 @@ async function BookManagement({
   return (
     <div className="col">
       <div className="flex flex-row justify-between items-center">
-        <h1>Tất cả đầu sách</h1>
+        <h1>Tất cả sách</h1>
         <div className="flex gap-4">
           <Link href="/product/books/add">
             <Button className="p-2">

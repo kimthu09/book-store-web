@@ -14,15 +14,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
-import createSupplier from "@/lib/supplier/createSupplier";
 import { useRouter } from "next/navigation";
+import createCategory from "@/lib/book/createCategory";
 const required = z.string().min(1, "Không để trống trường này");
 
 const SupplierSchema = z.object({
   name: required,
 });
 
-const CreateCategory = () => {
+const CreateCategory = ({
+  handleCategoryAdded,
+  children,
+}: {
+  handleCategoryAdded: (categoryId: string) => void;
+  children: React.ReactNode;
+}) => {
   const {
     register,
     handleSubmit,
@@ -35,26 +41,26 @@ const CreateCategory = () => {
   const onSubmit: SubmitHandler<z.infer<typeof SupplierSchema>> = async (
     data
   ) => {
-    //TODO:
-    // setOpen(false);
-    // console.log(data);
-    // const response: Promise<any> = createSupplier(data);
-    // const responseData = await response;
-    // console.log(responseData);
-    // if (responseData.hasOwnProperty("errorKey")) {
-    //   toast({
-    //     variant: "destructive",
-    //     title: "Có lỗi",
-    //     description: responseData.message,
-    //   });
-    // } else {
-    //   toast({
-    //     variant: "success",
-    //     title: "Thành công",
-    //     description: "Thêm nhà cung cấp thành công",
-    //   });
-    //   router.refresh();
-    // }
+    setOpen(false);
+    console.log(data);
+    const response: Promise<any> = createCategory(data);
+    const responseData = await response;
+    console.log(responseData);
+    if (responseData.hasOwnProperty("errorKey")) {
+      toast({
+        variant: "destructive",
+        title: "Có lỗi",
+        description: responseData.message,
+      });
+    } else {
+      toast({
+        variant: "success",
+        title: "Thành công",
+        description: "Thêm thể loại thành công",
+      });
+      handleCategoryAdded(responseData.name);
+      setOpen(false);
+    }
   };
 
   const [open, setOpen] = useState(false);
@@ -68,16 +74,12 @@ const CreateCategory = () => {
         setOpen(open);
       }}
     >
-      <DialogTrigger asChild>
-        <Button className="lg:px-4 px-2 whitespace-nowrap">
-          Thêm thể loại
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="xl:max-w-[720px] max-w-[472px] p-0 bg-white">
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className="max-w-[472px] p-0 bg-white">
         <DialogHeader>
           <DialogTitle className="p-6 pb-0">Thêm thể loại</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form>
           <div className="p-6 flex flex-col gap-4 border-y-[1px]">
             <div>
               <Label htmlFor="nameNcc">Tên thể loại</Label>
@@ -97,7 +99,9 @@ const CreateCategory = () => {
                 Huỷ
               </Button>
 
-              <Button type="submit">Thêm</Button>
+              <Button type="button" onClick={handleSubmit(onSubmit)}>
+                Thêm
+              </Button>
             </div>
           </div>
         </form>

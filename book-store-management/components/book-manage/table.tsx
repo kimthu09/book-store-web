@@ -39,34 +39,57 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Book } from "@/types";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogOverlay,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
+
 import { useState } from "react";
-import CategoryList from "./category-list";
-import Link from "next/link";
-import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
+
 import deleteBook from "@/lib/book/deleteBook";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "../ui/use-toast";
 import Paging from "../paging";
+import { Input } from "../ui/input";
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { LuFilter } from "react-icons/lu";
+import { Label } from "../ui/label";
+import { AiOutlineClose } from "react-icons/ai";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import CategoryList from "./category-list";
+import PublisherList from "./publisher-list";
+import AuthorList from "./author-list";
 
 function idToName(id: string) {
   if (id === "name") {
     return "Tên";
-  } else if (id === "price") {
-    return "Giá";
-  } else if (id === "status") {
+  } else if (id === "sellPrice") {
+    return "Giá bán";
+  } else if (id === "isActive") {
     return "Trạng thái";
+  } else if (id === "authors") {
+    return "Tác giả";
+  } else if (id === "categories") {
+    return "Thể loại";
+  } else if (id === "publisher") {
+    return "Nhà xuất bản";
+  } else if (id === "quantity") {
+    return "Số lượng";
+  } else if (id === "listedPrice") {
+    return "Giá niêm yết";
   }
   return id;
 }
-
+type FormValues = {
+  filters: {
+    type: string;
+    value: string;
+  }[];
+};
 export function BookTable({
   data,
   totalPage,
@@ -131,49 +154,101 @@ export function BookTable({
         <div className="capitalize">{row.getValue("name")}</div>
       ),
     },
-    // {
-    //   accessorKey: "publisherId",
-    //   header: () => {
-    //     return <span className="font-semibold">NXB</span>;
-    //   },
-    //   cell: ({ row }) => (
-    //     <div className="capitalize">{row.getValue("publisherId")}</div>
-    //   ),
-    // },
-    // {
-    //   accessorKey: "sellPrice",
-    //   header: ({ column }) => (
-    //     <Button
-    //       className="p-2"
-    //       variant={"ghost"}
-    //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-    //     >
-    //       <span className="font-semibold">Giá</span>
+    {
+      accessorKey: "authors",
+      accessorFn: (row) => {
+        return row.bookTitle.authors.map((item) => item.name).join(", ");
+      },
+      header: ({ column }) => {
+        return <span className="font-semibold">Tác giả</span>;
+      },
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("authors")}</div>
+      ),
+    },
+    {
+      accessorKey: "categories",
+      accessorFn: (row) => {
+        return row.bookTitle.categories.map((item) => item.name).join(", ");
+      },
+      header: ({ column }) => {
+        return <span className="font-semibold">Thể loại</span>;
+      },
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("categories")}</div>
+      ),
+    },
+    {
+      accessorKey: "publisher",
+      accessorFn: (row) => row.publisher.name,
+      header: () => {
+        return <span className="font-semibold">NXB</span>;
+      },
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("publisher")}</div>
+      ),
+    },
+    {
+      accessorKey: "quantity",
+      header: () => {
+        return <div className="font-semibold flex justify-end">Số lượng</div>;
+      },
+      cell: ({ row }) => (
+        <div className="text-right">{row.getValue("quantity")}</div>
+      ),
+    },
+    {
+      accessorKey: "listedPrice",
+      header: ({ column }) => (
+        <div className="flex justify-end">
+          <Button
+            className="p-1"
+            variant={"ghost"}
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            <span className="font-semibold">Giá niêm yết</span>
+            <CaretSortIcon className="ml-1 h-4 w-4" />
+          </Button>
+        </div>
+      ),
+      cell: ({ row }) => {
+        const amount = parseFloat(row.getValue("listedPrice"));
 
-    //       <CaretSortIcon className="ml-1 h-4 w-4" />
-    //     </Button>
-    //   ),
-    //   cell: ({ row }) => {
-    //     const amount = parseFloat(row.getValue("sellPrice"));
+        // Format the amount as a dollar amount
+        const formatted = new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }).format(amount);
 
-    //     // Format the amount as a dollar amount
-    //     const formatted = new Intl.NumberFormat("vi-VN", {
-    //       style: "currency",
-    //       currency: "VND",
-    //     }).format(amount);
+        return <div className="text-right font-medium">{formatted}</div>;
+      },
+    },
+    {
+      accessorKey: "sellPrice",
+      header: ({ column }) => (
+        <div className="flex justify-end">
+          <Button
+            className="p-1"
+            variant={"ghost"}
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            <span className="font-semibold">Giá bán</span>
+            <CaretSortIcon className="ml-1 h-4 w-4" />
+          </Button>
+        </div>
+      ),
+      cell: ({ row }) => {
+        const amount = parseFloat(row.getValue("sellPrice"));
 
-    //     return <div className="text-left font-medium">{formatted}</div>;
-    //   },
-    // },
-    // {
-    //   accessorKey: "quantity",
-    //   header: () => {
-    //     return <div className="font-semibold flex justify-end">Số lượng</div>;
-    //   },
-    //   cell: ({ row }) => (
-    //     <div className="text-right">{row.getValue("quantity")}</div>
-    //   ),
-    // },
+        // Format the amount as a dollar amount
+        const formatted = new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }).format(amount);
+
+        return <div className="text-right font-medium">{formatted}</div>;
+      },
+    },
     {
       accessorKey: "isActive",
       header: () => {
@@ -186,68 +261,10 @@ export function BookTable({
         return (
           <div
             className={`lg:max-w-[16rem] max-w-[3rem] truncate ${
-              status === 1 ? "text-green-600" : "text-red-600"
+              status ? "text-green-600" : "text-red-600"
             } text-center`}
           >
-            {status === 1 ? "Đang bán" : "Ngừng bán"}
-          </div>
-        );
-      },
-    },
-    {
-      id: "actions",
-      enableHiding: false,
-      cell: ({ row }) => {
-        const book = row.original;
-
-        return (
-          <div className="flex justify-end">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <DotsHorizontalIcon className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel></DropdownMenuLabel>
-                <DropdownMenuItem
-                  onClick={() => navigator.clipboard.writeText(book.id)}
-                >
-                  Sao chép mã sách
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                {/* <DropdownMenuItem>
-                <Link
-                  href={{
-                    pathname: "books/edit",
-                    query: {
-                      id: book.id,
-                    },
-                  }}
-                >
-                  Chỉnh sửa sách
-                </Link>
-              </DropdownMenuItem> */}
-                <DropdownMenuItem
-                  onClick={async () => {
-                    const response: Promise<any> = deleteBook(book.id);
-                    const responseData = await response;
-                    console.log(responseData);
-                    if (responseData.data) {
-                      toast({
-                        variant: "success",
-                        title: "Thành công",
-                        description: "Sản phẩm đã có trạng thái ngừng bán",
-                      });
-                      router.refresh();
-                    }
-                  }}
-                >
-                  Ngừng bán
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {status ? "Đang bán" : "Ngừng bán"}
           </div>
         );
       },
@@ -273,9 +290,80 @@ export function BookTable({
     },
   });
 
+  const [latestFilter, setLatestFilter] = useState("");
+  const filterValues = [
+    { type: "search", name: "Từ khoá" },
+    { type: "minSellPrice", name: "Giá bán nhỏ nhất" },
+    { type: "maxSellPrice", name: "Giá bán lớn nhất" },
+    // { type: "publisher", name: "Nhà xuất bản" },
+    // { type: "categories", name: "Thể loại" },
+    // { type: "authors", name: "Tác giả" },
+  ];
+
+  const search = searchParams.get("search") ?? undefined;
+  const minSellPrice = searchParams.get("minSellPrice") ?? undefined;
+  const maxSellPrice = searchParams.get("maxSellPrice") ?? undefined;
+  const categories = searchParams.get("categories") ?? undefined;
+  const authors = searchParams.get("authors") ?? undefined;
+  const publisher = searchParams.get("publisher") ?? undefined;
+
+  let filters = [{ type: "", value: "" }];
+  filters.pop();
+  if (maxSellPrice) {
+    filters = filters.concat({ type: "maxSellPrice", value: maxSellPrice });
+  }
+  if (minSellPrice) {
+    filters = filters.concat({ type: "minSellPrice", value: minSellPrice });
+  }
+  if (search) {
+    filters = filters.concat({ type: "search", value: search });
+  }
+  if (categories) {
+    filters = filters.concat({ type: "categories", value: categories });
+  }
+  if (authors) {
+    filters = filters.concat({ type: "authors", value: authors });
+  }
+  if (publisher) {
+    filters = filters.concat({ type: "publisher", value: publisher });
+  }
+
+  const { register, handleSubmit, reset, control, getValues } =
+    useForm<FormValues>({
+      defaultValues: {
+        filters: filters,
+      },
+    });
+  const { fields, append, remove, update } = useFieldArray({
+    control: control,
+    name: "filters",
+  });
+
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    console.log(data);
+    let search = "";
+    let minSellPrice = "";
+    let maxSellPrice = "";
+    data.filters.forEach((item) => {
+      if (item.type === "minSellPrice") {
+        minSellPrice = `&minSellPrice=${item.value}`;
+      } else if (item.type === "maxSellPrice") {
+        maxSellPrice = `&maxSellPrice=${item.value}`;
+      } else if (item.type === "search") {
+        search = `&search=${item.value}`;
+      }
+    });
+
+    router.push(
+      `/product/books?page=${Number(
+        page
+      )}${minSellPrice}${maxSellPrice}${search}`
+    );
+  };
+  const [openFilter, setOpenFilter] = useState(false);
   return (
     <div className="w-full">
-      <div className="flex items-center py-4 gap-2">
+      <div className="flex items-start py-4 gap-2">
         <div>
           {/* <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -340,6 +428,206 @@ export function BookTable({
           </DropdownMenu> */}
         </div>
 
+        <div className="flex-1">
+          <div className="flex gap-2">
+            <Popover
+              open={openFilter}
+              onOpenChange={(open) => {
+                setOpenFilter(open);
+                reset({ filters: filters });
+              }}
+            >
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="lg:px-3 px-2">
+                  Lọc
+                  <LuFilter className="ml-1 h-4 w-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80">
+                <form
+                  className="flex flex-col gap-4"
+                  onSubmit={handleSubmit(onSubmit)}
+                >
+                  <div className="space-y-2">
+                    <p className="text-sm text-muted-foreground">
+                      Hiển thị sách theo
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-4">
+                    {fields.map((item, index) => {
+                      const name = filterValues.find(
+                        (v) => v.type === item.type
+                      );
+                      if (item.type === "categories") {
+                        return (
+                          <div
+                            className="flex gap-2 items-center"
+                            key={item.id}
+                          >
+                            <Label className="basis-1/4">{name?.name}</Label>
+                            <div className="flex-1">
+                              <CategoryList
+                                checkedCategory={[]}
+                                onCheckChanged={(idCate) => {}}
+                              />
+                            </div>
+
+                            <Button
+                              variant={"ghost"}
+                              className={`px-3 `}
+                              onClick={() => {
+                                remove(index);
+                              }}
+                            >
+                              <AiOutlineClose />
+                            </Button>
+                          </div>
+                        );
+                      } else if (item.type === "publisher") {
+                        return (
+                          <div
+                            className="flex gap-2 items-center"
+                            key={item.id}
+                          >
+                            <Label className="basis-1/4">{name?.name}</Label>
+                            <PublisherList
+                              publisherId={""}
+                              setPublisherId={(id) => {}}
+                            />
+                            <Button
+                              variant={"ghost"}
+                              className={`px-3 `}
+                              onClick={() => {
+                                remove(index);
+                              }}
+                            >
+                              <AiOutlineClose />
+                            </Button>
+                          </div>
+                        );
+                      } else if (item.type === "authors") {
+                        return (
+                          <div
+                            className="flex gap-2 items-center"
+                            key={item.id}
+                          >
+                            <Label className="basis-1/4">{name?.name}</Label>
+                            <div className="flex-1">
+                              <AuthorList
+                                checkedAuthor={[]}
+                                onCheckChanged={(id) => {}}
+                              />
+                            </div>
+                            <Button
+                              variant={"ghost"}
+                              className={`px-3 `}
+                              onClick={() => {
+                                remove(index);
+                              }}
+                            >
+                              <AiOutlineClose />
+                            </Button>
+                          </div>
+                        );
+                      } else
+                        return (
+                          <div
+                            className="flex gap-2 items-center"
+                            key={item.id}
+                          >
+                            <Label className="basis-1/4">{name?.name}</Label>
+                            {item.type === "search" ? (
+                              <Input
+                                {...register(`filters.${index}.value`)}
+                                className="flex-1"
+                                type="text"
+                                required
+                              ></Input>
+                            ) : (
+                              <Input
+                                {...register(`filters.${index}.value`)}
+                                className="flex-1"
+                                type="number"
+                                required
+                              ></Input>
+                            )}
+                            <Button
+                              variant={"ghost"}
+                              className={`px-3 `}
+                              onClick={() => {
+                                remove(index);
+                              }}
+                            >
+                              <AiOutlineClose />
+                            </Button>
+                          </div>
+                        );
+                    })}
+                  </div>
+                  {fields.length === filterValues.length ? null : (
+                    <div className="flex justify-center">
+                      <Select
+                        value={latestFilter}
+                        onValueChange={(value) => {
+                          console.log(value);
+                          append({ type: value, value: "" });
+                        }}
+                      >
+                        <SelectTrigger className="w-[160px] flex justify-center ml-8 px-3">
+                          <SelectValue placeholder="Chọn điều kiện lọc" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            {filterValues.map((item) => {
+                              return fields.findIndex(
+                                (v) => v.type === item.type
+                              ) === -1 ? (
+                                <SelectItem key={item.type} value={item.type}>
+                                  {item.name}
+                                </SelectItem>
+                              ) : null;
+                            })}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+                  <Button type="submit" className="self-end">
+                    Lọc
+                  </Button>
+                </form>
+              </PopoverContent>
+            </Popover>
+            <div className="flex-1">
+              <Input
+                placeholder="Tìm kiếm tên sách"
+                value={
+                  (table.getColumn("name")?.getFilterValue() as string) ?? ""
+                }
+                onChange={(event) =>
+                  table.getColumn("name")?.setFilterValue(event.target.value)
+                }
+              />
+            </div>
+          </div>
+          <div className="flex gap-2 mt-2">
+            {filters.map((item, index) => {
+              const name = filterValues.find((v) => v.type === item.type);
+              return (
+                <div
+                  key={item.type}
+                  className="rounded-xl flex self-start px-3 py-1 h-fit outline-none text-sm text-primary  bg-blue-100 items-center gap-1 group"
+                >
+                  <span>
+                    {name?.name}
+                    {": "}
+                    {item.value}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline">
@@ -366,8 +654,6 @@ export function BookTable({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-
-        <div className="ml-auto">{/* <FilterSheet /> */}</div>
       </div>
       <div className="rounded-md border">
         <Table>

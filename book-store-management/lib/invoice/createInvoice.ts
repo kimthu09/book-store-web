@@ -1,11 +1,18 @@
 import { apiKey, endPoint } from "@/constants";
 import axios from "axios";
 
-export default async function createCategory({ name }: { name: string }) {
-  const url = `${endPoint}/v1/categories`;
+export default async function createInvoice({
+  details,
+}: {
+  details: {
+    bookId: string;
+    qty: number;
+  }[];
+}) {
+  const url = `${endPoint}/v1/invoices`;
 
   const data = {
-    name: name,
+    details,
   };
   console.log(data);
   const headers = {

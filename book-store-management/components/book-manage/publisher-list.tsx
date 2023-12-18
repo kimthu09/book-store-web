@@ -18,8 +18,13 @@ import { cn } from "@/lib/utils";
 import Loading from "../loading";
 import getAllPublisher from "@/lib/book/getAllPublisher";
 import CreatePublisher from "./create-publisher";
+import { FaPlus } from "react-icons/fa";
 
-const PublisherList = ({ publisherId, setPublisherId }: PublisherListProps) => {
+const PublisherList = ({
+  publisherId,
+  setPublisherId,
+  canAdd,
+}: PublisherListProps) => {
   const [open, setOpen] = useState(false);
   const { publishers, isLoading, isError, mutate } = getAllPublisher({
     limit: 1000,
@@ -40,13 +45,13 @@ const PublisherList = ({ publisherId, setPublisherId }: PublisherListProps) => {
               variant="outline"
               role="combobox"
               aria-expanded={open}
-              className="justify-between w-full"
+              className="justify-between w-full pl-1"
             >
               {publisherId
                 ? publishers.data.find((item: any) => item.id === publisherId)
                     ?.name
                 : "Chọn nhà xuất bản"}
-              <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              <LuChevronsUpDown className="ml-1 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="DropdownMenuContent">
@@ -81,7 +86,13 @@ const PublisherList = ({ publisherId, setPublisherId }: PublisherListProps) => {
             </Command>
           </DropdownMenuContent>
         </DropdownMenu>
-        <CreatePublisher handlePublisherAdded={handlePublisherAdded} />
+        {canAdd ? (
+          <CreatePublisher handlePublisherAdded={handlePublisherAdded}>
+            <Button type="button" size={"icon"} className="px-3">
+              <FaPlus />
+            </Button>
+          </CreatePublisher>
+        ) : null}
       </div>
     );
 };
