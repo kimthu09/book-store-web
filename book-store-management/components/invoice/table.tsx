@@ -368,7 +368,7 @@ const InvoiceTable = ({
             </Popover>
             <div className="flex-1">
               <Input
-                placeholder="Tìm kiếm nhà cung cấp"
+                placeholder="Tìm kiếm hóa đơn"
                 value={
                   (table.getColumn("id")?.getFilterValue() as string) ?? ""
                 }
