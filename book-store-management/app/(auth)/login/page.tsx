@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import styles from '../../../styles/login.module.css'
 import Link from 'next/link';
 import { Label } from '@/components/ui/label';
+import { endPoint } from '@/constants';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -21,7 +22,7 @@ const Login = () => {
 
     const handleLogin = async (event: any) => {
         event.preventDefault()
-        const response = await axios.post('http://localhost:8080/v1/login', {
+        const response = await axios.post(endPoint + '/v1/login', {
             "email": email,
             "password": password
         }).then((res) => {
@@ -62,7 +63,7 @@ const Login = () => {
                             <div className='pb-1'>
                                 <Input
                                     onChange={(e) => setEmail(e.target.value)}
-                                    type="text"
+                                    type="email"
                                     placeholder="Email"
                                 />
                             </div>
