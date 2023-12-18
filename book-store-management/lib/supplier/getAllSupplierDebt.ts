@@ -1,4 +1,4 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
 
 export default async function getAllSupplierNote({
   idSupplier,
@@ -6,7 +6,7 @@ export default async function getAllSupplierNote({
   idSupplier: string;
 }) {
   const res = await fetch(
-    `http://localhost:8080/v1/suppliers/${idSupplier}/debts?limit=${1000}`,
+    `${endPoint}/v1/suppliers/${idSupplier}/debts?limit=${1000}`,
     {
       headers: {
         accept: "application/json",

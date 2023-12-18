@@ -1,4 +1,4 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
 import axios from "axios";
 
 export default async function paySupplier({
@@ -8,7 +8,7 @@ export default async function paySupplier({
   quantity: number;
   idSupplier: string;
 }) {
-  const url = `http://localhost:8080/v1/suppliers/${idSupplier}/pay`;
+  const url = `${endPoint}/v1/suppliers/${idSupplier}/pay`;
 
   const data = {
     qtyUpdate: quantity,

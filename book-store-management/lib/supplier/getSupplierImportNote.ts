@@ -1,4 +1,4 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
 import useSWR from "swr";
 
 const fetcher = (url: string) =>
@@ -28,7 +28,7 @@ export default function getSupplierImportNote({
   limit?: number;
 }) {
   const { data, error, isLoading } = useSWR(
-    `http://localhost:8080/v1/suppliers/${idSupplier}/importNotes?limit=${
+    `${endPoint}/v1/suppliers/${idSupplier}/importNotes?limit=${
       limit ?? 10
     }&page=${page}`,
     fetcher

@@ -1,4 +1,4 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
 import axios from "axios";
 
 export default async function updateRole({
@@ -10,7 +10,7 @@ export default async function updateRole({
   name: string;
   features: string[];
 }) {
-  const url = `http://localhost:8080/v1/roles/${id}`;
+  const url = `${endPoint}/v1/roles/${id}`;
 
   const data = {
     name: name,

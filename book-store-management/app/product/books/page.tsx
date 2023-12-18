@@ -21,7 +21,7 @@ async function BookManagement({
       <div className="flex flex-row justify-between items-center">
         <h1>Tất cả đầu sách</h1>
         <div className="flex gap-4">
-          <Link href="/product/books/insert">
+          <Link href="/product/books/add">
             <Button className="p-2">
               <div className="flex flex-wrap gap-1 items-center">
                 <AiOutlinePlus />

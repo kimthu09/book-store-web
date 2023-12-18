@@ -1,4 +1,4 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
 
 export type FilterProps = {
   page: number;
@@ -15,7 +15,7 @@ export default async function getAllSupplier({
   const maxString = maxDebt ? `&maxDebt=${maxDebt}` : "";
   const minString = minDebt ? `&minDebt=${minDebt}` : "";
   const searchString = search ? `&search=${search}` : "";
-  const url = `http://localhost:8080/v1/suppliers?page=${page}${maxString}${minString}${searchString}`;
+  const url = `${endPoint}/v1/suppliers?page=${page}${maxString}${minString}${searchString}`;
   console.log(url);
 
   const res = await fetch(url, {

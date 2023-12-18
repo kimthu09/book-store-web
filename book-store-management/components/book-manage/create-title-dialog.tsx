@@ -1,33 +1,29 @@
 "use client";
 
 import AuthorList from "@/components/author-list";
-import CategoryList from "@/components/category-list";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import CategoryList from "@/components/book-manage/category-list";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import createBook from "@/lib/book/createBook";
 import getAllAuthor from "@/lib/book/getAllAuthor";
 import getAllCategory from "@/lib/book/getAllCategory";
-import Link from "next/link";
 import { useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { AiOutlineClose } from "react-icons/ai";
-import { LuCheck } from "react-icons/lu";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Loading from "@/components/loading";
 import { required } from "@/constants";
+import createBookTitle from "@/lib/book/createBookTitle";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import { FaPlus } from "react-icons/fa";
 
 const FormSchema = z.object({
   idBook: z.string().max(12, "Tối đa 12 ký tự"),
@@ -41,17 +37,21 @@ const FormSchema = z.object({
     .nonempty("Vui lòng chọn ít nhất một thể loại"),
 });
 
-const InsertNewBook = () => {
+const CreateTitleDialog = ({
+  handleTitleAdded,
+}: {
+  handleTitleAdded: (titleId: string) => void;
+}) => {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
-  const [creating, setCreating] = useState(true);
   const {
     register,
     handleSubmit,
     control,
     watch,
+    reset,
     formState: { errors },
   } = form;
 
@@ -74,9 +74,23 @@ const InsertNewBook = () => {
     control: control,
     name: "authorIds",
   });
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = (value: boolean) => {
+    setOpen(value);
+    if (value) {
+      reset({
+        idBook: "",
+        name: "",
+        desc: "",
+        authorIds: [],
+        categoryIds: [],
+      });
+    }
+  };
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     console.log(data);
-    const response: Promise<any> = createBook({
+    const response: Promise<any> = createBookTitle({
       id: data.idBook,
       name: data.name,
       desc: data.desc,
@@ -84,16 +98,20 @@ const InsertNewBook = () => {
       authorIds: data.authorIds.map((item) => item.idAuthor),
     });
     const responseData = await response;
-    if (responseData.hasOwnProperty("data")) {
-      if (responseData.data.id != "") {
-        setCreating(false);
-      }
-    } else {
+    if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",
-        title: "Mã sách đã tồn tại",
-        description: "Vui lòng nhập một mã sách khác",
+        title: "Có lỗi",
+        description: responseData.message,
       });
+    } else {
+      toast({
+        variant: "success",
+        title: "Thành công",
+        description: "Thêm đầu sách mới thành công",
+      });
+      handleTitleAdded(responseData.data);
+      setOpen(false);
     }
   };
   const { categories, isLoading, isError } = getAllCategory({ limit: 1000 });
@@ -109,32 +127,27 @@ const InsertNewBook = () => {
     return <Loading />;
   } else
     return (
-      <div className="col items-center">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="col xl:w-4/5 w-full xl:px-0 md:px-6 px-0"
-        >
-          <div className="flex flex-row justify-between">
-            <h1 className="font-medium text-xxl self-start">Thêm sách mới</h1>
-            <Button type="submit">
-              <div className="flex flex-wrap gap-1 items-center">
-                <LuCheck />
-                Thêm
-              </div>
-            </Button>
-          </div>
-          <div>
-            <div className="flex flex-col flex-1 gap-4 lg:flex-row">
-              <Card className="flex-1">
-                <CardContent className="flex-col flex gap-5 mt-5">
+      <Dialog open={open} onOpenChange={handleOpen}>
+        <DialogTrigger asChild>
+          <Button type="button" size={"icon"} className="px-3">
+            <FaPlus />
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="p-0 bg-white">
+          <DialogTitle className="p-6 py-4 border-b">Thêm đầu sách</DialogTitle>
+          <div className="col items-center px-6">
+            <form
+              // onSubmit={handleSubmit(onSubmit)}
+              className="w-full py-6 pt-0"
+            >
+              <div className="flex flex-col gap-4">
+                <div className="flex-col flex gap-5">
                   <div className="basis-1/3">
                     <Label htmlFor="masach">Mã sách</Label>
                     <Input
                       {...register("idBook")}
                       id="masach"
                       placeholder="Hệ thống sẽ tự sinh mã nếu để trống"
-                      // value={!isNew ? book.id : ""}
-                      // readOnly={!isNew}
                     />
                     {errors.idBook && (
                       <span className="error___message">
@@ -253,46 +266,29 @@ const InsertNewBook = () => {
                     <Label>Mô tả</Label>
                     <Textarea {...register("desc")} />
                   </div>
-                </CardContent>
-              </Card>
-              {/* <Card className="basis-2/5">
-              <CardContent>
-                <div className="flex flex-col gap-5 mt-5 ">
-                  <div className="flex-1">
-                    <Label>Nhà xuất bản</Label>
-                    <Input />
-                  </div>
-                  <div className="flex flex-row md:gap-5 gap-3 lg:flex-col">
-                    <div className="flex-1">
-                      <Label>Lần tái bản</Label>
-                      <Input type="number" min={0} />
-                    </div>
-                    <div className="flex-1">
-                      <Label>Đơn giá</Label>
-                      <Input type="number" min={0} />
-                    </div>
-                  </div>
                 </div>
-              </CardContent>
-            </Card> */}
-            </div>
+                <div className="flex gap-4 py-4  justify-end">
+                  <Button
+                    type="button"
+                    onClick={() => handleOpen(false)}
+                    variant={"outline"}
+                  >
+                    Huỷ
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={handleSubmit(onSubmit)}
+                    className="self-end"
+                  >
+                    Thêm
+                  </Button>
+                </div>
+              </div>
+            </form>
           </div>
-        </form>
-
-        <AlertDialog open={!creating}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Đã thêm thành công</AlertDialogTitle>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <Link href={"/product/books"}>
-                <AlertDialogAction>OK</AlertDialogAction>
-              </Link>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>
+        </DialogContent>
+      </Dialog>
     );
 };
 
-export default InsertNewBook;
+export default CreateTitleDialog;

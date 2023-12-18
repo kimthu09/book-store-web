@@ -1,27 +1,33 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
 import axios from "axios";
 
 export default async function createBook({
   id,
   name,
-  desc,
-  categoryIds,
-  authorIds,
+  bookTitleId,
+  edition,
+  listedPrice,
+  publisherId,
+  sellPrice,
 }: {
   id?: string;
   name: string;
-  desc: string;
-  categoryIds: string[];
-  authorIds: string[];
+  bookTitleId: string;
+  edition: number;
+  listedPrice: number;
+  publisherId: string;
+  sellPrice: number;
 }) {
-  const url = "http://localhost:8080/v1/booktitles";
+  const url = `${endPoint}/v1/books`;
 
   const data = {
     id: id,
     name: name,
-    desc: desc,
-    categoryIds: categoryIds,
-    authorIds: authorIds,
+    bookTitleId: bookTitleId,
+    edition: edition,
+    listedPrice: listedPrice,
+    publisherId: publisherId,
+    sellPrice: sellPrice,
   };
   console.log(data);
   const headers = {

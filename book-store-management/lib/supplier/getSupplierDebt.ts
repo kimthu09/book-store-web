@@ -1,4 +1,4 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
 import { PagingProps, SupplierDebt } from "@/types";
 import useSWR from "swr";
 
@@ -27,7 +27,7 @@ export default function getSupplierDebt({
   page: number;
 }) {
   const { data, error, isLoading, mutate, isValidating } = useSWR(
-    `http://localhost:8080/v1/suppliers/${idSupplier}/debts?page=${page}`,
+    `${endPoint}/v1/suppliers/${idSupplier}/debts?page=${page}`,
     fetcher
   );
   return {

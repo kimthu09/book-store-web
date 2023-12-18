@@ -1,4 +1,4 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
 import { Staff } from "@/types";
 import useSWR from "swr";
 
@@ -22,7 +22,7 @@ export default function getAllStaff({
   limit?: number;
 }) {
   const { data, error, isLoading } = useSWR(
-    `http://localhost:8080/v1/users?page=${page ?? 1}&limit=${limit ?? 10}`,
+    `${endPoint}/v1/users?page=${page ?? 1}&limit=${limit ?? 10}`,
     fetcher
   );
 

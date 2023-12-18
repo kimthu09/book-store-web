@@ -23,6 +23,7 @@ import { toast } from "@/components/ui/use-toast";
 import paySupplier from "@/lib/supplier/paySupplier";
 import EditDialog from "@/components/supplier-manage/edit";
 import { useSWRConfig } from "swr";
+import { endPoint } from "@/constants";
 const FormSchema = z.object({
   quantity: z.coerce.number().gte(1, "Giá trị phải lớn hơn 0"), // Force it to be a number
 });
@@ -60,9 +61,7 @@ const SupplierDetail = ({ params }: { params: { supplierId: string } }) => {
         title: "Thành công",
         description: "Lập phiếu chi thành công",
       });
-      mutate(
-        `http://localhost:8080/v1/suppliers/${data.id}/debts?page=${pageIndex}`
-      );
+      mutate(`${endPoint}/v1/suppliers/${data.id}/debts?page=${pageIndex}`);
     }
     setOpenDialog(false);
   };
@@ -86,7 +85,7 @@ const SupplierDetail = ({ params }: { params: { supplierId: string } }) => {
               <EditDialog
                 supplier={data}
                 refresh={() => {
-                  mutate(`http://localhost:8080/v1/suppliers/${data.id}`);
+                  mutate(`${endPoint}/v1/suppliers/${data.id}`);
                 }}
               />
               <Dialog open={openDialog} onOpenChange={setOpenDialog}>
