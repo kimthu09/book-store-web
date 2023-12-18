@@ -33,6 +33,7 @@ const Login = () => {
 
             // Redirect to the main page
             router.push('/');
+            router.refresh()
         }).catch((e) => {
             console.log('Login failed:', e.message);
             toast({
