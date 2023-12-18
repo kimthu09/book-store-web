@@ -15,6 +15,7 @@ import (
 	"book-store-management-backend/module/salereport/salereporttransport/ginsalereport"
 	ginstockreports "book-store-management-backend/module/stockreport/stockreporttransport/ginstockreport"
 	"book-store-management-backend/module/supplierdebtreport/supplierdebtreporttransport/ginsupplierdebtreport"
+	"book-store-management-backend/module/uploadfile/uploadfiletransport"
 	"time"
 
 	"book-store-management-backend/module/category/categorytransport"
@@ -92,6 +93,7 @@ func main() {
 	v1 := r.Group("/v1")
 	{
 		v1.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+		uploadfiletransport.SetupRoutes(v1, appCtx)
 
 		authortransport.SetupRoutes(v1, appCtx)
 		categorytransport.SetupRoutes(v1, appCtx)
