@@ -6,17 +6,14 @@ import (
 	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/author/authorrepo"
 	"book-store-management-backend/module/booktitle/booktitlemodel"
+	"book-store-management-backend/module/booktitle/booktitlerepo"
 	"book-store-management-backend/module/category/categoryrepo"
 	"context"
 )
 
-type CreateBookTitleRepo interface {
-	CreateBookTitle(ctx context.Context, data *booktitlemodel.BookTitle) error
-}
-
 type createBookTitleBiz struct {
 	gen          generator.IdGenerator
-	repo         CreateBookTitleRepo
+	repo         booktitlerepo.CreateBookTitleRepo
 	authorRepo   authorrepo.AuthorPublicRepo
 	categoryRepo categoryrepo.CategoryPublicRepo
 	requester    middleware.Requester
@@ -24,7 +21,7 @@ type createBookTitleBiz struct {
 
 func NewCreateBookTitleBiz(
 	gen generator.IdGenerator,
-	repo CreateBookTitleRepo,
+	repo booktitlerepo.CreateBookTitleRepo,
 	authorRepo authorrepo.AuthorPublicRepo,
 	categoryRepo categoryrepo.CategoryPublicRepo,
 	requester middleware.Requester) *createBookTitleBiz {
@@ -44,10 +41,10 @@ func (biz *createBookTitleBiz) CreateBookTitle(ctx context.Context, reqData *boo
 
 	data := &booktitlemodel.BookTitle{
 		ID:          nil,
-		Name:        reqData.Name,
-		Description: reqData.Description,
-		AuthorIDs:   reqData.AuthorIDs,
-		CategoryIDs: reqData.CategoryIDs,
+		Name:        &reqData.Name,
+		Description: &reqData.Description,
+		AuthorIDs:   &reqData.AuthorIDs,
+		CategoryIDs: &reqData.CategoryIDs,
 	}
 	if reqData.Id != "" {
 		data.ID = &reqData.Id
@@ -56,12 +53,14 @@ func (biz *createBookTitleBiz) CreateBookTitle(ctx context.Context, reqData *boo
 	if err := data.Validate(); err != nil {
 		return err
 	}
-	data.AuthorIDs = common.RemoveDuplicateStringValues(data.AuthorIDs)
-	if err := validateAuthors(ctx, biz.authorRepo, data.AuthorIDs); err != nil {
+	tmpAuthorIDs := common.RemoveDuplicateStringValues(*data.AuthorIDs)
+	data.AuthorIDs = &tmpAuthorIDs
+	if err := validateAuthors(ctx, biz.authorRepo, *data.AuthorIDs); err != nil {
 		return err
 	}
-	data.CategoryIDs = common.RemoveDuplicateStringValues(data.CategoryIDs)
-	if err := validateCategories(ctx, biz.categoryRepo, data.CategoryIDs); err != nil {
+	tmpCategoryIDs := common.RemoveDuplicateStringValues(*data.CategoryIDs)
+	data.CategoryIDs = &tmpCategoryIDs
+	if err := validateCategories(ctx, biz.categoryRepo, *data.CategoryIDs); err != nil {
 		return err
 	}
 	if err := handleBookTitleId(biz.gen, data); err != nil {

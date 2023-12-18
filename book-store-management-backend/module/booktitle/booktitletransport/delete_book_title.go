@@ -29,9 +29,9 @@ func DeleteBookTitle(appCtx appctx.AppContext) gin.HandlerFunc {
 		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
 
 		store := booktitlestore.NewSQLStore(appCtx.GetMainDBConnection())
-		repo := booktitlerepo.NewDeleteBookRepo(store)
+		repo := booktitlerepo.NewDeleteBookTitleRepo(store)
 
-		biz := booktitlebiz.NewDeleteBookBiz(requester, repo)
+		biz := booktitlebiz.NewDeleteBookTitleBiz(requester, repo)
 
 		err := biz.DeleteBookTitle(c.Request.Context(), bookId)
 		if err != nil {

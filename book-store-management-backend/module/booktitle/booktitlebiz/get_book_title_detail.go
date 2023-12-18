@@ -38,8 +38,8 @@ func (biz *bookTitleDetailBiz) GetBookTitleDetail(ctx context.Context, id string
 
 	result := booktitlemodel.BookTitleDetail{
 		ID:          rawBookTitle.ID,
-		Name:        rawBookTitle.Name,
-		Description: rawBookTitle.Description,
+		Name:        *rawBookTitle.Name,
+		Description: *rawBookTitle.Description,
 		CreatedAt:   rawBookTitle.CreatedAt,
 		Authors:     nil,
 		Categories:  nil,
@@ -48,7 +48,7 @@ func (biz *bookTitleDetailBiz) GetBookTitleDetail(ctx context.Context, id string
 		IsActive:    rawBookTitle.IsActive,
 	}
 
-	authors, err := biz.authorRepo.GetByListId(ctx, rawBookTitle.AuthorIDs)
+	authors, err := biz.authorRepo.GetByListId(ctx, *rawBookTitle.AuthorIDs)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func (biz *bookTitleDetailBiz) GetBookTitleDetail(ctx context.Context, id string
 		result.Authors[j].IsActive = nil
 	}
 
-	categories, err := biz.categoryRepo.GetByListId(ctx, rawBookTitle.CategoryIDs)
+	categories, err := biz.categoryRepo.GetByListId(ctx, *rawBookTitle.CategoryIDs)
 	if err != nil {
 		return nil, err
 	}

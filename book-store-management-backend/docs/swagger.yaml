@@ -159,9 +159,6 @@ definitions:
         example: Tôi Là Bêtô là tác phẩm của nhà văn chuyên viết cho thanh thiếu niên
           Nguyễn Nhật Ánh.
         type: string
-      id:
-        example: bookId
-        type: string
       name:
         example: Tôi là Bêtô
         type: string
@@ -727,6 +724,14 @@ definitions:
         example: 120000
         type: number
     type: object
+  invoicemodel.ResGetNearestInvoice:
+    properties:
+      data:
+        description: Data contains list of invoice.
+        items:
+          $ref: '#/definitions/invoicemodel.Invoice'
+        type: array
+    type: object
   invoicemodel.ResListInvoice:
     properties:
       data:
@@ -1080,6 +1085,14 @@ definitions:
       phone:
         example: "1234567890"
         type: string
+    type: object
+  suppliermodel.ResGetAllSupplier:
+    properties:
+      data:
+        description: Data contains list of user.
+        items:
+          $ref: '#/definitions/importnotemodel.SimpleSupplier'
+        type: array
     type: object
   suppliermodel.ResListSupplier:
     properties:
@@ -1490,6 +1503,10 @@ paths:
           description: booktitle id
           schema:
             $ref: '#/definitions/booktitlemodel.ResCreateBookTitle'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
       security:
       - BearerAuth: []
       summary: Create booktitle name, desc, authors, categories.
@@ -1984,6 +2001,30 @@ paths:
       security:
       - BearerAuth: []
       summary: See detail invoice
+      tags:
+      - invoices
+  /invoices/nearest:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: amountNeed
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list invoice
+          schema:
+            $ref: '#/definitions/invoicemodel.ResGetNearestInvoice'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Get nearest invoice
       tags:
       - invoices
   /login:
@@ -2530,6 +2571,26 @@ paths:
       security:
       - BearerAuth: []
       summary: Pay supplier
+      tags:
+      - suppliers
+  /suppliers/all:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list supplier
+          schema:
+            $ref: '#/definitions/suppliermodel.ResGetAllSupplier'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Get all supplier
       tags:
       - suppliers
   /users:

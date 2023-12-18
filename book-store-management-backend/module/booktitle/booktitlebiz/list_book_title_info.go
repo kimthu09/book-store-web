@@ -39,10 +39,10 @@ func (biz *listBookTitleBiz) ListBookTitle(ctx context.Context, filter *booktitl
 		result[i].IsActive = booktitle.IsActive
 
 		result[i].ID = booktitle.ID
-		result[i].Name = booktitle.Name
-		result[i].Description = booktitle.Description
+		result[i].Name = *booktitle.Name
+		result[i].Description = *booktitle.Description
 
-		authors, err := biz.authorRepo.GetByListId(ctx, booktitle.AuthorIDs)
+		authors, err := biz.authorRepo.GetByListId(ctx, *booktitle.AuthorIDs)
 		if err != nil {
 			return nil, err
 		}
@@ -54,7 +54,7 @@ func (biz *listBookTitleBiz) ListBookTitle(ctx context.Context, filter *booktitl
 			result[i].Authors[j].IsActive = nil
 		}
 
-		categories, err := biz.categoryRepo.GetByListId(ctx, booktitle.CategoryIDs)
+		categories, err := biz.categoryRepo.GetByListId(ctx, *booktitle.CategoryIDs)
 		if err != nil {
 			return nil, err
 		}

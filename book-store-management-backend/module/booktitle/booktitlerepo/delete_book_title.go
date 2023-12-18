@@ -4,6 +4,10 @@ import (
 	"context"
 )
 
+type DeleteBookTileRepo interface {
+	DeleteBookTitle(ctx context.Context, id string) error
+}
+
 type DeleteBookStore interface {
 	DeleteBookTitle(ctx context.Context, id string) error
 }
@@ -12,7 +16,7 @@ type deleteBookRepo struct {
 	store DeleteBookStore
 }
 
-func NewDeleteBookRepo(store DeleteBookStore) *deleteBookRepo {
+func NewDeleteBookTitleRepo(store DeleteBookStore) *deleteBookRepo {
 	return &deleteBookRepo{store: store}
 }
 
