@@ -1,4 +1,4 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
 import { Supplier } from "@/types";
 import useSWR from "swr";
 
@@ -17,7 +17,7 @@ const fetcher = (url: string) =>
 
 export default function getSupplier(idSupplier: string) {
   const { data, error, isLoading } = useSWR(
-    `http://localhost:8080/v1/suppliers/${idSupplier}`,
+    `${endPoint}/v1/suppliers/${idSupplier}`,
     fetcher
   );
 

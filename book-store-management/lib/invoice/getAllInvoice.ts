@@ -1,4 +1,4 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
 
 export type FilterProps = {
   page: number;
@@ -18,7 +18,7 @@ export default async function getAllInvoice({
   const minString = minPrice ? `&minPrice=${minPrice}` : "";
   const searchString = search ? `&search=${search}` : "";
   const createdByString = createdBy ? `&createdBy=${createdBy}` : "";
-  const url = `http://localhost:8080/v1/invoices?page=${page}${maxString}${minString}${searchString}${createdByString}`;
+  const url = `${endPoint}/v1/invoices?page=${page}${maxString}${minString}${searchString}${createdByString}`;
   console.log(url);
 
   const res = await fetch(url, {

@@ -1,4 +1,5 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
+import { PagingProps, Publisher } from "@/types";
 import useSWR from "swr";
 
 const fetcher = (url: string) =>
@@ -25,10 +26,8 @@ export default function getAllPublisher({
   page?: string;
   limit?: number;
 }) {
-  const { data, error, isLoading } = useSWR(
-    `http://localhost:8080/v1/publishers?page=${page ?? 1}&limit=${
-      limit ?? 10
-    }`,
+  const { data, error, isLoading, mutate } = useSWR(
+    `${endPoint}/v1/publishers?page=${page ?? 1}&limit=${limit ?? 10}`,
     fetcher
   );
 
@@ -36,5 +35,6 @@ export default function getAllPublisher({
     publishers: data,
     isLoading,
     isError: error,
+    mutate: mutate,
   };
 }

@@ -1,4 +1,4 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
 import { Author, PagingProps } from "@/types";
 import useSWR from "swr";
 
@@ -27,7 +27,7 @@ export default function getAllAuthor({
   page?: string;
 }) {
   const { data, error, isLoading } = useSWR(
-    `http://localhost:8080/v1/authors?page=${page ?? 1}&limit=${limit ?? 10}`,
+    `${endPoint}/v1/authors?page=${page ?? 1}&limit=${limit ?? 10}`,
     fetcher
   );
 

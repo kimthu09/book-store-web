@@ -1,4 +1,4 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
 import axios from "axios";
 
 export default async function createSupplier({
@@ -14,7 +14,7 @@ export default async function createSupplier({
   phone: string;
   debt: string;
 }) {
-  const url = "http://localhost:8080/v1/suppliers";
+  const url = `${endPoint}/v1/suppliers`;
   const data = {
     email: email,
     id: id,

@@ -1,11 +1,11 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
 
 export default async function getInvoiceDetail({
   idInvoice,
 }: {
   idInvoice: string;
 }) {
-  const res = await fetch(`http://localhost:8080/v1/invoices/${idInvoice}`, {
+  const res = await fetch(`${endPoint}/v1/invoices/${idInvoice}`, {
     headers: {
       accept: "application/json",
       Authorization: apiKey,
