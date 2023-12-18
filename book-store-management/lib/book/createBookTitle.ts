@@ -1,33 +1,27 @@
 import { apiKey, endPoint } from "@/constants";
 import axios from "axios";
 
-export default async function createBook({
+export default async function createBookTitle({
   id,
   name,
-  bookTitleId,
-  edition,
-  listedPrice,
-  publisherId,
-  sellPrice,
+  desc,
+  categoryIds,
+  authorIds,
 }: {
   id?: string;
   name: string;
-  bookTitleId: string;
-  edition: number;
-  listedPrice: number;
-  publisherId: string;
-  sellPrice: number;
+  desc: string;
+  categoryIds: string[];
+  authorIds: string[];
 }) {
-  const url = `${endPoint}/v1/books`;
+  const url = `${endPoint}/v1/booktitles`;
 
   const data = {
     id: id,
     name: name,
-    bookTitleId: bookTitleId,
-    edition: edition,
-    listedPrice: listedPrice,
-    publisherId: publisherId,
-    sellPrice: sellPrice,
+    desc: desc,
+    categoryIds: categoryIds,
+    authorIds: authorIds,
   };
   console.log(data);
   const headers = {
