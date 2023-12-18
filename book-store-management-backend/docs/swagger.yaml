@@ -244,6 +244,9 @@ definitions:
       id:
         example: book title id
         type: string
+      name:
+        example: Cho tui 1 vé về tuổi thơ
+        type: string
     type: object
   categorymodel.Category:
     properties:
