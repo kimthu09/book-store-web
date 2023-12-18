@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import Loading from "../loading";
 import getAllPublisher from "@/lib/book/getAllPublisher";
 import CreatePublisher from "./create-publisher";
+import { FaPlus } from "react-icons/fa";
 
 const PublisherList = ({ publisherId, setPublisherId }: PublisherListProps) => {
   const [open, setOpen] = useState(false);
@@ -81,7 +82,11 @@ const PublisherList = ({ publisherId, setPublisherId }: PublisherListProps) => {
             </Command>
           </DropdownMenuContent>
         </DropdownMenu>
-        <CreatePublisher handlePublisherAdded={handlePublisherAdded} />
+        <CreatePublisher handlePublisherAdded={handlePublisherAdded}>
+          <Button type="button" size={"icon"} className="px-3">
+            <FaPlus />
+          </Button>
+        </CreatePublisher>
       </div>
     );
 };

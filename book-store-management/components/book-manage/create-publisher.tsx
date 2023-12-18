@@ -16,7 +16,6 @@ import { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import createPublisher from "@/lib/book/createPublisher";
-import { FaPlus } from "react-icons/fa";
 const required = z.string().min(1, "Không để trống trường này");
 
 const FormSchema = z.object({
@@ -25,8 +24,10 @@ const FormSchema = z.object({
 
 const CreatePublisher = ({
   handlePublisherAdded,
+  children,
 }: {
   handlePublisherAdded: (publiserId: string) => void;
+  children: React.ReactNode;
 }) => {
   const {
     register,
@@ -71,16 +72,12 @@ const CreatePublisher = ({
         setOpen(open);
       }}
     >
-      <DialogTrigger asChild>
-        <Button type="button" size={"icon"} className="px-3">
-          <FaPlus />
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="xl:max-w-[720px] max-w-[472px] p-0 bg-white">
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className="max-w-[472px] p-0 bg-white">
         <DialogHeader>
           <DialogTitle className="p-6 pb-0"> Thêm nhà xuất bản</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form>
           <div className="p-6 flex flex-col gap-4 border-y-[1px]">
             <div>
               <Label htmlFor="nameNcc">Tên nhà xuất bản</Label>
@@ -93,14 +90,16 @@ const CreatePublisher = ({
           <div className="p-4 flex-1 flex justify-end">
             <div className="flex gap-4">
               <Button
-                type="reset"
+                type="button"
                 variant={"outline"}
                 onClick={() => setOpen(false)}
               >
                 Huỷ
               </Button>
 
-              <Button type="submit">Thêm</Button>
+              <Button type="button" onClick={handleSubmit(onSubmit)}>
+                Thêm
+              </Button>
             </div>
           </div>
         </form>
