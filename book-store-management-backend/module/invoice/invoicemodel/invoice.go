@@ -29,7 +29,7 @@ var (
 	)
 	ErrInvoiceBookIsNotEnough = common.NewCustomError(
 		errors.New("exist book in the stock is not enough for the invoice"),
-		"Tồn tại 1 sách có số lượng trong kho đủ để bán",
+		"Tồn tại 1 sách có số lượng trong kho không đủ để bán",
 		"ErrInvoiceBookIsNotEnough",
 	)
 	ErrInvoiceCreateNoPermission = common.ErrNoPermission(
