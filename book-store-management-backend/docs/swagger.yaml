@@ -51,6 +51,27 @@ definitions:
         example: Nguyễn Văn A
         type: string
     type: object
+  bookmodel.Filter:
+    properties:
+      authorIds:
+        example: authorId1|authorId2
+        type: string
+      categoryIds:
+        example: categoryId1|categoryId2
+        type: string
+      maxSellPrice:
+        example: 0
+        type: integer
+      minSellPrice:
+        example: 0
+        type: integer
+      publisherId:
+        example: publisher id
+        type: string
+      searchKey:
+        example: id, name
+        type: string
+    type: object
   bookmodel.ReqCreateBook:
     properties:
       bookTitleId:
@@ -74,12 +95,59 @@ definitions:
       id:
         type: string
     type: object
+  bookmodel.ResDetailUnitBook:
+    properties:
+      bookTitle:
+        $ref: '#/definitions/booktitlemodel.SimpleBookTitle'
+      edition:
+        example: 1
+        type: integer
+      id:
+        example: bookId
+        type: string
+      importPrice:
+        example: 100000
+        type: integer
+      isActive:
+        example: true
+        type: boolean
+      listedPrice:
+        example: 100000
+        type: integer
+      name:
+        example: Cho tui 1 vé về tuổi thơ
+        type: string
+      publisher:
+        $ref: '#/definitions/publishermodel.Publisher'
+      quantity:
+        example: 100
+        type: integer
+      sellPrice:
+        example: 120000
+        type: integer
+    type: object
   bookmodel.ResGetAllBook:
     properties:
       data:
         items:
           $ref: '#/definitions/bookmodel.ResUnitBook'
         type: array
+    type: object
+  bookmodel.ResListBook:
+    properties:
+      data:
+        description: Data contains list of book.
+        items:
+          $ref: '#/definitions/bookmodel.ResDetailUnitBook'
+        type: array
+      filter:
+        allOf:
+        - $ref: '#/definitions/bookmodel.Filter'
+        description: Filter contains the filter parameters used to retrieve book.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
     type: object
   bookmodel.ResUnitBook:
     properties:
@@ -1494,6 +1562,62 @@ paths:
       tags:
       - authors
   /books:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: authorId1|authorId2
+        in: query
+        name: authors
+        type: string
+      - example: categoryId1|categoryId2
+        in: query
+        name: categories
+        type: string
+      - example: 0
+        in: query
+        name: maxSellPrice
+        type: integer
+      - example: 0
+        in: query
+        name: minSellPrice
+        type: integer
+      - example: publisher id
+        in: query
+        name: publisher
+        type: string
+      - example: id, name
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list book
+          schema:
+            $ref: '#/definitions/bookmodel.ResListBook'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List book
+      tags:
+      - books
     post:
       consumes:
       - application/json
