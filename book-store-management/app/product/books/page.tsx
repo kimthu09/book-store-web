@@ -1,15 +1,12 @@
-import { BookTable } from "@/components/book-manage/table";
 import TableLayout from "@/components/book-manage/table-layout";
 import Loading from "@/components/loading";
 import { Button } from "@/components/ui/button";
-import getAllBooks from "@/lib/book/getAllBook";
-import { Book } from "@/types";
 import Link from "next/link";
 import React, { Suspense } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { Metadata } from "next";
 export const metadata: Metadata = {
-  title: "Sách",
+  title: "Đầu Sách",
 };
 async function BookManagement({
   searchParams,

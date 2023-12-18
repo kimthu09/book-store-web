@@ -1,6 +1,6 @@
 "use client";
 
-import AuthorList from "@/components/author-list";
+import AuthorList from "@/components/book-manage/author-list";
 import CategoryList from "@/components/book-manage/category-list";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

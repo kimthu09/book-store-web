@@ -15,18 +15,19 @@ import * as z from "zod";
 import { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
-import createPublisher from "@/lib/book/createPublisher";
+import { FaPlus } from "react-icons/fa";
+import createAuthor from "@/lib/book/createAuthor";
 const required = z.string().min(1, "Không để trống trường này");
 
-const FormSchema = z.object({
+const SupplierSchema = z.object({
   name: required,
 });
 
-const CreatePublisher = ({
-  handlePublisherAdded,
+const CreateAuthor = ({
+  handleAuthorAdded,
   children,
 }: {
-  handlePublisherAdded: (publiserId: string) => void;
+  handleAuthorAdded: (categoryId: string) => void;
   children: React.ReactNode;
 }) => {
   const {
@@ -34,14 +35,16 @@ const CreatePublisher = ({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  } = useForm<z.infer<typeof SupplierSchema>>({
+    resolver: zodResolver(SupplierSchema),
   });
   const router = useRouter();
-  const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
+  const onSubmit: SubmitHandler<z.infer<typeof SupplierSchema>> = async (
+    data
+  ) => {
     setOpen(false);
     console.log(data);
-    const response: Promise<any> = createPublisher(data);
+    const response: Promise<any> = createAuthor(data);
     const responseData = await response;
     console.log(responseData);
     if (responseData.hasOwnProperty("errorKey")) {
@@ -54,9 +57,9 @@ const CreatePublisher = ({
       toast({
         variant: "success",
         title: "Thành công",
-        description: "Thêm nhà xuất bản thành công",
+        description: "Thêm tác giả thành công",
       });
-      handlePublisherAdded(responseData.data);
+      handleAuthorAdded(responseData.data);
       setOpen(false);
     }
   };
@@ -75,12 +78,12 @@ const CreatePublisher = ({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-[472px] p-0 bg-white">
         <DialogHeader>
-          <DialogTitle className="p-6 pb-0"> Thêm nhà xuất bản</DialogTitle>
+          <DialogTitle className="p-6 pb-0">Thêm tác giả</DialogTitle>
         </DialogHeader>
         <form>
           <div className="p-6 flex flex-col gap-4 border-y-[1px]">
             <div>
-              <Label htmlFor="nameNcc">Tên nhà xuất bản</Label>
+              <Label htmlFor="nameNcc">Tên tác giả</Label>
               <Input id="nameNcc" {...register("name")}></Input>
               {errors.name && (
                 <span className="error___message">{errors.name.message}</span>
@@ -90,7 +93,7 @@ const CreatePublisher = ({
           <div className="p-4 flex-1 flex justify-end">
             <div className="flex gap-4">
               <Button
-                type="button"
+                type="reset"
                 variant={"outline"}
                 onClick={() => setOpen(false)}
               >
@@ -108,4 +111,4 @@ const CreatePublisher = ({
   );
 };
 
-export default CreatePublisher;
+export default CreateAuthor;

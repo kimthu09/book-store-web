@@ -25,7 +25,7 @@ export default function getAllCategory({
   page?: string;
   limit?: number;
 }) {
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading, mutate } = useSWR(
     `${endPoint}/v1/categories?page=${page ?? 1}&limit=${limit ?? 10}`,
     fetcher
   );
@@ -34,5 +34,6 @@ export default function getAllCategory({
     categories: data,
     isLoading,
     isError: error,
+    mutate: mutate,
   };
 }
