@@ -22,28 +22,31 @@ func (*Category) TableName() string {
 var (
 	ErrCategoryIdInvalid = common.NewCustomError(
 		errors.New("id of Category is invalid"),
-		`id of Category is invalid`,
+		`Mã của thể loại không hợp lệ`,
 		"ErrCategoryIdInvalid",
 	)
 	ErrCategoryNameEmpty = common.NewCustomError(
 		errors.New("name of Category is empty"),
-		"name of Category is empty",
+		"Tên của thể loại đang trống",
 		"ErrCategoryNameEmpty",
 	)
 	ErrCategoryIdDuplicate = common.ErrDuplicateKey(
-		errors.New("id of Category is duplicate"),
+		errors.New("Thể loại đã tồn tại"),
+	)
+	ErrCategoryNameDuplicate = common.ErrDuplicateKey(
+		errors.New("Tên thể loại đã tồn tại"),
 	)
 	ErrCategoryCreateNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to create Category"),
+		errors.New("Bạn không có quyền tạo thể loại mới"),
 	)
 	ErrCategoryViewNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to view Category"),
+		errors.New("Bạn không có quyền xem thể loại"),
 	)
 	ErrCategoryUpdateNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to update Category"),
+		errors.New("Bạn không có quyền chỉnh sửa thông tin thể loại"),
 	)
 	ErrCategoryDeleteNoPermission = common.ErrNoPermission(
-		errors.New("you have no permission to delete Category"),
+		errors.New("Bạn không có quyền xóa thể loại"),
 	)
 )
 

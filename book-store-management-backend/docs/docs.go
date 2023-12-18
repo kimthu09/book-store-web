@@ -134,6 +134,39 @@ const docTemplate = `{
                 }
             }
         },
+        "/books/all": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "books"
+                ],
+                "summary": "Get all book",
+                "responses": {
+                    "200": {
+                        "description": "list book",
+                        "schema": {
+                            "$ref": "#/definitions/bookmodel.ResGetAllBook"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
         "/booktitles": {
             "get": {
                 "security": [
@@ -2458,7 +2491,7 @@ const docTemplate = `{
         "authormodel.ResCreateAuthor": {
             "type": "object",
             "properties": {
-                "id": {
+                "data": {
                     "type": "string"
                 }
             }
@@ -2477,6 +2510,19 @@ const docTemplate = `{
                 },
                 "paging": {
                     "$ref": "#/definitions/common.Paging"
+                }
+            }
+        },
+        "authormodel.SimpleAuthor": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "author id"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Nguyễn Văn A"
                 }
             }
         },
@@ -2512,6 +2558,56 @@ const docTemplate = `{
             "properties": {
                 "id": {
                     "type": "string"
+                }
+            }
+        },
+        "bookmodel.ResGetAllBook": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/bookmodel.ResUnitBook"
+                    }
+                }
+            }
+        },
+        "bookmodel.ResUnitBook": {
+            "type": "object",
+            "properties": {
+                "bookTitle": {
+                    "$ref": "#/definitions/booktitlemodel.SimpleBookTitle"
+                },
+                "edition": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id": {
+                    "type": "string",
+                    "example": "bookId"
+                },
+                "importPrice": {
+                    "type": "integer",
+                    "example": 100000
+                },
+                "listedPrice": {
+                    "type": "integer",
+                    "example": 100000
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Cho tui 1 vé về tuổi thơ"
+                },
+                "publisher": {
+                    "$ref": "#/definitions/publishermodel.Publisher"
+                },
+                "quantity": {
+                    "type": "integer",
+                    "example": 100
+                },
+                "sellPrice": {
+                    "type": "integer",
+                    "example": 120000
                 }
             }
         },
@@ -2666,7 +2762,7 @@ const docTemplate = `{
         "booktitlemodel.ResCreateBookTitle": {
             "type": "object",
             "properties": {
-                "id": {
+                "data": {
                     "type": "string"
                 }
             }
@@ -2685,6 +2781,35 @@ const docTemplate = `{
                 },
                 "paging": {
                     "$ref": "#/definitions/common.Paging"
+                }
+            }
+        },
+        "booktitlemodel.SimpleBookTitle": {
+            "type": "object",
+            "properties": {
+                "authors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/authormodel.SimpleAuthor"
+                    }
+                },
+                "categories": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/categorymodel.SimpleCategory"
+                    }
+                },
+                "desc": {
+                    "type": "string",
+                    "example": "Câu chuyên hay cảm động rớt nước mắt"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "book title id"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Cho tui 1 vé về tuổi thơ"
                 }
             }
         },
@@ -2731,7 +2856,7 @@ const docTemplate = `{
         "categorymodel.ResCreateCategory": {
             "type": "object",
             "properties": {
-                "id": {
+                "name": {
                     "type": "string"
                 }
             }
@@ -2750,6 +2875,19 @@ const docTemplate = `{
                 },
                 "paging": {
                     "$ref": "#/definitions/common.Paging"
+                }
+            }
+        },
+        "categorymodel.SimpleCategory": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "category id"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Tiểu thuyết"
                 }
             }
         },
@@ -3553,10 +3691,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "publisher id"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "NXB Kim Đồng"
                 }
             }
         },
@@ -3572,7 +3712,7 @@ const docTemplate = `{
         "publishermodel.ResCreatePublisher": {
             "type": "object",
             "properties": {
-                "id": {
+                "data": {
                     "type": "string"
                 }
             }
