@@ -25,11 +25,11 @@ const Login = () => {
             "email": email,
             "password": password
         }).then((res) => {
-            const { accessToken, refreshToken } = res.data;
+            const { accessToken, refreshToken } = res.data.data;
 
             // Save tokens in cookies
-            Cookies.set('accessToken', accessToken);
-            Cookies.set('refreshToken', refreshToken);
+            Cookies.set('accessToken', accessToken.token, { expires: accessToken.expiry });
+            Cookies.set('refreshToken', refreshToken.token, { expires: refreshToken.expiry });
 
             // Redirect to the main page
             router.push('/');
