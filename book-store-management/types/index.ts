@@ -16,6 +16,32 @@ export type Book = {
   desc: string;
   edition: number;
 };
+export type BookProps = {
+  id: string;
+  name: string;
+  bookTitle: {
+    id: string;
+    name: string;
+    desc: string;
+    authors: {
+      id: string;
+      name: string;
+    }[];
+    categories: {
+      id: string;
+      name: string;
+    }[];
+  };
+  publisher: {
+    id: string;
+    name: string;
+  };
+  edition: number;
+  quantity: number;
+  listedPrice: number;
+  sellPrice: number;
+  importPrice: number;
+};
 
 export type BookTitle = {
   id: string;
