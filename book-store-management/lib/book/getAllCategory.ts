@@ -1,5 +1,4 @@
-import { apiKey } from "@/constants";
-import { Category, PagingProps } from "@/types";
+import { apiKey, endPoint } from "@/constants";
 import useSWR from "swr";
 
 const fetcher = (url: string) =>
@@ -27,9 +26,7 @@ export default function getAllCategory({
   limit?: number;
 }) {
   const { data, error, isLoading } = useSWR(
-    `http://localhost:8080/v1/categories?page=${page ?? 1}&limit=${
-      limit ?? 10
-    }`,
+    `${endPoint}/v1/categories?page=${page ?? 1}&limit=${limit ?? 10}`,
     fetcher
   );
 

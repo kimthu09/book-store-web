@@ -1,8 +1,8 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
 import axios from "axios";
 
 export default async function createCategory({ name }: { name: string }) {
-  const url = "http://localhost:8080/v1/categories";
+  const url = `${endPoint}/v1/categories"`;
 
   const data = {
     name: name,

@@ -17,6 +17,14 @@ export type Book = {
   edition: number;
 };
 
+export type BookTitle = {
+  id: string;
+  name: string;
+  desc: string;
+  isActive: boolean;
+  categories: { id: string; name: string }[];
+  authors: { id: string; name: string }[];
+};
 export type Invoice = {
   createdAt: Date;
   createdBy: {
@@ -168,7 +176,18 @@ export interface StaffListProps {
   staff: string;
   setStaff: (role: string) => void;
 }
-
+export interface TitleListProps {
+  handleTitleSet: (titleId: string) => void;
+}
+export interface StatusListProps {
+  status?: boolean;
+  setStatus: (role: boolean) => void;
+  display: { trueText: string; falseText: string };
+}
+export interface PublisherListProps {
+  publisherId: string;
+  setPublisherId: (nameId: string) => void;
+}
 export type PagingProps = {
   page: number;
   limit: number;

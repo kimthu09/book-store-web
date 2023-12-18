@@ -1,4 +1,4 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
 
 export type FilterProps = {
   page: number;
@@ -10,9 +10,9 @@ export default async function getAllStaff({
   isActive,
   search,
 }: FilterProps) {
-  const isActiveString = isActive ?? "";
+  const isActiveString = isActive ? `&active=${isActive}` : "";
   const searchString = search ? `&search=${search}` : "";
-  const url = `http://localhost:8080/v1/users?page=${page}${isActiveString}${searchString}`;
+  const url = `${endPoint}/v1/users?page=${page}${isActiveString}${searchString}`;
   console.log(url);
 
   const res = await fetch(url, {
@@ -23,7 +23,9 @@ export default async function getAllStaff({
   });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    // throw new Error("Failed to fetch data");
+    console.error(res);
+    return res.json();
   }
   return res.json().then((json) => {
     return {

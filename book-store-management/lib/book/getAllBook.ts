@@ -1,7 +1,7 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
 
 export default async function getAllBooks(page: number) {
-  const res = await fetch(`http://localhost:8080/v1/booktitles?page=${page}`, {
+  const res = await fetch(`${endPoint}/v1/booktitles?page=${page}`, {
     headers: {
       accept: "application/json",
       Authorization: apiKey,

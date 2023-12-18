@@ -1,4 +1,4 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
 import axios from "axios";
 
 export default async function createRole({
@@ -8,7 +8,7 @@ export default async function createRole({
   name: string;
   features: string[];
 }) {
-  const url = "http://localhost:8080/v1/roles";
+  const url = `${endPoint}/v1/roles`;
 
   const data = {
     name: name,

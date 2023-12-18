@@ -3,22 +3,22 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "../ui/dropdown-menu";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "./ui/command";
+} from "../ui/command";
 import { LuCheck, LuChevronsUpDown } from "react-icons/lu";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { cn } from "@/lib/utils";
 import { CategoryListProps } from "@/types";
-import { Checkbox } from "./ui/checkbox";
+import { Checkbox } from "../ui/checkbox";
 import getAllCategory from "@/lib/book/getAllCategory";
-import Loading from "./loading";
+import Loading from "../loading";
 
 const CategoryList = ({
   checkedCategory,
@@ -27,7 +27,6 @@ const CategoryList = ({
   readonly,
 }: CategoryListProps) => {
   const [openCategory, setOpenCategory] = useState(false);
-  // const [newCategory, setNewCategory] = useState("");
   const { categories, isLoading, isError } = getAllCategory({ limit: 1000 });
 
   if (isError) return <div>Failed to load</div>;

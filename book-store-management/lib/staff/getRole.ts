@@ -1,4 +1,4 @@
-import { apiKey } from "@/constants";
+import { apiKey, endPoint } from "@/constants";
 import { Role } from "@/types";
 import useSWR from "swr";
 
@@ -16,7 +16,7 @@ const fetcher = (url: string) =>
 
 export default function getRole(idRole: string) {
   const { data, error, isLoading } = useSWR(
-    `http://localhost:8080/v1/roles/${idRole}`,
+    `${endPoint}/v1/roles/${idRole}`,
     fetcher
   );
 

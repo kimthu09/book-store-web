@@ -1,9 +1,29 @@
 import { apiKey, endPoint } from "@/constants";
 import axios from "axios";
 
-export default async function createStaff({ staff }: { staff: {} }) {
-  const url = `${endPoint}/v1/users`;
+export default async function createBookTitle({
+  id,
+  name,
+  desc,
+  categoryIds,
+  authorIds,
+}: {
+  id?: string;
+  name: string;
+  desc: string;
+  categoryIds: string[];
+  authorIds: string[];
+}) {
+  const url = `${endPoint}/v1/booktitles`;
 
+  const data = {
+    id: id,
+    name: name,
+    desc: desc,
+    categoryIds: categoryIds,
+    authorIds: authorIds,
+  };
+  console.log(data);
   const headers = {
     accept: "application/json",
     "Content-Type": "application/json",
@@ -14,7 +34,7 @@ export default async function createStaff({ staff }: { staff: {} }) {
 
   // Make a POST request with headers
   const res = axios
-    .post(url, staff, { headers: headers })
+    .post(url, data, { headers: headers })
     .then((response) => {
       if (response) return response.data;
     })
