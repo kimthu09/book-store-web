@@ -2,7 +2,7 @@ import { apiKey, endPoint } from "@/constants";
 import axios from "axios";
 
 export default async function createCategory({ name }: { name: string }) {
-  const url = `${endPoint}/v1/categories"`;
+  const url = `${endPoint}/v1/categories`;
 
   const data = {
     name: name,
