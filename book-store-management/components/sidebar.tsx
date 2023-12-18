@@ -18,17 +18,15 @@ export default function Sidebar() {
   return (
     <div className="md:flex hidden z-20">
       <aside
-        className={`bg-white h-screen p-1 transition-all shadow-md overflow-auto ${
-          isCollapse ? "w-[3.8rem]" : "w-64"
-        }`}
+        className={`bg-white h-screen p-1 transition-all shadow-md overflow-auto ${isCollapse ? "w-[3.8rem]" : "w-64"
+          }`}
       >
         <nav className="w-full">
           <div className={`flex items-center my-4 h-[64px]`}>
             <Link href="/">
               <div
-                className={`flex align-middle justify-center items-center gap-4 h-[64px] w-[64px]  rounded-xl ${
-                  isCollapse ? "hidden" : "flex"
-                }`}
+                className={`flex align-middle justify-center items-center gap-4 h-[64px] w-[64px]  rounded-xl ${isCollapse ? "hidden" : "flex"
+                  }`}
               >
                 <Image
                   src="/android-chrome-192x192.png"
@@ -41,17 +39,15 @@ export default function Sidebar() {
 
             <Link href="/">
               <p
-                className={`text-lg ml-2 font-semibold overflow-hidden whitespace-nowrap ${
-                  isCollapse ? "hidden" : "block"
-                }`}
+                className={`text-lg ml-2 font-semibold overflow-hidden whitespace-nowrap ${isCollapse ? "hidden" : "block"
+                  }`}
               >
                 Book Store
               </p>
             </Link>
             <div
-              className={`rounded-full hover:bg-blue-100 cursor-pointer ${
-                isCollapse ? "m-auto p-1" : "ml-auto mr-1 p-1 "
-              }`}
+              className={`rounded-full hover:bg-blue-100 cursor-pointer ${isCollapse ? "m-auto p-1" : "ml-auto mr-1 p-1 "
+                }`}
               onClick={toggleSidebarHandler}
             >
               <HiDotsVertical className="w-6 h-6" />
@@ -90,9 +86,8 @@ const MenuItem = ({
         <>
           <div onClick={toggleSubMenu}>
             <div
-              className={`flex text-base no-underline text-black px-4 py-3 mb-2 rounded-md overflow-hidden max-h-15 hover:bg-blue-50 cursor-pointer ${
-                pathname.includes(item.href) ? "bg-zinc-100" : ""
-              }`}
+              className={`flex text-base no-underline text-black px-4 py-3 mb-2 rounded-md overflow-hidden max-h-15 hover:bg-blue-50 cursor-pointer ${pathname.includes(item.href) ? "bg-zinc-100" : ""
+                }`}
             >
               {item.icon ? (
                 <>
@@ -103,16 +98,14 @@ const MenuItem = ({
               ) : null}
 
               <span
-                className={`ml-2 text-lg overflow-hidden  whitespace-nowrap ${
-                  isCollapse ? "hidden opacity-0" : "visible opacity-100"
-                }`}
+                className={`ml-2 text-lg overflow-hidden  whitespace-nowrap ${isCollapse ? "hidden opacity-0" : "visible opacity-100"
+                  }`}
               >
                 {item.title}
               </span>
               <div
-                className={`ml-auto self-center ${
-                  isCollapse ? "hidden" : "visible"
-                } ${subMenuOpen && !isCollapse ? "rotate-180" : ""} flex`}
+                className={`ml-auto self-center ${isCollapse ? "hidden" : "visible"
+                  } ${subMenuOpen && !isCollapse ? "rotate-180" : ""} flex`}
               >
                 <LuChevronDown className="sidebar__icon" />
               </div>
@@ -136,13 +129,11 @@ const MenuItem = ({
                     ) : null}
 
                     <span
-                      className={`ml-2 text-lg overflow-hidden  whitespace-nowrap ${
-                        isCollapse ? "hidden" : "visible"
-                      } ${
-                        subItem.href === pathname
+                      className={`ml-2 text-lg overflow-hidden  whitespace-nowrap ${isCollapse ? "hidden" : "visible"
+                        } ${subItem.href === pathname
                           ? "text-primary font-medium"
                           : ""
-                      }`}
+                        }`}
                     >
                       {subItem.title}
                     </span>
@@ -155,9 +146,8 @@ const MenuItem = ({
       ) : (
         <Link
           href={item.href}
-          className={`flex text-base no-underline text-black px-4 py-3 mb-2 rounded-md overflow-hidden max-h-15 hover:bg-blue-50 ${
-            item.href === pathname ? "bg-zinc-100" : ""
-          }`}
+          className={`flex text-base no-underline text-black px-4 py-3 mb-2 rounded-md overflow-hidden max-h-15 hover:bg-blue-50 ${item.href === pathname ? "bg-zinc-100" : ""
+            }`}
         >
           {item.icon ? (
             <>
@@ -168,9 +158,8 @@ const MenuItem = ({
           ) : null}
 
           <span
-            className={`ml-2 text-lg overflow-hidden  whitespace-nowrap ${
-              isCollapse ? "hidden" : "visible"
-            }`}
+            className={`ml-2 text-lg overflow-hidden  whitespace-nowrap ${isCollapse ? "hidden" : "visible"
+              }`}
           >
             {item.title}
           </span>

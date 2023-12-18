@@ -32,6 +32,7 @@
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "framer-motion": "^10.16.5",
+    "js-cookie": "^3.0.5",
     "next": "14.0.1",
     "react": "^18",
     "react-day-picker": "^8.9.1",
@@ -45,6 +46,7 @@
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.7",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
