@@ -91,6 +91,93 @@
             }
         },
         "/books": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "books"
+                ],
+                "summary": "List book",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 11,
+                        "name": "total",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "authorId1|authorId2",
+                        "name": "authors",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "categoryId1|categoryId2",
+                        "name": "categories",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 0,
+                        "name": "maxSellPrice",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 0,
+                        "name": "minSellPrice",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "publisher id",
+                        "name": "publisher",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "id, name",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "list book",
+                        "schema": {
+                            "$ref": "#/definitions/bookmodel.ResListBook"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -2520,6 +2607,35 @@
                 }
             }
         },
+        "bookmodel.Filter": {
+            "type": "object",
+            "properties": {
+                "authorIds": {
+                    "type": "string",
+                    "example": "authorId1|authorId2"
+                },
+                "categoryIds": {
+                    "type": "string",
+                    "example": "categoryId1|categoryId2"
+                },
+                "maxSellPrice": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "minSellPrice": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "publisherId": {
+                    "type": "string",
+                    "example": "publisher id"
+                },
+                "searchKey": {
+                    "type": "string",
+                    "example": "id, name"
+                }
+            }
+        },
         "bookmodel.ReqCreateBook": {
             "type": "object",
             "properties": {
@@ -2555,6 +2671,49 @@
                 }
             }
         },
+        "bookmodel.ResDetailUnitBook": {
+            "type": "object",
+            "properties": {
+                "bookTitle": {
+                    "$ref": "#/definitions/booktitlemodel.SimpleBookTitle"
+                },
+                "edition": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "id": {
+                    "type": "string",
+                    "example": "bookId"
+                },
+                "importPrice": {
+                    "type": "integer",
+                    "example": 100000
+                },
+                "isActive": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "listedPrice": {
+                    "type": "integer",
+                    "example": 100000
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Cho tui 1 vé về tuổi thơ"
+                },
+                "publisher": {
+                    "$ref": "#/definitions/publishermodel.Publisher"
+                },
+                "quantity": {
+                    "type": "integer",
+                    "example": 100
+                },
+                "sellPrice": {
+                    "type": "integer",
+                    "example": 120000
+                }
+            }
+        },
         "bookmodel.ResGetAllBook": {
             "type": "object",
             "properties": {
@@ -2563,6 +2722,34 @@
                     "items": {
                         "$ref": "#/definitions/bookmodel.ResUnitBook"
                     }
+                }
+            }
+        },
+        "bookmodel.ResListBook": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains list of book.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/bookmodel.ResDetailUnitBook"
+                    }
+                },
+                "filter": {
+                    "description": "Filter contains the filter parameters used to retrieve book.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/bookmodel.Filter"
+                        }
+                    ]
+                },
+                "paging": {
+                    "description": "Paging provides information about pagination.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/common.Paging"
+                        }
+                    ]
                 }
             }
         },
