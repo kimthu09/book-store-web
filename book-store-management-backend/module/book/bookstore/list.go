@@ -58,17 +58,32 @@ func handleFilter(
 			db = db.Joins("JOIN BookTitle ON Book.booktitleid = BookTitle.id")
 			if filter.AuthorIds != nil {
 				authorIds := strings.Split(*filter.AuthorIds, "|")
-				for _, authorId := range authorIds {
-					db = db.
-						Where("BookTitle.authorIds LIKE ?", "%"+authorId+"%")
+				query := ""
+				params := make([]interface{}, 0)
+				for i, authorId := range authorIds {
+					params = append(params, "%"+authorId+"%")
+					if i == 0 {
+						query += "BookTitle.authorIds LIKE ?"
+					} else {
+						query += " OR BookTitle.authorIds LIKE ?"
+					}
 				}
+				db = db.Where(query, params...)
 			}
+
 			if filter.CategoryIds != nil {
 				categoryIds := strings.Split(*filter.CategoryIds, "|")
-				for _, categoryId := range categoryIds {
-					db = db.
-						Where("BookTitle.categoryIds LIKE ?", "%"+categoryId+"%")
+				query := ""
+				params := make([]interface{}, 0)
+				for i, categoryId := range categoryIds {
+					params = append(params, "%"+categoryId+"%")
+					if i == 0 {
+						query += "BookTitle.categoryIds LIKE ?"
+					} else {
+						query += " OR BookTitle.categoryIds LIKE ?"
+					}
 				}
+				db = db.Where(query, params...)
 			}
 		}
 		if filter.PublisherId != nil {
