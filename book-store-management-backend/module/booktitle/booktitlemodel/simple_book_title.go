@@ -8,6 +8,7 @@ import (
 
 type SimpleBookTitle struct {
 	ID          string                         `json:"id" gorm:"column:id;primaryKey" example:"book title id"`
+	Name        string                         `json:"name" gorm:"column:name" example:"Cho tui 1 vé về tuổi thơ"`
 	Description string                         `json:"desc" gorm:"column:desc" example:"Câu chuyên hay cảm động rớt nước mắt"`
 	AuthorIDs   string                         `json:"-" gorm:"column:authorIds"`
 	CategoryIDs string                         `json:"-" gorm:"column:categoryIds"`

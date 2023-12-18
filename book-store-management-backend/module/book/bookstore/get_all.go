@@ -4,11 +4,11 @@ import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/module/book/bookmodel"
 	"context"
-	"log"
 )
 
 func (s *sqlStore) GetAllBook(
 	ctx context.Context,
+	justGetAllActiveBook bool,
 	moreKeys ...string) ([]bookmodel.ResUnitBook, error) {
 	var result []bookmodel.ResUnitBook
 	db := s.db
@@ -18,11 +18,11 @@ func (s *sqlStore) GetAllBook(
 	}
 
 	if err := db.
+		Where("isActive = ?", justGetAllActiveBook).
 		Order("name").
 		Find(&result).Error; err != nil {
 		return nil, common.ErrDB(err)
 	}
 
-	log.Println(result[0].BookTitleID)
 	return result, nil
 }

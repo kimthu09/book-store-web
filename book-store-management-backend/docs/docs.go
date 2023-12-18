@@ -2806,6 +2806,10 @@ const docTemplate = `{
                 "id": {
                     "type": "string",
                     "example": "book title id"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Cho tui 1 vé về tuổi thơ"
                 }
             }
         },
