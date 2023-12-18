@@ -21,10 +21,11 @@ import { LuCheck } from "react-icons/lu";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Loading from "@/components/loading";
-import { required } from "@/constants";
+import { endPoint, required } from "@/constants";
 import BookTitleSelect from "@/components/book-manage/book-title-select";
 import PublisherList from "@/components/book-manage/publisher-list";
 import createBook from "@/lib/book/createBook";
+import { useSWRConfig } from "swr";
 
 const FormSchema = z.object({
   bookTitleId: z.string().min(1, "Vui lòng chọn một đầu sách"),
@@ -71,6 +72,7 @@ const InsertNewBook = () => {
     setValue("publisherId", idPublisher);
     trigger("publisherId");
   };
+  const { mutate } = useSWRConfig();
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     console.log(data);
     const response: Promise<any> = createBook({
@@ -95,6 +97,7 @@ const InsertNewBook = () => {
         title: "Thành công",
         description: "Thêm mới sách thành công",
       });
+      mutate(`${endPoint}/v1/books/all`);
     }
   };
   return (
@@ -152,6 +155,7 @@ const InsertNewBook = () => {
                   <div className="flex-1">
                     <Label>Nhà xuất bản</Label>
                     <PublisherList
+                      canAdd
                       publisherId={publisherId}
                       setPublisherId={handlePublisherIdSet}
                     />

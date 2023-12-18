@@ -6,7 +6,7 @@ import React, { Suspense } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { Metadata } from "next";
 export const metadata: Metadata = {
-  title: "Đầu Sách",
+  title: "Sách",
 };
 async function BookManagement({
   searchParams,
@@ -16,7 +16,7 @@ async function BookManagement({
   return (
     <div className="col">
       <div className="flex flex-row justify-between items-center">
-        <h1>Tất cả đầu sách</h1>
+        <h1>Tất cả sách</h1>
         <div className="flex gap-4">
           <Link href="/product/books/add">
             <Button className="p-2">
