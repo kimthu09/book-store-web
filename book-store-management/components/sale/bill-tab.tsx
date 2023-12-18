@@ -1,5 +1,5 @@
 import { FormValues } from "@/app/sale/page";
-import React from "react";
+import { useState } from "react";
 import {
   Control,
   FieldArrayWithId,
@@ -26,7 +26,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { DialogClose } from "@radix-ui/react-dialog";
 import { toast } from "../ui/use-toast";
 
 const AddUp = ({
@@ -85,6 +84,7 @@ const BillTab = ({
   onPayClick: () => void;
   isSheet?: boolean;
 }) => {
+  const [open, setOpen] = useState(false);
   const invoices = watch("details");
   return (
     <Card className="sticky right-0 top-0 h-[86vh] overflow-hidden">
@@ -191,7 +191,7 @@ const BillTab = ({
               </Label>
             </div>
           </RadioGroup>
-          <Dialog>
+          <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button>Thanh toán</Button>
             </DialogTrigger>
@@ -203,16 +203,19 @@ const BillTab = ({
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
-                <DialogClose className="flex gap-5 justify-end">
-                  <Button variant={"outline"}>Hủy</Button>
+                <div className="flex gap-5 justify-end">
+                  <Button variant={"outline"} onClick={() => setOpen(false)}>
+                    Hủy
+                  </Button>
                   <Button
                     onClick={() => {
                       onPayClick();
+                      setOpen(false);
                     }}
                   >
                     Xác nhận
                   </Button>
-                </DialogClose>
+                </div>
               </DialogFooter>
             </DialogContent>
           </Dialog>

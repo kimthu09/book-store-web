@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { Input } from "../ui/input";
 import {
@@ -13,7 +13,7 @@ import { toVND } from "@/lib/utils";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import getAllCategory from "@/lib/book/getAllCategory";
 import Loading from "../loading";
-import { Book, BookProps } from "@/types";
+import { BookProps } from "@/types";
 import getAllBookForSale from "@/lib/book/getAllBookForSale";
 const ProductTab = ({
   append,
@@ -91,6 +91,30 @@ const ProductTab = ({
     }
   };
 
+  const [inputValue, setInputValue] = useState<string>("");
+  const [filteredList, setFilteredList] = useState<Array<BookProps>>();
+
+  // Search Handler
+  const searchHandler = useCallback(() => {
+    const filteredData = prodList?.filter((prod) => {
+      return prod.name.toLowerCase().includes(inputValue.toLowerCase());
+    });
+    setFilteredList(filteredData);
+  }, [prodList, inputValue]);
+
+  // EFFECT: Search Handler
+  useEffect(() => {
+    // Debounce search handler
+    const timer = setTimeout(() => {
+      searchHandler();
+    }, 500);
+
+    // Cleanup
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchHandler]);
+
   useEffect(() => {
     if (categories) {
       setCateList(
@@ -114,6 +138,10 @@ const ProductTab = ({
       <div className="flex flex-col gap-6">
         <div className="flex items-end">
           <Input
+            value={inputValue}
+            onChange={(e) => {
+              setInputValue(e.target.value);
+            }}
             className=" bg-white rounded-xl"
             placeholder="Tìm kiếm sản phẩm"
           ></Input>
@@ -150,7 +178,7 @@ const ProductTab = ({
 
         {/* Product list */}
         <div className="grid 2xl:grid-cols-5 xl:grid-cols-4 lgr:grid-cols-3 md:grid-cols-2 sm:grid-cols-4 grid-cols-3 gap-4">
-          {prodList?.map((prod) => {
+          {filteredList?.map((prod) => {
             return (
               <div
                 key={prod.id}
@@ -182,6 +210,7 @@ const ProductTab = ({
                   <Image
                     className=" object-cover"
                     src={
+                      prod.img ??
                       "https://img.freepik.com/free-psd/feel-nature-flyer-template_23-2148607911.jpg?w=826&t=st=1702908240~exp=1702908840~hmac=a15dbebf7250428d66641b47b0de66f0964dde722046fd9cac2378f4ee44b2da"
                     }
                     alt="image"
