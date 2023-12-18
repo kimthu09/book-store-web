@@ -26,7 +26,7 @@ export default function getAllAuthor({
   limit?: number;
   page?: string;
 }) {
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading, mutate } = useSWR(
     `${endPoint}/v1/authors?page=${page ?? 1}&limit=${limit ?? 10}`,
     fetcher
   );
@@ -35,5 +35,6 @@ export default function getAllAuthor({
     authors: data,
     isLoading,
     isError: error,
+    mutate: mutate,
   };
 }
