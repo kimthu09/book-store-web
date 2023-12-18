@@ -8,6 +8,7 @@ import (
 
 func (s *sqlStore) GetAllBook(
 	ctx context.Context,
+	justGetAllActiveBook bool,
 	moreKeys ...string) ([]bookmodel.ResUnitBook, error) {
 	var result []bookmodel.ResUnitBook
 	db := s.db
@@ -17,7 +18,7 @@ func (s *sqlStore) GetAllBook(
 	}
 
 	if err := db.
-		Where("isActive = ?", true).
+		Where("isActive = ?", justGetAllActiveBook).
 		Order("name").
 		Find(&result).Error; err != nil {
 		return nil, common.ErrDB(err)

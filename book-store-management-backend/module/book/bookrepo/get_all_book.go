@@ -11,6 +11,7 @@ import (
 type GetAllBookStore interface {
 	GetAllBook(
 		ctx context.Context,
+		justGetAllActiveBook bool,
 		moreKeys ...string) ([]bookmodel.ResUnitBook, error)
 }
 
@@ -49,7 +50,7 @@ func (repo *getAllBookRepo) GetAllBook(
 	ctx context.Context) ([]bookmodel.ResUnitBook, error) {
 
 	books, errGetAllBook := repo.bookStore.GetAllBook(
-		ctx, "BookTitle", "Publisher")
+		ctx, true, "BookTitle", "Publisher")
 	if errGetAllBook != nil {
 		return nil, errGetAllBook
 	}
