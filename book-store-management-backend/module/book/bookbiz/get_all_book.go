@@ -29,8 +29,9 @@ func (biz *getAllBookBiz) GetAllBook(
 	}
 
 	for i := 0; i < len(books); i++ {
-
-		books[i].ImgUrl = "https://picsum.photos/200"
+		if books[i].ImgUrl == "" {
+			books[i].ImgUrl = "https://img.freepik.com/premium-vector/book-vector-illustration-cartoon-book-books-hand-draw-isolated_648083-244.jpg?w=2000"
+		}
 	}
 	return books, nil
 }
