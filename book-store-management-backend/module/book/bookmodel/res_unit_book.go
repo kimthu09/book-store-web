@@ -18,6 +18,7 @@ type ResUnitBook struct {
 	ListedPrice int                            `json:"listedPrice" gorm:"column:listedPrice" example:"100000"`
 	SellPrice   int                            `json:"sellPrice" gorm:"column:sellPrice" example:"120000"`
 	ImportPrice int                            `json:"importPrice" gorm:"column:importPrice" example:"100000"`
+	ImgUrl      string                         `json:"imgUrl" gorm:"column:imgUrl" example:"https://picsum.photos/200"`
 }
 
 func (*ResUnitBook) TableName() string {

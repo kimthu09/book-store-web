@@ -28,5 +28,9 @@ func (biz *getAllBookBiz) GetAllBook(
 		return nil, err
 	}
 
+	for i := 0; i < len(books); i++ {
+
+		books[i].ImgUrl = "https://picsum.photos/200"
+	}
 	return books, nil
 }
