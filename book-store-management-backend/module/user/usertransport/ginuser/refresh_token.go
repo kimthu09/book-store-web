@@ -33,7 +33,7 @@ func RefreshToken(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		c.SetCookie(
 			common.AccessTokenStrInCookie, account.AccessToken.Token, common.MaxAgeAccessToken,
-			"/", appCtx.GetDomain(), true, true)
+			"/", "", true, true)
 
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(true))
 	}

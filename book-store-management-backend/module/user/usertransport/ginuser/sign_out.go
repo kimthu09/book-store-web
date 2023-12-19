@@ -19,10 +19,10 @@ func SignOut(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.SetCookie(
 			common.AccessTokenStrInCookie, "", -1,
-			"/", appCtx.GetDomain(), true, true)
+			"/", "", true, true)
 		c.SetCookie(
 			common.RefreshTokenStrInCookie, "", -1,
-			"/", appCtx.GetDomain(), true, true)
+			"/", "", true, true)
 
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(true))
 	}

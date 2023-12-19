@@ -51,10 +51,10 @@ func Login(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		c.SetCookie(
 			common.AccessTokenStrInCookie, account.AccessToken.Token, common.MaxAgeAccessToken,
-			"/", appCtx.GetDomain(), true, true)
+			"/", "", true, true)
 		c.SetCookie(
 			common.RefreshTokenStrInCookie, account.RefreshToken.Token, common.MaxAgeRefreshToken,
-			"/", appCtx.GetDomain(), true, true)
+			"/", "", true, true)
 
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(true))
 	}
