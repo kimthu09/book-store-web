@@ -91,11 +91,13 @@ const AuthorList = ({
             </Command>
           </DropdownMenuContent>
         </DropdownMenu>
-        <CreateAuthor handleAuthorAdded={handleAuthorAdded}>
-          <Button type="button" size={"icon"} className="px-3">
-            <FaPlus />
-          </Button>
-        </CreateAuthor>
+        {canAdd ? (
+          <CreateAuthor handleAuthorAdded={handleAuthorAdded}>
+            <Button type="button" size={"icon"} className="px-3">
+              <FaPlus />
+            </Button>
+          </CreateAuthor>
+        ) : null}
       </div>
     );
 };

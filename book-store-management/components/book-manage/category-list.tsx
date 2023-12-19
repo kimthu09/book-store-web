@@ -54,7 +54,7 @@ const CategoryList = ({
               <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className=" DropdownMenuContent">
+          <DropdownMenuContent className="DropdownMenuContent">
             <Command>
               <CommandInput placeholder="Tìm điều kiện lọc" />
               <CommandEmpty className="py-2">
@@ -82,11 +82,13 @@ const CategoryList = ({
             </Command>
           </DropdownMenuContent>
         </DropdownMenu>
-        <CreateCategory handleCategoryAdded={handleCategoryAdded}>
-          <Button type="button" size={"icon"} className="px-3">
-            <FaPlus />
-          </Button>
-        </CreateCategory>
+        {canAdd ? (
+          <CreateCategory handleCategoryAdded={handleCategoryAdded}>
+            <Button type="button" size={"icon"} className="px-3">
+              <FaPlus />
+            </Button>
+          </CreateCategory>
+        ) : null}
       </div>
     );
 };

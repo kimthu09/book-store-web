@@ -23,6 +23,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 export type FormValues = {
   details: {
     bookId: string;
@@ -38,8 +40,8 @@ const SaleScreen = () => {
       details: [],
     },
   });
-  const { register, control, setValue, watch, handleSubmit } = form;
-
+  const { register, control, setValue, watch, handleSubmit, reset } = form;
+  const router = useRouter();
   const { fields, append, remove, update } = useFieldArray({
     control: control,
     name: "details",
@@ -82,8 +84,10 @@ const SaleScreen = () => {
         title: "Thành công",
         description: "Thêm mới hóa đơn thành công",
       });
+      reset();
     }
   };
+  const [open, setOpen] = useState(false);
   return (
     <div className="flex gap-4 md:pb-0 pb-16">
       <div className="2xl:basis-3/5 xl:basis-1/2 md:basis-2/5  flex-1 ">
@@ -103,7 +107,7 @@ const SaleScreen = () => {
       <div className="fixed bottom-0 left-0 right-0">
         <Card className="md:hidden flex flex-col  h-16 bg-white rounded-none overflow-hidden">
           <div className="flex flex-1 justify-between items-center align-middle px-4">
-            <Dialog>
+            <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
                 <Button>Thanh toán</Button>
               </DialogTrigger>
@@ -115,10 +119,19 @@ const SaleScreen = () => {
                   </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
-                  <DialogClose className="flex gap-5 justify-end">
-                    <Button variant={"outline"}>Hủy</Button>
-                    <Button onClick={handleSubmit(onSubmit)}>Xác nhận</Button>
-                  </DialogClose>
+                  <div className="flex gap-5 justify-end">
+                    <Button variant={"outline"} onClick={() => setOpen(false)}>
+                      Hủy
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        handleSubmit(onSubmit)();
+                        setOpen(false);
+                      }}
+                    >
+                      Xác nhận
+                    </Button>
+                  </div>
                 </DialogFooter>
               </DialogContent>
             </Dialog>

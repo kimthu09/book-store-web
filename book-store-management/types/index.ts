@@ -3,22 +3,34 @@ import { IconType } from "react-icons";
 export type Book = {
   id: string;
   name: string;
-  publisherId: string;
-
+  bookTitle: {
+    id: string;
+    name: string;
+    desc: string;
+    authors: {
+      id: string;
+      name: string;
+    }[];
+    categories: {
+      id: string;
+      name: string;
+    }[];
+  };
+  publisher: {
+    id: string;
+    name: string;
+  };
+  edition: number;
   quantity: number;
   listedPrice: number;
   sellPrice: number;
-
+  importPrice: number;
   isActive: boolean;
-  categoryIds: [];
-
-  authorIds: [];
-  desc: string;
-  edition: number;
 };
 export type BookProps = {
   id: string;
   name: string;
+  img?: string;
   bookTitle: {
     id: string;
     name: string;
@@ -213,6 +225,7 @@ export interface StatusListProps {
 export interface PublisherListProps {
   publisherId: string;
   setPublisherId: (nameId: string) => void;
+  canAdd?: boolean;
 }
 export type PagingProps = {
   page: number;

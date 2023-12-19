@@ -26,6 +26,7 @@ export default async function getAllInvoice({
       accept: "application/json",
       Authorization: apiKey,
     },
+    cache: "no-store",
   });
 
   if (!res.ok) {
