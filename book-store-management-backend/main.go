@@ -44,6 +44,8 @@ type appConfig struct {
 	DBDatabase string
 
 	SecretKey string
+
+	Domain string
 }
 
 // @title           Book Store Management API
@@ -76,7 +78,7 @@ func main() {
 		db = db.Debug()
 	}
 
-	appCtx := appctx.NewAppContext(db, cfg.SecretKey)
+	appCtx := appctx.NewAppContext(db, cfg.SecretKey, cfg.Domain)
 
 	r := gin.Default()
 	r.Use(CORSMiddleware())
@@ -133,6 +135,7 @@ func loadConfig() (*appConfig, error) {
 		DBHost:     env["DB_HOST"],
 		DBDatabase: env["DB_DATABASE"],
 		SecretKey:  env["SECRET_KEY"],
+		Domain:     env["DOMAIN"],
 	}, nil
 }
 

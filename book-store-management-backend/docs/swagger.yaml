@@ -1311,30 +1311,6 @@ definitions:
         example: "0123456789"
         type: string
     type: object
-  tokenprovider.Token:
-    properties:
-      created:
-        example: "2023-12-03T15:02:19.62113565Z"
-        type: string
-      expiry:
-        example: 2592000
-        type: integer
-      token:
-        example: token
-        type: string
-    type: object
-  usermodel.Account:
-    properties:
-      accessToken:
-        $ref: '#/definitions/tokenprovider.Token'
-      refreshToken:
-        $ref: '#/definitions/tokenprovider.Token'
-    type: object
-  usermodel.AccountWithoutRefresh:
-    properties:
-      accessToken:
-        $ref: '#/definitions/tokenprovider.Token'
-    type: object
   usermodel.Filter:
     properties:
       active:
@@ -1369,11 +1345,6 @@ definitions:
         type: string
       password:
         example: app123
-        type: string
-    type: object
-  usermodel.ReqRefreshToken:
-    properties:
-      refreshToken:
         type: string
     type: object
   usermodel.ReqResetPasswordUser:
@@ -2261,9 +2232,9 @@ paths:
       - application/json
       responses:
         "200":
-          description: user token
+          description: status of response
           schema:
-            $ref: '#/definitions/usermodel.Account'
+            $ref: '#/definitions/common.ResSuccess'
         "400":
           description: error
           schema:
@@ -2333,20 +2304,13 @@ paths:
     post:
       consumes:
       - application/json
-      parameters:
-      - description: refreshToken
-        in: body
-        name: refreshToken
-        required: true
-        schema:
-          $ref: '#/definitions/usermodel.ReqRefreshToken'
       produces:
       - application/json
       responses:
         "200":
-          description: user token
+          description: status of response
           schema:
-            $ref: '#/definitions/usermodel.AccountWithoutRefresh'
+            $ref: '#/definitions/common.ResSuccess'
         "400":
           description: error
           schema:
@@ -2540,6 +2504,24 @@ paths:
       summary: Update info role
       tags:
       - roles
+  /signOut:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      summary: SignOut
+      tags:
+      - auth
   /suppliers:
     get:
       consumes:
