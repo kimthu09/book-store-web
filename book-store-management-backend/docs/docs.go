@@ -1219,9 +1219,9 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "user token",
+                        "description": "status of response",
                         "schema": {
-                            "$ref": "#/definitions/usermodel.Account"
+                            "$ref": "#/definitions/common.ResSuccess"
                         }
                     },
                     "400": {
@@ -1346,22 +1346,11 @@ const docTemplate = `{
                     "auth"
                 ],
                 "summary": "Refresh token",
-                "parameters": [
-                    {
-                        "description": "refreshToken",
-                        "name": "refreshToken",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/usermodel.ReqRefreshToken"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
-                        "description": "user token",
+                        "description": "status of response",
                         "schema": {
-                            "$ref": "#/definitions/usermodel.AccountWithoutRefresh"
+                            "$ref": "#/definitions/common.ResSuccess"
                         }
                     },
                     "400": {
@@ -1655,6 +1644,34 @@ const docTemplate = `{
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/signOut": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "SignOut",
                 "responses": {
                     "200": {
                         "description": "status of response",
@@ -4488,42 +4505,6 @@ const docTemplate = `{
                 }
             }
         },
-        "tokenprovider.Token": {
-            "type": "object",
-            "properties": {
-                "created": {
-                    "type": "string",
-                    "example": "2023-12-03T15:02:19.62113565Z"
-                },
-                "expiry": {
-                    "type": "integer",
-                    "example": 2592000
-                },
-                "token": {
-                    "type": "string",
-                    "example": "token"
-                }
-            }
-        },
-        "usermodel.Account": {
-            "type": "object",
-            "properties": {
-                "accessToken": {
-                    "$ref": "#/definitions/tokenprovider.Token"
-                },
-                "refreshToken": {
-                    "$ref": "#/definitions/tokenprovider.Token"
-                }
-            }
-        },
-        "usermodel.AccountWithoutRefresh": {
-            "type": "object",
-            "properties": {
-                "accessToken": {
-                    "$ref": "#/definitions/tokenprovider.Token"
-                }
-            }
-        },
         "usermodel.Filter": {
             "type": "object",
             "properties": {
@@ -4572,14 +4553,6 @@ const docTemplate = `{
                 "password": {
                     "type": "string",
                     "example": "app123"
-                }
-            }
-        },
-        "usermodel.ReqRefreshToken": {
-            "type": "object",
-            "properties": {
-                "refreshToken": {
-                    "type": "string"
                 }
             }
         },

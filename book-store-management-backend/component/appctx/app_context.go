@@ -14,7 +14,9 @@ type appCtx struct {
 	secretKey string
 }
 
-func NewAppContext(db *gorm.DB, secretKey string) *appCtx {
+func NewAppContext(
+	db *gorm.DB,
+	secretKey string) *appCtx {
 	return &appCtx{
 		db:        db,
 		secretKey: secretKey,
