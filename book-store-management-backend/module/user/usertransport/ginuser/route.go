@@ -8,12 +8,16 @@ import (
 
 func SetupRoutes(router *gin.RouterGroup, appCtx appctx.AppContext) {
 	router.POST("/login", Login(appCtx))
-	router.POST("/refreshToken", RefreshToken(appCtx))
-	auth := router.Group("", middleware.RequireAuth(appCtx))
+	router.POST("/signOut", SignOut(appCtx))
+	token := router.Group("", middleware.GetRefreshTokenCookieHandler())
 	{
-		auth.GET("/profile", SeeProfile(appCtx), middleware.RequireAuth(appCtx))
+		token.POST("/refreshToken", RefreshToken(appCtx), middleware.GetRefreshTokenCookieHandler())
 	}
-	users := router.Group("/users", middleware.RequireAuth(appCtx))
+	auth := router.Group("", middleware.GetAccessTokenCookieHandler(), middleware.RequireAuth(appCtx))
+	{
+		auth.GET("/profile", SeeProfile(appCtx))
+	}
+	users := router.Group("/users", middleware.GetAccessTokenCookieHandler(), middleware.RequireAuth(appCtx))
 	{
 		users.GET("", ListUser(appCtx))
 		users.GET("/all", GetAllUser(appCtx))

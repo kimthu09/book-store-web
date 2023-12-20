@@ -103,7 +103,14 @@ func ErrRecordNotFound() *AppError {
 	)
 }
 
+var ErrTokenExpired = NewCustomError(
+	errTokenExpired,
+	fmt.Sprintf("Đã có lỗi xảy ra. Xin hãy đăng nhập lại."),
+	fmt.Sprintf("ErrTokenExpired"),
+)
+
 var (
 	errRecordNotFound = errors.New("record not found")
 	errIdIsTooLong    = errors.New("id is too long")
+	errTokenExpired   = errors.New("token is expired")
 )
