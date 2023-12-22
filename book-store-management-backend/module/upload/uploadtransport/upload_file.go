@@ -1,4 +1,4 @@
-package uploadfiletransport
+package uploadtransport
 
 import (
 	"book-store-management-backend/component/appctx"

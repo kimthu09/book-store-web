@@ -1,4 +1,4 @@
-package uploadfilebiz
+package uploadbiz
 
 import "mime/multipart"
 

@@ -16,7 +16,7 @@ type Image struct {
 	Extension string `json:"extension,omitempty" gorm:"-"`
 }
 
-func (Image) TableName() string { return "images" }
+func (Image) TableName() string { return TableImage }
 
 func (j *Image) Fulfill(domain string) {
 	j.Url = fmt.Sprintf("%s/%s", domain, j.Url)

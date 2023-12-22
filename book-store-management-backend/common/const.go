@@ -2,6 +2,7 @@ package common
 
 // TABLE NAME
 const (
+	TableImage                    string = "Image"
 	TableAuthor                   string = "Author"
 	TableCategory                 string = "Category"
 	TableUser                     string = "MUser"
