@@ -1,40 +1,48 @@
 package uploadtransport
 
 import (
+	"book-store-management-backend/common"
 	"book-store-management-backend/component/appctx"
+	"book-store-management-backend/component/generator"
+	"book-store-management-backend/component/uploadprovider"
+	"fmt"
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"path/filepath"
 )
 
 func UploadFile(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// Specify the form field name
-		file, err := c.FormFile("file")
+		fileHeader, err := c.FormFile("file")
+
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
-			return
+			panic(common.ErrInvalidRequest(err))
 		}
 
-		// Specify the directory where files should be saved
-		staticDir := "./static"
+		folder := c.DefaultPostForm("folder", "img")
 
-		// Create the full path for the new file
-		filename := filepath.Join(staticDir, filepath.Base(file.Filename))
+		file, err := fileHeader.Open()
 
-		// Save the file
-		if err := c.SaveUploadedFile(file, filename); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"error": err.Error(),
-			})
-			return
+		if err != nil {
+			panic(common.ErrInvalidRequest(err))
 		}
 
-		c.JSON(http.StatusOK, gin.H{
-			"message": "File uploaded successfully.",
-			"path":    filename,
-		})
+		defer file.Close()
+
+		dataBytes := make([]byte, fileHeader.Size)
+		if _, err := file.Read(dataBytes); err != nil {
+			panic(common.ErrInvalidRequest(err))
+		}
+
+		gen := generator.NewShortIdGenerator()
+		upP := uploadprovider.NewFirebaseStorageUploadProvider("uit-bookstore-app.appspot.com", "/data/private/firebase-auth-key.json")
+		picId, err := gen.GenerateId()
+		if err != nil {
+			panic(err)
+		}
+		res, err := upP.UploadImage(c.Request.Context(), dataBytes, fmt.Sprintf("%s/%s-%s", folder, picId, fileHeader.Filename))
+		if err != nil {
+			panic(err)
+		}
+		c.JSON(200, common.SimpleSuccessResponse(res))
+
 	}
 }

@@ -13,9 +13,9 @@ import (
 	"book-store-management-backend/module/invoice/invoicetransport/gininvoice"
 	"book-store-management-backend/module/role/roletransport/ginrole"
 	"book-store-management-backend/module/salereport/salereporttransport/ginsalereport"
-	"book-store-management-backend/module/static/statictransport"
 	ginstockreports "book-store-management-backend/module/stockreport/stockreporttransport/ginstockreport"
 	"book-store-management-backend/module/supplierdebtreport/supplierdebtreporttransport/ginsupplierdebtreport"
+	"book-store-management-backend/module/upload/uploadtransport"
 	"time"
 
 	"book-store-management-backend/module/category/categorytransport"
@@ -39,8 +39,8 @@ type appConfig struct {
 	Port string
 	Env  string
 
-	SupabaseKey string
-	SupabaseURL string
+	FirebaseStorageUri string
+	FirebaseKeyPath    string
 
 	DBUsername string
 	DBPassword string
@@ -90,7 +90,7 @@ func main() {
 	v1 := r.Group("/v1")
 	{
 		v1.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-		statictransport.SetupRoutes(v1, appCtx)
+		uploadtransport.SetupRoutes(v1, appCtx)
 
 		authortransport.SetupRoutes(v1, appCtx)
 		categorytransport.SetupRoutes(v1, appCtx)
@@ -125,15 +125,15 @@ func loadConfig() (*appConfig, error) {
 	}
 
 	return &appConfig{
-		Port:        env["PORT"],
-		Env:         env["GO_ENV"],
-		SupabaseKey: env["SUPABASE_KEY"],
-		SupabaseURL: env["SUPABASE_URL"],
-		DBUsername:  env["DB_USERNAME"],
-		DBPassword:  env["DB_PASSWORD"],
-		DBHost:      env["DB_HOST"],
-		DBDatabase:  env["DB_DATABASE"],
-		SecretKey:   env["SECRET_KEY"],
+		Port:               env["PORT"],
+		Env:                env["GO_ENV"],
+		FirebaseStorageUri: env["FIREBASE_STORAGE_URI"],
+		FirebaseKeyPath:    env["FIREBASE_AUTH_KEY_PATH"],
+		DBUsername:         env["DB_USERNAME"],
+		DBPassword:         env["DB_PASSWORD"],
+		DBHost:             env["DB_HOST"],
+		DBDatabase:         env["DB_DATABASE"],
+		SecretKey:          env["SECRET_KEY"],
 	}, nil
 }
 
