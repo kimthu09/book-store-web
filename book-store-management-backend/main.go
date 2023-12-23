@@ -39,7 +39,8 @@ type appConfig struct {
 	Port string
 	Env  string
 
-	SupabaseToken string
+	SupabaseKey string
+	SupabaseURL string
 
 	DBUsername string
 	DBPassword string
@@ -124,14 +125,15 @@ func loadConfig() (*appConfig, error) {
 	}
 
 	return &appConfig{
-		Port:          env["PORT"],
-		Env:           env["GO_ENV"],
-		SupabaseToken: env["SUPABASE_TOKEN"],
-		DBUsername:    env["DB_USERNAME"],
-		DBPassword:    env["DB_PASSWORD"],
-		DBHost:        env["DB_HOST"],
-		DBDatabase:    env["DB_DATABASE"],
-		SecretKey:     env["SECRET_KEY"],
+		Port:        env["PORT"],
+		Env:         env["GO_ENV"],
+		SupabaseKey: env["SUPABASE_KEY"],
+		SupabaseURL: env["SUPABASE_URL"],
+		DBUsername:  env["DB_USERNAME"],
+		DBPassword:  env["DB_PASSWORD"],
+		DBHost:      env["DB_HOST"],
+		DBDatabase:  env["DB_DATABASE"],
+		SecretKey:   env["SECRET_KEY"],
 	}, nil
 }
 
