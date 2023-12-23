@@ -2,11 +2,11 @@ package main
 
 import (
 	"book-store-management-backend/component/appctx"
-	docs "book-store-management-backend/docs"
+	"book-store-management-backend/docs"
 	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/author/authortransport"
 	"book-store-management-backend/module/book/booktransport"
-	booktitletransport "book-store-management-backend/module/booktitle/booktitletransport"
+	"book-store-management-backend/module/booktitle/booktitletransport"
 	"book-store-management-backend/module/feature/featuretransport/ginfeature"
 	"book-store-management-backend/module/importnote/importnotetransport/ginimportnote"
 	"book-store-management-backend/module/inventorychecknote/inventorychecknotetransport/gininventorychecknote"
