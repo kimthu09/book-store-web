@@ -15,20 +15,6 @@ jobs:
           - node-version: "18.18.0"
             next-env: "production"
 
-    services:
-      mysql:
-        image: mysql:8.0.33-debian
-        env:
-          MYSQL_ROOT_PASSWORD: 123456
-          MYSQL_DATABASE: bookstoremanagement
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
     steps:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
@@ -43,18 +29,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Wait for MySQL to start
-        run: |
-          until mysqladmin ping -h"127.0.0.1" -P"3306" --silent; do
-            echo "waiting for mysql"
-            sleep 2
-          done
-
-      - name: Replace DSN in .env
-        run: |
-          cd book-store-management-backend
-          sed -i "s|root:123456@tcp(bsm-mysql:3306)/bookstoremanagement|root:123456@tcp(127.0.0.1:3306)/bookstoremanagement|" .env
-
       - name: Build Go backend
         run: |
           cd book-store-management-backend
@@ -65,12 +39,12 @@ jobs:
           cd book-store-management-backend
           go test -v ./...
 
-      # - name: Install dependencies for Next.js frontend
-      #   run: |
-      #     cd book-store-management
-      #     npm install
+      - name: Install dependencies for Next.js frontend
+        run: |
+          cd book-store-management
+          npm install
 
-      # - name: Build Next.js frontend
-      #   run: |
-      #     cd book-store-management
-      #     NEXT_PUBLIC_ENVIRONMENT=${{ matrix.next-env }} npm run build
+      - name: Build Next.js frontend
+        run: |
+          cd book-store-management
+          NEXT_PUBLIC_ENVIRONMENT=${{ matrix.next-env }} npm run build
