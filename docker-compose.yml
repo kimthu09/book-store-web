@@ -18,6 +18,7 @@ services:
     container_name: bsm-be
     volumes:
       - ./book-store-management-backend:/data
+      - ./book-store-management-backend/static:/data/static
       - ./bin/gin:/usr/bin/gin
     #  - $HOME/.aws:/root/.aws
     working_dir: /data

@@ -1,12 +1,18 @@
 package uploadprovider
 
 import (
+	"book-store-management-backend/common"
 	"cloud.google.com/go/storage"
 	"context"
 	firebase "firebase.google.com/go/v4"
 	"google.golang.org/api/option"
 	"log"
 )
+
+type UploadProvider interface {
+	UploadImage(ctx context.Context, data []byte, dst string) (*common.Image, error)
+	SaveFileUploaded(ctx context.Context, data []byte, dst string) (*common.Image, error)
+}
 
 type firebaseStorageUploadProvider struct {
 	storageBucketUri string

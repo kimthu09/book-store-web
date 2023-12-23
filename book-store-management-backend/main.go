@@ -39,8 +39,8 @@ type appConfig struct {
 	Port string
 	Env  string
 
-	FirebaseStorageUri string
-	FirebaseKeyPath    string
+	StaticPath string
+	ServerHost string
 
 	DBUsername string
 	DBPassword string
@@ -80,7 +80,7 @@ func main() {
 		db = db.Debug()
 	}
 
-	appCtx := appctx.NewAppContext(db, cfg.SecretKey)
+	appCtx := appctx.NewAppContext(db, cfg.SecretKey, cfg.StaticPath, cfg.ServerHost)
 
 	r := gin.Default()
 	r.Use(CORSMiddleware())
@@ -125,15 +125,15 @@ func loadConfig() (*appConfig, error) {
 	}
 
 	return &appConfig{
-		Port:               env["PORT"],
-		Env:                env["GO_ENV"],
-		FirebaseStorageUri: env["FIREBASE_STORAGE_URI"],
-		FirebaseKeyPath:    env["FIREBASE_AUTH_KEY_PATH"],
-		DBUsername:         env["DB_USERNAME"],
-		DBPassword:         env["DB_PASSWORD"],
-		DBHost:             env["DB_HOST"],
-		DBDatabase:         env["DB_DATABASE"],
-		SecretKey:          env["SECRET_KEY"],
+		Port:       env["PORT"],
+		Env:        env["GO_ENV"],
+		StaticPath: env["STATIC_PATH"],
+		ServerHost: env["SERVER_HOST"],
+		DBUsername: env["DB_USERNAME"],
+		DBPassword: env["DB_PASSWORD"],
+		DBHost:     env["DB_HOST"],
+		DBDatabase: env["DB_DATABASE"],
+		SecretKey:  env["SECRET_KEY"],
 	}, nil
 }
 
