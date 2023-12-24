@@ -12,9 +12,6 @@ export default async function getAllSupplierNote({
         accept: "application/json",
         Authorization: apiKey,
       },
-      next: {
-        revalidate: 0,
-      },
     }
   );
   if (!res.ok) {

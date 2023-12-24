@@ -5,6 +5,7 @@ import {
   FieldArrayWithId,
   UseFieldArrayRemove,
   UseFormRegister,
+  UseFormReset,
   UseFormSetValue,
   UseFormWatch,
   useWatch,
@@ -27,6 +28,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { toast } from "../ui/use-toast";
+import { AiOutlineClose } from "react-icons/ai";
 
 const AddUp = ({
   control,
@@ -72,6 +74,7 @@ const BillTab = ({
   watch,
   control,
   remove,
+  reset,
   onPayClick,
   isSheet,
 }: {
@@ -81,6 +84,7 @@ const BillTab = ({
   watch: UseFormWatch<FormValues>;
   control: Control<FormValues, any>;
   remove: UseFieldArrayRemove;
+  reset: UseFormReset<FormValues>;
   onPayClick: () => void;
   isSheet?: boolean;
 }) => {
@@ -93,6 +97,17 @@ const BillTab = ({
           isSheet ? "rounded-none" : ""
         }`}
       >
+        <div className="flex items-center justify-between bg-white p-2 px-4 shadow-[0_2px_2px_-2px_rgba(0,0,0,0.2)]">
+          <span className="font-medium text-primary">Hóa đơn</span>
+          <Button
+            variant={"ghost"}
+            size={"icon"}
+            className="rounded-full"
+            onClick={() => reset()}
+          >
+            <AiOutlineClose />
+          </Button>
+        </div>
         <div className="flex flex-col gap-2  overflow-auto pt-4 flex-1">
           {fields.map((item, index) => {
             return (

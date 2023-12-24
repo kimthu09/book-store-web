@@ -102,6 +102,7 @@ const SaleScreen = () => {
           watch={watch}
           control={control}
           remove={remove}
+          reset={reset}
         />
       </div>
       <div className="fixed bottom-0 left-0 right-0">
@@ -155,6 +156,7 @@ const SaleScreen = () => {
                 watch={watch}
                 control={control}
                 remove={remove}
+                reset={reset}
                 isSheet
               />
             </SheetContent>
