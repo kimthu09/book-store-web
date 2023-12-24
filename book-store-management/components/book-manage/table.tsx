@@ -17,6 +17,8 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  ExpandedState,
+  getExpandedRowModel,
 } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
@@ -25,9 +27,6 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -40,7 +39,7 @@ import {
 } from "@/components/ui/table";
 import { Book } from "@/types";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 import deleteBook from "@/lib/book/deleteBook";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -63,6 +62,7 @@ import {
 import CategoryList from "./category-list";
 import PublisherList from "./publisher-list";
 import AuthorList from "./author-list";
+import BookEditInline from "./book-edit-inline";
 
 function idToName(id: string) {
   if (id === "name") {
@@ -131,23 +131,15 @@ export function BookTable({
     {
       accessorKey: "id",
       header: () => {
-        return <span className="font-semibold">ID</span>;
+        return <div className="font-semibold">ID</div>;
       },
       cell: ({ row }) => <div>{row.getValue("id")}</div>,
     },
     {
       accessorKey: "name",
-      header: ({ column }) => {
+      header: () => {
         return (
-          <Button
-            className="p-2"
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            <span className="font-semibold">Tên sản phẩm</span>
-
-            <CaretSortIcon className="ml-1 h-4 w-4" />
-          </Button>
+          <span className="font-semibold whitespace-normal">Tên sản phẩm</span>
         );
       },
       cell: ({ row }) => (
@@ -155,43 +147,23 @@ export function BookTable({
       ),
     },
     {
-      accessorKey: "authors",
-      accessorFn: (row) => {
-        return row.bookTitle.authors.map((item) => item.name).join(", ");
-      },
-      header: ({ column }) => {
-        return <span className="font-semibold">Tác giả</span>;
-      },
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("authors")}</div>
-      ),
-    },
-    {
-      accessorKey: "categories",
-      accessorFn: (row) => {
-        return row.bookTitle.categories.map((item) => item.name).join(", ");
-      },
-      header: ({ column }) => {
-        return <span className="font-semibold">Thể loại</span>;
-      },
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("categories")}</div>
-      ),
-    },
-    {
-      accessorKey: "publisher",
-      accessorFn: (row) => row.publisher.name,
-      header: () => {
-        return <span className="font-semibold">NXB</span>;
-      },
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("publisher")}</div>
-      ),
-    },
-    {
       accessorKey: "quantity",
-      header: () => {
-        return <div className="font-semibold flex justify-end">Số lượng</div>;
+      header: ({ column }) => {
+        return (
+          <div className="flex justify-end">
+            <Button
+              className="p-1"
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              <CaretSortIcon className="h-4 w-4" />
+
+              <span className="font-semibold">Số lượng</span>
+            </Button>
+          </div>
+        );
       },
       cell: ({ row }) => (
         <div className="text-right">{row.getValue("quantity")}</div>
@@ -206,8 +178,8 @@ export function BookTable({
             variant={"ghost"}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
+            <CaretSortIcon className="mr-1 h-4 w-4" />
             <span className="font-semibold">Giá niêm yết</span>
-            <CaretSortIcon className="ml-1 h-4 w-4" />
           </Button>
         </div>
       ),
@@ -232,8 +204,8 @@ export function BookTable({
             variant={"ghost"}
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
+            <CaretSortIcon className="mr-1 h-4 w-4" />
             <span className="font-semibold">Giá bán</span>
-            <CaretSortIcon className="ml-1 h-4 w-4" />
           </Button>
         </div>
       ),
@@ -259,17 +231,22 @@ export function BookTable({
       cell: ({ row }) => {
         const status = row.getValue("isActive");
         return (
-          <div
-            className={`lg:max-w-[16rem] max-w-[3rem] truncate ${
-              status ? "text-green-600" : "text-red-600"
-            } text-center`}
-          >
-            {status ? "Đang bán" : "Ngừng bán"}
+          <div className="flex justify-center">
+            <div
+              className={`truncate leading-6 text-sm rounded-full px-2 text-center w-24 ${
+                status
+                  ? "text-green-700 bg-green-100"
+                  : "text-rose-600 bg-rose-100"
+              } text-center`}
+            >
+              {status ? "Đang bán" : "Ngừng bán"}
+            </div>
           </div>
         );
       },
     },
   ];
+  const [expanded, setExpanded] = React.useState<ExpandedState>({});
 
   const table = useReactTable({
     data,
@@ -287,7 +264,10 @@ export function BookTable({
       columnFilters,
       columnVisibility,
       rowSelection,
+      expanded,
     },
+    onExpandedChange: setExpanded,
+    getExpandedRowModel: getExpandedRowModel(),
   });
 
   const [latestFilter, setLatestFilter] = useState("");
@@ -295,7 +275,7 @@ export function BookTable({
     { type: "search", name: "Từ khoá" },
     { type: "minSellPrice", name: "Giá bán nhỏ nhất" },
     { type: "maxSellPrice", name: "Giá bán lớn nhất" },
-    // { type: "publisher", name: "Nhà xuất bản" },
+    { type: "publisher", name: "Mã nhà xuất bản" },
     // { type: "categories", name: "Thể loại" },
     // { type: "authors", name: "Tác giả" },
   ];
@@ -328,6 +308,7 @@ export function BookTable({
     filters = filters.concat({ type: "publisher", value: publisher });
   }
 
+  const [nxb, setNxb] = useState("");
   const { register, handleSubmit, reset, control, getValues } =
     useForm<FormValues>({
       defaultValues: {
@@ -341,93 +322,17 @@ export function BookTable({
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data);
-    let search = "";
-    let minSellPrice = "";
-    let maxSellPrice = "";
+    let filterString = "";
     data.filters.forEach((item) => {
-      if (item.type === "minSellPrice") {
-        minSellPrice = `&minSellPrice=${item.value}`;
-      } else if (item.type === "maxSellPrice") {
-        maxSellPrice = `&maxSellPrice=${item.value}`;
-      } else if (item.type === "search") {
-        search = `&search=${item.value}`;
-      }
+      filterString = filterString.concat(`&${item.type}=${item.value}`);
     });
-
-    router.push(
-      `/product/books?page=${Number(
-        page
-      )}${minSellPrice}${maxSellPrice}${search}`
-    );
+    console.log(filterString);
+    router.push(`/product/books?page=${Number(page)}${filterString}`);
   };
   const [openFilter, setOpenFilter] = useState(false);
   return (
     <div className="w-full">
       <div className="flex items-start py-4 gap-2">
-        <div>
-          {/* <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="w-40 justify-between">
-                Chọn thao tác <ChevronDownIcon className="ml-2 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="max-h-44 w-40">
-              <DropdownMenuItem
-                onSelect={() => {
-                  if (table.getFilteredSelectedRowModel().rows.length < 1) {
-                    //TODO: show notification
-                  } else {
-                    const values = table
-                      .getFilteredSelectedRowModel()
-                      .rows.map((row) => row.original);
-                    ExportBookList(values, "BookList.xlsx");
-                  }
-                }}
-              >
-                Xuất danh sách
-              </DropdownMenuItem>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                    Chuyển danh mục
-                  </DropdownMenuItem>
-                </DialogTrigger>
-                <DialogOverlay>
-                  <DialogContent className="p-0">
-                    <DialogTitle className="p-6 pb-0">
-                      Chuyển mặt hàng tới danh mục khác
-                    </DialogTitle>
-                    <div className="flex flex-col border-y-[1px] p-6">
-                      <p>Chọn 1 danh mục muốn chuyển tới</p>
-                      <div className="mt-4 flex-1 ">
-                        <CategoryList
-                          category={category}
-                          setCategory={setCategory}
-                        />
-                      </div>
-                    </div>
-
-                    <DialogClose className="ml-auto p-6 pt-0">
-                      <Button type="submit">Hoàn tất</Button>
-                    </DialogClose>
-                  </DialogContent>
-                </DialogOverlay>
-              </Dialog>
-
-              <Dialog>
-                <DialogTrigger asChild>
-                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                    Ngừng bán
-                  </DropdownMenuItem>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogTitle>Ngừng bán sách được chọn</DialogTitle>
-                </DialogContent>
-              </Dialog>
-            </DropdownMenuContent>
-          </DropdownMenu> */}
-        </div>
-
         <div className="flex-1">
           <div className="flex gap-2">
             <Popover
@@ -443,7 +348,7 @@ export function BookTable({
                   <LuFilter className="ml-1 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-80">
+              <PopoverContent className="w-96">
                 <form
                   className="flex flex-col gap-4"
                   onSubmit={handleSubmit(onSubmit)}
@@ -464,7 +369,7 @@ export function BookTable({
                             className="flex gap-2 items-center"
                             key={item.id}
                           >
-                            <Label className="basis-1/4">{name?.name}</Label>
+                            <Label className="basis-1/3">{name?.name}</Label>
                             <div className="flex-1">
                               <CategoryList
                                 checkedCategory={[]}
@@ -489,11 +394,20 @@ export function BookTable({
                             className="flex gap-2 items-center"
                             key={item.id}
                           >
-                            <Label className="basis-1/4">{name?.name}</Label>
-                            <PublisherList
-                              publisherId={""}
-                              setPublisherId={(id) => {}}
-                            />
+                            <Label className="basis-1/3">{name?.name}</Label>
+                            <div className="flex-1">
+                              <PublisherList
+                                publisherId={nxb}
+                                setPublisherId={(id) => {
+                                  setNxb(id);
+                                  update(index, {
+                                    type: item.type,
+                                    value: id,
+                                  });
+                                }}
+                              />
+                            </div>
+
                             <Button
                               variant={"ghost"}
                               className={`px-3 `}
@@ -511,7 +425,7 @@ export function BookTable({
                             className="flex gap-2 items-center"
                             key={item.id}
                           >
-                            <Label className="basis-1/4">{name?.name}</Label>
+                            <Label className="basis-1/3">{name?.name}</Label>
                             <div className="flex-1">
                               <AuthorList
                                 checkedAuthor={[]}
@@ -565,7 +479,7 @@ export function BookTable({
                     })}
                   </div>
                   {fields.length === filterValues.length ? null : (
-                    <div className="flex justify-center">
+                    <div className="flex justify-end pr-12">
                       <Select
                         value={latestFilter}
                         onValueChange={(value) => {
@@ -573,7 +487,7 @@ export function BookTable({
                           append({ type: value, value: "" });
                         }}
                       >
-                        <SelectTrigger className="w-[160px] flex justify-center ml-8 px-3">
+                        <SelectTrigger className="w-[180px] flex justify-center ml-8 px-3">
                           <SelectValue placeholder="Chọn điều kiện lọc" />
                         </SelectTrigger>
                         <SelectContent>
@@ -678,19 +592,36 @@ export function BookTable({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                <Fragment key={row.id}>
+                  <TableRow data-state={row.getIsSelected() && "selected"}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell
+                        key={cell.id}
+                        onClick={() => {
+                          if (!cell.id.includes("select")) {
+                            row.toggleExpanded();
+                          }
+                        }}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className={`w-full p-0 border-none ${
+                        row.getIsExpanded() ? "table-cell" : "hidden"
+                      }`}
+                    >
+                      <BookEditInline {...row.original} />
                     </TableCell>
-                  ))}
-                </TableRow>
+                  </TableRow>
+                </Fragment>
               ))
             ) : (
               <TableRow>
