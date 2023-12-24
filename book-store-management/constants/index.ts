@@ -63,6 +63,7 @@ export const sidebarItems: SidebarItem[] = [
     icon: GrBook,
     submenu: true,
     subMenuItems: [
+      { title: "Danh sách đầu sách", href: "/product/title" },
       { title: "Danh sách sách", href: "/product/books" },
       { title: "Thể loại", href: "/product/categories" },
       { title: "Tác giả", href: "/product/authors" },

@@ -30,9 +30,7 @@ export default async function getAllBooks({
       accept: "application/json",
       Authorization: apiKey,
     },
-    next: {
-      revalidate: 0,
-    },
+    cache: "no-store",
   });
   if (!res.ok) {
     throw new Error("Failed to fetch data");

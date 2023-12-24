@@ -16,7 +16,6 @@ import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { Supplier } from "@/types";
 import updateSupplier from "@/lib/supplier/updateSupplier";
-import { revalidatePath } from "next/cache";
 const phoneRegex = new RegExp(/(0[3|5|7|8|9])+([0-9]{8})\b/g);
 const required = z.string().min(1, "Không để trống trường này");
 

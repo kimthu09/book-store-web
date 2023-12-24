@@ -150,7 +150,7 @@ export const columns: ColumnDef<SupplierDebt>[] = [
                 : "bg-blue-200 border-blue-500 text-blue-600"
             }`}
           >
-            {status === "Pay" ? "Nhập" : "Trả nợ"}
+            {status === "Pay" ? "Trả nợ" : "Nhập"}
           </div>
         </div>
       );

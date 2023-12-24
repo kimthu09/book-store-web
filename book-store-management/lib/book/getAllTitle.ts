@@ -14,20 +14,24 @@ const fetcher = (url: string) =>
     })
     .then((json) => {
       return {
-        paging: json.paging as PagingProps,
-        data: json.data as BookTitle[],
+        paging: json.paging,
+        data: json.data,
       };
     });
 
 export default function getAllTitle({
   limit,
   page,
+  filter,
 }: {
   limit?: number;
   page?: string;
+  filter?: string;
 }) {
   const { data, error, isLoading, mutate } = useSWR(
-    `${endPoint}/v1/booktitles?page=${page ?? 1}&limit=${limit ?? 10}`,
+    `${endPoint}/v1/booktitles?page=${page ?? 1}&limit=${limit ?? 10}${
+      filter ?? ""
+    }`,
     fetcher
   );
 

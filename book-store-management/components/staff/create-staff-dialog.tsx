@@ -26,6 +26,7 @@ const StaffSchema = z.object({
   phone: z.string().regex(phoneRegex, "Số điện thoại không hợp lệ"),
   address: required,
   roleId: z.string().min(1, "Không để trống trường này"),
+  img: z.string(),
 });
 
 const CreateStaffDialog = () => {
@@ -45,6 +46,7 @@ const CreateStaffDialog = () => {
       phone: "",
       address: "",
       roleId: "",
+      img: "https://picsum.photos/200",
     },
   });
   const router = useRouter();
@@ -78,6 +80,39 @@ const CreateStaffDialog = () => {
     setValue("roleId", role);
     trigger("roleId");
   };
+
+  const [image, setImage] = useState<any>();
+  const [imagePreviews, setImagePreviews] = useState<any>();
+  const handleMultipleImage = (event: any) => {
+    const file = event.target.files[0];
+    if (file) {
+      if (file && file.type.includes("image")) {
+        setImage(file);
+        console.log(file.type);
+        const reader = new FileReader();
+        reader.onload = () => {
+          setImagePreviews(reader.result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        setImage(null);
+        toast({
+          variant: "destructive",
+          title: "Có lỗi",
+          description: "File không hợp lệ",
+        });
+        console.log("file không hợp lệ");
+      }
+    }
+  };
+  const miltipleImageUpload = async (e: any) => {
+    e.preventDefault();
+
+    let formData = new FormData();
+
+    formData.set("img", image);
+  };
+
   return (
     <Dialog
       open={open}
@@ -151,6 +186,26 @@ const CreateStaffDialog = () => {
                     Không để trống trường này
                   </span>
                 )}
+              </div>
+            </div>
+            <div>
+              <Label htmlFor="img">Hình ảnh</Label>
+              <div className="flex items-center gap-4">
+                <Input
+                  className="basis-1/2"
+                  id="img"
+                  type="file"
+                  onChange={handleMultipleImage}
+                ></Input>
+                <div>
+                  {image && (
+                    <img
+                      src={imagePreviews}
+                      alt={`Preview`}
+                      className="h-24 w-auto"
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>

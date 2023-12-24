@@ -11,21 +11,22 @@ import {
   CommandInput,
   CommandItem,
 } from "../ui/command";
-import { LuCheck, LuChevronsUpDown } from "react-icons/lu";
+import { LuChevronsUpDown } from "react-icons/lu";
 import { Button } from "../ui/button";
-import { AiFillPlusCircle } from "react-icons/ai";
-import { cn } from "@/lib/utils";
 import { AuthorListProps } from "@/types";
 import { Checkbox } from "../ui/checkbox";
 import getAllAuthor from "@/lib/book/getAllAuthor";
 import CreateAuthor from "./create-author";
 import { FaPlus } from "react-icons/fa";
+import { AiOutlineClose } from "react-icons/ai";
 
 const AuthorList = ({
   checkedAuthor,
   onCheckChanged,
   canAdd,
   readonly,
+  isEdit,
+  onRemove,
 }: AuthorListProps) => {
   const [openAuthor, setOpenAuthor] = useState(false);
   const { authors, isLoading, isError, mutate } = getAllAuthor({ limit: 1000 });
@@ -38,65 +39,86 @@ const AuthorList = ({
     console.log(authors);
   } else
     return (
-      <div className="flex gap-1">
-        <DropdownMenu open={openAuthor} onOpenChange={setOpenAuthor}>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={openAuthor}
-              className="justify-between w-full"
-            >
-              Chọn tác giả
-              <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className=" DropdownMenuContent">
-            <Command>
-              <CommandInput placeholder="Tìm điều kiện lọc" />
-              <CommandEmpty className="py-2">
-                {canAdd ? (
-                  <div className="flex">
-                    <Button variant="ghost" className="flex-1">
-                      <div className="text-left flex-1 text-primary flex items-center gap-2">
-                        <AiFillPlusCircle size={20} />
-                        Thêm
-                        {/* {" " + newCategory} */}
-                      </div>
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="text-sm">Không tìm thấy điều kiện lọc.</div>
-                )}
-              </CommandEmpty>
-              <CommandGroup className="overflow-y-auto">
-                {authors.data.map((item) => (
-                  <CommandItem
-                    value={item.name}
-                    key={item.id}
-                    onSelect={() => {
-                      onCheckChanged(item.id);
-                      // setOpenCategory(false);
+      <div className="flex flex-col">
+        <div className="flex gap-1">
+          <DropdownMenu open={openAuthor} onOpenChange={setOpenAuthor}>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={openAuthor}
+                className="justify-between w-full bg-white"
+              >
+                Chọn tác giả
+                <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className=" DropdownMenuContent">
+              <Command>
+                <CommandInput placeholder="Tìm điều kiện lọc" />
+                <CommandEmpty className="py-2">
+                  {<div className="text-sm">Không tìm thấy tác giả.</div>}
+                </CommandEmpty>
+                <CommandGroup className="overflow-y-auto max-h-48">
+                  {authors.data.map((item) => (
+                    <CommandItem
+                      value={item.name}
+                      key={item.id}
+                      onSelect={() => {
+                        if (isEdit !== false) {
+                          onCheckChanged(item.id);
+                        }
+                        // setOpenCategory(false);
+                      }}
+                    >
+                      <Checkbox
+                        className="mr-2"
+                        id={item.name}
+                        checked={checkedAuthor.includes(item.id)}
+                      ></Checkbox>
+                      {item.name}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </Command>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          {canAdd && (isEdit === true || isEdit === null) ? (
+            <CreateAuthor handleAuthorAdded={handleAuthorAdded}>
+              <Button type="button" size={"icon"} className="px-3">
+                <FaPlus />
+              </Button>
+            </CreateAuthor>
+          ) : null}
+        </div>
+        {isEdit !== null ? (
+          <div className="flex flex-wrap gap-2 mt-1">
+            {checkedAuthor.map((author, index) => (
+              <div
+                key={author}
+                className="rounded-xl flex  px-3 py-1 h-fit outline-none text-sm text-primary  bg-blue-100 items-center gap-1 group"
+              >
+                {authors?.data.find((item: any) => item.id === author)?.name}
+                <div
+                  className={`cursor-pointer w-4 ${
+                    isEdit ? "block" : "hidden"
+                  }`}
+                >
+                  <AiOutlineClose className="group-hover:hidden" />
+                  <AiOutlineClose
+                    color="red"
+                    fill="red"
+                    className="text-primary group-hover:flex hidden h-4 w-4"
+                    onClick={() => {
+                      if (onRemove) {
+                        onRemove(index);
+                      }
                     }}
-                  >
-                    <Checkbox
-                      className="mr-2"
-                      id={item.name}
-                      checked={checkedAuthor.includes(item.id)}
-                    ></Checkbox>
-                    {item.name}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </Command>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        {canAdd ? (
-          <CreateAuthor handleAuthorAdded={handleAuthorAdded}>
-            <Button type="button" size={"icon"} className="px-3">
-              <FaPlus />
-            </Button>
-          </CreateAuthor>
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
         ) : null}
       </div>
     );

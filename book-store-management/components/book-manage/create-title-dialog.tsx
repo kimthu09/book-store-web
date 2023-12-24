@@ -39,8 +39,10 @@ const FormSchema = z.object({
 
 const CreateTitleDialog = ({
   handleTitleAdded,
+  children,
 }: {
   handleTitleAdded: (titleId: string) => void;
+  children: React.ReactNode;
 }) => {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -128,11 +130,7 @@ const CreateTitleDialog = ({
   } else
     return (
       <Dialog open={open} onOpenChange={handleOpen}>
-        <DialogTrigger asChild>
-          <Button type="button" size={"icon"} className="px-3">
-            <FaPlus />
-          </Button>
-        </DialogTrigger>
+        <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent className="p-0 bg-white">
           <DialogTitle className="p-6 py-4 border-b">Thêm đầu sách</DialogTitle>
           <div className="col items-center px-6">
