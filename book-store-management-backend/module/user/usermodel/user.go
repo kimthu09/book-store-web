@@ -16,6 +16,7 @@ type User struct {
 	Salt     string         `json:"-" gorm:"column:salt;"`
 	RoleId   string         `json:"-" gorm:"column:roleId;"`
 	Role     rolemodel.Role `json:"role" gorm:"foreignkey:roleId"`
+	ImgUrl   string         `json:"img" gorm:"column:imgUrl" example:"https://picsum.photos/200"`
 	IsActive bool           `json:"isActive" gorm:"column:isActive;" example:"true"`
 }
 
@@ -73,6 +74,11 @@ var (
 		errors.New("phone of user is invalid"),
 		"Số điện thoại của người dùng không hợp lệ",
 		"ErrUserPhoneInvalid",
+	)
+	ErrUserImageInvalid = common.NewCustomError(
+		errors.New("avatar of user is invalid"),
+		"Ảnh của người dùng không hợp lệ",
+		"ErrUserImageInvalid",
 	)
 	ErrUserEmailOrPasswordInvalid = common.NewCustomError(
 		errors.New("email or password invalid"),

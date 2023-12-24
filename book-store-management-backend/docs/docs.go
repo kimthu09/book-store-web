@@ -1219,9 +1219,9 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "status of response",
+                        "description": "user token",
                         "schema": {
-                            "$ref": "#/definitions/common.ResSuccess"
+                            "$ref": "#/definitions/usermodel.Account"
                         }
                     },
                     "400": {
@@ -1346,11 +1346,22 @@ const docTemplate = `{
                     "auth"
                 ],
                 "summary": "Refresh token",
+                "parameters": [
+                    {
+                        "description": "refreshToken",
+                        "name": "refreshToken",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.ReqRefreshToken"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "status of response",
+                        "description": "user token",
                         "schema": {
-                            "$ref": "#/definitions/common.ResSuccess"
+                            "$ref": "#/definitions/usermodel.AccountWithoutRefresh"
                         }
                     },
                     "400": {
@@ -1644,34 +1655,6 @@ const docTemplate = `{
                         }
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "status of response",
-                        "schema": {
-                            "$ref": "#/definitions/common.ResSuccess"
-                        }
-                    },
-                    "400": {
-                        "description": "error",
-                        "schema": {
-                            "$ref": "#/definitions/common.AppError"
-                        }
-                    }
-                }
-            }
-        },
-        "/signOut": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "auth"
-                ],
-                "summary": "SignOut",
                 "responses": {
                     "200": {
                         "description": "status of response",
@@ -2789,6 +2772,10 @@ const docTemplate = `{
                 "id": {
                     "type": "string",
                     "example": "bookId"
+                },
+                "img": {
+                    "type": "string",
+                    "example": "https://picsum.photos/200"
                 },
                 "importPrice": {
                     "type": "integer",
@@ -4505,6 +4492,42 @@ const docTemplate = `{
                 }
             }
         },
+        "tokenprovider.Token": {
+            "type": "object",
+            "properties": {
+                "created": {
+                    "type": "string",
+                    "example": "2023-12-03T15:02:19.62113565Z"
+                },
+                "expiry": {
+                    "type": "integer",
+                    "example": 2592000
+                },
+                "token": {
+                    "type": "string",
+                    "example": "token"
+                }
+            }
+        },
+        "usermodel.Account": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "$ref": "#/definitions/tokenprovider.Token"
+                },
+                "refreshToken": {
+                    "$ref": "#/definitions/tokenprovider.Token"
+                }
+            }
+        },
+        "usermodel.AccountWithoutRefresh": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "$ref": "#/definitions/tokenprovider.Token"
+                }
+            }
+        },
         "usermodel.Filter": {
             "type": "object",
             "properties": {
@@ -4528,6 +4551,10 @@ const docTemplate = `{
                 "email": {
                     "type": "string",
                     "example": "a@gmail.com"
+                },
+                "img": {
+                    "type": "string",
+                    "example": "https://picsum.photos/200"
                 },
                 "name": {
                     "type": "string",
@@ -4556,6 +4583,14 @@ const docTemplate = `{
                 }
             }
         },
+        "usermodel.ReqRefreshToken": {
+            "type": "object",
+            "properties": {
+                "refreshToken": {
+                    "type": "string"
+                }
+            }
+        },
         "usermodel.ReqResetPasswordUser": {
             "type": "object",
             "properties": {
@@ -4571,6 +4606,10 @@ const docTemplate = `{
                 "address": {
                     "type": "string",
                     "example": "bỏ trường này nếu không muốn update địa chỉ"
+                },
+                "img": {
+                    "type": "string",
+                    "example": "https://picsum.photos/200"
                 },
                 "name": {
                     "type": "string",
@@ -4683,6 +4722,10 @@ const docTemplate = `{
                     "type": "string",
                     "example": "user id"
                 },
+                "img": {
+                    "type": "string",
+                    "example": "https://picsum.photos/200"
+                },
                 "isActive": {
                     "type": "boolean",
                     "example": true
@@ -4727,6 +4770,10 @@ const docTemplate = `{
                 "id": {
                     "type": "string",
                     "example": "user id"
+                },
+                "img": {
+                    "type": "string",
+                    "example": "https://picsum.photos/200"
                 },
                 "isActive": {
                     "type": "boolean",

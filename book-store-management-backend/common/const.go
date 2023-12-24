@@ -85,12 +85,4 @@ const RoleAdminId = "admin"
 
 const DefaultPass = "app123"
 
-const AccessTokenStrInCookie = "accessToken"
-const RefreshTokenStrInCookie = "refreshToken"
-
 const CurrentUserStr = "current_user"
-const AccessTokenStr = "access_token"
-const RefreshTokenStr = "refresh_token"
-
-const MaxAgeAccessToken = 60 * 60 * 24
-const MaxAgeRefreshToken = 60 * 60 * 24 * 3

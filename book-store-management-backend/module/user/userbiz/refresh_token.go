@@ -26,8 +26,8 @@ func NewRefreshTokenBiz(
 }
 
 func (biz *refreshTokenBiz) RefreshToken(
-	ctx context.Context, refreshToken string) (*usermodel.AccountWithoutRefresh, error) {
-	payload, err := biz.tokenProvider.Validate(refreshToken)
+	ctx context.Context, refreshToken *usermodel.ReqRefreshToken) (*usermodel.AccountWithoutRefresh, error) {
+	payload, err := biz.tokenProvider.Validate(refreshToken.RefreshToken)
 	if err != nil {
 		panic(err)
 	}

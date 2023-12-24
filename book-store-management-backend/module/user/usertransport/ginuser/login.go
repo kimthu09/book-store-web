@@ -19,7 +19,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param user body usermodel.ReqLoginUser true "login information"
-// @Response 200 {object} common.ResSuccess "status of response"
+// @Response 200 {object} usermodel.Account "user token"
 // @Response 400 {object} common.AppError "error"
 // @Router /login [post]
 func Login(appCtx appctx.AppContext) gin.HandlerFunc {
@@ -39,23 +39,13 @@ func Login(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		md5 := hasher.NewMd5Hash()
 
-		business := userbiz.NewLoginBiz(
-			appCtx, repo,
-			common.MaxAgeAccessToken, common.MaxAgeRefreshToken,
-			tokenProvider, md5)
+		business := userbiz.NewLoginBiz(appCtx, repo, 60*60*24*15, 60*60*24*30, tokenProvider, md5)
 		account, err := business.Login(c.Request.Context(), &data)
 
 		if err != nil {
 			panic(err)
 		}
 
-		c.SetCookie(
-			common.AccessTokenStrInCookie, account.AccessToken.Token, common.MaxAgeAccessToken,
-			"/", "", true, true)
-		c.SetCookie(
-			common.RefreshTokenStrInCookie, account.RefreshToken.Token, common.MaxAgeRefreshToken,
-			"/", "", true, true)
-
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse(true))
+		c.JSON(http.StatusOK, common.SimpleSuccessResponse(account))
 	}
 }

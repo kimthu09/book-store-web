@@ -27,7 +27,7 @@ func (s *sqlStore) ListUser(
 	if errPaging != nil {
 		return nil, errPaging
 	}
-	db = dbTemp.Limit(int(paging.Limit))
+	db = dbTemp
 
 	for i := range moreKeys {
 		db = db.Preload(moreKeys[i])

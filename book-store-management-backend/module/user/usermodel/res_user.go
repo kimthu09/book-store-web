@@ -15,6 +15,7 @@ type ResUser struct {
 	Salt     string               `json:"-" gorm:"column:salt;"`
 	RoleId   string               `json:"-" gorm:"column:roleId;"`
 	Role     rolemodel.SimpleRole `json:"role" gorm:"foreignkey:roleId"`
+	ImgUrl   string               `json:"img" gorm:"column:imgUrl" example:"https://picsum.photos/200"`
 	IsActive bool                 `json:"isActive" gorm:"column:isActive;" example:"true"`
 }
 

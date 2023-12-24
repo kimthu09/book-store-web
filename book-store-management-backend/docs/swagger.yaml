@@ -159,6 +159,9 @@ definitions:
       id:
         example: bookId
         type: string
+      img:
+        example: https://picsum.photos/200
+        type: string
       importPrice:
         example: 100000
         type: integer
@@ -1311,6 +1314,30 @@ definitions:
         example: "0123456789"
         type: string
     type: object
+  tokenprovider.Token:
+    properties:
+      created:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      expiry:
+        example: 2592000
+        type: integer
+      token:
+        example: token
+        type: string
+    type: object
+  usermodel.Account:
+    properties:
+      accessToken:
+        $ref: '#/definitions/tokenprovider.Token'
+      refreshToken:
+        $ref: '#/definitions/tokenprovider.Token'
+    type: object
+  usermodel.AccountWithoutRefresh:
+    properties:
+      accessToken:
+        $ref: '#/definitions/tokenprovider.Token'
+    type: object
   usermodel.Filter:
     properties:
       active:
@@ -1327,6 +1354,9 @@ definitions:
         type: string
       email:
         example: a@gmail.com
+        type: string
+      img:
+        example: https://picsum.photos/200
         type: string
       name:
         example: Nguyễn Văn A
@@ -1347,6 +1377,11 @@ definitions:
         example: app123
         type: string
     type: object
+  usermodel.ReqRefreshToken:
+    properties:
+      refreshToken:
+        type: string
+    type: object
   usermodel.ReqResetPasswordUser:
     properties:
       userSenderPass:
@@ -1357,6 +1392,9 @@ definitions:
     properties:
       address:
         example: bỏ trường này nếu không muốn update địa chỉ
+        type: string
+      img:
+        example: https://picsum.photos/200
         type: string
       name:
         example: bỏ trường này nếu không muốn update tên
@@ -1431,6 +1469,9 @@ definitions:
       id:
         example: user id
         type: string
+      img:
+        example: https://picsum.photos/200
+        type: string
       isActive:
         example: true
         type: boolean
@@ -1462,6 +1503,9 @@ definitions:
         type: string
       id:
         example: user id
+        type: string
+      img:
+        example: https://picsum.photos/200
         type: string
       isActive:
         example: true
@@ -2232,9 +2276,9 @@ paths:
       - application/json
       responses:
         "200":
-          description: status of response
+          description: user token
           schema:
-            $ref: '#/definitions/common.ResSuccess'
+            $ref: '#/definitions/usermodel.Account'
         "400":
           description: error
           schema:
@@ -2304,13 +2348,20 @@ paths:
     post:
       consumes:
       - application/json
+      parameters:
+      - description: refreshToken
+        in: body
+        name: refreshToken
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqRefreshToken'
       produces:
       - application/json
       responses:
         "200":
-          description: status of response
+          description: user token
           schema:
-            $ref: '#/definitions/common.ResSuccess'
+            $ref: '#/definitions/usermodel.AccountWithoutRefresh'
         "400":
           description: error
           schema:
@@ -2504,24 +2555,6 @@ paths:
       summary: Update info role
       tags:
       - roles
-  /signOut:
-    post:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: status of response
-          schema:
-            $ref: '#/definitions/common.ResSuccess'
-        "400":
-          description: error
-          schema:
-            $ref: '#/definitions/common.AppError'
-      summary: SignOut
-      tags:
-      - auth
   /suppliers:
     get:
       consumes:
