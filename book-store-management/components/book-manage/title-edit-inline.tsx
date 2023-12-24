@@ -14,6 +14,7 @@ import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 import { Textarea } from "../ui/textarea";
 import AuthorList from "./author-list";
 import updateBookTitle from "@/lib/book/updateBookTitle";
+import ConfirmDialog from "../confirm-dialog";
 const FormSchema = z.object({
   idBook: z.string().max(12, "Tối đa 12 ký tự"),
   name: required,
@@ -97,11 +98,11 @@ const TitleEditInline = (book: BookTitle) => {
   };
   const [isEdit, setIsEdit] = useState(false);
   return (
-    <div className="flex bg-background p-4 gap-6">
+    <div className="flex bg-background lg:flex-row flex-col p-4 gap-6">
       <div className="flex basis-1/2 flex-col gap-4 items-start ">
-        <div className="flex items-start w-full gap-2">
+        <div className="flex lg:flex-row flex-col items-start w-full gap-2">
           <span className="font-medium min-w-[5rem]">Đầu sách: </span>
-          <div>
+          <div className="w-full">
             <Input
               className="bg-white w-full"
               readOnly={!isEdit}
@@ -112,7 +113,7 @@ const TitleEditInline = (book: BookTitle) => {
             )}
           </div>
         </div>
-        <div className="flex items-start w-full gap-2">
+        <div className="flex lg:flex-row flex-col items-start w-full gap-2">
           <span className="font-medium min-w-[5rem]">Mô tả: </span>
           <Textarea
             className="bg-white flex-1 w-full h-24"
@@ -121,7 +122,7 @@ const TitleEditInline = (book: BookTitle) => {
           />
         </div>
       </div>
-      <div className="flex gap-4 flex-1">
+      <div className="flex lg:flex-row flex-col gap-4 flex-1">
         <div className="flex-1">
           <div className="flex flex-col gap-4">
             <div>
@@ -172,7 +173,7 @@ const TitleEditInline = (book: BookTitle) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex lg:flex-col flex-row lg:justify-start justify-end gap-2">
           {isEdit ? (
             <>
               <Button
@@ -196,14 +197,19 @@ const TitleEditInline = (book: BookTitle) => {
               >
                 <AiOutlineClose className="h-5 w-5" />
               </Button>
-              <Button
-                variant={"ghost"}
-                size={"icon"}
-                className="rounded-full bg-green-200/60 hover:bg-green-200/90 text-green-600 hover:text-green-600"
-                onClick={handleSubmit(onSubmit)}
+              <ConfirmDialog
+                title={"Xác nhận"}
+                description="Bạn xác nhận chỉnh sửa đầu sách này ?"
+                handleYes={() => handleSubmit(onSubmit)()}
               >
-                <AiOutlineCheck className="h-5 w-5" />
-              </Button>
+                <Button
+                  variant={"ghost"}
+                  size={"icon"}
+                  className="rounded-full bg-green-200/60 hover:bg-green-200/90 text-green-600 hover:text-green-600"
+                >
+                  <AiOutlineCheck className="h-5 w-5" />
+                </Button>
+              </ConfirmDialog>
             </>
           ) : (
             <Button
