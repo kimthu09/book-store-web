@@ -80,8 +80,9 @@ definitions:
         type: integer
       id:
         type: string
+      image:
+        type: string
       listedPrice:
-        description: Quantity    *int    `json:"quantity" gorm:"column:quantity"`
         type: integer
       name:
         type: string
@@ -104,6 +105,9 @@ definitions:
         type: integer
       id:
         example: bookId
+        type: string
+      image:
+        example: https://cdn.com/abc.jpg
         type: string
       importPrice:
         example: 100000
@@ -1326,6 +1330,11 @@ definitions:
         example: token
         type: string
     type: object
+  uploadtransport.ResUploadFile:
+    properties:
+      data:
+        type: string
+    type: object
   usermodel.Account:
     properties:
       accessToken:
@@ -1639,7 +1648,7 @@ paths:
       parameters:
       - description: Create Book
         in: body
-        name: booktitle
+        name: book
         required: true
         schema:
           $ref: '#/definitions/bookmodel.ReqCreateBook'
@@ -2827,6 +2836,32 @@ paths:
       summary: Get all supplier
       tags:
       - suppliers
+  /upload:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: Upload file
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: 'Folder name (default: images)'
+        in: formData
+        name: folderName
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: url
+          schema:
+            $ref: '#/definitions/uploadtransport.ResUploadFile'
+      security:
+      - BearerAuth: []
+      summary: Upload file
+      tags:
+      - upload
   /users:
     get:
       consumes:

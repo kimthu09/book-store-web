@@ -13,14 +13,14 @@ import (
 	"net/http"
 )
 
-// CreateBookTitle
+// CreateBook
 // @BasePath /v1
 // @Security BearerAuth
 // @Summary Create Book
 // @Tags books
 // @Accept json
 // @Produce json
-// @Param booktitle body bookmodel.ReqCreateBook true "Create Book"
+// @Param book body bookmodel.ReqCreateBook true "Create Book"
 // @Response 200 {object} bookmodel.ResCreateBook "book id"
 // @Router /books [post]
 func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
@@ -41,6 +41,7 @@ func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		var resData bookmodel.ResCreateBook
 		if err := biz.CreateBook(c.Request.Context(), &reqData, &resData); err != nil {
+			db.Rollback()
 			panic(err)
 		}
 

@@ -1,6 +1,7 @@
 package common
 
 import (
+	"book-store-management-backend/component/appctx"
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
@@ -10,10 +11,7 @@ import (
 type Image struct {
 	Id        int    `json:"id" gorm:"column:id;"`
 	Url       string `json:"url" gorm:"column:url;"`
-	Width     int    `json:"width" gorm:"column:width;"`
-	Height    int    `json:"height" gorm:"column:height;"`
 	CloudName string `json:"cloudName,omitempty" gorm:"-"`
-	Extension string `json:"extension,omitempty" gorm:"-"`
 }
 
 func (Image) TableName() string { return TableImage }
@@ -43,4 +41,18 @@ func (j *Image) Value() (driver.Value, error) {
 		return nil, nil
 	}
 	return json.Marshal(j)
+}
+
+func GetImageFromURL(appCtx appctx.AppContext, url string) Image {
+	img := Image{}
+
+	if url[:len(appCtx.GetServerHost())] == appCtx.GetServerHost() {
+		img.Url = url[len(appCtx.GetServerHost()):]
+		img.CloudName = "local"
+	} else {
+		img.Url = url
+		img.CloudName = "cloudinary"
+	}
+
+	return img
 }

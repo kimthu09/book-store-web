@@ -2,6 +2,7 @@ package uploadprovider
 
 import (
 	"book-store-management-backend/common"
+	"book-store-management-backend/component/appctx"
 	"os"
 	"path/filepath"
 )
@@ -16,14 +17,14 @@ func NewStaticUploadProvider(staticPath string) *staticUploadProvider {
 	}
 }
 
-func (provider *staticUploadProvider) UploadImage(data []byte, filename string) (common.Image, error) {
+func (provider *staticUploadProvider) UploadImage(data []byte, folderName string, filename string) (common.Image, error) {
 	image := common.Image{
 		CloudName: "local",
-		Url:       "/" + filename,
+		Url:       "/" + folderName + "/" + filename,
 	}
 
 	// create file
-	fullPath := filepath.Join(provider.staticPath, filename)
+	fullPath := filepath.Join(provider.staticPath, folderName, filename)
 	file, err := os.Create(fullPath)
 	if err != nil {
 		return common.Image{}, err // Return the error if file creation fails
@@ -36,4 +37,13 @@ func (provider *staticUploadProvider) UploadImage(data []byte, filename string) 
 	}
 
 	return image, nil
+}
+
+func (provider *staticUploadProvider) GetStaticUrl(appCtx appctx.AppContext, serverStaticPath string, image common.Image) string {
+	if image.CloudName != "local" && image.CloudName != "" {
+		return image.Url
+	}
+
+	url := appCtx.GetServerHost() + serverStaticPath + image.Url
+	return url
 }

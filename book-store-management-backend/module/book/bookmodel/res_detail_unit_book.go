@@ -11,6 +11,7 @@ type ResDetailUnitBook struct {
 	Name        string                         `json:"name" gorm:"column:name" example:"Cho tui 1 vé về tuổi thơ"`
 	BookTitleID string                         `json:"-" gorm:"column:booktitleid"`
 	BookTitle   booktitlemodel.SimpleBookTitle `json:"bookTitle"`
+	Image       string                         `json:"image" gorm:"column:imgUrl" example:"https://cdn.com/abc.jpg"`
 	PublisherID string                         `json:"-" gorm:"column:publisherid"`
 	Publisher   publishermodel.Publisher       `json:"publisher"`
 	Edition     int                            `json:"edition" gorm:"column:edition" example:"1"`

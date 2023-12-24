@@ -24,6 +24,7 @@ func (repo *createBookRepo) CreateBook(ctx context.Context, data *bookmodel.Book
 		ID:          data.ID,
 		Name:        data.Name,
 		BookTitleID: data.BookTitleID,
+		Image:       data.Image,
 		PublisherID: data.PublisherID,
 		Edition:     data.Edition,
 		Quantity:    nil,

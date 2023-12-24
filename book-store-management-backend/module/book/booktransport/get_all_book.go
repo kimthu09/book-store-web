@@ -13,6 +13,7 @@ import (
 	"net/http"
 )
 
+// GetAllBook
 // @BasePath /v1
 // @Security BearerAuth
 // @Summary Get all book
