@@ -2,6 +2,7 @@ package uploadprovider
 
 import (
 	"book-store-management-backend/common"
+	"book-store-management-backend/component/appctx"
 	"os"
 	"path/filepath"
 )
@@ -36,4 +37,13 @@ func (provider *staticUploadProvider) UploadImage(data []byte, folderName string
 	}
 
 	return image, nil
+}
+
+func (provider *staticUploadProvider) GetStaticUrl(appCtx appctx.AppContext, serverStaticPath string, image common.Image) string {
+	if image.CloudName != "local" && image.CloudName != "" {
+		return image.Url
+	}
+
+	url := appCtx.GetServerHost() + serverStaticPath + image.Url
+	return url
 }

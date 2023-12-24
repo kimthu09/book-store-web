@@ -10,6 +10,7 @@ type Book struct {
 	Name        *string `json:"name" gorm:"column:name"`
 	BookTitleID *string `json:"bookTitleId" gorm:"column:booktitleid,fk"`
 	PublisherID *string `json:"publisherId" gorm:"column:publisherid,fk"`
+	Image       *string `json:"image" gorm:"column:imgUrl"`
 	Edition     *int    `json:"edition" gorm:"column:edition"`
 	Quantity    *int    `json:"quantity" gorm:"column:quantity"`
 	ListedPrice *int    `json:"listedPrice" gorm:"column:listedPrice"`

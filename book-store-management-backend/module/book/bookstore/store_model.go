@@ -10,6 +10,7 @@ type BookDBModel struct {
 	Name        *string `json:"name" gorm:"column:name"`
 	BookTitleID *string `json:"bookTitleId" gorm:"column:booktitleid"`
 	PublisherID *string `json:"publisherId" gorm:"column:publisherid"`
+	Image       *string `json:"image" gorm:"column:imgUrl"`
 	Edition     *int    `json:"edition" gorm:"column:edition; default:1"`
 	Quantity    *int    `json:"quantity" gorm:"column:quantity; default:0"`
 	ListedPrice *int    `json:"listedPrice" gorm:"column:listedPrice"`

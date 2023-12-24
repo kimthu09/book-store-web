@@ -80,8 +80,9 @@ definitions:
         type: integer
       id:
         type: string
+      image:
+        type: string
       listedPrice:
-        description: Quantity    *int    `json:"quantity" gorm:"column:quantity"`
         type: integer
       name:
         type: string
@@ -1326,6 +1327,11 @@ definitions:
         example: token
         type: string
     type: object
+  uploadtransport.ResUploadFile:
+    properties:
+      data:
+        type: string
+    type: object
   usermodel.Account:
     properties:
       accessToken:
@@ -1639,7 +1645,7 @@ paths:
       parameters:
       - description: Create Book
         in: body
-        name: booktitle
+        name: book
         required: true
         schema:
           $ref: '#/definitions/bookmodel.ReqCreateBook'
@@ -2847,7 +2853,7 @@ paths:
         "200":
           description: url
           schema:
-            type: string
+            $ref: '#/definitions/uploadtransport.ResUploadFile'
       security:
       - BearerAuth: []
       summary: Upload file

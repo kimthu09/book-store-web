@@ -11,6 +11,10 @@ import (
 	"path/filepath"
 )
 
+type ResUploadFile struct {
+	Data string `json:"data"`
+}
+
 // UploadFile
 // @BasePath /v1
 // @Security BearerAuth
@@ -20,9 +24,9 @@ import (
 // @Produce json
 // @Param file formData file true "Upload file"
 // @Param folderName formData string false "Folder name (default: images)"
-// @Response 200 {object} string "url"
+// @Response 200 {object} ResUploadFile "url"
 // @Router /upload [post]
-func UploadFile(appCtx appctx.AppContext, r string) gin.HandlerFunc {
+func UploadFile(appCtx appctx.AppContext, serverStaticPath string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		fileHeader, err := c.FormFile("file")
 		if err != nil {
@@ -30,8 +34,6 @@ func UploadFile(appCtx appctx.AppContext, r string) gin.HandlerFunc {
 		}
 
 		toLocal := c.DefaultPostForm("toLocal", "true")
-		folderName := c.DefaultPostForm("folderName", "images")
-
 		if toLocal != "true" {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"message": "Not support upload to cloud yet",
@@ -39,6 +41,14 @@ func UploadFile(appCtx appctx.AppContext, r string) gin.HandlerFunc {
 			return
 		}
 
+		folderName := c.DefaultPostForm("folderName", "images")
+
+		if (folderName != "images") && (folderName != "avatars") {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "Folder name must be images or avatars",
+			})
+			return
+		}
 		gen := generator.NewShortIdGenerator()
 		id, err := gen.GenerateId()
 		if err != nil {
@@ -67,12 +77,9 @@ func UploadFile(appCtx appctx.AppContext, r string) gin.HandlerFunc {
 		url := res.Url
 
 		if res.CloudName == "local" || res.CloudName == "" || res.Url == "" {
-			url = appCtx.GetServerHost() + r + res.Url
+			url = staticProvider.GetStaticUrl(appCtx, serverStaticPath, res)
 		}
 
-		c.JSON(http.StatusOK, gin.H{
-			"message": "File uploaded successfully",
-			"url":     url,
-		})
+		c.JSON(http.StatusOK, common.SimpleSuccessResponse(url))
 	}
 }

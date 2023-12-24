@@ -197,7 +197,7 @@
                 "parameters": [
                     {
                         "description": "Create Book",
-                        "name": "booktitle",
+                        "name": "book",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -2133,7 +2133,7 @@
                     "200": {
                         "description": "url",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/uploadtransport.ResUploadFile"
                         }
                     }
                 }
@@ -2690,8 +2690,10 @@
                 "id": {
                     "type": "string"
                 },
+                "image": {
+                    "type": "string"
+                },
                 "listedPrice": {
-                    "description": "Quantity    *int    `json:\"quantity\" gorm:\"column:quantity\"`",
                     "type": "integer"
                 },
                 "name": {
@@ -4542,6 +4544,14 @@
                 "token": {
                     "type": "string",
                     "example": "token"
+                }
+            }
+        },
+        "uploadtransport.ResUploadFile": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string"
                 }
             }
         },

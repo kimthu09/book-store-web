@@ -14,6 +14,7 @@ import (
 	"net/http"
 )
 
+// ListBook
 // @BasePath /v1
 // @Security BearerAuth
 // @Summary List book

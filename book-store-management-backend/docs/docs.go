@@ -203,7 +203,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "Create Book",
-                        "name": "booktitle",
+                        "name": "book",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -2139,7 +2139,7 @@ const docTemplate = `{
                     "200": {
                         "description": "url",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/uploadtransport.ResUploadFile"
                         }
                     }
                 }
@@ -2696,8 +2696,10 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
+                "image": {
+                    "type": "string"
+                },
                 "listedPrice": {
-                    "description": "Quantity    *int    ` + "`" + `json:\"quantity\" gorm:\"column:quantity\"` + "`" + `",
                     "type": "integer"
                 },
                 "name": {
@@ -4548,6 +4550,14 @@ const docTemplate = `{
                 "token": {
                     "type": "string",
                     "example": "token"
+                }
+            }
+        },
+        "uploadtransport.ResUploadFile": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string"
                 }
             }
         },
