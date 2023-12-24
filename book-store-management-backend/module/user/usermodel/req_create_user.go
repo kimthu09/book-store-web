@@ -13,6 +13,7 @@ type ReqCreateUser struct {
 	Password string `json:"-" gorm:"column:password;"`
 	Salt     string `json:"-" gorm:"column:salt;"`
 	RoleId   string `json:"roleId" gorm:"column:roleId;" example:"role id"`
+	ImgUrl   string `json:"img" gorm:"column:imgUrl" example:"https://picsum.photos/200"`
 }
 
 func (*ReqCreateUser) TableName() string {
@@ -31,6 +32,9 @@ func (data *ReqCreateUser) Validate() error {
 	}
 	if !common.ValidateNotNilId(&data.RoleId) {
 		return ErrUserRoleInvalid
+	}
+	if !common.ValidateUrl(data.ImgUrl) {
+		return ErrUserImageInvalid
 	}
 	return nil
 }

@@ -5,6 +5,7 @@ import (
 	"book-store-management-backend/component/appctx"
 	"book-store-management-backend/component/tokenprovider/jwt"
 	"book-store-management-backend/module/user/userbiz"
+	"book-store-management-backend/module/user/usermodel"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -15,26 +16,26 @@ import (
 // @Tags auth
 // @Accept json
 // @Produce json
-// @Response 200 {object} common.ResSuccess "status of response"
+// @Param refreshToken body usermodel.ReqRefreshToken true "refreshToken"
+// @Response 200 {object} usermodel.AccountWithoutRefresh "user token"
 // @Response 400 {object} common.AppError "error"
 // @Router /refreshToken [post]
 func RefreshToken(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		refreshToken := c.MustGet(common.RefreshTokenStr).(string)
+		var data usermodel.ReqRefreshToken
+		if err := c.ShouldBind(&data); err != nil {
+			c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(err))
+		}
 
 		tokenProvider := jwt.NewTokenJWTProvider(appCtx.GetSecretKey())
 
-		business := userbiz.NewRefreshTokenBiz(
-			appCtx, common.MaxAgeAccessToken, tokenProvider)
-		account, err := business.RefreshToken(c.Request.Context(), refreshToken)
+		business := userbiz.NewRefreshTokenBiz(appCtx, 60*60*24*15, tokenProvider)
+		account, err := business.RefreshToken(c.Request.Context(), &data)
+
 		if err != nil {
 			panic(err)
 		}
 
-		c.SetCookie(
-			common.AccessTokenStrInCookie, account.AccessToken.Token, common.MaxAgeAccessToken,
-			"/", "", true, true)
-
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse(true))
+		c.JSON(http.StatusOK, common.SimpleSuccessResponse(account))
 	}
 }

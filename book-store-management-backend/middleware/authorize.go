@@ -40,13 +40,11 @@ func RequireAuth(appCtx appctx.AppContext) func(ctx *gin.Context) {
 
 	tokenProvider := jwt.NewTokenJWTProvider(appCtx.GetSecretKey())
 	return func(c *gin.Context) {
-		token := c.MustGet(common.AccessTokenStr).(string)
+		token, err := extractTokenFromHeaderString(c.GetHeader("Authorization"))
 
-		//token, err := extractTokenFromHeaderString(c.GetHeader("Authorization"))
-
-		//if err != nil {
-		//	panic(err)
-		//}
+		if err != nil {
+			panic(err)
+		}
 
 		db := appCtx.GetMainDBConnection()
 
