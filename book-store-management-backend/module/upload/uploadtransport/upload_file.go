@@ -11,6 +11,17 @@ import (
 	"path/filepath"
 )
 
+// UploadFile
+// @BasePath /v1
+// @Security BearerAuth
+// @Summary Upload file
+// @Tags upload
+// @Accept multipart/form-data
+// @Produce json
+// @Param file formData file true "Upload file"
+// @Param folderName formData string false "Folder name (default: images)"
+// @Response 200 {object} string "url"
+// @Router /upload [post]
 func UploadFile(appCtx appctx.AppContext, r string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		fileHeader, err := c.FormFile("file")
@@ -19,6 +30,8 @@ func UploadFile(appCtx appctx.AppContext, r string) gin.HandlerFunc {
 		}
 
 		toLocal := c.DefaultPostForm("toLocal", "true")
+		folderName := c.DefaultPostForm("folderName", "images")
+
 		if toLocal != "true" {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"message": "Not support upload to cloud yet",
@@ -46,7 +59,7 @@ func UploadFile(appCtx appctx.AppContext, r string) gin.HandlerFunc {
 		}
 
 		staticProvider := uploadprovider.NewStaticUploadProvider(appCtx.GetStaticPath())
-		res, err := staticProvider.UploadImage(data, fileName)
+		res, err := staticProvider.UploadImage(data, folderName, fileName)
 		if err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}

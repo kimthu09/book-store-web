@@ -2827,6 +2827,32 @@ paths:
       summary: Get all supplier
       tags:
       - suppliers
+  /upload:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: Upload file
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: 'Folder name (default: images)'
+        in: formData
+        name: folderName
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: url
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Upload file
+      tags:
+      - upload
   /users:
     get:
       consumes:

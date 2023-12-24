@@ -16,14 +16,14 @@ func NewStaticUploadProvider(staticPath string) *staticUploadProvider {
 	}
 }
 
-func (provider *staticUploadProvider) UploadImage(data []byte, filename string) (common.Image, error) {
+func (provider *staticUploadProvider) UploadImage(data []byte, folderName string, filename string) (common.Image, error) {
 	image := common.Image{
 		CloudName: "local",
-		Url:       "/" + filename,
+		Url:       "/" + folderName + "/" + filename,
 	}
 
 	// create file
-	fullPath := filepath.Join(provider.staticPath, filename)
+	fullPath := filepath.Join(provider.staticPath, folderName, filename)
 	file, err := os.Create(fullPath)
 	if err != nil {
 		return common.Image{}, err // Return the error if file creation fails
