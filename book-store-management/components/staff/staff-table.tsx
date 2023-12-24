@@ -260,7 +260,7 @@ export function StaffTable({
   }, [active]);
   return (
     <div className="w-full">
-      <div className="flex items-center py-4 gap-2">
+      <div className="flex items-start py-4 gap-2">
         <div className="flex-1">
           <div className="flex gap-2">
             <Popover

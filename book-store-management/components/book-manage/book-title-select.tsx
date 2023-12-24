@@ -31,7 +31,8 @@ const BookTitleSelect = ({ handleTitleSet }: TitleListProps) => {
   };
   const handleTitleAdded = async (titleId: string) => {
     const newTitleList = await mutate();
-    setTitle(newTitleList?.data.find((item) => item.id === titleId));
+    setTitle(newTitleList?.data.find((item: BookTitle) => item.id === titleId));
+    handleTitleSet(titleId);
   };
   if (isError) return <div>Failed to load</div>;
   if (!titles || isLoading) {
@@ -49,7 +50,8 @@ const BookTitleSelect = ({ handleTitleSet }: TitleListProps) => {
                 className="justify-between w-full p-2"
               >
                 {title
-                  ? titles.data.find((item) => item.id === title.id)?.name
+                  ? titles.data.find((item: BookTitle) => item.id === title.id)
+                      ?.name
                   : "Chọn đầu sách"}
                 <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
@@ -60,8 +62,8 @@ const BookTitleSelect = ({ handleTitleSet }: TitleListProps) => {
                 <CommandEmpty className="py-2 px-6">
                   <div className="text-sm">Không tìm thấy đầu sách</div>
                 </CommandEmpty>
-                <CommandGroup>
-                  {titles.data.map((item) => (
+                <CommandGroup className="max-h-48 overflow-y-auto">
+                  {titles.data.map((item: BookTitle) => (
                     <CommandItem
                       value={item.name}
                       key={item.id}
@@ -87,7 +89,11 @@ const BookTitleSelect = ({ handleTitleSet }: TitleListProps) => {
               </Command>
             </DropdownMenuContent>
           </DropdownMenu>
-          <CreateTitleDialog handleTitleAdded={handleTitleAdded} />
+          <CreateTitleDialog handleTitleAdded={handleTitleAdded}>
+            <Button type="button" size={"icon"} className="px-3">
+              <FaPlus />
+            </Button>
+          </CreateTitleDialog>
         </div>
         {title ? (
           <div className="flex flex-col gap-3 text-sm font-medium mt-2">
