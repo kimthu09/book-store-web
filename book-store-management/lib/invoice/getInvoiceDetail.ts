@@ -10,9 +10,6 @@ export default async function getInvoiceDetail({
       accept: "application/json",
       Authorization: apiKey,
     },
-    next: {
-      revalidate: 0,
-    },
   });
   if (!res.ok) {
     // throw new Error("Failed to fetch data");
