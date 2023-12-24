@@ -29,6 +29,7 @@ import {
 } from "../ui/dialog";
 import { toast } from "../ui/use-toast";
 import { AiOutlineClose } from "react-icons/ai";
+import { PiClipboardTextLight } from "react-icons/pi";
 
 const AddUp = ({
   control,
@@ -109,6 +110,12 @@ const BillTab = ({
           </Button>
         </div>
         <div className="flex flex-col gap-2  overflow-auto pt-4 flex-1">
+          {fields.length < 1 ? (
+            <div className="flex flex-col items-center gap-4 py-8 text-muted-foreground font-medium pt-[20%]">
+              <PiClipboardTextLight className="h-24 w-24 text-muted-foreground/40" />
+              <span>Chọn sản phẩm</span>
+            </div>
+          ) : null}
           {fields.map((item, index) => {
             return (
               <div
