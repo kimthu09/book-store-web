@@ -2735,6 +2735,10 @@ const docTemplate = `{
                     "type": "string",
                     "example": "bookId"
                 },
+                "image": {
+                    "type": "string",
+                    "example": "https://cdn.com/abc.jpg"
+                },
                 "importPrice": {
                     "type": "integer",
                     "example": 100000

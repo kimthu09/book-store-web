@@ -106,6 +106,9 @@ definitions:
       id:
         example: bookId
         type: string
+      image:
+        example: https://cdn.com/abc.jpg
+        type: string
       importPrice:
         example: 100000
         type: integer
