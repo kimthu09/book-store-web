@@ -45,7 +45,7 @@ const PublisherList = ({
               variant="outline"
               role="combobox"
               aria-expanded={open}
-              className="justify-between w-full pl-1"
+              className="justify-between w-full pl-2"
             >
               {publisherId
                 ? publishers.data.find((item: any) => item.id === publisherId)
@@ -63,7 +63,7 @@ const PublisherList = ({
               <CommandEmpty className="py-2 px-6">
                 <div className="text-sm">Không tìm thấy nhà xuất bản</div>
               </CommandEmpty>
-              <CommandGroup>
+              <CommandGroup className="max-h-48 overflow-y-auto">
                 {publishers.data.map((item: any) => (
                   <CommandItem
                     value={item.name}
