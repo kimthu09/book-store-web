@@ -6,9 +6,9 @@ import (
 )
 
 func SetupRoutes(router *gin.RouterGroup, appCtx appctx.AppContext) {
-	staticRoute := router.Group("/static")
-	staticRoute.Static("/", "./static")
+	staticRouter := router.Group("/static")
+	staticRouter.Static("", appCtx.GetStaticPath())
 
-	uploadFile := staticRoute.Group("/upload")
-	uploadFile.POST("", UploadFile(appCtx))
+	uploadFile := router.Group("/upload")
+	uploadFile.POST("", UploadFile(appCtx, staticRouter.BasePath()))
 }

@@ -1,40 +1,65 @@
 package uploadtransport
 
 import (
+	"book-store-management-backend/common"
 	"book-store-management-backend/component/appctx"
+	"book-store-management-backend/component/generator"
+	"book-store-management-backend/component/uploadprovider"
 	"github.com/gin-gonic/gin"
+	"io"
 	"net/http"
 	"path/filepath"
 )
 
-func UploadFile(appCtx appctx.AppContext) gin.HandlerFunc {
+func UploadFile(appCtx appctx.AppContext, r string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// Specify the form field name
-		file, err := c.FormFile("file")
+		fileHeader, err := c.FormFile("file")
 		if err != nil {
+			panic(common.ErrInvalidRequest(err))
+		}
+
+		toLocal := c.DefaultPostForm("toLocal", "true")
+		if toLocal != "true" {
 			c.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
+				"message": "Not support upload to cloud yet",
 			})
 			return
 		}
 
-		// Specify the directory where files should be saved
-		staticDir := "./static"
+		gen := generator.NewShortIdGenerator()
+		id, err := gen.GenerateId()
+		if err != nil {
+			panic(common.ErrInvalidRequest(err))
+		}
+		fileName := id + filepath.Ext(fileHeader.Filename)
 
-		// Create the full path for the new file
-		filename := filepath.Join(staticDir, filepath.Base(file.Filename))
+		// Open the uploaded file
+		file, err := fileHeader.Open()
+		if err != nil {
+			panic(common.ErrInvalidRequest(err))
+		}
+		defer file.Close()
 
-		// Save the file
-		if err := c.SaveUploadedFile(file, filename); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"error": err.Error(),
-			})
-			return
+		data, err := io.ReadAll(file)
+		if err != nil {
+			panic(common.ErrInvalidRequest(err))
+		}
+
+		staticProvider := uploadprovider.NewStaticUploadProvider(appCtx.GetStaticPath())
+		res, err := staticProvider.UploadImage(data, fileName)
+		if err != nil {
+			panic(common.ErrInvalidRequest(err))
+		}
+
+		url := res.Url
+
+		if res.CloudName == "local" || res.CloudName == "" || res.Url == "" {
+			url = appCtx.GetServerHost() + r + res.Url
 		}
 
 		c.JSON(http.StatusOK, gin.H{
-			"message": "File uploaded successfully.",
-			"path":    filename,
+			"message": "File uploaded successfully",
+			"url":     url,
 		})
 	}
 }

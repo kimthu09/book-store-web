@@ -13,9 +13,9 @@ import (
 	"book-store-management-backend/module/invoice/invoicetransport/gininvoice"
 	"book-store-management-backend/module/role/roletransport/ginrole"
 	"book-store-management-backend/module/salereport/salereporttransport/ginsalereport"
-	"book-store-management-backend/module/static/statictransport"
 	ginstockreports "book-store-management-backend/module/stockreport/stockreporttransport/ginstockreport"
 	"book-store-management-backend/module/supplierdebtreport/supplierdebtreporttransport/ginsupplierdebtreport"
+	"book-store-management-backend/module/upload/uploadtransport"
 	"time"
 
 	"book-store-management-backend/module/category/categorytransport"
@@ -38,6 +38,9 @@ import (
 type appConfig struct {
 	Port string
 	Env  string
+
+	StaticPath string
+	ServerHost string
 
 	DBUsername string
 	DBPassword string
@@ -68,7 +71,7 @@ func main() {
 	}
 
 	fmt.Println("Connecting to database...")
-	db, err := connectDatabaseWithRetryIn30s(cfg)
+	db, err := connectDatabaseWithRetryIn60s(cfg)
 	if err != nil {
 		log.Fatalln("Error when connecting to database:", err)
 	}
@@ -77,23 +80,17 @@ func main() {
 		db = db.Debug()
 	}
 
-	appCtx := appctx.NewAppContext(db, cfg.SecretKey)
+	appCtx := appctx.NewAppContext(db, cfg.SecretKey, cfg.StaticPath, cfg.ServerHost)
 
 	r := gin.Default()
 	r.Use(CORSMiddleware())
 	r.Use(middleware.Recover(appCtx))
 
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-
 	docs.SwaggerInfo.BasePath = "/v1"
 	v1 := r.Group("/v1")
 	{
 		v1.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-		statictransport.SetupRoutes(v1, appCtx)
+		uploadtransport.SetupRoutes(v1, appCtx)
 
 		authortransport.SetupRoutes(v1, appCtx)
 		categorytransport.SetupRoutes(v1, appCtx)
@@ -129,7 +126,9 @@ func loadConfig() (*appConfig, error) {
 
 	return &appConfig{
 		Port:       env["PORT"],
-		Env:        env["ENVIRONMENT"],
+		Env:        env["GO_ENV"],
+		StaticPath: env["STATIC_PATH"],
+		ServerHost: env["SERVER_HOST"],
 		DBUsername: env["DB_USERNAME"],
 		DBPassword: env["DB_PASSWORD"],
 		DBHost:     env["DB_HOST"],
@@ -138,8 +137,8 @@ func loadConfig() (*appConfig, error) {
 	}, nil
 }
 
-func connectDatabaseWithRetryIn30s(cfg *appConfig) (*gorm.DB, error) {
-	const timeRetry = 30 * time.Second
+func connectDatabaseWithRetryIn60s(cfg *appConfig) (*gorm.DB, error) {
+	const timeRetry = 60 * time.Second
 	var connectDatabase = func(cfg *appConfig) (*gorm.DB, error) {
 		dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", cfg.DBUsername, cfg.DBPassword, cfg.DBHost, cfg.DBDatabase)
 		db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
