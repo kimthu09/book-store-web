@@ -60,6 +60,7 @@ export type BookTitle = {
   name: string;
   desc: string;
   isActive: boolean;
+  createdAt: Date;
   categories: { id: string; name: string }[];
   authors: { id: string; name: string }[];
 };
@@ -180,12 +181,16 @@ export interface CategoryListProps {
   onCheckChanged: (idCate: string) => void;
   canAdd?: boolean;
   readonly?: boolean;
+  isEdit?: boolean;
+  onRemove?: (index: number) => void;
 }
 export interface AuthorListProps {
   checkedAuthor: Array<string>;
   onCheckChanged: (idAuthor: string) => void;
   canAdd?: boolean;
   readonly?: boolean;
+  isEdit?: boolean;
+  onRemove?: (index: number) => void;
 }
 export interface SupplierListProps {
   supplier: string;
@@ -231,4 +236,10 @@ export type PagingProps = {
   page: number;
   limit: number;
   total: number;
+};
+export type FilterValue = {
+  filters: {
+    type: string;
+    value: string;
+  }[];
 };

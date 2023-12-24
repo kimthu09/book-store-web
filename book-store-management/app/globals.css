@@ -108,3 +108,6 @@ input[type="range"]::-webkit-slider-thumb {
 .error___message {
   @apply text-sm text-red-700;
 }
+@page {
+  margin: 32px 0 !important;
+}

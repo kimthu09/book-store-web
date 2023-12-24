@@ -26,6 +26,7 @@ import BookTitleSelect from "@/components/book-manage/book-title-select";
 import PublisherList from "@/components/book-manage/publisher-list";
 import createBook from "@/lib/book/createBook";
 import { useSWRConfig } from "swr";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   bookTitleId: z.string().min(1, "Vui lòng chọn một đầu sách"),
@@ -62,7 +63,7 @@ const InsertNewBook = () => {
   } = form;
 
   const [publisherId, setPublisherId] = useState("");
-
+  const router = useRouter();
   const handleTitleSet = (idTitle: string) => {
     setValue("bookTitleId", idTitle);
     trigger("bookTitleId");
@@ -98,6 +99,7 @@ const InsertNewBook = () => {
         description: "Thêm mới sách thành công",
       });
       mutate(`${endPoint}/v1/books/all`);
+      router.refresh();
     }
   };
   return (
