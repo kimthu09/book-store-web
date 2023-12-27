@@ -20,7 +20,7 @@ services:
       - ./backend:/data
       - ./backend/static:/data/static
       - ./bin/gin:/usr/bin/gin
-    #  - $HOME/.aws:/root/.aws
+      - $HOME/.aws:/root/.aws
     working_dir: /data
     environment:
       - GOMEMLIMIT=5120MiB
