@@ -37,10 +37,8 @@ import { BookTitle, FilterValue } from "@/types";
 
 import { Fragment, useEffect, useState } from "react";
 import { Input } from "../ui/input";
-import { toVND } from "@/lib/utils";
-import { toast } from "../ui/use-toast";
+
 import { useRouter, useSearchParams } from "next/navigation";
-import { BiBox } from "react-icons/bi";
 import Loading from "../loading";
 import Paging, { PagingProps } from "../paging";
 import {
@@ -50,6 +48,7 @@ import {
   useForm,
 } from "react-hook-form";
 import { LuFilter } from "react-icons/lu";
+import { FiUnlock, FiLock } from "react-icons/fi";
 import { Label } from "../ui/label";
 import { AiOutlineClose } from "react-icons/ai";
 import StaffList from "../staff-list";
@@ -57,6 +56,10 @@ import getAllTitle from "@/lib/book/getAllTitle";
 import { FilterDatePicker } from "../date-picker";
 import { getFilterString } from "@/app/product/title/table-layout";
 import TitleEditInline from "./title-edit-inline";
+import { Switch } from "../ui/switch";
+import ConfirmDialog from "../confirm-dialog";
+import deleteBookTitle from "@/lib/book/deleteBookTitle";
+import { toast } from "../ui/use-toast";
 
 export const columns: ColumnDef<BookTitle>[] = [
   {
@@ -106,7 +109,7 @@ export const columns: ColumnDef<BookTitle>[] = [
       return (
         <div className=" flex justify-end ">
           <div
-            className={`leading-6 text-sm rounded-full px-2 text-center whitespace-nowrap ${
+            className={`leading-6 w-[5.5rem] text-sm rounded-full px-2 text-center whitespace-nowrap h-fit ${
               status
                 ? "bg-green-100 text-green-700"
                 : "bg-rose-100 text-rose-500"
@@ -144,6 +147,65 @@ export const columns: ColumnDef<BookTitle>[] = [
 
     sortingFn: "datetime",
     size: 5,
+  },
+  {
+    accessorKey: "actions",
+    header: () => {
+      return <div className="font-semibold flex justify-end">Thao tác</div>;
+    },
+    cell: ({ row }) => {
+      const status = row.getValue("isActive");
+      return (
+        <div className=" flex justify-end ">
+          <ConfirmDialog
+            title={"Xác nhận"}
+            description={`${
+              status
+                ? "Bạn muốn ngừng bán đầu sách này ?"
+                : "Bạn muốn mở bán đầu sách này ?"
+            } `}
+            handleYes={async () => {
+              const response: Promise<any> = deleteBookTitle(row.original.id);
+              const responseData = await response;
+              if (responseData.hasOwnProperty("errorKey")) {
+                toast({
+                  variant: "destructive",
+                  title: "Có lỗi",
+                  description: responseData.message,
+                });
+              } else {
+                toast({
+                  variant: "success",
+                  title: "Thành công",
+                  description: "Chuyển trạng thái thành công",
+                });
+                // handleTitleAdded(responseData.data);
+              }
+            }}
+          >
+            {status ? (
+              <Button
+                variant={"ghost"}
+                size={"icon"}
+                title="Ngừng bán"
+                className="rounded-full hover:bg-rose-100"
+              >
+                <FiLock className="h-5 w-5 text-rose-500" />
+              </Button>
+            ) : (
+              <Button
+                variant={"ghost"}
+                size={"icon"}
+                title="Mở bán"
+                className="rounded-full hover:bg-green-100"
+              >
+                <FiUnlock className="h-5 w-5 text-green-500" />
+              </Button>
+            )}
+          </ConfirmDialog>
+        </div>
+      );
+    },
   },
 ];
 export function TitleTable() {
@@ -435,8 +497,14 @@ export function TitleTable() {
                         <TableCell
                           key={cell.id}
                           onClick={() => {
-                            if (!cell.id.includes("select")) {
-                              row.toggleExpanded();
+                            if (
+                              !cell.id.includes("select") &&
+                              !cell.id.includes("actions")
+                            ) {
+                              table.resetExpanded();
+                              if (!row.getIsExpanded()) {
+                                row.toggleExpanded();
+                              }
                             }
                           }}
                         >

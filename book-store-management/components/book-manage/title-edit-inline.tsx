@@ -1,4 +1,4 @@
-import { BookProps, BookTitle } from "@/types";
+import { BookTitle } from "@/types";
 import React, { useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
@@ -19,6 +19,7 @@ const FormSchema = z.object({
   idBook: z.string().max(12, "Tối đa 12 ký tự"),
   name: required,
   desc: z.string(),
+  isActive: z.boolean(),
   authorIds: z
     .array(z.object({ idAuthor: z.string() }))
     .nonempty("Vui lòng chọn ít nhất một tác giả"),
@@ -48,7 +49,7 @@ const TitleEditInline = (book: BookTitle) => {
     control,
     watch,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = form;
 
   const {
@@ -180,6 +181,7 @@ const TitleEditInline = (book: BookTitle) => {
                 variant={"ghost"}
                 size={"icon"}
                 className="rounded-full bg-rose-200/60 hover:bg-rose-200/90 text-rose-600 hover:text-rose-600"
+                title="Hủy"
                 onClick={() => {
                   setIsEdit(false);
                   reset({
@@ -205,6 +207,8 @@ const TitleEditInline = (book: BookTitle) => {
                 <Button
                   variant={"ghost"}
                   size={"icon"}
+                  disabled={!isDirty}
+                  title="Lưu"
                   className="rounded-full bg-green-200/60 hover:bg-green-200/90 text-green-600 hover:text-green-600"
                 >
                   <AiOutlineCheck className="h-5 w-5" />
@@ -216,6 +220,7 @@ const TitleEditInline = (book: BookTitle) => {
               variant={"ghost"}
               size={"icon"}
               className="rounded-full bg-blue-200/60 hover:bg-blue-200/90 text-primary hover:text-primary"
+              title="Chỉnh sửa"
               onClick={() => setIsEdit(true)}
             >
               <FaPen />

@@ -1,7 +1,7 @@
 import { apiKey, endPoint } from "@/constants";
 import axios from "axios";
 
-export default async function deleteBook(bookId: string) {
+export default async function deleteBookTitle(bookId: string) {
   const url = `${endPoint}/v1/booktitles/${bookId}`;
 
   const headers = {
