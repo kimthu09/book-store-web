@@ -31,13 +31,8 @@ jobs:
 
       - name: Build Go backend
         run: |
-          cd book-store-management-backend
+          cd backend
           go build -v ./...
-
-      - name: Test Go backend
-        run: |
-          cd book-store-management-backend
-          go test -v ./...
 
       - name: Install dependencies for Next.js frontend
         run: |

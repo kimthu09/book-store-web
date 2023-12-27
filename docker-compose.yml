@@ -4,7 +4,7 @@ services:
     container_name: bsm-mysql
     image: mysql:8.0.33-debian
     cap_add:
-      - SYS_NICE # CAP_SYS_NICE -> fix: mbind: Operation not permitted
+      - SYS_NICE
     volumes:
       - ./sql:/docker-entrypoint-initdb.d
     command: --default-authentication-plugin=mysql_native_password --innodb-buffer-pool-size=6G --group-concat-max-len=4294967295 --innodb_log_buffer_size=256M --innodb_write_io_threads=8 --innodb_flush_log_at_trx_commit=0 --innodb_doublewrite=0
@@ -17,8 +17,8 @@ services:
     image: golang:1.20.7-bookworm
     container_name: bsm-be
     volumes:
-      - ./book-store-management-backend:/data
-      - ./book-store-management-backend/static:/data/static
+      - ./backend:/data
+      - ./backend/static:/data/static
       - ./bin/gin:/usr/bin/gin
     #  - $HOME/.aws:/root/.aws
     working_dir: /data
