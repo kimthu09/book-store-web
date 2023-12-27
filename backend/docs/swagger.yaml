@@ -1,0 +1,3138 @@
+basePath: /v1
+definitions:
+  authormodel.Author:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
+      id:
+        type: string
+      isActive:
+        type: boolean
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  authormodel.Filter:
+    properties:
+      searchKey:
+        type: string
+    type: object
+  authormodel.ReqCreateAuthor:
+    properties:
+      name:
+        example: Nguyễn Nhật Ánh
+        type: string
+    type: object
+  authormodel.ResCreateAuthor:
+    properties:
+      data:
+        type: string
+    type: object
+  authormodel.ResListAuthor:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/authormodel.Author'
+        type: array
+      filter:
+        $ref: '#/definitions/authormodel.Filter'
+      paging:
+        $ref: '#/definitions/common.Paging'
+    type: object
+  authormodel.SimpleAuthor:
+    properties:
+      id:
+        example: author id
+        type: string
+      name:
+        example: Nguyễn Văn A
+        type: string
+    type: object
+  bookmodel.Filter:
+    properties:
+      authorIds:
+        example: authorId1|authorId2
+        type: string
+      categoryIds:
+        example: categoryId1|categoryId2
+        type: string
+      maxSellPrice:
+        example: 0
+        type: integer
+      minSellPrice:
+        example: 0
+        type: integer
+      publisherId:
+        example: publisher id
+        type: string
+      searchKey:
+        example: id, name
+        type: string
+    type: object
+  bookmodel.ReqCreateBook:
+    properties:
+      bookTitleId:
+        type: string
+      edition:
+        type: integer
+      id:
+        type: string
+      image:
+        type: string
+      listedPrice:
+        type: integer
+      name:
+        type: string
+      publisherId:
+        type: string
+      sellPrice:
+        type: integer
+    type: object
+  bookmodel.ResCreateBook:
+    properties:
+      id:
+        type: string
+    type: object
+  bookmodel.ResDetailUnitBook:
+    properties:
+      bookTitle:
+        $ref: '#/definitions/booktitlemodel.SimpleBookTitle'
+      edition:
+        example: 1
+        type: integer
+      id:
+        example: bookId
+        type: string
+      image:
+        example: https://cdn.com/abc.jpg
+        type: string
+      importPrice:
+        example: 100000
+        type: integer
+      isActive:
+        example: true
+        type: boolean
+      listedPrice:
+        example: 100000
+        type: integer
+      name:
+        example: Cho tui 1 vé về tuổi thơ
+        type: string
+      publisher:
+        $ref: '#/definitions/publishermodel.Publisher'
+      quantity:
+        example: 100
+        type: integer
+      sellPrice:
+        example: 120000
+        type: integer
+    type: object
+  bookmodel.ResGetAllBook:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/bookmodel.ResUnitBook'
+        type: array
+    type: object
+  bookmodel.ResListBook:
+    properties:
+      data:
+        description: Data contains list of book.
+        items:
+          $ref: '#/definitions/bookmodel.ResDetailUnitBook'
+        type: array
+      filter:
+        allOf:
+        - $ref: '#/definitions/bookmodel.Filter'
+        description: Filter contains the filter parameters used to retrieve book.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  bookmodel.ResUnitBook:
+    properties:
+      bookTitle:
+        $ref: '#/definitions/booktitlemodel.SimpleBookTitle'
+      edition:
+        example: 1
+        type: integer
+      id:
+        example: bookId
+        type: string
+      img:
+        example: https://picsum.photos/200
+        type: string
+      importPrice:
+        example: 100000
+        type: integer
+      listedPrice:
+        example: 100000
+        type: integer
+      name:
+        example: Cho tui 1 vé về tuổi thơ
+        type: string
+      publisher:
+        $ref: '#/definitions/publishermodel.Publisher'
+      quantity:
+        example: 100
+        type: integer
+      sellPrice:
+        example: 120000
+        type: integer
+    type: object
+  bookmodel.SimpleBook:
+    properties:
+      id:
+        example: idOfBook
+        type: string
+      name:
+        example: Doraemon
+        type: string
+    type: object
+  booktitlemodel.BookTitleDetail:
+    properties:
+      authors:
+        items:
+          $ref: '#/definitions/authormodel.Author'
+        type: array
+      categories:
+        items:
+          $ref: '#/definitions/categorymodel.Category'
+        type: array
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
+      desc:
+        type: string
+      id:
+        type: string
+      isActive:
+        type: boolean
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  booktitlemodel.Filter:
+    properties:
+      createdAtFrom:
+        example: 1709500431
+        type: integer
+      createdAtTo:
+        example: 1709500431
+        type: integer
+      isActive:
+        example: true
+        type: boolean
+      searchKey:
+        example: ""
+        type: string
+    type: object
+  booktitlemodel.ReqCreateBookTitle:
+    properties:
+      authorIds:
+        example:
+        - tgnna
+        items:
+          type: string
+        type: array
+      categoryIds:
+        example:
+        - dmtt
+        - dmtruyen
+        items:
+          type: string
+        type: array
+      desc:
+        example: Tôi Là Bêtô là tác phẩm của nhà văn chuyên viết cho thanh thiếu niên
+          Nguyễn Nhật Ánh.
+        type: string
+      id:
+        example: bookId
+        type: string
+      name:
+        example: Tôi là Bêtô
+        type: string
+    type: object
+  booktitlemodel.ReqUpdateBookInfo:
+    properties:
+      authorIds:
+        example:
+        - tgnna
+        items:
+          type: string
+        type: array
+      categoryIds:
+        example:
+        - dmtt
+        - dmtruyen
+        items:
+          type: string
+        type: array
+      desc:
+        example: Tôi Là Bêtô là tác phẩm của nhà văn chuyên viết cho thanh thiếu niên
+          Nguyễn Nhật Ánh.
+        type: string
+      name:
+        example: Tôi là Bêtô
+        type: string
+    type: object
+  booktitlemodel.ResBookTitleDetail:
+    properties:
+      data:
+        $ref: '#/definitions/booktitlemodel.BookTitleDetail'
+    type: object
+  booktitlemodel.ResCreateBookTitle:
+    properties:
+      data:
+        type: string
+    type: object
+  booktitlemodel.ResListBookTitle:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/booktitlemodel.BookTitleDetail'
+        type: array
+      filter:
+        $ref: '#/definitions/booktitlemodel.Filter'
+      paging:
+        $ref: '#/definitions/common.Paging'
+    type: object
+  booktitlemodel.SimpleBookTitle:
+    properties:
+      authors:
+        items:
+          $ref: '#/definitions/authormodel.SimpleAuthor'
+        type: array
+      categories:
+        items:
+          $ref: '#/definitions/categorymodel.SimpleCategory'
+        type: array
+      desc:
+        example: Câu chuyên hay cảm động rớt nước mắt
+        type: string
+      id:
+        example: book title id
+        type: string
+      name:
+        example: Cho tui 1 vé về tuổi thơ
+        type: string
+    type: object
+  categorymodel.Category:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
+      id:
+        type: string
+      isActive:
+        type: boolean
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  categorymodel.Filter:
+    properties:
+      searchKey:
+        type: string
+    type: object
+  categorymodel.ReqCreateCategory:
+    properties:
+      name:
+        example: Trinh thám
+        type: string
+    type: object
+  categorymodel.ResCreateCategory:
+    properties:
+      name:
+        type: string
+    type: object
+  categorymodel.ResListCategory:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/categorymodel.Category'
+        type: array
+      filter:
+        $ref: '#/definitions/categorymodel.Filter'
+      paging:
+        $ref: '#/definitions/common.Paging'
+    type: object
+  categorymodel.SimpleCategory:
+    properties:
+      id:
+        example: category id
+        type: string
+      name:
+        example: Tiểu thuyết
+        type: string
+    type: object
+  common.AppError:
+    properties:
+      errorKey:
+        example: ErrKey
+        type: string
+      log:
+        example: error log
+        type: string
+      message:
+        example: error message
+        type: string
+      statusCode:
+        example: 400
+        type: integer
+    type: object
+  common.Paging:
+    properties:
+      limit:
+        example: 10
+        type: integer
+      page:
+        example: 1
+        type: integer
+      total:
+        example: 11
+        type: integer
+    type: object
+  common.ResSuccess:
+    properties:
+      data:
+        example: true
+        type: boolean
+    type: object
+  enum.DebtType:
+    enum:
+    - Pay
+    - Debt
+    type: string
+    x-enum-varnames:
+    - Pay
+    - Debt
+  featuremodel.Feature:
+    properties:
+      description:
+        example: Xem nhân viên
+        type: string
+      groupName:
+        example: Nhân viên
+        type: string
+      id:
+        example: feature id
+        type: string
+    type: object
+  featuremodel.ResFeatureDetail:
+    properties:
+      description:
+        example: Xem nhân viên
+        type: string
+      groupName:
+        example: Nhân viên
+        type: string
+      id:
+        example: feature id
+        type: string
+      isHas:
+        example: true
+        type: boolean
+    type: object
+  featuremodel.ResListFeature:
+    properties:
+      data:
+        description: Data contains the detailed information about features.
+        items:
+          $ref: '#/definitions/featuremodel.Feature'
+        type: array
+    type: object
+  filter.SupplierDebtFilter:
+    properties:
+      from:
+        example: 1709500431
+        type: integer
+      to:
+        example: 1709500431
+        type: integer
+    type: object
+  filter.SupplierImportFilter:
+    properties:
+      from:
+        example: 1709500431
+        type: integer
+      to:
+        example: 1709500431
+        type: integer
+    type: object
+  importnotedetailmodel.ImportNoteDetail:
+    properties:
+      book:
+        $ref: '#/definitions/bookmodel.SimpleBook'
+      importNoteId:
+        example: import note id
+        type: string
+      price:
+        type: number
+      qtyImport:
+        type: integer
+    type: object
+  importnotedetailmodel.ImportNoteDetailCreate:
+    properties:
+      bookId:
+        example: book id
+        type: string
+      isReplacePrice:
+        example: true
+        type: boolean
+      price:
+        example: 60000
+        type: integer
+      qtyImport:
+        example: 100
+        type: integer
+    type: object
+  importnotemodel.Filter:
+    properties:
+      closedAtFrom:
+        example: 1709500431
+        type: integer
+      closedAtTo:
+        example: 1709500431
+        type: integer
+      closedBy:
+        example: user name
+        type: string
+      createdAtFrom:
+        example: 1709500431
+        type: integer
+      createdAtTo:
+        example: 1709500431
+        type: integer
+      createdBy:
+        example: user name
+        type: string
+      maxPrice:
+        example: 1000
+        type: number
+      minPrice:
+        example: 10
+        type: number
+      searchKey:
+        example: ""
+        type: string
+      status:
+        example: Done
+        type: string
+      supplier:
+        example: supplier name
+        type: string
+    type: object
+  importnotemodel.ImportNote:
+    properties:
+      closedAt:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      closedBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      createdAt:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      createdBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      id:
+        example: import note id
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/importnotemodel.ImportNoteStatus'
+        example: Done
+      supplier:
+        $ref: '#/definitions/importnotemodel.SimpleSupplier'
+      totalPrice:
+        example: 120000
+        type: integer
+    type: object
+  importnotemodel.ImportNoteStatus:
+    enum:
+    - InProgress
+    - Done
+    - Cancel
+    type: string
+    x-enum-varnames:
+    - InProgress
+    - Done
+    - Cancel
+  importnotemodel.ReqCreateImportNote:
+    properties:
+      details:
+        items:
+          $ref: '#/definitions/importnotedetailmodel.ImportNoteDetailCreate'
+        type: array
+      id:
+        example: ""
+        type: string
+      supplierId:
+        example: supplier id
+        type: string
+    type: object
+  importnotemodel.ReqUpdateImportNote:
+    properties:
+      status:
+        allOf:
+        - $ref: '#/definitions/importnotemodel.ImportNoteStatus'
+        example: Done
+    type: object
+  importnotemodel.ResCreateImportNote:
+    properties:
+      data:
+        example: "123"
+        type: string
+    type: object
+  importnotemodel.ResDetailImportNote:
+    properties:
+      closedAt:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      closedBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      createdAt:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      createdBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      details:
+        items:
+          $ref: '#/definitions/importnotedetailmodel.ImportNoteDetail'
+        type: array
+      id:
+        example: import note id
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/importnotemodel.ImportNoteStatus'
+        example: Done
+      supplier:
+        $ref: '#/definitions/importnotemodel.SimpleSupplier'
+      totalPrice:
+        example: 120000
+        type: integer
+    type: object
+  importnotemodel.ResListImportNote:
+    properties:
+      data:
+        description: Data contains list of import note.
+        items:
+          $ref: '#/definitions/importnotemodel.ImportNote'
+        type: array
+      filter:
+        allOf:
+        - $ref: '#/definitions/importnotemodel.Filter'
+        description: Filter contains the filter parameters used to retrieve import
+          note.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  importnotemodel.ResSeeDetailImportNote:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/importnotemodel.ResDetailImportNote'
+        description: Data contains the detailed information about import note details.
+    type: object
+  importnotemodel.SimpleSupplier:
+    properties:
+      id:
+        example: "123"
+        type: string
+      name:
+        example: Nguyễn Văn A
+        type: string
+      phone:
+        example: "0123456789"
+        type: string
+    type: object
+  inventorychecknotedetailmodel.InventoryCheckNoteDetail:
+    properties:
+      book:
+        $ref: '#/definitions/bookmodel.SimpleBook'
+      difference:
+        example: 100
+        type: integer
+      final:
+        example: 200
+        type: integer
+      initial:
+        example: 100
+        type: integer
+      inventoryCheckNoteId:
+        example: inventory check note id
+        type: string
+    type: object
+  inventorychecknotedetailmodel.InventoryCheckNoteDetailCreate:
+    properties:
+      bookId:
+        example: book id
+        type: string
+      difference:
+        example: 100
+        type: integer
+    type: object
+  inventorychecknotemodel.Filter:
+    properties:
+      createdAtFrom:
+        example: 1709500431
+        type: integer
+      createdAtTo:
+        example: 1709500431
+        type: integer
+      createdBy:
+        example: user name
+        type: string
+      searchKey:
+        example: ""
+        type: string
+    type: object
+  inventorychecknotemodel.InventoryCheckNote:
+    properties:
+      createdAt:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      createdBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      id:
+        example: inventory check note id
+        type: string
+      qtyAfterAdjust:
+        example: 200
+        type: integer
+      qtyDifferent:
+        example: 100
+        type: integer
+    type: object
+  inventorychecknotemodel.ReqCreateInventoryCheckNote:
+    properties:
+      details:
+        items:
+          $ref: '#/definitions/inventorychecknotedetailmodel.InventoryCheckNoteDetailCreate'
+        type: array
+      id:
+        example: ""
+        type: string
+    type: object
+  inventorychecknotemodel.ResCreateInventoryCheckNote:
+    properties:
+      data:
+        example: "123"
+        type: string
+    type: object
+  inventorychecknotemodel.ResDetailInventoryCheckNote:
+    properties:
+      createdAt:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      createdBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      details:
+        items:
+          $ref: '#/definitions/inventorychecknotedetailmodel.InventoryCheckNoteDetail'
+        type: array
+      id:
+        example: inventory check note id
+        type: string
+      qtyAfterAdjust:
+        example: 200
+        type: integer
+      qtyDifferent:
+        example: 100
+        type: integer
+    type: object
+  inventorychecknotemodel.ResListInventoryCheckNote:
+    properties:
+      data:
+        description: Data contains list of inventory check note.
+        items:
+          $ref: '#/definitions/inventorychecknotemodel.InventoryCheckNote'
+        type: array
+      filter:
+        allOf:
+        - $ref: '#/definitions/inventorychecknotemodel.Filter'
+        description: Filter contains the filter parameters used to retrieve inventory
+          check note.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  inventorychecknotemodel.ResSeeDetailInventoryCheckNote:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/inventorychecknotemodel.ResDetailInventoryCheckNote'
+        description: Data contains the detailed information about inventory check
+          note details.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  invoicedetailmodel.InvoiceDetail:
+    properties:
+      book:
+        $ref: '#/definitions/bookmodel.SimpleBook'
+      qty:
+        example: 2
+        type: integer
+      unitPrice:
+        example: 60000
+        type: integer
+    type: object
+  invoicedetailmodel.ReqCreateInvoiceDetail:
+    properties:
+      bookId:
+        example: book id
+        type: string
+      qty:
+        example: 2
+        type: integer
+    type: object
+  invoicemodel.Filter:
+    properties:
+      createdBy:
+        example: user name
+        type: string
+      maxPrice:
+        type: number
+      minPrice:
+        type: number
+      searchKey:
+        type: string
+    type: object
+  invoicemodel.Invoice:
+    properties:
+      createdAt:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      createdBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      id:
+        example: "123"
+        type: string
+      totalPrice:
+        example: 120000
+        type: number
+    type: object
+  invoicemodel.ReqCreateInvoice:
+    properties:
+      details:
+        items:
+          $ref: '#/definitions/invoicedetailmodel.ReqCreateInvoiceDetail'
+        type: array
+    type: object
+  invoicemodel.ResCreateInvoice:
+    properties:
+      data:
+        $ref: '#/definitions/invoicemodel.ResCreateInvoiceData'
+    type: object
+  invoicemodel.ResCreateInvoiceData:
+    properties:
+      createdBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      details:
+        items:
+          $ref: '#/definitions/invoicedetailmodel.ReqCreateInvoiceDetail'
+        type: array
+      id:
+        example: "123"
+        type: string
+      total:
+        example: 120000
+        type: integer
+    type: object
+  invoicemodel.ResDetailInvoice:
+    properties:
+      createdAt:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      createdBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      details:
+        items:
+          $ref: '#/definitions/invoicedetailmodel.InvoiceDetail'
+        type: array
+      id:
+        example: "123"
+        type: string
+      totalPrice:
+        example: 120000
+        type: number
+    type: object
+  invoicemodel.ResGetNearestInvoice:
+    properties:
+      data:
+        description: Data contains list of invoice.
+        items:
+          $ref: '#/definitions/invoicemodel.Invoice'
+        type: array
+    type: object
+  invoicemodel.ResListInvoice:
+    properties:
+      data:
+        description: Data contains list of invoice.
+        items:
+          $ref: '#/definitions/invoicemodel.Invoice'
+        type: array
+      filter:
+        allOf:
+        - $ref: '#/definitions/invoicemodel.Filter'
+        description: Filter contains the filter parameters used to retrieve invoice.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  invoicemodel.ResSeeDetailInvoice:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/invoicemodel.ResDetailInvoice'
+        description: Data contains the detailed information about invoice details.
+    type: object
+  publishermodel.Filter:
+    properties:
+      searchKey:
+        type: string
+    type: object
+  publishermodel.Publisher:
+    properties:
+      id:
+        example: publisher id
+        type: string
+      name:
+        example: NXB Kim Đồng
+        type: string
+    type: object
+  publishermodel.ReqCreatePublisher:
+    properties:
+      name:
+        example: Kim Đồng
+        type: string
+    type: object
+  publishermodel.ResCreatePublisher:
+    properties:
+      data:
+        type: string
+    type: object
+  publishermodel.ResListPublisher:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/publishermodel.Publisher'
+        type: array
+      filter:
+        $ref: '#/definitions/publishermodel.Filter'
+      paging:
+        $ref: '#/definitions/common.Paging'
+    type: object
+  rolefeaturemodel.SimpleRoleFeature:
+    properties:
+      featureId:
+        example: feature id
+        type: string
+    type: object
+  rolemodel.ReqCreateRole:
+    properties:
+      features:
+        items:
+          type: string
+        type: array
+      name:
+        example: user
+        type: string
+    type: object
+  rolemodel.ReqUpdateRole:
+    properties:
+      features:
+        items:
+          type: string
+        type: array
+      name:
+        example: nếu tên không đổi thì không cần trường này
+        type: string
+    type: object
+  rolemodel.ResCreateRole:
+    properties:
+      data:
+        example: "123"
+        type: string
+    type: object
+  rolemodel.ResListRole:
+    properties:
+      data:
+        description: Data contains the detailed information about roles.
+        items:
+          $ref: '#/definitions/rolemodel.SimpleRole'
+        type: array
+    type: object
+  rolemodel.ResSeeDetailRole:
+    properties:
+      data:
+        description: Data contains the detailed information about features.
+        items:
+          $ref: '#/definitions/featuremodel.ResFeatureDetail'
+        type: array
+      id:
+        example: role id
+        type: string
+      name:
+        example: admin
+        type: string
+    type: object
+  rolemodel.Role:
+    properties:
+      features:
+        items:
+          $ref: '#/definitions/rolefeaturemodel.SimpleRoleFeature'
+        type: array
+      id:
+        example: role id
+        type: string
+      name:
+        example: admin
+        type: string
+    type: object
+  rolemodel.SimpleRole:
+    properties:
+      id:
+        example: role id
+        type: string
+      name:
+        example: admin
+        type: string
+    type: object
+  salereportetailmodel.SaleReportDetail:
+    properties:
+      amount:
+        example: 10
+        type: integer
+      book:
+        $ref: '#/definitions/bookmodel.SimpleBook'
+      totalSales:
+        example: 100000
+        type: integer
+    type: object
+  salereportmodel.ReqFindSaleReport:
+    properties:
+      timeFrom:
+        example: 1701388800
+        type: integer
+      timeTo:
+        example: 1704067199
+        type: integer
+    type: object
+  salereportmodel.ResFindSaleReport:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/salereportmodel.SaleReport'
+        description: Data contains the detailed information about sale report
+    type: object
+  salereportmodel.SaleReport:
+    properties:
+      amount:
+        example: 10
+        type: integer
+      details:
+        items:
+          $ref: '#/definitions/salereportetailmodel.SaleReportDetail'
+        type: array
+      timeFrom:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      timeTo:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      total:
+        example: 100000
+        type: integer
+    type: object
+  stockreportdetailmodel.StockReportDetail:
+    properties:
+      book:
+        $ref: '#/definitions/bookmodel.SimpleBook'
+      final:
+        example: 30
+        type: integer
+      import:
+        example: 100
+        type: integer
+      initial:
+        example: 0
+        type: integer
+      modify:
+        example: -60
+        type: integer
+      sell:
+        example: -10
+        type: integer
+    type: object
+  stockreportmodel.ReqFindStockReport:
+    properties:
+      timeFrom:
+        example: 1701388800
+        type: integer
+      timeTo:
+        example: 1704067199
+        type: integer
+    type: object
+  stockreportmodel.ResFindStockReport:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/stockreportmodel.StockReport'
+        description: Data contains the detailed information about stock report
+    type: object
+  stockreportmodel.StockReport:
+    properties:
+      details:
+        items:
+          $ref: '#/definitions/stockreportdetailmodel.StockReportDetail'
+        type: array
+      id:
+        example: report id
+        type: string
+      timeFrom:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      timeTo:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+    type: object
+  supplierdebtmodel.SupplierDebt:
+    properties:
+      createdAt:
+        example: "1709500431"
+        type: string
+      createdBy:
+        $ref: '#/definitions/usermodel.SimpleUser'
+      id:
+        example: debt001
+        type: string
+      qty:
+        example: -70000
+        type: integer
+      qtyLeft:
+        example: -100000
+        type: integer
+      supplierId:
+        example: "123"
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/enum.DebtType'
+        example: Debt
+    type: object
+  supplierdebtreportdetailmodel.SupplierDebtReportDetail:
+    properties:
+      debt:
+        example: -40000
+        type: integer
+      final:
+        example: 80000
+        type: integer
+      initial:
+        example: 100000
+        type: integer
+      pay:
+        example: 20000
+        type: integer
+      supplier:
+        $ref: '#/definitions/importnotemodel.SimpleSupplier'
+    type: object
+  supplierdebtreportmodel.ReqFindSupplierDebtReport:
+    properties:
+      timeFrom:
+        example: 1701388800
+        type: integer
+      timeTo:
+        example: 1704067199
+        type: integer
+    type: object
+  supplierdebtreportmodel.ResFindSupplierDebtReport:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/supplierdebtreportmodel.SupplierDebtReport'
+        description: Data contains the detailed information about supplier debt report
+    type: object
+  supplierdebtreportmodel.SupplierDebtReport:
+    properties:
+      debt:
+        example: -40000
+        type: integer
+      details:
+        items:
+          $ref: '#/definitions/supplierdebtreportdetailmodel.SupplierDebtReportDetail'
+        type: array
+      final:
+        example: -120000
+        type: integer
+      id:
+        type: string
+      initial:
+        example: -100000
+        type: integer
+      pay:
+        example: 20000
+        type: integer
+      timeFrom:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      timeTo:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+    type: object
+  suppliermodel.ReqCreateSupplier:
+    properties:
+      debt:
+        example: -100000
+        type: integer
+      email:
+        example: a@gmail.com
+        type: string
+      id:
+        example: "123"
+        type: string
+      name:
+        example: Nguyễn Văn A
+        type: string
+      phone:
+        example: "0123456789"
+        type: string
+    type: object
+  suppliermodel.ReqUpdateDebtSupplier:
+    properties:
+      id:
+        example: supplier debt id
+        type: string
+      qtyUpdate:
+        example: 10000
+        type: integer
+    type: object
+  suppliermodel.ReqUpdateInfoSupplier:
+    properties:
+      email:
+        example: b@gmail.com
+        type: string
+      name:
+        example: tên đã đổi
+        type: string
+      phone:
+        example: "1234567890"
+        type: string
+    type: object
+  suppliermodel.ResGetAllSupplier:
+    properties:
+      data:
+        description: Data contains list of user.
+        items:
+          $ref: '#/definitions/importnotemodel.SimpleSupplier'
+        type: array
+    type: object
+  suppliermodel.ResListSupplier:
+    properties:
+      data:
+        description: Data contains list of supplier.
+        items:
+          $ref: '#/definitions/suppliermodel.Supplier'
+        type: array
+      filter:
+        allOf:
+        - $ref: '#/definitions/filter.SupplierImportFilter'
+        description: Filter contains the filter parameters used to retrieve supplier.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  suppliermodel.ResSeeDebtSupplier:
+    properties:
+      data:
+        description: Data contains the detailed information about supplier's debts.
+        items:
+          $ref: '#/definitions/supplierdebtmodel.SupplierDebt'
+        type: array
+      filter:
+        allOf:
+        - $ref: '#/definitions/filter.SupplierDebtFilter'
+        description: Filter contains the filter parameters used to retrieve debts.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  suppliermodel.ResSeeImportNoteSupplier:
+    properties:
+      data:
+        description: Data contains the detailed information about supplier's import
+          notes.
+        items:
+          $ref: '#/definitions/importnotemodel.ImportNote'
+        type: array
+      filter:
+        allOf:
+        - $ref: '#/definitions/filter.SupplierImportFilter'
+        description: Filter contains the filter parameters used to retrieve import
+          notes.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  suppliermodel.ResSupplierCreate:
+    properties:
+      data:
+        example: "123"
+        type: string
+    type: object
+  suppliermodel.Supplier:
+    properties:
+      debt:
+        example: -100000
+        type: integer
+      email:
+        example: a@gmail.com
+        type: string
+      id:
+        example: "123"
+        type: string
+      name:
+        example: Nguyễn Văn A
+        type: string
+      phone:
+        example: "0123456789"
+        type: string
+    type: object
+  tokenprovider.Token:
+    properties:
+      created:
+        example: "2023-12-03T15:02:19.62113565Z"
+        type: string
+      expiry:
+        example: 2592000
+        type: integer
+      token:
+        example: token
+        type: string
+    type: object
+  uploadtransport.ResUploadFile:
+    properties:
+      data:
+        type: string
+    type: object
+  usermodel.Account:
+    properties:
+      accessToken:
+        $ref: '#/definitions/tokenprovider.Token'
+      refreshToken:
+        $ref: '#/definitions/tokenprovider.Token'
+    type: object
+  usermodel.AccountWithoutRefresh:
+    properties:
+      accessToken:
+        $ref: '#/definitions/tokenprovider.Token'
+    type: object
+  usermodel.Filter:
+    properties:
+      active:
+        example: true
+        type: boolean
+      searchKey:
+        example: id, name, phone, email, address
+        type: string
+    type: object
+  usermodel.ReqCreateUser:
+    properties:
+      address:
+        example: HCM
+        type: string
+      email:
+        example: a@gmail.com
+        type: string
+      img:
+        example: https://picsum.photos/200
+        type: string
+      name:
+        example: Nguyễn Văn A
+        type: string
+      phone:
+        example: "0919199112"
+        type: string
+      roleId:
+        example: role id
+        type: string
+    type: object
+  usermodel.ReqLoginUser:
+    properties:
+      email:
+        example: admin@gmail.com
+        type: string
+      password:
+        example: app123
+        type: string
+    type: object
+  usermodel.ReqRefreshToken:
+    properties:
+      refreshToken:
+        type: string
+    type: object
+  usermodel.ReqResetPasswordUser:
+    properties:
+      userSenderPass:
+        example: mật khẩu người gửi
+        type: string
+    type: object
+  usermodel.ReqUpdateInfoUser:
+    properties:
+      address:
+        example: bỏ trường này nếu không muốn update địa chỉ
+        type: string
+      img:
+        example: https://picsum.photos/200
+        type: string
+      name:
+        example: bỏ trường này nếu không muốn update tên
+        type: string
+      phone:
+        example: bỏ trường này nếu không muốn update sđt
+        type: string
+    type: object
+  usermodel.ReqUpdatePasswordUser:
+    properties:
+      newPassword:
+        example: mật khẩu mới
+        type: string
+      oldPassword:
+        example: mật khẩu cũ
+        type: string
+    type: object
+  usermodel.ReqUpdateRoleUser:
+    properties:
+      roleId:
+        example: role id
+        type: string
+    type: object
+  usermodel.ReqUpdateStatusUsers:
+    properties:
+      isActive:
+        example: true
+        type: boolean
+      userIds:
+        items:
+          type: string
+        type: array
+    type: object
+  usermodel.ResCreateUser:
+    properties:
+      data:
+        example: "123"
+        type: string
+    type: object
+  usermodel.ResGetAllUser:
+    properties:
+      data:
+        description: Data contains list of user.
+        items:
+          $ref: '#/definitions/usermodel.SimpleUser'
+        type: array
+    type: object
+  usermodel.ResListUser:
+    properties:
+      data:
+        description: Data contains list of user.
+        items:
+          $ref: '#/definitions/usermodel.ResUser'
+        type: array
+      filter:
+        allOf:
+        - $ref: '#/definitions/usermodel.Filter'
+        description: Filter contains the filter parameters used to retrieve user.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  usermodel.ResUser:
+    properties:
+      address:
+        example: HCM
+        type: string
+      email:
+        example: b@gmail.com
+        type: string
+      id:
+        example: user id
+        type: string
+      img:
+        example: https://picsum.photos/200
+        type: string
+      isActive:
+        example: true
+        type: boolean
+      name:
+        example: Nguyễn Văn B
+        type: string
+      phone:
+        example: "0919199112"
+        type: string
+      role:
+        $ref: '#/definitions/rolemodel.SimpleRole'
+    type: object
+  usermodel.SimpleUser:
+    properties:
+      id:
+        example: user id
+        type: string
+      name:
+        example: Nguyễn Văn A
+        type: string
+    type: object
+  usermodel.User:
+    properties:
+      address:
+        example: HCM
+        type: string
+      email:
+        example: b@gmail.com
+        type: string
+      id:
+        example: user id
+        type: string
+      img:
+        example: https://picsum.photos/200
+        type: string
+      isActive:
+        example: true
+        type: boolean
+      name:
+        example: Nguyễn Văn B
+        type: string
+      phone:
+        example: "0919199112"
+        type: string
+      role:
+        $ref: '#/definitions/rolemodel.Role'
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: 21520095@gm.uit.edu.vn
+    name: Bui Vi Quoc
+    url: https://www.facebook.com/bviquoc/
+  description: This is a sample server Book Store Management API server.
+  title: Book Store Management API
+  version: "1.0"
+paths:
+  /authors:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/authormodel.ResListAuthor'
+      security:
+      - BearerAuth: []
+      summary: Get all authors
+      tags:
+      - authors
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create author
+        in: body
+        name: author
+        required: true
+        schema:
+          $ref: '#/definitions/authormodel.ReqCreateAuthor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: author id
+          schema:
+            $ref: '#/definitions/authormodel.ResCreateAuthor'
+      security:
+      - BearerAuth: []
+      summary: Create author with name
+      tags:
+      - authors
+  /books:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: authorId1|authorId2
+        in: query
+        name: authors
+        type: string
+      - example: categoryId1|categoryId2
+        in: query
+        name: categories
+        type: string
+      - example: 0
+        in: query
+        name: maxSellPrice
+        type: integer
+      - example: 0
+        in: query
+        name: minSellPrice
+        type: integer
+      - example: publisher id
+        in: query
+        name: publisher
+        type: string
+      - example: id, name
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list book
+          schema:
+            $ref: '#/definitions/bookmodel.ResListBook'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List book
+      tags:
+      - books
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create Book
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/bookmodel.ReqCreateBook'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: book id
+          schema:
+            $ref: '#/definitions/bookmodel.ResCreateBook'
+      security:
+      - BearerAuth: []
+      summary: Create Book
+      tags:
+      - books
+  /books/all:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list book
+          schema:
+            $ref: '#/definitions/bookmodel.ResGetAllBook'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Get all book
+      tags:
+      - books
+  /booktitles:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: 1709500431
+        in: query
+        name: createdAtFrom
+        type: integer
+      - example: 1709500431
+        in: query
+        name: createdAtTo
+        type: integer
+      - example: true
+        in: query
+        name: isActive
+        type: boolean
+      - example: ""
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/booktitlemodel.ResListBookTitle'
+      security:
+      - BearerAuth: []
+      summary: Get all booktitles
+      tags:
+      - booktitles
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create booktitle
+        in: body
+        name: booktitle
+        required: true
+        schema:
+          $ref: '#/definitions/booktitlemodel.ReqCreateBookTitle'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: booktitle id
+          schema:
+            $ref: '#/definitions/booktitlemodel.ResCreateBookTitle'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Create booktitle name, desc, authors, categories.
+      tags:
+      - booktitles
+  /booktitles/:id:
+    delete:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+      security:
+      - BearerAuth: []
+      summary: Delete booktitle by id
+      tags:
+      - booktitles
+  /booktitles/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Booktitle ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/booktitlemodel.ResBookTitleDetail'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Get booktitle detail by id
+      tags:
+      - booktitles
+  /booktitles/{id}/info:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: booktitle id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: booktitle info to update
+        in: body
+        name: booktitle
+        required: true
+        schema:
+          $ref: '#/definitions/booktitlemodel.ReqUpdateBookInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Update info booktitle
+      tags:
+      - booktitles
+  /categories:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/categorymodel.ResListCategory'
+      security:
+      - BearerAuth: []
+      summary: Get all categories
+      tags:
+      - categories
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create category
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/categorymodel.ReqCreateCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: category id
+          schema:
+            $ref: '#/definitions/categorymodel.ResCreateCategory'
+      security:
+      - BearerAuth: []
+      summary: Create category with name
+      tags:
+      - categories
+  /features:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list feature
+          schema:
+            $ref: '#/definitions/featuremodel.ResListFeature'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List feature
+      tags:
+      - features
+  /importNotes:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: 1709500431
+        in: query
+        name: closedAtFrom
+        type: integer
+      - example: 1709500431
+        in: query
+        name: closedAtTo
+        type: integer
+      - example: user name
+        in: query
+        name: closedBy
+        type: string
+      - example: 1709500431
+        in: query
+        name: createdAtFrom
+        type: integer
+      - example: 1709500431
+        in: query
+        name: createdAtTo
+        type: integer
+      - example: user name
+        in: query
+        name: createdBy
+        type: string
+      - example: 1000
+        in: query
+        name: maxPrice
+        type: number
+      - example: 10
+        in: query
+        name: minPrice
+        type: number
+      - example: ""
+        in: query
+        name: search
+        type: string
+      - example: Done
+        in: query
+        name: status
+        type: string
+      - example: supplier name
+        in: query
+        name: supplier
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list import note
+          schema:
+            $ref: '#/definitions/importnotemodel.ResListImportNote'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List import note
+      tags:
+      - importNotes
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: import note need to create
+        in: body
+        name: importNote
+        required: true
+        schema:
+          $ref: '#/definitions/importnotemodel.ReqCreateImportNote'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: import note id
+          schema:
+            $ref: '#/definitions/importnotemodel.ResCreateImportNote'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Create import note
+      tags:
+      - importNotes
+  /importNotes/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: import note id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: import note
+          schema:
+            $ref: '#/definitions/importnotemodel.ResSeeDetailImportNote'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See detail import note
+      tags:
+      - importNotes
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: import note id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: status need to update of import note
+        in: body
+        name: importNote
+        required: true
+        schema:
+          $ref: '#/definitions/importnotemodel.ReqUpdateImportNote'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Change status import note
+      tags:
+      - importNotes
+  /inventoryCheckNotes:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: 1709500431
+        in: query
+        name: createdAtFrom
+        type: integer
+      - example: 1709500431
+        in: query
+        name: createdAtTo
+        type: integer
+      - example: user name
+        in: query
+        name: createdBy
+        type: string
+      - example: ""
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list inventory check note
+          schema:
+            $ref: '#/definitions/inventorychecknotemodel.ResListInventoryCheckNote'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List inventory check note
+      tags:
+      - inventoryCheckNotes
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: inventory check note need to create
+        in: body
+        name: inventoryCheckNote
+        required: true
+        schema:
+          $ref: '#/definitions/inventorychecknotemodel.ReqCreateInventoryCheckNote'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: inventory check note id
+          schema:
+            $ref: '#/definitions/inventorychecknotemodel.ResCreateInventoryCheckNote'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Create inventory check note
+      tags:
+      - inventoryCheckNotes
+  /inventoryCheckNotes/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: inventory check note id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: inventory check note
+          schema:
+            $ref: '#/definitions/inventorychecknotemodel.ResSeeDetailInventoryCheckNote'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See detail inventory check note
+      tags:
+      - inventoryCheckNotes
+  /invoices:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: user name
+        in: query
+        name: createdBy
+        type: string
+      - in: query
+        name: maxPrice
+        type: number
+      - in: query
+        name: minPrice
+        type: number
+      - in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list invoice
+          schema:
+            $ref: '#/definitions/invoicemodel.ResListInvoice'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List invoice
+      tags:
+      - invoices
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: invoice need to create
+        in: body
+        name: invoice
+        required: true
+        schema:
+          $ref: '#/definitions/invoicemodel.ReqCreateInvoice'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: invoice id
+          schema:
+            $ref: '#/definitions/invoicemodel.ResCreateInvoice'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Create invoice
+      tags:
+      - invoices
+  /invoices/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: invoice id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: invoice
+          schema:
+            $ref: '#/definitions/invoicemodel.ResSeeDetailInvoice'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See detail invoice
+      tags:
+      - invoices
+  /invoices/nearest:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: amountNeed
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list invoice
+          schema:
+            $ref: '#/definitions/invoicemodel.ResGetNearestInvoice'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Get nearest invoice
+      tags:
+      - invoices
+  /login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: login information
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqLoginUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: user token
+          schema:
+            $ref: '#/definitions/usermodel.Account'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      summary: Login
+      tags:
+      - auth
+  /profile:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: user
+          schema:
+            $ref: '#/definitions/usermodel.User'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See profile
+      tags:
+      - auth
+  /publishers:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/publishermodel.ResListPublisher'
+      security:
+      - BearerAuth: []
+      summary: Get all publishers
+      tags:
+      - publishers
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create publisher
+        in: body
+        name: publisher
+        required: true
+        schema:
+          $ref: '#/definitions/publishermodel.ReqCreatePublisher'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: publisher id
+          schema:
+            $ref: '#/definitions/publishermodel.ResCreatePublisher'
+      security:
+      - BearerAuth: []
+      summary: Create publisher with name
+      tags:
+      - publishers
+  /refreshToken:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: refreshToken
+        in: body
+        name: refreshToken
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqRefreshToken'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: user token
+          schema:
+            $ref: '#/definitions/usermodel.AccountWithoutRefresh'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Refresh token
+      tags:
+      - auth
+  /reports/debt:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: time from and time to
+        in: body
+        name: condition
+        required: true
+        schema:
+          $ref: '#/definitions/supplierdebtreportmodel.ReqFindSupplierDebtReport'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: supplier debt report
+          schema:
+            $ref: '#/definitions/supplierdebtreportmodel.ResFindSupplierDebtReport'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Find supplier debt report
+      tags:
+      - reports
+  /reports/sale:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: time from and time to
+        in: body
+        name: condition
+        required: true
+        schema:
+          $ref: '#/definitions/salereportmodel.ReqFindSaleReport'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: sale report
+          schema:
+            $ref: '#/definitions/salereportmodel.ResFindSaleReport'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Find sale report
+      tags:
+      - reports
+  /reports/stock:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: time from and time to
+        in: body
+        name: condition
+        required: true
+        schema:
+          $ref: '#/definitions/stockreportmodel.ReqFindStockReport'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: stock report
+          schema:
+            $ref: '#/definitions/stockreportmodel.ResFindStockReport'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Find stock report
+      tags:
+      - reports
+  /roles:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list role
+          schema:
+            $ref: '#/definitions/rolemodel.ResListRole'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List role
+      tags:
+      - roles
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: role need to create
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/rolemodel.ReqCreateRole'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: role id
+          schema:
+            $ref: '#/definitions/rolemodel.ResCreateRole'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Create role
+      tags:
+      - roles
+  /roles/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: role id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: detailed information of role
+          schema:
+            $ref: '#/definitions/rolemodel.ResSeeDetailRole'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See detail information of role
+      tags:
+      - roles
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: role id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: role info to update
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/rolemodel.ReqUpdateRole'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Update info role
+      tags:
+      - roles
+  /suppliers:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: 100000
+        in: query
+        name: maxDebt
+        type: number
+      - example: 10
+        in: query
+        name: minDebt
+        type: number
+      - example: id, name, phone, email
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list supplier
+          schema:
+            $ref: '#/definitions/suppliermodel.ResListSupplier'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List supplier
+      tags:
+      - suppliers
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: supplier need to create
+        in: body
+        name: supplier
+        required: true
+        schema:
+          $ref: '#/definitions/suppliermodel.ReqCreateSupplier'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: supplier id
+          schema:
+            $ref: '#/definitions/suppliermodel.ResSupplierCreate'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Create supplier
+      tags:
+      - suppliers
+  /suppliers/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: supplier id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: supplier
+          schema:
+            $ref: '#/definitions/suppliermodel.Supplier'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See detail of supplier
+      tags:
+      - suppliers
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: supplier id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: supplier info to update
+        in: body
+        name: supplier
+        required: true
+        schema:
+          $ref: '#/definitions/suppliermodel.ReqUpdateInfoSupplier'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Update info supplier
+      tags:
+      - suppliers
+  /suppliers/{id}/debts:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: supplier id
+        in: path
+        name: id
+        required: true
+        type: string
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: 1709500431
+        in: query
+        name: from
+        type: integer
+      - example: 1709500431
+        in: query
+        name: to
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: supplier
+          schema:
+            $ref: '#/definitions/suppliermodel.ResSeeDebtSupplier'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See debts of supplier
+      tags:
+      - suppliers
+  /suppliers/{id}/importNotes:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: supplier id
+        in: path
+        name: id
+        required: true
+        type: string
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: 1709500431
+        in: query
+        name: from
+        type: integer
+      - example: 1709500431
+        in: query
+        name: to
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: supplier
+          schema:
+            $ref: '#/definitions/suppliermodel.ResSeeImportNoteSupplier'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See import notes of supplier
+      tags:
+      - suppliers
+  /suppliers/{id}/pay:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: supplier id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: pay information
+        in: body
+        name: supplier
+        required: true
+        schema:
+          $ref: '#/definitions/suppliermodel.ReqUpdateDebtSupplier'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Pay supplier
+      tags:
+      - suppliers
+  /suppliers/all:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list supplier
+          schema:
+            $ref: '#/definitions/suppliermodel.ResGetAllSupplier'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Get all supplier
+      tags:
+      - suppliers
+  /upload:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: Upload file
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: 'Folder name (default: images)'
+        in: formData
+        name: folderName
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: url
+          schema:
+            $ref: '#/definitions/uploadtransport.ResUploadFile'
+      security:
+      - BearerAuth: []
+      summary: Upload file
+      tags:
+      - upload
+  /users:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: true
+        in: query
+        name: active
+        type: boolean
+      - example: id, name, phone, email, address
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list user
+          schema:
+            $ref: '#/definitions/usermodel.ResListUser'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List user
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: user need to create
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqCreateUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: user id
+          schema:
+            $ref: '#/definitions/usermodel.ResCreateUser'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Create user
+      tags:
+      - users
+  /users/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: user
+          schema:
+            $ref: '#/definitions/usermodel.User'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See user detail
+      tags:
+      - users
+  /users/{id}/info:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: user info to update
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqUpdateInfoUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Update info user
+      tags:
+      - users
+  /users/{id}/password:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: old and new password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqUpdatePasswordUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Update password user
+      tags:
+      - users
+  /users/{id}/reset:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: sender's password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqResetPasswordUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Reset password user
+      tags:
+      - users
+  /users/{id}/role:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: role id want to update
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqUpdateRoleUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Change role user
+      tags:
+      - users
+  /users/all:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list user
+          schema:
+            $ref: '#/definitions/usermodel.ResGetAllUser'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Get all user
+      tags:
+      - users
+  /users/status:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: list user id and status want to be updated
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqUpdateStatusUsers'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Change status users
+      tags:
+      - users
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
