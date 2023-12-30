@@ -20,7 +20,7 @@ const login = async (credentials) => {
         user.token = accessToken.token
         return user
 
-    } catch (e: any) {
+    } catch (e) {
         console.log(e.message)
     }
 
@@ -35,7 +35,7 @@ export const {
     ...authConfig,
     providers: [
         CredentialsProvider({
-            async authorize(credentials, request: Request) {
+            async authorize(credentials, request) {
                 try {
                     const user = await login(credentials);
                     return user;

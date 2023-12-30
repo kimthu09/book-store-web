@@ -25,7 +25,7 @@ export const authConfig = {
             if (user && isOnLoginPage) {
                 return Response.redirect(new URL("/", request.nextUrl));
             }
-            if (!user) {
+            if (!user && !isOnLoginPage) {
                 return false
             }
             return true
