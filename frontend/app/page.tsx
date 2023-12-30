@@ -1,20 +1,7 @@
-"use client";
+import { getUser } from "@/lib/auth/action";
 
-import { useEffect } from "react";
-import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
-
-export default function Home() {
-  const router = useRouter()
-
-  useEffect(() => {
-    const accessToken = Cookies.get('accessToken')
-    // console.log(accessToken)
-    if (typeof accessToken !== "string") {
-      // console.log("ahihi" + accessToken)
-      router.push('/login');
-    }
-  }, [])
-
+export default async function Home() {
+  const test = await getUser()
+  console.log(test)
   return <main className="flex">MainPage</main>;
 }
