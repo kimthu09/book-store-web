@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { logOut } from "@/lib/auth/action";
 
 const Header = () => {
   return (
@@ -14,6 +15,9 @@ const Header = () => {
           >
             <span className="font-semibold text-lg flex ">Book Store</span>
           </Link>
+          <form className="self-end" action={logOut}>
+            <button>Logout</button>
+          </form>
         </div>
       </div>
     </div>
