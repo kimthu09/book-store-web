@@ -1,6 +1,6 @@
 "use server"
 
-import { signIn, signOut } from "./auth";
+import { auth, signIn, signOut } from "./auth";
 
 export const login = async (prevState, formData) => {
     const { email, password } = Object.fromEntries(formData);
@@ -20,3 +20,13 @@ export const login = async (prevState, formData) => {
 export const logOut = async () => {
     await signOut();
 };
+
+export const getApiKey = async () => {
+    const session = await auth()
+    return session?.user?.token
+}
+
+export const getUser = async () => {
+    const session = await auth()
+    return session?.user
+}

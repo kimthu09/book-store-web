@@ -12,10 +12,6 @@ import { auth } from "@/lib/auth/auth";
 export const apiKey =
   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXJJZCI6ImczVzIxQTdTUiIsInJvbGUiOiIifSwiZXhwIjoxNzA1MTk3NDIxLCJpYXQiOjE3MDI2MDU0MjF9.SJxvTYBk6fNodXd_8M0vqM4hjJpCg5MkonTtbLjOtNU";
 
-export const getApiKey = async () => {
-  const session = await auth()
-  return session?.user?.token
-}
 export const endPoint = "http://103.57.221.113:8080";
 
 export const required = z.string().min(1, "Không để trống trường này");
