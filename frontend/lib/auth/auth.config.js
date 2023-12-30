@@ -7,19 +7,19 @@ export const authConfig = {
         jwt({ token, user }) {
             // console.log(user)
             if (user) {
-                token.id = user.data.id;
+                token.id = user;
             }
             return token;
         },
         session({ session, token }) {
             if (token) {
-                session.user.id = token.id;
+                session.user = token.id;
             }
             return session;
         },
         async authorized({ auth, request }) {
-            console.log(auth)
             const user = auth?.user;
+            // console.log(user)
             const isOnLoginPage = request.nextUrl?.pathname.startsWith("/login");
 
             if (user && isOnLoginPage) {
