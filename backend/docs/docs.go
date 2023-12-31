@@ -96,6 +96,101 @@ const docTemplate = `{
                 }
             }
         },
+        "/authors/many": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "authors"
+                ],
+                "summary": "Create list author",
+                "parameters": [
+                    {
+                        "description": "list name of author",
+                        "name": "author",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/authormodel.ReqCreateListAuthor"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/authors/{id}": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "authors"
+                ],
+                "summary": "Update author",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "author id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "author info to update",
+                        "name": "author",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/authormodel.ReqUpdateAuthor"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
         "/books": {
             "get": {
                 "security": [
@@ -545,6 +640,101 @@ const docTemplate = `{
                         "description": "category id",
                         "schema": {
                             "$ref": "#/definitions/categorymodel.ResCreateCategory"
+                        }
+                    }
+                }
+            }
+        },
+        "/categories/many": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "Create list category",
+                "parameters": [
+                    {
+                        "description": "list name of category",
+                        "name": "category",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/categorymodel.ReqCreateListCategory"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/categories/{id}": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "Update category",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "category id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "category info to update",
+                        "name": "category",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/categorymodel.ReqUpdateCategory"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
                         }
                     }
                 }
@@ -1379,6 +1569,101 @@ const docTemplate = `{
                         "description": "publisher id",
                         "schema": {
                             "$ref": "#/definitions/publishermodel.ResCreatePublisher"
+                        }
+                    }
+                }
+            }
+        },
+        "/publishers/many": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "publishers"
+                ],
+                "summary": "Create list publisher",
+                "parameters": [
+                    {
+                        "description": "list name of publisher",
+                        "name": "publisher",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/publishermodel.ReqCreateListPublisher"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/publishers/{id}": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "publishers"
+                ],
+                "summary": "Update publisher",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "publisher id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "publisher info to update",
+                        "name": "publisher",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/publishermodel.ReqUpdatePublisher"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
                         }
                     }
                 }
@@ -2621,6 +2906,26 @@ const docTemplate = `{
                 }
             }
         },
+        "authormodel.ReqCreateListAuthor": {
+            "type": "object",
+            "properties": {
+                "names": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "authormodel.ReqUpdateAuthor": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "tên đã đổi"
+                }
+            }
+        },
         "authormodel.ResCreateAuthor": {
             "type": "object",
             "properties": {
@@ -3093,6 +3398,26 @@ const docTemplate = `{
                 "name": {
                     "type": "string",
                     "example": "Trinh thám"
+                }
+            }
+        },
+        "categorymodel.ReqCreateListCategory": {
+            "type": "object",
+            "properties": {
+                "names": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "categorymodel.ReqUpdateCategory": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "tên đã đổi"
                 }
             }
         },
@@ -3948,12 +4273,32 @@ const docTemplate = `{
                 }
             }
         },
+        "publishermodel.ReqCreateListPublisher": {
+            "type": "object",
+            "properties": {
+                "names": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "publishermodel.ReqCreatePublisher": {
             "type": "object",
             "properties": {
                 "name": {
                     "type": "string",
                     "example": "Kim Đồng"
+                }
+            }
+        },
+        "publishermodel.ReqUpdatePublisher": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "tên đã đổi"
                 }
             }
         },

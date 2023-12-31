@@ -32,12 +32,10 @@ const (
 	AuthorCreateFeatureCode = "AUTHOR_CREATE"
 	AuthorViewFeatureCode   = "AUTHOR_VIEW"
 	AuthorUpdateFeatureCode = "AUTHOR_UPDATE"
-	AuthorDeleteFeatureCode = "AUTHOR_DELETE"
 
 	CategoryCreateFeatureCode = "CATEGORY_CREATE"
 	CategoryViewFeatureCode   = "CATEGORY_VIEW"
 	CategoryUpdateFeatureCode = "CATEGORY_UPDATE"
-	CategoryDeleteFeatureCode = "CATEGORY_DELETE"
 
 	BookCreateFeatureCode = "BOOK_CREATE"
 	BookUpdateFeatureCode = "BOOK_UPDATE"
@@ -51,6 +49,7 @@ const (
 
 	PublisherCreateFeatureCode = "PUBLISHER_CREATE"
 	PublisherViewFeatureCode   = "PUBLISHER_VIEW"
+	PublisherUpdateFeatureCode = "PUBLISHER_UPDATE"
 
 	ImportNoteViewFeatureCode         = "IMPORT_NOTE_VIEW"
 	ImportNoteCreateFeatureCode       = "IMPORT_NOTE_CREATE"
@@ -70,8 +69,6 @@ const (
 
 	InvoiceCreateFeatureCode = "INVOICE_CREATE"
 	InvoiceViewFeatureCode   = "INVOICE_VIEW"
-	InvoiceUpdateFeatureCode = "INVOICE_UPDATE"
-	InvoiceDeleteFeatureCode = "INVOICE_DELETE"
 
 	SupplierDebtReportViewFeatureCode = "REPORT_VIEW_SUPPLIER"
 	StockReportViewFeatureCode        = "REPORT_VIEW_STOCK"

@@ -26,6 +26,19 @@ definitions:
         example: Nguyễn Nhật Ánh
         type: string
     type: object
+  authormodel.ReqCreateListAuthor:
+    properties:
+      names:
+        items:
+          type: string
+        type: array
+    type: object
+  authormodel.ReqUpdateAuthor:
+    properties:
+      name:
+        example: tên đã đổi
+        type: string
+    type: object
   authormodel.ResCreateAuthor:
     properties:
       data:
@@ -347,6 +360,19 @@ definitions:
     properties:
       name:
         example: Trinh thám
+        type: string
+    type: object
+  categorymodel.ReqCreateListCategory:
+    properties:
+      names:
+        items:
+          type: string
+        type: array
+    type: object
+  categorymodel.ReqUpdateCategory:
+    properties:
+      name:
+        example: tên đã đổi
         type: string
     type: object
   categorymodel.ResCreateCategory:
@@ -919,10 +945,23 @@ definitions:
         example: NXB Kim Đồng
         type: string
     type: object
+  publishermodel.ReqCreateListPublisher:
+    properties:
+      names:
+        items:
+          type: string
+        type: array
+    type: object
   publishermodel.ReqCreatePublisher:
     properties:
       name:
         example: Kim Đồng
+        type: string
+    type: object
+  publishermodel.ReqUpdatePublisher:
+    properties:
+      name:
+        example: tên đã đổi
         type: string
     type: object
   publishermodel.ResCreatePublisher:
@@ -1587,6 +1626,65 @@ paths:
       summary: Create author with name
       tags:
       - authors
+  /authors/{id}:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: author id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: author info to update
+        in: body
+        name: author
+        required: true
+        schema:
+          $ref: '#/definitions/authormodel.ReqUpdateAuthor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Update author
+      tags:
+      - authors
+  /authors/many:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: list name of author
+        in: body
+        name: author
+        required: true
+        schema:
+          $ref: '#/definitions/authormodel.ReqCreateListAuthor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Create list author
+      tags:
+      - authors
   /books:
     get:
       consumes:
@@ -1867,6 +1965,65 @@ paths:
       security:
       - BearerAuth: []
       summary: Create category with name
+      tags:
+      - categories
+  /categories/{id}:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: category id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: category info to update
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/categorymodel.ReqUpdateCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Update category
+      tags:
+      - categories
+  /categories/many:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: list name of category
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/categorymodel.ReqCreateListCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Create list category
       tags:
       - categories
   /features:
@@ -2389,6 +2546,65 @@ paths:
       security:
       - BearerAuth: []
       summary: Create publisher with name
+      tags:
+      - publishers
+  /publishers/{id}:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: publisher id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: publisher info to update
+        in: body
+        name: publisher
+        required: true
+        schema:
+          $ref: '#/definitions/publishermodel.ReqUpdatePublisher'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Update publisher
+      tags:
+      - publishers
+  /publishers/many:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: list name of publisher
+        in: body
+        name: publisher
+        required: true
+        schema:
+          $ref: '#/definitions/publishermodel.ReqCreateListPublisher'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Create list publisher
       tags:
       - publishers
   /refreshToken:
