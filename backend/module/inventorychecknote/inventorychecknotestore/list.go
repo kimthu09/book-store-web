@@ -55,7 +55,7 @@ func handleFilter(
 		if filter.CreatedBy != nil {
 			db = db.
 				Joins("JOIN MUser ON InventoryCheckNote.createdBy = MUser.id").
-				Where("MUser.name LIKE ?", "%"+*filter.CreatedBy+"%")
+				Where("MUser.id = ?", *filter.CreatedBy)
 		}
 	}
 }

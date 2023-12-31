@@ -5,7 +5,6 @@ import (
 	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/user/usermodel"
 	"context"
-	"log"
 )
 
 type UpdatePasswordRepo interface {
@@ -28,22 +27,23 @@ type updatePasswordBiz struct {
 
 func NewUpdatePasswordBiz(
 	repo UpdatePasswordRepo,
-	hasher hasher.Hasher) *updatePasswordBiz {
+	hasher hasher.Hasher,
+	requester middleware.Requester) *updatePasswordBiz {
 	return &updatePasswordBiz{
-		repo:   repo,
-		hasher: hasher,
+		repo:      repo,
+		hasher:    hasher,
+		requester: requester,
 	}
 }
 
 func (biz *updatePasswordBiz) UpdatePassword(
 	ctx context.Context,
-	id string,
 	data *usermodel.ReqUpdatePasswordUser) error {
 	if err := data.Validate(); err != nil {
 		return err
 	}
 
-	user, errGetUser := biz.repo.GetUser(ctx, id)
+	user, errGetUser := biz.repo.GetUser(ctx, biz.requester.GetUserId())
 	if errGetUser != nil {
 		return errGetUser
 	}
@@ -53,14 +53,12 @@ func (biz *updatePasswordBiz) UpdatePassword(
 	}
 
 	hashedPassword := biz.hasher.Hash(data.OldPassword + user.Salt)
-	log.Print(data.OldPassword)
-	log.Print(user.Salt)
 	if hashedPassword != user.Password {
 		return usermodel.ErrUserSenderPasswordWrong
 	}
 
 	newPasswordHashed := biz.hasher.Hash(data.NewPassword + user.Salt)
-	if err := biz.repo.UpdateUserPassword(ctx, id, newPasswordHashed); err != nil {
+	if err := biz.repo.UpdateUserPassword(ctx, biz.requester.GetUserId(), newPasswordHashed); err != nil {
 		return err
 	}
 

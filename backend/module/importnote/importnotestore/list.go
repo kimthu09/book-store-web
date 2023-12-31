@@ -74,17 +74,17 @@ func handleFilter(
 		if filter.Supplier != nil {
 			db = db.
 				Joins("JOIN Supplier ON ImportNote.supplierId = Supplier.id").
-				Where("Supplier.name LIKE ?", "%"+*filter.Supplier+"%")
+				Where("Supplier.id = ?", *filter.Supplier)
 		}
 		if filter.CreatedBy != nil {
 			db = db.
 				Joins("JOIN MUser AS CreatedByUser ON ImportNote.createdBy = CreatedByUser.id").
-				Where("CreatedByUser.name LIKE ?", "%"+*filter.CreatedBy+"%")
+				Where("CreatedByUser.id = ?", *filter.CreatedBy)
 		}
 		if filter.ClosedBy != nil {
 			db = db.
 				Joins("JOIN MUser AS ClosedByUser ON ImportNote.closedBy = ClosedByUser.id").
-				Where("ClosedByUser.name LIKE ?", "%"+*filter.ClosedBy+"%")
+				Where("ClosedByUser.id = ?", *filter.ClosedBy)
 		}
 	}
 }

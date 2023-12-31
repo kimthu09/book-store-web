@@ -61,6 +61,9 @@ var (
 		"Phiếu nhập đã đóng",
 		"ErrImportNoteClosed",
 	)
+	ErrImportNoteIdDuplicate = common.ErrDuplicateKey(errors.New(
+		"Phiếu nhập đã tồn tại"),
+	)
 	ErrImportNoteCreateNoPermission = common.ErrNoPermission(
 		errors.New("Bạn không có quyền tạo phiếu nhập mới"),
 	)

@@ -12,5 +12,7 @@ func SetupRoutes(router *gin.RouterGroup, appCtx appctx.AppContext) {
 	{
 		publishers.GET("", ListPublisher(appCtx))
 		publishers.POST("", CreatePublisher(appCtx))
+		publishers.POST("/many", CreateListPublisher(appCtx))
+		publishers.PATCH("/:id", UpdatePublisher(appCtx))
 	}
 }

@@ -12,6 +12,12 @@ func (s *sqlStore) CreateImportNote(
 	db := s.db
 
 	if err := db.Create(data).Error; err != nil {
+		if gormErr := common.GetGormErr(err); gormErr != nil {
+			switch key := gormErr.GetDuplicateErrorKey("PRIMARY"); key {
+			case "PRIMARY":
+				return importnotemodel.ErrImportNoteIdDuplicate
+			}
+		}
 		return common.ErrDB(err)
 	}
 

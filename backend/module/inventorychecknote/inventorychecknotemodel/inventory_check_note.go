@@ -36,6 +36,9 @@ var (
 		"Số lượng sau khi điều chỉnh không hợp lệ",
 		"ErrInventoryCheckNoteModifyQuantityIsInvalid",
 	)
+	ErrInventoryCheckNoteIdDuplicate = common.ErrDuplicateKey(errors.New(
+		"Phiếu kiểm kho đã tồn tại"),
+	)
 	ErrInventoryCheckNoteCreateNoPermission = common.ErrNoPermission(
 		errors.New("Bạn không có quyền tạo phiếu kiểm kho mới"),
 	)
