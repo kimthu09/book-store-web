@@ -1,5 +1,5 @@
 import { endPoint } from "@/constants";
-import { Role } from "@/types";
+import { Staff } from "@/types";
 import useSWR from "swr";
 import { getApiKey } from "../auth/action";
 
@@ -10,6 +10,7 @@ const fetcher = async (url: string) => {
       accept: "application/json",
       Authorization: `Bearer ${token}`,
     },
+    cache: "no-store",
   })
     .then((res) => {
       return res.json();
@@ -17,12 +18,16 @@ const fetcher = async (url: string) => {
     .then((json) => json.data);
 };
 
-export default function getAllRole() {
-  const { data, error, isLoading } = useSWR(`${endPoint}/v1/roles`, fetcher);
+export default function getStaff(idStaff: string) {
+  const { data, error, isLoading, mutate } = useSWR(
+    `${endPoint}/v1/users/${idStaff}`,
+    fetcher
+  );
 
   return {
-    roles: data as Role[],
+    data: data as Staff,
     isLoading,
     isError: error,
+    mutate: mutate,
   };
 }

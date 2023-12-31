@@ -9,8 +9,6 @@ import { Command, CommandGroup, CommandItem } from "./ui/command";
 import { LuCheck, LuChevronsUpDown } from "react-icons/lu";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
-import Loading from "./loading";
-import getAllStaff from "@/lib/staff/getAllStaffClient";
 
 const StatusList = ({ status, setStatus, display }: StatusListProps) => {
   const [open, setOpen] = useState(false);
@@ -21,7 +19,7 @@ const StatusList = ({ status, setStatus, display }: StatusListProps) => {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="justify-between w-[160px] min-w-0 p-2"
+          className="justify-between w-full min-w-0 p-2"
         >
           {status === true
             ? display.trueText

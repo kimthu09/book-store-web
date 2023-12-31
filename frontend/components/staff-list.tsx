@@ -14,7 +14,7 @@ import getAllStaff from "@/lib/staff/getAllStaffClient";
 
 const StaffList = ({ staff, setStaff }: StaffListProps) => {
   const [openRole, setOpenRole] = useState(false);
-  const { staffs, isLoading, isError } = getAllStaff({ limit: 1000 });
+  const { staffs, isLoading, isError } = getAllStaff();
 
   if (isError) return <div>Failed to load</div>;
   if (!staffs) {

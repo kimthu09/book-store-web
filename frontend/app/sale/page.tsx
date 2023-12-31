@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ToastAction } from "@/components/ui/toast";
 export type FormValues = {
   details: {
     bookId: string;
@@ -40,7 +41,15 @@ const SaleScreen = () => {
       details: [],
     },
   });
-  const { register, control, setValue, watch, handleSubmit, reset } = form;
+  const {
+    register,
+    control,
+    setValue,
+    watch,
+    handleSubmit,
+    reset,
+    formState: { isDirty },
+  } = form;
   const router = useRouter();
   const { fields, append, remove, update } = useFieldArray({
     control: control,
@@ -79,10 +88,20 @@ const SaleScreen = () => {
         description: responseData.message,
       });
     } else {
+      const id = responseData.data.id;
       toast({
         variant: "success",
         title: "Thành công",
         description: "Thêm mới hóa đơn thành công",
+        action: (
+          <ToastAction
+            className="hover:bg-green-400/90"
+            altText="print"
+            onClick={() => router.push(`/invoice/${id}`)}
+          >
+            In hoá đơn
+          </ToastAction>
+        ),
       });
       reset();
     }
@@ -103,6 +122,7 @@ const SaleScreen = () => {
           control={control}
           remove={remove}
           reset={reset}
+          isDirty={isDirty}
         />
       </div>
       <div className="fixed bottom-0 left-0 right-0">
@@ -157,6 +177,7 @@ const SaleScreen = () => {
                 control={control}
                 remove={remove}
                 reset={reset}
+                isDirty={isDirty}
                 isSheet
               />
             </SheetContent>

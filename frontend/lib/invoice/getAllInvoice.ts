@@ -1,4 +1,5 @@
-import { apiKey, endPoint } from "@/constants";
+import { endPoint } from "@/constants";
+import { getApiKey } from "../auth/action";
 
 export type FilterProps = {
   page: number;
@@ -20,11 +21,11 @@ export default async function getAllInvoice({
   const createdByString = createdBy ? `&createdBy=${createdBy}` : "";
   const url = `${endPoint}/v1/invoices?page=${page}${maxString}${minString}${searchString}${createdByString}`;
   console.log(url);
-
+  const token = await getApiKey();
   const res = await fetch(url, {
     headers: {
       accept: "application/json",
-      Authorization: apiKey,
+      Authorization: `Bearer ${token}`,
     },
     cache: "no-store",
   });

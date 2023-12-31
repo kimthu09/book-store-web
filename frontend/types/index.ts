@@ -161,6 +161,7 @@ export type Staff = {
   id: string;
   isActive: boolean;
   name: string;
+  img: string;
   phone?: string;
   role: {
     id: string;

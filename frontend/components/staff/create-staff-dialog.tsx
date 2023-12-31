@@ -19,6 +19,7 @@ import RoleList from "./role-list";
 import createStaff from "@/lib/staff/createStaff";
 import { toast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
+import { imageUpload } from "@/lib/staff/uploadImage";
 
 const StaffSchema = z.object({
   name: required,
@@ -53,6 +54,23 @@ const CreateStaffDialog = () => {
   const onSubmit: SubmitHandler<z.infer<typeof StaffSchema>> = async (data) => {
     setOpen(false);
     console.log(data);
+    let formData = new FormData();
+
+    formData.append("file", image);
+    formData.append("folderName", "avatars");
+
+    const imgRes = await imageUpload(formData);
+    if (imgRes.hasOwnProperty("errorKey")) {
+      toast({
+        variant: "destructive",
+        title: "Có lỗi",
+        description: imgRes.message,
+      });
+      return;
+    }
+    console.log(imgRes.data);
+
+    data.img = imgRes.data;
     const response: Promise<any> = createStaff({ staff: data });
     const responseData = await response;
     console.log(responseData);
@@ -105,13 +123,6 @@ const CreateStaffDialog = () => {
       }
     }
   };
-  const miltipleImageUpload = async (e: any) => {
-    e.preventDefault();
-
-    let formData = new FormData();
-
-    formData.set("img", image);
-  };
 
   return (
     <Dialog
@@ -124,8 +135,10 @@ const CreateStaffDialog = () => {
             phone: "",
             address: "",
             roleId: "",
+            img: "https://picsum.photos/200",
           });
           setRole("");
+          setImage(null);
         }
         register("roleId");
         setOpen(open);
@@ -136,7 +149,7 @@ const CreateStaffDialog = () => {
           <div className="flex flex-wrap gap-1 items-center">
             <FaPlus />
             Thêm nhân viên
-          </div>{" "}
+          </div>
         </Button>
       </DialogTrigger>
       <DialogContent className="xl:max-w-[720px] max-w-[472px] p-0 bg-white">

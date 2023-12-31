@@ -1,4 +1,5 @@
-import { apiKey, endPoint } from "@/constants";
+import { endPoint } from "@/constants";
+import { getApiKey } from "../auth/action";
 
 export type FilterProps = {
   page: number;
@@ -17,12 +18,13 @@ export default async function getAllSupplier({
   const searchString = search ? `&search=${search}` : "";
   const url = `${endPoint}/v1/suppliers?page=${page}${maxString}${minString}${searchString}`;
   console.log(url);
-
+  const token = await getApiKey();
   const res = await fetch(url, {
     headers: {
       accept: "application/json",
-      Authorization: apiKey,
+      Authorization: `Bearer ${token}`,
     },
+    cache: "no-store",
   });
 
   if (!res.ok) {

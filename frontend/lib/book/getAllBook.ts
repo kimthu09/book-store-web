@@ -1,4 +1,5 @@
-import { apiKey, endPoint } from "@/constants";
+import { endPoint } from "@/constants";
+import { getApiKey } from "../auth/action";
 export type FilterProps = {
   page: number;
   maxSellPrice?: string;
@@ -25,10 +26,12 @@ export default async function getAllBooks({
   const authorsString = authorIds ? `&authors=${authorIds}` : "";
   const url = `${endPoint}/v1/books?page=${page}${maxString}${minString}${searchString}${publisherString}${categoriesString}${authorsString}`;
   console.log(url);
+  const token = await getApiKey();
+
   const res = await fetch(url, {
     headers: {
       accept: "application/json",
-      Authorization: apiKey,
+      Authorization: `Bearer ${token}`,
     },
     cache: "no-store",
   });

@@ -2,31 +2,29 @@ import { endPoint } from "@/constants";
 import axios from "axios";
 import { getApiKey } from "../auth/action";
 
-export default async function updateSupplier({
-  idSupplier,
-  name,
-  email,
-  phone,
+export default async function changeStaffStatus({
+  userIds,
+  isActive,
 }: {
-  idSupplier: string;
-  name: string;
-  email: string;
-  phone: string;
+  isActive: boolean;
+  userIds: string[];
 }) {
-  const url = `${endPoint}/v1/suppliers/${idSupplier}`;
+  const url = `${endPoint}/v1/users/status`;
+
   const data = {
-    email: email,
-    name: name,
-    phone: phone,
+    isActive: isActive,
+    userIds: userIds,
   };
   console.log(data);
   const token = await getApiKey();
   const headers = {
+    accept: "application/json",
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
-    accept: "application/json",
+    // Add other headers as needed
   };
 
+  // Make a POST request with headers
   const res = axios
     .patch(url, data, { headers: headers })
     .then((response) => {

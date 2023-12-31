@@ -30,13 +30,14 @@ const ConfirmDialog = ({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
+          <DialogTitle className="pb-2">{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        <DialogFooter>
+        <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
           <div className="flex gap-5 sm:justify-end justify-stretch">
             <Button
               variant={"outline"}
+              type="button"
               onClick={() => {
                 if (handleNo) {
                   handleNo();
@@ -48,6 +49,7 @@ const ConfirmDialog = ({
               Hủy
             </Button>
             <Button
+              type="button"
               className="sm:flex flex-1 whitespace-nowrap"
               onClick={() => {
                 handleYes();
@@ -57,7 +59,7 @@ const ConfirmDialog = ({
               Xác nhận
             </Button>
           </div>
-        </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );

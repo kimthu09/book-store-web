@@ -1,5 +1,6 @@
-import { apiKey, endPoint } from "@/constants";
+import { endPoint } from "@/constants";
 import axios from "axios";
+import { getApiKey } from "../auth/action";
 
 export default async function createBook({
   id,
@@ -19,7 +20,7 @@ export default async function createBook({
   sellPrice: number;
 }) {
   const url = `${endPoint}/v1/books`;
-
+  const token = await getApiKey();
   const data = {
     id: id,
     name: name,
@@ -33,8 +34,7 @@ export default async function createBook({
   const headers = {
     accept: "application/json",
     "Content-Type": "application/json",
-    Authorization: apiKey,
-
+    Authorization: `Bearer ${token}`,
     // Add other headers as needed
   };
 

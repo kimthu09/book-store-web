@@ -85,6 +85,12 @@ export const ExportSupplierList = (excelData: Supplier[], fileName: string) => {
       if (!cell.font?.size) {
         cell.font = Object.assign(cell.font || {}, { size: 13 });
       }
+      sheet.getCell(cell.address).border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
     });
 
     // row.getCell(6).value = "quao quao quao";

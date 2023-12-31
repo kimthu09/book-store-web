@@ -1,4 +1,4 @@
-import { BookProps, BookTitle } from "@/types";
+import { BookTitle } from "@/types";
 import React, { useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
@@ -8,7 +8,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { required } from "@/constants";
 import { useToast } from "../ui/use-toast";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import {
+  SubmitErrorHandler,
+  SubmitHandler,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import CategoryList from "./category-list";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 import { Textarea } from "../ui/textarea";
@@ -48,7 +53,7 @@ const TitleEditInline = (book: BookTitle) => {
     control,
     watch,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = form;
 
   const {
@@ -70,6 +75,11 @@ const TitleEditInline = (book: BookTitle) => {
     control: control,
     name: "authorIds",
   });
+  const onError: SubmitErrorHandler<z.infer<typeof FormSchema>> = async (
+    data
+  ) => {
+    console.log(data);
+  };
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     console.log(data);
     setIsEdit(false);
@@ -98,7 +108,7 @@ const TitleEditInline = (book: BookTitle) => {
   };
   const [isEdit, setIsEdit] = useState(false);
   return (
-    <div className="flex bg-background lg:flex-row flex-col p-4 gap-6">
+    <div className="flex bg-background lg:flex-row flex-col p-4 px-6 gap-6">
       <div className="flex basis-1/2 flex-col gap-4 items-start ">
         <div className="flex lg:flex-row flex-col items-start w-full gap-2">
           <span className="font-medium min-w-[5rem]">Đầu sách: </span>
@@ -180,6 +190,7 @@ const TitleEditInline = (book: BookTitle) => {
                 variant={"ghost"}
                 size={"icon"}
                 className="rounded-full bg-rose-200/60 hover:bg-rose-200/90 text-rose-600 hover:text-rose-600"
+                title="Hủy"
                 onClick={() => {
                   setIsEdit(false);
                   reset({
@@ -200,11 +211,16 @@ const TitleEditInline = (book: BookTitle) => {
               <ConfirmDialog
                 title={"Xác nhận"}
                 description="Bạn xác nhận chỉnh sửa đầu sách này ?"
-                handleYes={() => handleSubmit(onSubmit)()}
+                handleYes={() => {
+                  console.log("hi");
+                  handleSubmit(onSubmit, onError)();
+                }}
               >
                 <Button
                   variant={"ghost"}
                   size={"icon"}
+                  disabled={!isDirty}
+                  title="Lưu"
                   className="rounded-full bg-green-200/60 hover:bg-green-200/90 text-green-600 hover:text-green-600"
                 >
                   <AiOutlineCheck className="h-5 w-5" />
@@ -216,6 +232,7 @@ const TitleEditInline = (book: BookTitle) => {
               variant={"ghost"}
               size={"icon"}
               className="rounded-full bg-blue-200/60 hover:bg-blue-200/90 text-primary hover:text-primary"
+              title="Chỉnh sửa"
               onClick={() => setIsEdit(true)}
             >
               <FaPen />

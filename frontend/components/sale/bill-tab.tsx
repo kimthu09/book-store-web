@@ -1,5 +1,5 @@
 import { FormValues } from "@/app/sale/page";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Control,
   FieldArrayWithId,
@@ -28,8 +28,9 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { toast } from "../ui/use-toast";
-import { AiOutlineClose } from "react-icons/ai";
+import { IoRemoveOutline } from "react-icons/io5";
 import { PiClipboardTextLight } from "react-icons/pi";
+import { CurrentDate } from "../ui/date-context";
 
 const AddUp = ({
   control,
@@ -77,6 +78,7 @@ const BillTab = ({
   remove,
   reset,
   onPayClick,
+  isDirty,
   isSheet,
 }: {
   fields: FieldArrayWithId<FormValues, "details", "id">[];
@@ -86,11 +88,23 @@ const BillTab = ({
   control: Control<FormValues, any>;
   remove: UseFieldArrayRemove;
   reset: UseFormReset<FormValues>;
+  isDirty: boolean;
   onPayClick: () => void;
   isSheet?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
   const invoices = watch("details");
+  useEffect(() => {
+    document.addEventListener("keydown", detectKeyDown, true);
+  }, []);
+  const detectKeyDown = (e: any) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === "F7") {
+      setOpen(true);
+    }
+    return () => {
+      document.removeEventListener("keydown", detectKeyDown);
+    };
+  };
   return (
     <Card className="sticky right-0 top-0 h-[86vh] overflow-hidden">
       <CardContent
@@ -99,14 +113,19 @@ const BillTab = ({
         }`}
       >
         <div className="flex items-center justify-between bg-white p-2 px-4 shadow-[0_2px_2px_-2px_rgba(0,0,0,0.2)]">
-          <span className="font-medium text-primary">Hóa đơn</span>
+          <div>
+            <span className="font-medium text-primary">Hóa đơn</span>
+            <CurrentDate></CurrentDate>
+          </div>
+
           <Button
+            disabled={!isDirty}
             variant={"ghost"}
             size={"icon"}
             className="rounded-full"
             onClick={() => reset()}
           >
-            <AiOutlineClose />
+            <IoRemoveOutline className="w-5 h-5" />
           </Button>
         </div>
         <div className="flex flex-col gap-2  overflow-auto pt-4 flex-1">
@@ -215,7 +234,7 @@ const BillTab = ({
           </RadioGroup>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button>Thanh toán</Button>
+              <Button disabled={!isDirty}>Thanh toán</Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
@@ -226,10 +245,15 @@ const BillTab = ({
               </DialogHeader>
               <DialogFooter>
                 <div className="flex gap-5 justify-end">
-                  <Button variant={"outline"} onClick={() => setOpen(false)}>
+                  <Button
+                    type="button"
+                    variant={"outline"}
+                    onClick={() => setOpen(false)}
+                  >
                     Hủy
                   </Button>
                   <Button
+                    type="button"
                     onClick={() => {
                       onPayClick();
                       setOpen(false);
