@@ -49,6 +49,11 @@ const DetailLayout = (responseData: any) => {
             </div>
             <div className="flex flex-col items-end gap-2 text-sm">
               <span className="font-semibold">
+                {new Date(responseData.createdAt).toLocaleTimeString("vi-VN", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+                {", "}
                 {new Date(responseData.createdAt).toLocaleDateString("vi-VN")}
               </span>
               <span>Nhân viên: {responseData.createdBy.name}</span>

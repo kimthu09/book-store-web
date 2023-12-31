@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Input } from "../ui/input";
 import {
@@ -114,7 +114,19 @@ const ProductTab = ({
       clearTimeout(timer);
     };
   }, [searchHandler]);
+  const inputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    document.addEventListener("keydown", detectKeyDown, true);
+  }, []);
+  const detectKeyDown = (e: any) => {
+    if (e.key === "F2") {
+      inputRef.current?.focus();
+    }
+    return () => {
+      document.removeEventListener("keydown", detectKeyDown);
+    };
+  };
   useEffect(() => {
     if (categories) {
       setCateList(
@@ -138,6 +150,7 @@ const ProductTab = ({
       <div className="flex flex-col gap-6">
         <div className="flex items-end">
           <Input
+            ref={inputRef}
             value={inputValue}
             onChange={(e) => {
               setInputValue(e.target.value);
