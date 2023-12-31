@@ -1,11 +1,13 @@
-import { apiKey, endPoint } from "@/constants";
+import { endPoint } from "@/constants";
 import useSWR from "swr";
+import { getApiKey } from "../auth/action";
 
-const fetcher = (url: string) =>
-  fetch(url, {
+const fetcher = async (url: string) => {
+  const token = await getApiKey();
+  return fetch(url, {
     headers: {
       accept: "application/json",
-      Authorization: apiKey,
+      Authorization: `Bearer ${token}`,
     },
   })
     .then((res) => {
@@ -17,6 +19,7 @@ const fetcher = (url: string) =>
         data: json.data,
       };
     });
+};
 
 export default function getAllBookForSale() {
   const { data, error, isLoading, mutate } = useSWR(

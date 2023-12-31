@@ -8,7 +8,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { required } from "@/constants";
 import { useToast } from "../ui/use-toast";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import {
+  SubmitErrorHandler,
+  SubmitHandler,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import CategoryList from "./category-list";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 import { Textarea } from "../ui/textarea";
@@ -19,7 +24,6 @@ const FormSchema = z.object({
   idBook: z.string().max(12, "Tối đa 12 ký tự"),
   name: required,
   desc: z.string(),
-  isActive: z.boolean(),
   authorIds: z
     .array(z.object({ idAuthor: z.string() }))
     .nonempty("Vui lòng chọn ít nhất một tác giả"),
@@ -71,6 +75,11 @@ const TitleEditInline = (book: BookTitle) => {
     control: control,
     name: "authorIds",
   });
+  const onError: SubmitErrorHandler<z.infer<typeof FormSchema>> = async (
+    data
+  ) => {
+    console.log(data);
+  };
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     console.log(data);
     setIsEdit(false);
@@ -99,7 +108,7 @@ const TitleEditInline = (book: BookTitle) => {
   };
   const [isEdit, setIsEdit] = useState(false);
   return (
-    <div className="flex bg-background lg:flex-row flex-col p-4 gap-6">
+    <div className="flex bg-background lg:flex-row flex-col p-4 px-6 gap-6">
       <div className="flex basis-1/2 flex-col gap-4 items-start ">
         <div className="flex lg:flex-row flex-col items-start w-full gap-2">
           <span className="font-medium min-w-[5rem]">Đầu sách: </span>
@@ -202,7 +211,10 @@ const TitleEditInline = (book: BookTitle) => {
               <ConfirmDialog
                 title={"Xác nhận"}
                 description="Bạn xác nhận chỉnh sửa đầu sách này ?"
-                handleYes={() => handleSubmit(onSubmit)()}
+                handleYes={() => {
+                  console.log("hi");
+                  handleSubmit(onSubmit, onError)();
+                }}
               >
                 <Button
                   variant={"ghost"}

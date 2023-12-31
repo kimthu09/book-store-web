@@ -1,13 +1,13 @@
-import { apiKey, endPoint } from "@/constants";
+import { endPoint } from "@/constants";
 import axios from "axios";
+import { getApiKey } from "../auth/action";
 
 export default async function deleteBookTitle(bookId: string) {
   const url = `${endPoint}/v1/booktitles/${bookId}`;
-
+  const token = await getApiKey();
   const headers = {
     accept: "application/json",
-    Authorization: apiKey,
-    // Add other headers as needed
+    Authorization: `Bearer ${token}`, // Add other headers as needed
   };
 
   // Make a POST request with headers
