@@ -219,8 +219,8 @@ export function SupplierTable({
   const [latestFilter, setLatestFilter] = useState("");
   const filterValues = [
     { type: "search", name: "Từ khoá" },
-    { type: "min", name: "Tổng nợ nhỏ nhất" },
-    { type: "max", name: "Tổng nợ lớn nhất" },
+    { type: "minDebt", name: "Tổng nợ nhỏ nhất" },
+    { type: "maxDebt", name: "Tổng nợ lớn nhất" },
   ];
   const maxDebt = searchParams.get("maxDebt") ?? undefined;
   const minDebt = searchParams.get("minDebt") ?? undefined;
@@ -228,14 +228,18 @@ export function SupplierTable({
   let filters = [{ type: "", value: "" }];
   filters.pop();
   if (maxDebt) {
-    filters = filters.concat({ type: "max", value: maxDebt });
+    filters = filters.concat({ type: "maxDebt", value: maxDebt });
   }
   if (minDebt) {
-    filters = filters.concat({ type: "min", value: minDebt });
+    filters = filters.concat({ type: "minDebt", value: minDebt });
   }
   if (search) {
     filters = filters.concat({ type: "search", value: search });
   }
+  let stringToFilter = "";
+  filters.forEach((item) => {
+    stringToFilter = stringToFilter.concat(`&${item.type}=${item.value}`);
+  });
   const { register, handleSubmit, reset, control, getValues } =
     useForm<FormValues>({
       defaultValues: {
@@ -253,9 +257,9 @@ export function SupplierTable({
     let minDebt = "";
     let maxDebt = "";
     data.filters.forEach((item) => {
-      if (item.type === "min") {
+      if (item.type === "minDebt") {
         minDebt = `&minDebt=${item.value}`;
-      } else if (item.type === "max") {
+      } else if (item.type === "maxDebt") {
         maxDebt = `&maxDebt=${item.value}`;
       } else if (item.type === "search") {
         search = `&search=${item.value}`;
@@ -427,7 +431,7 @@ export function SupplierTable({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md border overflow-x-auto min-w-full max-w-[50vw]">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -493,16 +497,20 @@ export function SupplierTable({
           page={page}
           totalPage={totalPage}
           onNavigateBack={() =>
-            router.push(`/supplier?page=${Number(page) - 1}`)
+            router.push(`/supplier?page=${Number(page) - 1}${stringToFilter}`)
           }
           onNavigateNext={() =>
-            router.push(`/supplier?page=${Number(page) + 1}`)
+            router.push(`/supplier?page=${Number(page) + 1}${stringToFilter}`)
           }
           onPageSelect={(selectedPage) =>
-            router.push(`/supplier?page=${selectedPage}`)
+            router.push(`/supplier?page=${selectedPage}${stringToFilter}`)
           }
-          onNavigateFirst={() => router.push(`/supplier?page=${1}`)}
-          onNavigateLast={() => router.push(`/supplier?page=${totalPage}`)}
+          onNavigateFirst={() =>
+            router.push(`/supplier?page=${1}${stringToFilter}`)
+          }
+          onNavigateLast={() =>
+            router.push(`/supplier?page=${totalPage}${stringToFilter}`)
+          }
         />
       </div>
     </div>

@@ -1,13 +1,13 @@
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
+import { useState } from "react";
 const DialogSupplierExport = ({
   handleExport,
   setExportOption,
@@ -15,8 +15,9 @@ const DialogSupplierExport = ({
   handleExport: () => void;
   setExportOption: (value: string) => void;
 }) => {
+  const [open, setOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="lg:px-3 px-2" variant={"outline"}>
           Xuất danh sách
@@ -47,17 +48,27 @@ const DialogSupplierExport = ({
           </RadioGroup>
         </div>
 
-        <DialogClose className="ml-auto p-6 pt-0">
+        <div className="ml-auto p-6 pt-0">
           <div className="flex gap-4">
-            <Button type="button" variant={"outline"}>
+            <Button
+              type="button"
+              variant={"outline"}
+              onClick={() => setOpen(false)}
+            >
               Thoát
             </Button>
 
-            <Button type="button" onClick={() => handleExport()}>
+            <Button
+              type="button"
+              onClick={() => {
+                handleExport();
+                setOpen(false);
+              }}
+            >
               Hoàn tất
             </Button>
           </div>
-        </DialogClose>
+        </div>
       </DialogContent>
     </Dialog>
   );
