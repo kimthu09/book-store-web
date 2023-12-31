@@ -9,27 +9,18 @@ import { usePathname } from "next/navigation";
 import { LuChevronDown } from "react-icons/lu";
 import { sidebarItems } from "@/constants";
 import { SidebarItem } from "@/types";
-import { useEffect } from "react";
-import Cookies from "js-cookie";
 
 export default function Sidebar() {
   const [isCollapse, toggleIsCollapse] = useState(false);
-  const [isSignedIn, setIsSignedIn] = useState(false);
 
-  const accessToken = Cookies.get('accessToken')
-  useEffect(() => {
-
-    if (typeof accessToken === "string") {
-      setIsSignedIn(true)
-    }
-  }, [accessToken])
   const toggleSidebarHandler = () => {
     toggleIsCollapse((prev) => !prev);
   };
+
   return (
     <div className="md:flex hidden z-20">
       <aside
-        className={`bg-white h-screen p-1 transition-all shadow-md overflow-auto ${!isSignedIn ? "w-0" : isCollapse ? "w-[3.8rem]" : "w-64"
+        className={`bg-white h-screen p-1 transition-all shadow-md overflow-auto ${isCollapse ? "w-[3.8rem]" : "w-64"
           }`}
       >
         <nav className="w-full">
