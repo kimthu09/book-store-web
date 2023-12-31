@@ -504,7 +504,7 @@ definitions:
         example: 1709500431
         type: integer
       closedBy:
-        example: user name
+        example: user id
         type: string
       createdAtFrom:
         example: 1709500431
@@ -513,7 +513,7 @@ definitions:
         example: 1709500431
         type: integer
       createdBy:
-        example: user name
+        example: user id
         type: string
       maxPrice:
         example: 1000
@@ -522,13 +522,14 @@ definitions:
         example: 10
         type: number
       searchKey:
-        example: ""
+        example: note id
         type: string
       status:
-        example: Done
-        type: string
+        allOf:
+        - $ref: '#/definitions/importnotemodel.ImportNoteStatus'
+        example: enum(Done, Cancel, InProgress)
       supplier:
-        example: supplier name
+        example: supplier id
         type: string
     type: object
   importnotemodel.ImportNote:
@@ -692,10 +693,10 @@ definitions:
         example: 1709500431
         type: integer
       createdBy:
-        example: user name
+        example: user id
         type: string
       searchKey:
-        example: ""
+        example: note id
         type: string
     type: object
   inventorychecknotemodel.InventoryCheckNote:
@@ -804,13 +805,14 @@ definitions:
   invoicemodel.Filter:
     properties:
       createdBy:
-        example: user name
+        example: user id
         type: string
       maxPrice:
         type: number
       minPrice:
         type: number
       searchKey:
+        example: invoice id
         type: string
     type: object
   invoicemodel.Invoice:
@@ -1912,7 +1914,7 @@ paths:
         in: query
         name: closedAtTo
         type: integer
-      - example: user name
+      - example: user id
         in: query
         name: closedBy
         type: string
@@ -1924,7 +1926,7 @@ paths:
         in: query
         name: createdAtTo
         type: integer
-      - example: user name
+      - example: user id
         in: query
         name: createdBy
         type: string
@@ -1936,15 +1938,23 @@ paths:
         in: query
         name: minPrice
         type: number
-      - example: ""
+      - example: note id
         in: query
         name: search
         type: string
-      - example: Done
+      - enum:
+        - InProgress
+        - Done
+        - Cancel
+        example: enum(Done, Cancel, InProgress)
         in: query
         name: status
         type: string
-      - example: supplier name
+        x-enum-varnames:
+        - InProgress
+        - Done
+        - Cancel
+      - example: supplier id
         in: query
         name: supplier
         type: string
@@ -2072,11 +2082,11 @@ paths:
         in: query
         name: createdAtTo
         type: integer
-      - example: user name
+      - example: user id
         in: query
         name: createdBy
         type: string
-      - example: ""
+      - example: note id
         in: query
         name: search
         type: string
@@ -2165,7 +2175,7 @@ paths:
         in: query
         name: total
         type: integer
-      - example: user name
+      - example: user id
         in: query
         name: createdBy
         type: string
@@ -2175,7 +2185,8 @@ paths:
       - in: query
         name: minPrice
         type: number
-      - in: query
+      - example: invoice id
+        in: query
         name: search
         type: string
       produces:
@@ -2293,6 +2304,33 @@ paths:
           schema:
             $ref: '#/definitions/common.AppError'
       summary: Login
+      tags:
+      - auth
+  /password:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: old and new password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqUpdatePasswordUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Update password user
       tags:
       - auth
   /profile:
@@ -2985,38 +3023,6 @@ paths:
       security:
       - BearerAuth: []
       summary: Update info user
-      tags:
-      - users
-  /users/{id}/password:
-    patch:
-      consumes:
-      - application/json
-      parameters:
-      - description: user id
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: old and new password
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/usermodel.ReqUpdatePasswordUser'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: status of response
-          schema:
-            $ref: '#/definitions/common.ResSuccess'
-        "400":
-          description: error
-          schema:
-            $ref: '#/definitions/common.AppError'
-      security:
-      - BearerAuth: []
-      summary: Update password user
       tags:
       - users
   /users/{id}/reset:

@@ -633,7 +633,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "example": "user name",
+                        "example": "user id",
                         "name": "closedBy",
                         "in": "query"
                     },
@@ -651,7 +651,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "example": "user name",
+                        "example": "user id",
                         "name": "createdBy",
                         "in": "query"
                     },
@@ -669,19 +669,29 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "example": "",
+                        "example": "note id",
                         "name": "search",
                         "in": "query"
                     },
                     {
+                        "enum": [
+                            "InProgress",
+                            "Done",
+                            "Cancel"
+                        ],
                         "type": "string",
-                        "example": "Done",
+                        "example": "enum(Done, Cancel, InProgress)",
+                        "x-enum-varnames": [
+                            "InProgress",
+                            "Done",
+                            "Cancel"
+                        ],
                         "name": "status",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "example": "supplier name",
+                        "example": "supplier id",
                         "name": "supplier",
                         "in": "query"
                     }
@@ -885,13 +895,13 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "example": "user name",
+                        "example": "user id",
                         "name": "createdBy",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "example": "",
+                        "example": "note id",
                         "name": "search",
                         "in": "query"
                     }
@@ -1034,7 +1044,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "example": "user name",
+                        "example": "user id",
                         "name": "createdBy",
                         "in": "query"
                     },
@@ -1050,6 +1060,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
+                        "example": "invoice id",
                         "name": "search",
                         "in": "query"
                     }
@@ -1222,6 +1233,50 @@ const docTemplate = `{
                         "description": "user token",
                         "schema": {
                             "$ref": "#/definitions/usermodel.Account"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/password": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Update password user",
+                "parameters": [
+                    {
+                        "description": "old and new password",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.ReqUpdatePasswordUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
                         }
                     },
                     "400": {
@@ -2422,57 +2477,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/{id}/password": {
-            "patch": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "users"
-                ],
-                "summary": "Update password user",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "user id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "old and new password",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/usermodel.ReqUpdatePasswordUser"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "status of response",
-                        "schema": {
-                            "$ref": "#/definitions/common.ResSuccess"
-                        }
-                    },
-                    "400": {
-                        "description": "error",
-                        "schema": {
-                            "$ref": "#/definitions/common.AppError"
-                        }
-                    }
-                }
-            }
-        },
         "/users/{id}/reset": {
             "patch": {
                 "security": [
@@ -3316,7 +3320,7 @@ const docTemplate = `{
                 },
                 "closedBy": {
                     "type": "string",
-                    "example": "user name"
+                    "example": "user id"
                 },
                 "createdAtFrom": {
                     "type": "integer",
@@ -3328,7 +3332,7 @@ const docTemplate = `{
                 },
                 "createdBy": {
                     "type": "string",
-                    "example": "user name"
+                    "example": "user id"
                 },
                 "maxPrice": {
                     "type": "number",
@@ -3340,15 +3344,19 @@ const docTemplate = `{
                 },
                 "searchKey": {
                     "type": "string",
-                    "example": ""
+                    "example": "note id"
                 },
                 "status": {
-                    "type": "string",
-                    "example": "Done"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/importnotemodel.ImportNoteStatus"
+                        }
+                    ],
+                    "example": "enum(Done, Cancel, InProgress)"
                 },
                 "supplier": {
                     "type": "string",
-                    "example": "supplier name"
+                    "example": "supplier id"
                 }
             }
         },
@@ -3596,11 +3604,11 @@ const docTemplate = `{
                 },
                 "createdBy": {
                     "type": "string",
-                    "example": "user name"
+                    "example": "user id"
                 },
                 "searchKey": {
                     "type": "string",
-                    "example": ""
+                    "example": "note id"
                 }
             }
         },
@@ -3765,7 +3773,7 @@ const docTemplate = `{
             "properties": {
                 "createdBy": {
                     "type": "string",
-                    "example": "user name"
+                    "example": "user id"
                 },
                 "maxPrice": {
                     "type": "number"
@@ -3774,7 +3782,8 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "searchKey": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "invoice id"
                 }
             }
         },
