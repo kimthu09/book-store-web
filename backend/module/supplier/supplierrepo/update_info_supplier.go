@@ -6,11 +6,6 @@ import (
 )
 
 type UpdateInfoSupplierStore interface {
-	FindSupplier(
-		ctx context.Context,
-		conditions map[string]interface{},
-		moreKeys ...string,
-	) (*suppliermodel.Supplier, error)
 	UpdateSupplierInfo(
 		ctx context.Context,
 		id string,
@@ -24,20 +19,6 @@ type updateInfoSupplierRepo struct {
 
 func NewUpdateInfoSupplierRepo(store UpdateInfoSupplierStore) *updateInfoSupplierRepo {
 	return &updateInfoSupplierRepo{store: store}
-}
-
-func (repo *updateInfoSupplierRepo) CheckExist(
-	ctx context.Context,
-	supplierId string) error {
-	if _, err := repo.store.FindSupplier(
-		ctx,
-		map[string]interface{}{
-			"id": supplierId,
-		},
-	); err != nil {
-		return err
-	}
-	return nil
 }
 
 func (repo *updateInfoSupplierRepo) UpdateSupplierInfo(

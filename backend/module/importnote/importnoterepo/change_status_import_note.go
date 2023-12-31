@@ -128,7 +128,7 @@ func (repo *changeStatusImportNoteRepo) CreateSupplierDebt(
 		return err
 	}
 
-	qtyBorrow := -importNote.TotalPrice
+	qtyBorrow := importNote.TotalPrice
 	qtyLeft := supplier.Debt + qtyBorrow
 
 	debtType := enum.Debt
@@ -152,7 +152,7 @@ func (repo *changeStatusImportNoteRepo) CreateSupplierDebt(
 func (repo *changeStatusImportNoteRepo) UpdateDebtSupplier(
 	ctx context.Context,
 	importNote *importnotemodel.ReqUpdateImportNote) error {
-	qtyUpdate := -importNote.TotalPrice
+	qtyUpdate := importNote.TotalPrice
 	supplierUpdateDebt := suppliermodel.ReqUpdateDebtSupplier{
 		Id:             &importNote.Id,
 		QuantityUpdate: &qtyUpdate,

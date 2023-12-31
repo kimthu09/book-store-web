@@ -12,5 +12,7 @@ func SetupRoutes(router *gin.RouterGroup, appCtx appctx.AppContext) {
 	{
 		categories.GET("", ListCategory(appCtx))
 		categories.POST("", CreateCategory(appCtx))
+		categories.POST("/many", CreateListCategory(appCtx))
+		categories.PATCH("/:id", UpdateCategory(appCtx))
 	}
 }

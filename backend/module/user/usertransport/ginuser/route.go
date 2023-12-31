@@ -12,6 +12,7 @@ func SetupRoutes(router *gin.RouterGroup, appCtx appctx.AppContext) {
 	auth := router.Group("", middleware.RequireAuth(appCtx))
 	{
 		auth.GET("/profile", SeeProfile(appCtx), middleware.RequireAuth(appCtx))
+		auth.PATCH("/password", UpdatePassword(appCtx))
 	}
 	users := router.Group("/users", middleware.RequireAuth(appCtx))
 	{
@@ -23,6 +24,5 @@ func SetupRoutes(router *gin.RouterGroup, appCtx appctx.AppContext) {
 		users.PATCH("/status", ChangeStatusUsers(appCtx))
 		users.PATCH("/:id/role", ChangeRoleUser(appCtx))
 		users.PATCH("/:id/reset", ResetPassword(appCtx))
-		users.PATCH("/:id/password", UpdatePassword(appCtx))
 	}
 }
