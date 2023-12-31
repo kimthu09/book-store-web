@@ -26,7 +26,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Staff } from "@/types";
-
 import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import {
@@ -51,7 +50,10 @@ import {
   SelectValue,
 } from "../ui/select";
 import StatusList from "../status-list";
-import { boolean } from "zod";
+import Image from "next/image";
+import ChangeStatusDialog from "./change-status-dialog";
+import { toast } from "../ui/use-toast";
+import changeStaffStatus from "@/lib/staff/changeStaffStatus";
 
 function idToName(id: string) {
   if (id === "name") {
@@ -98,6 +100,21 @@ export const columns: ColumnDef<Staff>[] = [
       return <span className="font-semibold">ID</span>;
     },
     cell: ({ row }) => <div>{row.getValue("id")}</div>,
+  },
+  {
+    accessorKey: "img",
+    header: () => {},
+    cell: ({ row }) => (
+      <div className="flex justify-end">
+        <Image
+          src={row.getValue("img") || "https://picsum.photos/200"}
+          alt="image"
+          className="object-contain max-h-10"
+          width={40}
+          height={40}
+        ></Image>
+      </div>
+    ),
   },
   {
     accessorKey: "name",
@@ -163,6 +180,28 @@ export const columns: ColumnDef<Staff>[] = [
       </div>
     ),
   },
+  {
+    accessorKey: "isActive",
+    header: () => {
+      return <div className="font-semibold flex justify-end">Trạng thái</div>;
+    },
+    cell: ({ row }) => {
+      const status = row.getValue("isActive");
+      return (
+        <div className=" flex justify-end ">
+          <div
+            className={`leading-6 w-32 text-sm rounded-full px-2 text-center whitespace-nowrap h-fit ${
+              status
+                ? "bg-green-100 text-green-700"
+                : "bg-rose-100 text-rose-500"
+            }`}
+          >
+            {status ? "Đang làm việc" : "Đã nghỉ việc"}
+          </div>
+        </div>
+      );
+    },
+  },
 ];
 export function StaffTable({
   data,
@@ -212,6 +251,10 @@ export function StaffTable({
   if (search) {
     filters = filters.concat({ type: "search", value: search });
   }
+  let stringToFilter = "";
+  filters.forEach((item) => {
+    stringToFilter = stringToFilter.concat(`&${item.type}=${item.value}`);
+  });
   const { register, handleSubmit, reset, control, getValues } =
     useForm<FormValues>({
       defaultValues: {
@@ -238,6 +281,38 @@ export function StaffTable({
   };
   const [openFilter, setOpenFilter] = useState(false);
   const [status, setStatus] = useState<boolean>();
+  const [statusToChange, setStatusToChange] = useState(false);
+  const handleChangeStatus = async () => {
+    if (table.getFilteredSelectedRowModel().rows.length < 1) {
+      toast({
+        variant: "destructive",
+        title: "Có lỗi",
+        description: "Chưa chọn nhân viên",
+      });
+    } else {
+      const userIds = table
+        .getFilteredSelectedRowModel()
+        .rows.map((item) => item.original.id);
+      const responseData = await changeStaffStatus({
+        userIds: userIds,
+        isActive: statusToChange,
+      });
+      if (responseData.hasOwnProperty("errorKey")) {
+        toast({
+          variant: "destructive",
+          title: "Có lỗi",
+          description: responseData.message,
+        });
+      } else {
+        toast({
+          variant: "success",
+          title: "Thành công",
+          description: "Thay đổi trạng thái nhân viên thành công",
+        });
+        router.refresh();
+      }
+    }
+  };
   const handleSetStatus = (value: boolean) => {
     setStatus(value);
     const index = fields.findIndex((item) => item.type === "active");
@@ -248,8 +323,8 @@ export function StaffTable({
     }
   };
   const displayStatus = {
-    trueText: "Đang hoạt động",
-    falseText: "Ngừng hoạt động",
+    trueText: "Đang làm việc",
+    falseText: "Đã nghỉ việc",
   };
   useEffect(() => {
     if (active === "true") {
@@ -259,10 +334,16 @@ export function StaffTable({
     }
   }, [active]);
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col overflow-x-auto">
       <div className="flex items-start py-4 gap-2">
         <div className="flex-1">
           <div className="flex gap-2">
+            <ChangeStatusDialog
+              disabled={table.getFilteredSelectedRowModel().rows.length < 1}
+              status={statusToChange}
+              handleSetStatus={setStatusToChange}
+              handleChangeStatus={handleChangeStatus}
+            />
             <Popover
               open={openFilter}
               onOpenChange={(open) => {
@@ -302,11 +383,13 @@ export function StaffTable({
                               required
                             ></Input>
                           ) : (
-                            <StatusList
-                              status={status}
-                              setStatus={handleSetStatus}
-                              display={displayStatus}
-                            />
+                            <div className="w-[160px]">
+                              <StatusList
+                                status={status}
+                                setStatus={handleSetStatus}
+                                display={displayStatus}
+                              />
+                            </div>
                           )}
                           <Button
                             variant={"ghost"}
@@ -417,8 +500,8 @@ export function StaffTable({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
-        <Table>
+      <div className="rounded-md border overflow-x-auto flex-1 min-w-full max-w-[50vw]">
+        <Table className="min-w-full w-max">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -445,7 +528,14 @@ export function StaffTable({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      onClick={() => {
+                        if (!cell.id.includes("select")) {
+                          router.push(`/staff/${row.getValue("id")}`);
+                        }
+                      }}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -475,13 +565,21 @@ export function StaffTable({
         <Paging
           page={page}
           totalPage={totalPage}
-          onNavigateBack={() => router.push(`/staff?page=${Number(page) - 1}`)}
-          onNavigateNext={() => router.push(`/staff?page=${Number(page) + 1}`)}
+          onNavigateBack={() =>
+            router.push(`/staff?page=${Number(page) - 1}${stringToFilter}`)
+          }
+          onNavigateNext={() =>
+            router.push(`/staff?page=${Number(page) + 1}${stringToFilter}`)
+          }
           onPageSelect={(selectedPage) =>
             router.push(`/staff?page=${selectedPage}`)
           }
-          onNavigateFirst={() => router.push(`/supplier?page=${1}`)}
-          onNavigateLast={() => router.push(`/supplier?page=${totalPage}`)}
+          onNavigateFirst={() =>
+            router.push(`/staff?page=${1}${stringToFilter}`)
+          }
+          onNavigateLast={() =>
+            router.push(`/staff?page=${totalPage}${stringToFilter}`)
+          }
         />
       </div>
     </div>

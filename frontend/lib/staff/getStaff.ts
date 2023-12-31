@@ -10,6 +10,7 @@ const fetcher = async (url: string) => {
       accept: "application/json",
       Authorization: `Bearer ${token}`,
     },
+    cache: "no-store",
   })
     .then((res) => {
       return res.json();
@@ -17,15 +18,16 @@ const fetcher = async (url: string) => {
     .then((json) => json.data);
 };
 
-export default function getAllStaff() {
-  const { data, error, isLoading } = useSWR(
-    `${endPoint}/v1/users/all`,
+export default function getStaff(idStaff: string) {
+  const { data, error, isLoading, mutate } = useSWR(
+    `${endPoint}/v1/users/${idStaff}`,
     fetcher
   );
 
   return {
-    staffs: data as Staff[],
+    data: data as Staff,
     isLoading,
     isError: error,
+    mutate: mutate,
   };
 }
