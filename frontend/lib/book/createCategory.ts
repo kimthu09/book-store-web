@@ -1,5 +1,6 @@
-import { apiKey, endPoint } from "@/constants";
+import { endPoint } from "@/constants";
 import axios from "axios";
+import { getApiKey } from "../auth/action";
 
 export default async function createCategory({ name }: { name: string }) {
   const url = `${endPoint}/v1/categories`;
@@ -8,11 +9,12 @@ export default async function createCategory({ name }: { name: string }) {
     name: name,
   };
   console.log(data);
+  const token = await getApiKey();
+
   const headers = {
     accept: "application/json",
     "Content-Type": "application/json",
-    Authorization: apiKey,
-
+    Authorization: `Bearer ${token}`,
     // Add other headers as needed
   };
 

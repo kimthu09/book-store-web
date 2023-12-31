@@ -1,5 +1,6 @@
-import { apiKey, endPoint } from "@/constants";
+import { endPoint } from "@/constants";
 import axios from "axios";
+import { getApiKey } from "../auth/action";
 
 export default async function createAuthor({ name }: { name: string }) {
   const url = `${endPoint}/v1/authors`;
@@ -7,12 +8,12 @@ export default async function createAuthor({ name }: { name: string }) {
   const data = {
     name: name,
   };
+  const token = await getApiKey();
   console.log(data);
   const headers = {
     accept: "application/json",
     "Content-Type": "application/json",
-    Authorization: apiKey,
-
+    Authorization: `Bearer ${token}`,
     // Add other headers as needed
   };
 
