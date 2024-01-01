@@ -33,6 +33,10 @@ import getAllCategory from "@/lib/book/getAllCategory";
 import Loading from "../loading";
 import Paging from "../paging";
 import { useRouter } from "next/navigation";
+import { FaPen } from "react-icons/fa";
+import EditCategory from "./edit-category";
+import { useSWRConfig } from "swr";
+import { endPoint } from "@/constants";
 
 export const columns: ColumnDef<Category>[] = [
   {
@@ -73,6 +77,15 @@ export const columns: ColumnDef<Category>[] = [
       <div className="capitalize pl-2 leading-6">{row.getValue("name")}</div>
     ),
   },
+  {
+    accessorKey: "actions",
+    header: () => {
+      return <div className="font-semibold flex justify-end">Thao tác</div>;
+    },
+    cell: ({ row }) => {
+      return <></>;
+    },
+  },
 ];
 export function CategoryTable({
   searchParams,
@@ -111,6 +124,10 @@ export function CategoryTable({
       rowSelection,
     },
   });
+  const { mutate } = useSWRConfig();
+  const handleCategoryEdited = (name: string) => {
+    mutate(`${endPoint}/v1/categories?page=${page ?? 1}&limit=10`);
+  };
   if (isError) return <div>Failed to load</div>;
   if (isLoading) {
     return <Loading />;
@@ -155,9 +172,26 @@ export function CategoryTable({
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
+                        {cell.id.includes("actions") ? (
+                          <div className=" flex justify-end ">
+                            <EditCategory
+                              category={row.original}
+                              handleCategoryEdited={handleCategoryEdited}
+                            >
+                              <Button
+                                size={"icon"}
+                                variant={"ghost"}
+                                className="rounded-full bg-blue-200/60 hover:bg-blue-200/90 text-primary hover:text-primary"
+                              >
+                                <FaPen />
+                              </Button>
+                            </EditCategory>
+                          </div>
+                        ) : (
+                          flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )
                         )}
                       </TableCell>
                     ))}
