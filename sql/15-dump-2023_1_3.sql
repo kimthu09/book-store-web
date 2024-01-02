@@ -545,10 +545,20 @@ INSERT INTO `RoleFeature` (`roleId`, `featureId`, `createdAt`, `updatedAt`, `del
 ('admin', 'USER_UPDATE_STATE', '2024-01-02 17:02:08', '2024-01-02 17:02:08', NULL, 1),
 ('admin', 'USER_VIEW', '2024-01-02 17:02:08', '2024-01-02 17:02:08', NULL, 1);
 
+DELIMITER //
 
+CREATE TRIGGER update_closedAt
+BEFORE UPDATE ON ImportNote
+FOR EACH ROW
+BEGIN
+    IF NEW.status != 'InProgress' THEN
+        SET NEW.closedAt = CURRENT_TIMESTAMP;
+    END IF;
+END;
 
+//
 
-
+DELIMITER ;
 
 
 INSERT INTO `Supplier` (`id`, `name`, `email`, `phone`, `debt`, `createdAt`, `updatedAt`, `deletedAt`, `isActive`) VALUES
