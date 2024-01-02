@@ -99,9 +99,27 @@ export const columns: ColumnDef<Invoice>[] = [
     accessorFn: (row) => new Date(row.createdAt).toLocaleDateString("vi-VN"),
 
     header: ({ column }) => {
-      return <span className="font-semibold">Ngày tạo</span>;
+      return (
+        <div className="flex justify-end">
+          <Button
+            className="p-2 justify-end whitespace-normal"
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            <CaretSortIcon className=" h-4 w-4" />
+            <span className="font-semibold">Ngày tạo</span>
+          </Button>
+        </div>
+      );
     },
-    cell: ({ row }) => <div>{row.getValue("createdAt")}</div>,
+    cell: ({ row }) => (
+      <div className="leading-6 flex flex-col text-right">
+        <span>
+          {new Date(row.original.createdAt).toLocaleDateString("vi-VN")}
+        </span>
+      </div>
+    ),
+    sortingFn: "datetime",
   },
   {
     accessorKey: "createdBy",
@@ -120,7 +138,7 @@ export const columns: ColumnDef<Invoice>[] = [
           variant={"ghost"}
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          <span className="font-semibold">Tổng nợ</span>
+          <span className="font-semibold">Tổng đơn</span>
 
           <CaretSortIcon className="ml-1 h-4 w-4" />
         </Button>
@@ -194,21 +212,21 @@ const InvoiceTable = ({
   const [latestFilter, setLatestFilter] = useState("");
   const filterValues = [
     { type: "search", name: "Từ khoá" },
-    { type: "min", name: "Tổng tiền nhỏ nhất" },
-    { type: "max", name: "Tổng tiền lớn nhất" },
+    { type: "minPrice", name: "Tổng tiền nhỏ nhất" },
+    { type: "maxPrice", name: "Tổng tiền lớn nhất" },
     { type: "createdBy", name: "Người tạo" },
   ];
-  const maxDebt = searchParams.get("maxPrice") ?? undefined;
-  const minDebt = searchParams.get("minPrice") ?? undefined;
+  const maxPrice = searchParams.get("maxPrice") ?? undefined;
+  const minPrice = searchParams.get("minPrice") ?? undefined;
   const search = searchParams.get("search") ?? undefined;
   const createdBy = searchParams.get("createdBy") ?? undefined;
   let filters = [{ type: "", value: "" }];
   filters.pop();
-  if (maxDebt) {
-    filters = filters.concat({ type: "min", value: maxDebt });
+  if (maxPrice) {
+    filters = filters.concat({ type: "maxPrice", value: maxPrice });
   }
-  if (minDebt) {
-    filters = filters.concat({ type: "max", value: minDebt });
+  if (minPrice) {
+    filters = filters.concat({ type: "minPrice", value: minPrice });
   }
   if (search) {
     filters = filters.concat({ type: "search", value: search });
@@ -216,6 +234,10 @@ const InvoiceTable = ({
   if (createdBy) {
     filters = filters.concat({ type: "createdBy", value: createdBy });
   }
+  let stringToFilter = "";
+  filters.forEach((item) => {
+    stringToFilter = stringToFilter.concat(`&${item.type}=${item.value}`);
+  });
   const { register, handleSubmit, reset, control, getValues } =
     useForm<FormValues>({
       defaultValues: {
@@ -234,14 +256,14 @@ const InvoiceTable = ({
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data);
     let search = "";
-    let minDebt = "";
-    let maxDebt = "";
+    let minPrice = "";
+    let maxPrice = "";
     let createdBy = "";
     data.filters.forEach((item) => {
-      if (item.type === "min") {
-        minDebt = `&minPrice=${item.value}`;
-      } else if (item.type === "max") {
-        maxDebt = `&maxPrice=${item.value}`;
+      if (item.type === "minPrice") {
+        minPrice = `&minPrice=${item.value}`;
+      } else if (item.type === "maxPrice") {
+        maxPrice = `&maxPrice=${item.value}`;
       } else if (item.type === "search") {
         search = `&search=${item.value}`;
       } else if (item.type === "createdBy") {
@@ -250,7 +272,7 @@ const InvoiceTable = ({
     });
 
     router.push(
-      `/invoice?page=${Number(page)}${minDebt}${maxDebt}${search}${createdBy}`
+      `/invoice?page=${Number(page)}${minPrice}${maxPrice}${search}${createdBy}`
     );
   };
   const [openFilter, setOpenFilter] = useState(false);
@@ -425,7 +447,7 @@ const InvoiceTable = ({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md border overflow-x-auto min-w-full max-w-[50vw]">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -491,16 +513,20 @@ const InvoiceTable = ({
           page={page}
           totalPage={totalPage}
           onNavigateBack={() =>
-            router.push(`/invoice?page=${Number(page) - 1}`)
+            router.push(`/invoice?page=${Number(page) - 1}${stringToFilter}`)
           }
           onNavigateNext={() =>
-            router.push(`/invoice?page=${Number(page) + 1}`)
+            router.push(`/invoice?page=${Number(page) + 1}${stringToFilter}`)
           }
           onPageSelect={(selectedPage) =>
-            router.push(`/invoice?page=${selectedPage}`)
+            router.push(`/invoice?page=${selectedPage}${stringToFilter}`)
           }
-          onNavigateFirst={() => router.push(`/supplier?page=${1}`)}
-          onNavigateLast={() => router.push(`/supplier?page=${totalPage}`)}
+          onNavigateFirst={() =>
+            router.push(`/invoice?page=${1}${stringToFilter}`)
+          }
+          onNavigateLast={() =>
+            router.push(`/invoice?page=${totalPage}${stringToFilter}`)
+          }
         />
       </div>
     </div>

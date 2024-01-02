@@ -58,6 +58,11 @@ var (
 		"Số tiền chi không hợp lệ",
 		"ErrSupplierDebtPayIsInvalid",
 	)
+	ErrSupplierDebtIdExistedInImportNote = common.NewCustomError(
+		errors.New("debt id is existed in import note"),
+		"Đã có phiếu nhập có mã trùng với phiếu chi. Xin hãy chọn tên khác",
+		"ErrSupplierDebtIdExistedInImportNote",
+	)
 	ErrSupplierIdDuplicate = common.ErrDuplicateKey(
 		errors.New("Nhà cung cấp đã tồn tại"),
 	)

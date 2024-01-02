@@ -5,6 +5,7 @@ import (
 	"book-store-management-backend/component/appctx"
 	"book-store-management-backend/component/generator"
 	"book-store-management-backend/middleware"
+	"book-store-management-backend/module/importnote/importnotestore"
 	"book-store-management-backend/module/supplier/supplierbiz"
 	"book-store-management-backend/module/supplier/suppliermodel"
 	"book-store-management-backend/module/supplier/supplierrepo"
@@ -41,7 +42,10 @@ func PaySupplier(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		supplierStore := supplierstore.NewSQLStore(db)
 		supplierDebtStore := supplierdebtstore.NewSQLStore(db)
-		repo := supplierrepo.NewUpdatePayRepo(supplierStore, supplierDebtStore)
+		importNoteStore := importnotestore.NewSQLStore(db)
+		repo := supplierrepo.NewUpdatePayRepo(
+			supplierStore, supplierDebtStore, importNoteStore,
+		)
 
 		gen := generator.NewShortIdGenerator()
 

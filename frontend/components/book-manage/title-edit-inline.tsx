@@ -1,5 +1,5 @@
-import { BookProps, BookTitle } from "@/types";
-import React, { useState } from "react";
+import { BookTitle } from "@/types";
+import React, { useEffect, useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { FaPen } from "react-icons/fa";
@@ -8,7 +8,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { required } from "@/constants";
 import { useToast } from "../ui/use-toast";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import {
+  SubmitErrorHandler,
+  SubmitHandler,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import CategoryList from "./category-list";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 import { Textarea } from "../ui/textarea";
@@ -26,21 +31,16 @@ const FormSchema = z.object({
     .array(z.object({ idCate: z.string() }))
     .nonempty("Vui lòng chọn ít nhất một thể loại"),
 });
-const TitleEditInline = (book: BookTitle) => {
+const TitleEditInline = ({
+  book,
+  handleTitleEdited,
+}: {
+  book: BookTitle;
+  handleTitleEdited: () => void;
+}) => {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      idBook: book.id,
-      name: book.name,
-      desc: book.desc,
-      authorIds: book.authors.map((item) => {
-        return { idAuthor: item.id };
-      }),
-      categoryIds: book.categories.map((item) => {
-        return { idCate: item.id };
-      }),
-    },
   });
   const {
     register,
@@ -48,7 +48,7 @@ const TitleEditInline = (book: BookTitle) => {
     control,
     watch,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = form;
 
   const {
@@ -70,6 +70,11 @@ const TitleEditInline = (book: BookTitle) => {
     control: control,
     name: "authorIds",
   });
+  const onError: SubmitErrorHandler<z.infer<typeof FormSchema>> = async (
+    data
+  ) => {
+    console.log(data);
+  };
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     console.log(data);
     setIsEdit(false);
@@ -93,12 +98,26 @@ const TitleEditInline = (book: BookTitle) => {
         title: "Thành công",
         description: "Chỉnh sửa đầu sách mới thành công",
       });
-      // handleTitleAdded(responseData.data);
+      handleTitleEdited();
     }
   };
   const [isEdit, setIsEdit] = useState(false);
+  useEffect(() => {
+    // Optionally log the error to an error reporting service
+    reset({
+      idBook: book.id,
+      name: book.name,
+      desc: book.desc,
+      authorIds: book.authors.map((item) => {
+        return { idAuthor: item.id };
+      }),
+      categoryIds: book.categories.map((item) => {
+        return { idCate: item.id };
+      }),
+    });
+  }, [book]);
   return (
-    <div className="flex bg-background lg:flex-row flex-col p-4 gap-6">
+    <div className="flex bg-background lg:flex-row flex-col p-4 px-6 gap-6">
       <div className="flex basis-1/2 flex-col gap-4 items-start ">
         <div className="flex lg:flex-row flex-col items-start w-full gap-2">
           <span className="font-medium min-w-[5rem]">Đầu sách: </span>
@@ -180,6 +199,7 @@ const TitleEditInline = (book: BookTitle) => {
                 variant={"ghost"}
                 size={"icon"}
                 className="rounded-full bg-rose-200/60 hover:bg-rose-200/90 text-rose-600 hover:text-rose-600"
+                title="Hủy"
                 onClick={() => {
                   setIsEdit(false);
                   reset({
@@ -200,11 +220,16 @@ const TitleEditInline = (book: BookTitle) => {
               <ConfirmDialog
                 title={"Xác nhận"}
                 description="Bạn xác nhận chỉnh sửa đầu sách này ?"
-                handleYes={() => handleSubmit(onSubmit)()}
+                handleYes={() => {
+                  console.log("hi");
+                  handleSubmit(onSubmit, onError)();
+                }}
               >
                 <Button
                   variant={"ghost"}
                   size={"icon"}
+                  disabled={!isDirty}
+                  title="Lưu"
                   className="rounded-full bg-green-200/60 hover:bg-green-200/90 text-green-600 hover:text-green-600"
                 >
                   <AiOutlineCheck className="h-5 w-5" />
@@ -216,6 +241,7 @@ const TitleEditInline = (book: BookTitle) => {
               variant={"ghost"}
               size={"icon"}
               className="rounded-full bg-blue-200/60 hover:bg-blue-200/90 text-primary hover:text-primary"
+              title="Chỉnh sửa"
               onClick={() => setIsEdit(true)}
             >
               <FaPen />

@@ -132,6 +132,27 @@ export type DebtReportDetail = {
   };
 };
 
+export type SaleReportDetail = {
+  amount: number;
+  book: {
+    id: string;
+    name: string;
+  };
+  totalSales: number;
+}
+
+export type StockReportDetail = {
+  book: {
+    id: string;
+    name: string;
+  };
+  final: number;
+  import: number;
+  initial: number;
+  modify: number;
+  sell: number;
+}
+
 export enum StatusNote {
   Inprogress = "InProgress",
   Done = "Done",
@@ -161,6 +182,7 @@ export type Staff = {
   id: string;
   isActive: boolean;
   name: string;
+  img: string;
   phone?: string;
   role: {
     id: string;

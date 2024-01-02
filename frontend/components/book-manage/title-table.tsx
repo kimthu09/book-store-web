@@ -37,10 +37,8 @@ import { BookTitle, FilterValue } from "@/types";
 
 import { Fragment, useEffect, useState } from "react";
 import { Input } from "../ui/input";
-import { toVND } from "@/lib/utils";
-import { toast } from "../ui/use-toast";
+
 import { useRouter, useSearchParams } from "next/navigation";
-import { BiBox } from "react-icons/bi";
 import Loading from "../loading";
 import Paging, { PagingProps } from "../paging";
 import {
@@ -52,7 +50,6 @@ import {
 import { LuFilter } from "react-icons/lu";
 import { Label } from "../ui/label";
 import { AiOutlineClose } from "react-icons/ai";
-import StaffList from "../staff-list";
 import getAllTitle from "@/lib/book/getAllTitle";
 import { FilterDatePicker } from "../date-picker";
 import { getFilterString } from "@/app/product/title/table-layout";
@@ -95,28 +92,6 @@ export const columns: ColumnDef<BookTitle>[] = [
       );
     },
     cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
-  },
-  {
-    accessorKey: "isActive",
-    header: () => {
-      return <div className="font-semibold flex justify-end">Trạng thái</div>;
-    },
-    cell: ({ row }) => {
-      const status = row.getValue("isActive");
-      return (
-        <div className=" flex justify-end ">
-          <div
-            className={`leading-6 text-sm rounded-full px-2 text-center whitespace-nowrap ${
-              status
-                ? "bg-green-100 text-green-700"
-                : "bg-rose-100 text-rose-500"
-            }`}
-          >
-            {status ? "Đang bán" : "Ngừng bán"}
-          </div>
-        </div>
-      );
-    },
   },
   {
     accessorKey: "createdAt",
@@ -251,7 +226,7 @@ export function TitleTable() {
     return <Loading />;
   } else {
     return (
-      <div>
+      <div className="flex flex-col">
         <div className="flex items-start py-4 gap-2">
           {/* <ExportDialog
             handleExport={handleExport}
@@ -406,7 +381,7 @@ export function TitleTable() {
           </div>
         </div>
 
-        <div className="rounded-md border w-full">
+        <div className="rounded-md border overflow-x-auto min-w-full max-w-[50vw]">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -435,8 +410,14 @@ export function TitleTable() {
                         <TableCell
                           key={cell.id}
                           onClick={() => {
-                            if (!cell.id.includes("select")) {
-                              row.toggleExpanded();
+                            if (
+                              !cell.id.includes("select") &&
+                              !cell.id.includes("actions")
+                            ) {
+                              table.resetExpanded();
+                              if (!row.getIsExpanded()) {
+                                row.toggleExpanded();
+                              }
                             }
                           }}
                         >
@@ -455,7 +436,12 @@ export function TitleTable() {
                           row.getIsExpanded() ? "table-cell" : "hidden"
                         }`}
                       >
-                        <TitleEditInline {...row.original} />
+                        <TitleEditInline
+                          book={row.original}
+                          handleTitleEdited={() => {
+                            mutate();
+                          }}
+                        />
                       </TableCell>
                     </TableRow>
                   </Fragment>

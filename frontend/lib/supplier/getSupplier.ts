@@ -1,12 +1,14 @@
-import { apiKey, endPoint } from "@/constants";
+import { endPoint } from "@/constants";
 import { Supplier } from "@/types";
 import useSWR from "swr";
+import { getApiKey } from "../auth/action";
 
-const fetcher = (url: string) =>
-  fetch(url, {
+const fetcher = async (url: string) => {
+  const token = await getApiKey();
+  return fetch(url, {
     headers: {
       accept: "application/json",
-      Authorization: apiKey,
+      Authorization: `Bearer ${token}`,
     },
     cache: "no-store",
   })
@@ -14,6 +16,7 @@ const fetcher = (url: string) =>
       return res.json();
     })
     .then((json) => json.data);
+};
 
 export default function getSupplier(idSupplier: string) {
   const { data, error, isLoading } = useSWR(

@@ -117,7 +117,7 @@ const AddRole = () => {
                       new Set(roleFunctions.map((item) => item.groupName))
                     ).map((value) => {
                       return (
-                        <div>
+                        <div key={value}>
                           <div>
                             <span className="text-base text-primary">
                               {value}

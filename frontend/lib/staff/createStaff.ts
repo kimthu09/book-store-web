@@ -1,14 +1,14 @@
-import { apiKey, endPoint } from "@/constants";
+import { endPoint } from "@/constants";
 import axios from "axios";
+import { getApiKey } from "../auth/action";
 
 export default async function createStaff({ staff }: { staff: {} }) {
   const url = `${endPoint}/v1/users`;
-
+  const token = await getApiKey();
   const headers = {
     accept: "application/json",
     "Content-Type": "application/json",
-    Authorization: apiKey,
-
+    Authorization: `Bearer ${token}`,
     // Add other headers as needed
   };
 

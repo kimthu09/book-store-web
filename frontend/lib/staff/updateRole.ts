@@ -1,5 +1,6 @@
-import { apiKey, endPoint } from "@/constants";
+import { endPoint } from "@/constants";
 import axios from "axios";
+import { getApiKey } from "../auth/action";
 
 export default async function updateRole({
   id,
@@ -17,11 +18,11 @@ export default async function updateRole({
     features: features,
   };
   console.log(data);
+  const token = await getApiKey();
   const headers = {
     accept: "application/json",
     "Content-Type": "application/json",
-    Authorization: apiKey,
-
+    Authorization: `Bearer ${token}`,
     // Add other headers as needed
   };
 

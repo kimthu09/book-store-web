@@ -12,5 +12,7 @@ func SetupRoutes(router *gin.RouterGroup, appCtx appctx.AppContext) {
 	{
 		authors.GET("", ListAuthor(appCtx))
 		authors.POST("", CreateAuthor(appCtx))
+		authors.POST("/many", CreateListAuthor(appCtx))
+		authors.PATCH("/:id", UpdateAuthor(appCtx))
 	}
 }

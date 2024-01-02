@@ -96,6 +96,101 @@ const docTemplate = `{
                 }
             }
         },
+        "/authors/many": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "authors"
+                ],
+                "summary": "Create list author",
+                "parameters": [
+                    {
+                        "description": "list name of author",
+                        "name": "author",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/authormodel.ReqCreateListAuthor"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/authors/{id}": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "authors"
+                ],
+                "summary": "Update author",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "author id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "author info to update",
+                        "name": "author",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/authormodel.ReqUpdateAuthor"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
         "/books": {
             "get": {
                 "security": [
@@ -550,6 +645,101 @@ const docTemplate = `{
                 }
             }
         },
+        "/categories/many": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "Create list category",
+                "parameters": [
+                    {
+                        "description": "list name of category",
+                        "name": "category",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/categorymodel.ReqCreateListCategory"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/categories/{id}": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "Update category",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "category id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "category info to update",
+                        "name": "category",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/categorymodel.ReqUpdateCategory"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
         "/features": {
             "get": {
                 "security": [
@@ -633,7 +823,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "example": "user name",
+                        "example": "user id",
                         "name": "closedBy",
                         "in": "query"
                     },
@@ -651,7 +841,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "example": "user name",
+                        "example": "user id",
                         "name": "createdBy",
                         "in": "query"
                     },
@@ -669,19 +859,29 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "example": "",
+                        "example": "note id",
                         "name": "search",
                         "in": "query"
                     },
                     {
+                        "enum": [
+                            "InProgress",
+                            "Done",
+                            "Cancel"
+                        ],
                         "type": "string",
-                        "example": "Done",
+                        "example": "enum(Done, Cancel, InProgress)",
+                        "x-enum-varnames": [
+                            "InProgress",
+                            "Done",
+                            "Cancel"
+                        ],
                         "name": "status",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "example": "supplier name",
+                        "example": "supplier id",
                         "name": "supplier",
                         "in": "query"
                     }
@@ -885,13 +1085,13 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "example": "user name",
+                        "example": "user id",
                         "name": "createdBy",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "example": "",
+                        "example": "note id",
                         "name": "search",
                         "in": "query"
                     }
@@ -1034,7 +1234,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "example": "user name",
+                        "example": "user id",
                         "name": "createdBy",
                         "in": "query"
                     },
@@ -1050,6 +1250,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
+                        "example": "invoice id",
                         "name": "search",
                         "in": "query"
                     }
@@ -1233,6 +1434,50 @@ const docTemplate = `{
                 }
             }
         },
+        "/password": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Update password user",
+                "parameters": [
+                    {
+                        "description": "old and new password",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.ReqUpdatePasswordUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
         "/profile": {
             "get": {
                 "security": [
@@ -1324,6 +1569,101 @@ const docTemplate = `{
                         "description": "publisher id",
                         "schema": {
                             "$ref": "#/definitions/publishermodel.ResCreatePublisher"
+                        }
+                    }
+                }
+            }
+        },
+        "/publishers/many": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "publishers"
+                ],
+                "summary": "Create list publisher",
+                "parameters": [
+                    {
+                        "description": "list name of publisher",
+                        "name": "publisher",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/publishermodel.ReqCreateListPublisher"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/publishers/{id}": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "publishers"
+                ],
+                "summary": "Update publisher",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "publisher id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "publisher info to update",
+                        "name": "publisher",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/publishermodel.ReqUpdatePublisher"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
                         }
                     }
                 }
@@ -2422,57 +2762,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/{id}/password": {
-            "patch": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "users"
-                ],
-                "summary": "Update password user",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "user id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "old and new password",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/usermodel.ReqUpdatePasswordUser"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "status of response",
-                        "schema": {
-                            "$ref": "#/definitions/common.ResSuccess"
-                        }
-                    },
-                    "400": {
-                        "description": "error",
-                        "schema": {
-                            "$ref": "#/definitions/common.AppError"
-                        }
-                    }
-                }
-            }
-        },
         "/users/{id}/reset": {
             "patch": {
                 "security": [
@@ -2614,6 +2903,26 @@ const docTemplate = `{
                 "name": {
                     "type": "string",
                     "example": "Nguyễn Nhật Ánh"
+                }
+            }
+        },
+        "authormodel.ReqCreateListAuthor": {
+            "type": "object",
+            "properties": {
+                "names": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "authormodel.ReqUpdateAuthor": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "tên đã đổi"
                 }
             }
         },
@@ -3092,6 +3401,26 @@ const docTemplate = `{
                 }
             }
         },
+        "categorymodel.ReqCreateListCategory": {
+            "type": "object",
+            "properties": {
+                "names": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "categorymodel.ReqUpdateCategory": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "tên đã đổi"
+                }
+            }
+        },
         "categorymodel.ResCreateCategory": {
             "type": "object",
             "properties": {
@@ -3316,7 +3645,7 @@ const docTemplate = `{
                 },
                 "closedBy": {
                     "type": "string",
-                    "example": "user name"
+                    "example": "user id"
                 },
                 "createdAtFrom": {
                     "type": "integer",
@@ -3328,7 +3657,7 @@ const docTemplate = `{
                 },
                 "createdBy": {
                     "type": "string",
-                    "example": "user name"
+                    "example": "user id"
                 },
                 "maxPrice": {
                     "type": "number",
@@ -3340,15 +3669,19 @@ const docTemplate = `{
                 },
                 "searchKey": {
                     "type": "string",
-                    "example": ""
+                    "example": "note id"
                 },
                 "status": {
-                    "type": "string",
-                    "example": "Done"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/importnotemodel.ImportNoteStatus"
+                        }
+                    ],
+                    "example": "enum(Done, Cancel, InProgress)"
                 },
                 "supplier": {
                     "type": "string",
-                    "example": "supplier name"
+                    "example": "supplier id"
                 }
             }
         },
@@ -3596,11 +3929,11 @@ const docTemplate = `{
                 },
                 "createdBy": {
                     "type": "string",
-                    "example": "user name"
+                    "example": "user id"
                 },
                 "searchKey": {
                     "type": "string",
-                    "example": ""
+                    "example": "note id"
                 }
             }
         },
@@ -3765,7 +4098,7 @@ const docTemplate = `{
             "properties": {
                 "createdBy": {
                     "type": "string",
-                    "example": "user name"
+                    "example": "user id"
                 },
                 "maxPrice": {
                     "type": "number"
@@ -3774,7 +4107,8 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "searchKey": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "invoice id"
                 }
             }
         },
@@ -3939,12 +4273,32 @@ const docTemplate = `{
                 }
             }
         },
+        "publishermodel.ReqCreateListPublisher": {
+            "type": "object",
+            "properties": {
+                "names": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "publishermodel.ReqCreatePublisher": {
             "type": "object",
             "properties": {
                 "name": {
                     "type": "string",
                     "example": "Kim Đồng"
+                }
+            }
+        },
+        "publishermodel.ReqUpdatePublisher": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "tên đã đổi"
                 }
             }
         },

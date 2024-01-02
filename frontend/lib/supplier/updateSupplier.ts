@@ -1,5 +1,6 @@
-import { apiKey, endPoint } from "@/constants";
+import { endPoint } from "@/constants";
 import axios from "axios";
+import { getApiKey } from "../auth/action";
 
 export default async function updateSupplier({
   idSupplier,
@@ -19,9 +20,10 @@ export default async function updateSupplier({
     phone: phone,
   };
   console.log(data);
+  const token = await getApiKey();
   const headers = {
     "Content-Type": "application/json",
-    Authorization: apiKey,
+    Authorization: `Bearer ${token}`,
     accept: "application/json",
   };
 

@@ -124,169 +124,174 @@ const CreateTitleDialog = ({
   } = getAllAuthor({ limit: 1000 });
 
   if (isError || isAuthorError) return <div>Failed to load</div>;
-  if (!categories || !authors) {
-    console.log(categories);
-    return <Loading />;
-  } else
+  else
     return (
       <Dialog open={open} onOpenChange={handleOpen}>
         <DialogTrigger asChild>{children}</DialogTrigger>
-        <DialogContent className="p-0 bg-white">
-          <DialogTitle className="p-6 py-4 border-b">Thêm đầu sách</DialogTitle>
-          <div className="col items-center px-6">
-            <form
-              // onSubmit={handleSubmit(onSubmit)}
-              className="w-full py-6 pt-0"
-            >
-              <div className="flex flex-col gap-4">
-                <div className="flex-col flex gap-5">
-                  <div className="basis-1/3">
-                    <Label htmlFor="masach">Mã sách</Label>
-                    <Input
-                      {...register("idBook")}
-                      id="masach"
-                      placeholder="Hệ thống sẽ tự sinh mã nếu để trống"
-                    />
-                    {errors.idBook && (
-                      <span className="error___message">
-                        {errors.idBook.message}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <Label>Tên sách</Label>
-                    <Input {...register("name")}></Input>
-                    {errors.name && (
-                      <span className="error___message">
-                        {errors.name.message}
-                      </span>
-                    )}
-                  </div>
-
-                  <div>
-                    {/* Category select */}
-                    <Label>Thể loại</Label>
-                    <CategoryList
-                      canAdd
-                      checkedCategory={fieldsCate.map((cate) => cate.idCate)}
-                      onCheckChanged={(idCate) => {
-                        const selectedIndex = fieldsCate.findIndex(
-                          (cate) => cate.idCate === idCate
-                        );
-                        if (selectedIndex > -1) {
-                          removeCate(selectedIndex);
-                        } else {
-                          appendCate({ idCate: idCate });
-                        }
-                      }}
-                    />
-                    {errors.categoryIds && (
-                      <span className="error___message">
-                        {errors.categoryIds.message}
-                      </span>
-                    )}
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      {fieldsCate.map((cate, index) => (
-                        <div
-                          key={cate.id}
-                          className="rounded-xl flex  px-3 py-1 h-fit outline-none text-sm text-primary  bg-blue-100 items-center gap-1 group"
-                        >
-                          {
-                            categories.data.find(
-                              (item: any) => item.id === cate.idCate
-                            )?.name
-                          }
-                          <div className="cursor-pointer w-4">
-                            <AiOutlineClose className="group-hover:hidden" />
-                            <AiOutlineClose
-                              color="red"
-                              fill="red"
-                              className="text-primary group-hover:flex hidden h-4 w-4"
-                              onClick={() => {
-                                removeCate(index);
-                              }}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    {/* Category select */}
-                    <Label>Tác giả</Label>
-                    <AuthorList
-                      canAdd
-                      checkedAuthor={fieldsAuthor.map(
-                        (author) => author.idAuthor
+        {!categories || !authors ? (
+          <DialogContent>
+            <Loading />
+          </DialogContent>
+        ) : (
+          <DialogContent className="p-0 bg-white">
+            <DialogTitle className="p-6 py-4 border-b">
+              Thêm đầu sách
+            </DialogTitle>
+            <div className="col items-center px-6">
+              <form
+                // onSubmit={handleSubmit(onSubmit)}
+                className="w-full py-6 pt-0"
+              >
+                <div className="flex flex-col gap-4">
+                  <div className="flex-col flex gap-5">
+                    <div className="basis-1/3">
+                      <Label htmlFor="masach">Mã sách</Label>
+                      <Input
+                        {...register("idBook")}
+                        id="masach"
+                        placeholder="Hệ thống sẽ tự sinh mã nếu để trống"
+                      />
+                      {errors.idBook && (
+                        <span className="error___message">
+                          {errors.idBook.message}
+                        </span>
                       )}
-                      onCheckChanged={(idAuthor) => {
-                        const selectedIndex = fieldsAuthor.findIndex(
-                          (cate) => cate.idAuthor === idAuthor
-                        );
-                        if (selectedIndex > -1) {
-                          removeAuthor(selectedIndex);
-                        } else {
-                          appendAuthor({ idAuthor: idAuthor });
-                        }
-                      }}
-                    />
-                    {errors.authorIds && (
-                      <span className="error___message">
-                        {errors.authorIds.message}
-                      </span>
-                    )}
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      {fieldsAuthor.map((author, index) => (
-                        <div
-                          key={author.id}
-                          className="rounded-xl flex  px-3 py-1 h-fit outline-none text-sm text-primary  bg-blue-100 items-center gap-1 group"
-                        >
-                          {
-                            authors.data.find(
-                              (item: any) => item.id === author.idAuthor
-                            )?.name
+                    </div>
+                    <div className="flex-1">
+                      <Label>Tên sách</Label>
+                      <Input {...register("name")}></Input>
+                      {errors.name && (
+                        <span className="error___message">
+                          {errors.name.message}
+                        </span>
+                      )}
+                    </div>
+
+                    <div>
+                      {/* Category select */}
+                      <Label>Thể loại</Label>
+                      <CategoryList
+                        canAdd
+                        checkedCategory={fieldsCate.map((cate) => cate.idCate)}
+                        onCheckChanged={(idCate) => {
+                          const selectedIndex = fieldsCate.findIndex(
+                            (cate) => cate.idCate === idCate
+                          );
+                          if (selectedIndex > -1) {
+                            removeCate(selectedIndex);
+                          } else {
+                            appendCate({ idCate: idCate });
                           }
-                          <div className="cursor-pointer w-4">
-                            <AiOutlineClose className="group-hover:hidden" />
-                            <AiOutlineClose
-                              color="red"
-                              fill="red"
-                              className="text-primary group-hover:flex hidden h-4 w-4"
-                              onClick={() => {
-                                removeAuthor(index);
-                              }}
-                            />
+                        }}
+                      />
+                      {errors.categoryIds && (
+                        <span className="error___message">
+                          {errors.categoryIds.message}
+                        </span>
+                      )}
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {fieldsCate.map((cate, index) => (
+                          <div
+                            key={cate.id}
+                            className="rounded-xl flex  px-3 py-1 h-fit outline-none text-sm text-primary  bg-blue-100 items-center gap-1 group"
+                          >
+                            {
+                              categories.data.find(
+                                (item: any) => item.id === cate.idCate
+                              )?.name
+                            }
+                            <div className="cursor-pointer w-4">
+                              <AiOutlineClose className="group-hover:hidden" />
+                              <AiOutlineClose
+                                color="red"
+                                fill="red"
+                                className="text-primary group-hover:flex hidden h-4 w-4"
+                                onClick={() => {
+                                  removeCate(index);
+                                }}
+                              />
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      {/* Category select */}
+                      <Label>Tác giả</Label>
+                      <AuthorList
+                        canAdd
+                        checkedAuthor={fieldsAuthor.map(
+                          (author) => author.idAuthor
+                        )}
+                        onCheckChanged={(idAuthor) => {
+                          const selectedIndex = fieldsAuthor.findIndex(
+                            (cate) => cate.idAuthor === idAuthor
+                          );
+                          if (selectedIndex > -1) {
+                            removeAuthor(selectedIndex);
+                          } else {
+                            appendAuthor({ idAuthor: idAuthor });
+                          }
+                        }}
+                      />
+                      {errors.authorIds && (
+                        <span className="error___message">
+                          {errors.authorIds.message}
+                        </span>
+                      )}
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {fieldsAuthor.map((author, index) => (
+                          <div
+                            key={author.id}
+                            className="rounded-xl flex  px-3 py-1 h-fit outline-none text-sm text-primary  bg-blue-100 items-center gap-1 group"
+                          >
+                            {
+                              authors.data.find(
+                                (item: any) => item.id === author.idAuthor
+                              )?.name
+                            }
+                            <div className="cursor-pointer w-4">
+                              <AiOutlineClose className="group-hover:hidden" />
+                              <AiOutlineClose
+                                color="red"
+                                fill="red"
+                                className="text-primary group-hover:flex hidden h-4 w-4"
+                                onClick={() => {
+                                  removeAuthor(index);
+                                }}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex-1">
+                      <Label>Mô tả</Label>
+                      <Textarea {...register("desc")} />
                     </div>
                   </div>
-
-                  <div className="flex-1">
-                    <Label>Mô tả</Label>
-                    <Textarea {...register("desc")} />
+                  <div className="flex gap-4 py-4  justify-end">
+                    <Button
+                      type="button"
+                      onClick={() => handleOpen(false)}
+                      variant={"outline"}
+                    >
+                      Huỷ
+                    </Button>
+                    <Button
+                      type="button"
+                      onClick={handleSubmit(onSubmit)}
+                      className="self-end"
+                    >
+                      Thêm
+                    </Button>
                   </div>
                 </div>
-                <div className="flex gap-4 py-4  justify-end">
-                  <Button
-                    type="button"
-                    onClick={() => handleOpen(false)}
-                    variant={"outline"}
-                  >
-                    Huỷ
-                  </Button>
-                  <Button
-                    type="button"
-                    onClick={handleSubmit(onSubmit)}
-                    className="self-end"
-                  >
-                    Thêm
-                  </Button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </DialogContent>
+              </form>
+            </div>
+          </DialogContent>
+        )}
       </Dialog>
     );
 };

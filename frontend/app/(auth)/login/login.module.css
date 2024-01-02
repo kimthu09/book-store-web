@@ -1,0 +1,43 @@
+.container {
+    display: flex;
+    background-color: white;
+    flex: 1;
+}
+
+.leftColumn {
+    /* background-color: antiquewhite; */
+    position: relative;
+    flex: 1.3;
+    height: 60%;
+    align-self: center;
+    justify-content: flex-end;
+}
+
+.rightColumn {
+    /* background-color: aqua; */
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    position: relative;
+    gap: 10px;
+    justify-content: center;
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
+
+
+.image {
+    object-fit: contain;
+}
+
+.rightHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
