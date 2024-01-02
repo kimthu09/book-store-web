@@ -44,6 +44,13 @@ definitions:
       data:
         type: string
     type: object
+  authormodel.ResGetAllAuthor:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/authormodel.SimpleAuthor'
+        type: array
+    type: object
   authormodel.ResListAuthor:
     properties:
       data:
@@ -379,6 +386,13 @@ definitions:
     properties:
       name:
         type: string
+    type: object
+  categorymodel.ResGetAllCategory:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/categorymodel.SimpleCategory'
+        type: array
     type: object
   categorymodel.ResListCategory:
     properties:
@@ -968,6 +982,13 @@ definitions:
     properties:
       data:
         type: string
+    type: object
+  publishermodel.ResGetAllPublisher:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/publishermodel.Publisher'
+        type: array
     type: object
   publishermodel.ResListPublisher:
     properties:
@@ -1601,7 +1622,7 @@ paths:
             $ref: '#/definitions/authormodel.ResListAuthor'
       security:
       - BearerAuth: []
-      summary: Get all authors
+      summary: List authors
       tags:
       - authors
     post:
@@ -1656,6 +1677,22 @@ paths:
       security:
       - BearerAuth: []
       summary: Update author
+      tags:
+      - authors
+  /authors/all:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/authormodel.ResGetAllAuthor'
+      security:
+      - BearerAuth: []
+      summary: Get all authors
       tags:
       - authors
   /authors/many:
@@ -1942,7 +1979,7 @@ paths:
             $ref: '#/definitions/categorymodel.ResListCategory'
       security:
       - BearerAuth: []
-      summary: Get all categories
+      summary: list categories
       tags:
       - categories
     post:
@@ -1997,6 +2034,22 @@ paths:
       security:
       - BearerAuth: []
       summary: Update category
+      tags:
+      - categories
+  /categories/all:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/categorymodel.ResGetAllCategory'
+      security:
+      - BearerAuth: []
+      summary: Get all categories
       tags:
       - categories
   /categories/many:
@@ -2523,7 +2576,7 @@ paths:
             $ref: '#/definitions/publishermodel.ResListPublisher'
       security:
       - BearerAuth: []
-      summary: Get all publishers
+      summary: List publishers
       tags:
       - publishers
     post:
@@ -2578,6 +2631,22 @@ paths:
       security:
       - BearerAuth: []
       summary: Update publisher
+      tags:
+      - publishers
+  /publishers/all:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/publishermodel.ResGetAllPublisher'
+      security:
+      - BearerAuth: []
+      summary: Get all publishers
       tags:
       - publishers
   /publishers/many:
