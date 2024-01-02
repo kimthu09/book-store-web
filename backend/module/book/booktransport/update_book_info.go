@@ -18,18 +18,6 @@ import (
 	"strings"
 )
 
-// UpdateBookInfo
-// @BasePath /v1
-// @Security BearerAuth
-// @Summary Update info books
-// @Tags books
-// @Accept json
-// @Produce json
-// @Param id path string true "book id"
-// @Param books body bookmodel.ReqUpdateBookInfo true "book info to update"
-// @Response 200 {object} common.ResSuccess "status of response"
-// @Response 400 {object} common.AppError "error"
-// @Router /books/{id}/info [patch]
 func UpdateBookInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		fmt.Println(c.Param("id"))

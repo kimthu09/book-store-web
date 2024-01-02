@@ -376,6 +376,50 @@ const docTemplate = `{
                 }
             }
         },
+        "/books/status": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "books"
+                ],
+                "summary": "Change status books",
+                "parameters": [
+                    {
+                        "description": "list book id and status want to be updated",
+                        "name": "book",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/bookmodel.ReqUpdateStatusBooks"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
         "/booktitles": {
             "get": {
                 "security": [
@@ -3111,6 +3155,21 @@ const docTemplate = `{
                 },
                 "sellPrice": {
                     "type": "integer"
+                }
+            }
+        },
+        "bookmodel.ReqUpdateStatusBooks": {
+            "type": "object",
+            "properties": {
+                "bookIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "isActive": {
+                    "type": "boolean",
+                    "example": true
                 }
             }
         },
