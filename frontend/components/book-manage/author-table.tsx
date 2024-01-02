@@ -34,6 +34,10 @@ import Paging from "../paging";
 import { useRouter } from "next/navigation";
 import { Author } from "@/types";
 import getAllAuthor from "@/lib/book/getAllAuthor";
+import EditAuthor from "./edit-author";
+import { FaPen } from "react-icons/fa";
+import { useSWRConfig } from "swr";
+import { endPoint } from "@/constants";
 
 export const columns: ColumnDef<Author>[] = [
   {
@@ -73,6 +77,15 @@ export const columns: ColumnDef<Author>[] = [
     cell: ({ row }) => (
       <div className="capitalize pl-2 leading-6">{row.getValue("name")}</div>
     ),
+  },
+  {
+    accessorKey: "actions",
+    header: () => {
+      return <div className="font-semibold flex justify-end">Thao tác</div>;
+    },
+    cell: ({ row }) => {
+      return <></>;
+    },
   },
 ];
 export function AuthorTable({
@@ -116,6 +129,11 @@ export function AuthorTable({
       rowSelection,
     },
   });
+
+  const { mutate } = useSWRConfig();
+  const handleAuthorEdited = (name: string) => {
+    mutate(`${endPoint}/v1/authors?page=${page ?? 1}&limit=10`);
+  };
   if (isError) return <div>Failed to load</div>;
   if (isLoading) {
     return <Loading />;
@@ -160,9 +178,26 @@ export function AuthorTable({
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
+                        {cell.id.includes("actions") ? (
+                          <div className=" flex justify-end ">
+                            <EditAuthor
+                              author={row.original}
+                              handleAuthorEdited={handleAuthorEdited}
+                            >
+                              <Button
+                                size={"icon"}
+                                variant={"ghost"}
+                                className="rounded-full bg-blue-200/60 hover:bg-blue-200/90 text-primary hover:text-primary"
+                              >
+                                <FaPen />
+                              </Button>
+                            </EditAuthor>
+                          </div>
+                        ) : (
+                          flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )
                         )}
                       </TableCell>
                     ))}

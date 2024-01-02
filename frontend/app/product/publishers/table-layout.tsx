@@ -26,7 +26,7 @@ const TableLayout = ({
   return (
     <div className="col">
       <div className="flex flex-row justify-between items-center">
-        <h1>Thể loại</h1>
+        <h1>Nhà xuất bản</h1>
         <div className="flex gap-4">
           <CreatePublisher handlePublisherAdded={handlePublisherAdded}>
             <Button>Thêm nhà xuất bản</Button>

@@ -39,12 +39,17 @@ import {
 } from "@/components/ui/table";
 import { Book } from "@/types";
 
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import Paging from "../paging";
 import { Input } from "../ui/input";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import {
+  Controller,
+  SubmitHandler,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { LuFilter } from "react-icons/lu";
 import { Label } from "../ui/label";
@@ -61,7 +66,206 @@ import CategoryList from "./category-list";
 import PublisherList from "./publisher-list";
 import AuthorList from "./author-list";
 import BookEditInline from "./book-edit-inline";
+import { FiLock, FiUnlock } from "react-icons/fi";
+import ConfirmDialog from "../confirm-dialog";
+import { toast } from "../ui/use-toast";
+const columns: ColumnDef<Book>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected()}
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "id",
+    header: () => {
+      return <div className="font-semibold">ID</div>;
+    },
+    cell: ({ row }) => <div>{row.getValue("id")}</div>,
+  },
+  {
+    accessorKey: "name",
+    header: () => {
+      return (
+        <span className="font-semibold whitespace-normal">Tên sản phẩm</span>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="capitalize 2xl:max-w-[24rem] xl:max-w-[16rem] max-w-[8rem]">
+        {row.getValue("name")}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "quantity",
+    header: ({ column }) => {
+      return (
+        <div className="flex justify-end">
+          <Button
+            className="p-1"
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            <CaretSortIcon className="h-4 w-4" />
 
+            <span className="font-semibold">Số lượng</span>
+          </Button>
+        </div>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="text-right">{row.getValue("quantity")}</div>
+    ),
+  },
+  {
+    accessorKey: "listedPrice",
+    header: ({ column }) => (
+      <div className="flex justify-end">
+        <Button
+          className="p-1"
+          variant={"ghost"}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <CaretSortIcon className="mr-1 h-4 w-4" />
+          <span className="font-semibold">Giá niêm yết</span>
+        </Button>
+      </div>
+    ),
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("listedPrice"));
+
+      // Format the amount as a dollar amount
+      const formatted = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(amount);
+
+      return <div className="text-right font-medium">{formatted}</div>;
+    },
+  },
+  {
+    accessorKey: "sellPrice",
+    header: ({ column }) => (
+      <div className="flex justify-end">
+        <Button
+          className="p-1"
+          variant={"ghost"}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <CaretSortIcon className="mr-1 h-4 w-4" />
+          <span className="font-semibold">Giá bán</span>
+        </Button>
+      </div>
+    ),
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("sellPrice"));
+
+      // Format the amount as a dollar amount
+      const formatted = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(amount);
+
+      return <div className="text-right font-medium">{formatted}</div>;
+    },
+  },
+  {
+    accessorKey: "isActive",
+    header: () => {
+      return (
+        <div className="font-semibold flex justify-center">Trạng thái</div>
+      );
+    },
+    cell: ({ row }) => {
+      const status = row.getValue("isActive");
+      return (
+        <div className="flex justify-center">
+          <div
+            className={`truncate leading-6 text-sm rounded-full px-2 text-center w-24 ${
+              status
+                ? "text-green-700 bg-green-100"
+                : "text-rose-600 bg-rose-100"
+            } text-center`}
+          >
+            {status ? "Đang bán" : "Ngừng bán"}
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "actions",
+    header: () => {
+      return <div className="font-semibold flex justify-end">Thao tác</div>;
+    },
+    cell: ({ row }) => {
+      const status = row.getValue("isActive");
+      return (
+        <div className=" flex justify-end ">
+          <ConfirmDialog
+            title={"Xác nhận"}
+            description={`${
+              status
+                ? "Bạn muốn ngừng bán đầu sách này ?"
+                : "Bạn muốn mở bán đầu sách này ?"
+            } `}
+            handleYes={async () => {
+              // const response: Promise<any> = deleteBookTitle(row.original.id);
+              // const responseData = await response;
+              // if (responseData.hasOwnProperty("errorKey")) {
+              //   toast({
+              //     variant: "destructive",
+              //     title: "Có lỗi",
+              //     description: responseData.message,
+              //   });
+              // } else {
+              //   toast({
+              //     variant: "success",
+              //     title: "Thành công",
+              //     description: "Chuyển trạng thái thành công",
+              //   });
+              //   // handleTitleAdded(responseData.data);
+              // }
+            }}
+          >
+            {status ? (
+              <Button
+                variant={"ghost"}
+                size={"icon"}
+                title="Ngừng bán"
+                className="rounded-full hover:bg-rose-100"
+              >
+                <FiLock className="h-5 w-5 text-rose-500" />
+              </Button>
+            ) : (
+              <Button
+                variant={"ghost"}
+                size={"icon"}
+                title="Mở bán"
+                className="rounded-full hover:bg-green-100"
+              >
+                <FiUnlock className="h-5 w-5 text-green-500" />
+              </Button>
+            )}
+          </ConfirmDialog>
+        </div>
+      );
+    },
+  },
+];
 function idToName(id: string) {
   if (id === "name") {
     return "Tên";
@@ -105,145 +309,6 @@ export function BookTable({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [category, setCategory] = useState("");
-
-  const columns: ColumnDef<Book>[] = [
-    {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected()}
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      accessorKey: "id",
-      header: () => {
-        return <div className="font-semibold">ID</div>;
-      },
-      cell: ({ row }) => <div>{row.getValue("id")}</div>,
-    },
-    {
-      accessorKey: "name",
-      header: () => {
-        return (
-          <span className="font-semibold whitespace-normal">Tên sản phẩm</span>
-        );
-      },
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("name")}</div>
-      ),
-    },
-    {
-      accessorKey: "quantity",
-      header: ({ column }) => {
-        return (
-          <div className="flex justify-end">
-            <Button
-              className="p-1"
-              variant="ghost"
-              onClick={() =>
-                column.toggleSorting(column.getIsSorted() === "asc")
-              }
-            >
-              <CaretSortIcon className="h-4 w-4" />
-
-              <span className="font-semibold">Số lượng</span>
-            </Button>
-          </div>
-        );
-      },
-      cell: ({ row }) => (
-        <div className="text-right">{row.getValue("quantity")}</div>
-      ),
-    },
-    {
-      accessorKey: "listedPrice",
-      header: ({ column }) => (
-        <div className="flex justify-end">
-          <Button
-            className="p-1"
-            variant={"ghost"}
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            <CaretSortIcon className="mr-1 h-4 w-4" />
-            <span className="font-semibold">Giá niêm yết</span>
-          </Button>
-        </div>
-      ),
-      cell: ({ row }) => {
-        const amount = parseFloat(row.getValue("listedPrice"));
-
-        // Format the amount as a dollar amount
-        const formatted = new Intl.NumberFormat("vi-VN", {
-          style: "currency",
-          currency: "VND",
-        }).format(amount);
-
-        return <div className="text-right font-medium">{formatted}</div>;
-      },
-    },
-    {
-      accessorKey: "sellPrice",
-      header: ({ column }) => (
-        <div className="flex justify-end">
-          <Button
-            className="p-1"
-            variant={"ghost"}
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            <CaretSortIcon className="mr-1 h-4 w-4" />
-            <span className="font-semibold">Giá bán</span>
-          </Button>
-        </div>
-      ),
-      cell: ({ row }) => {
-        const amount = parseFloat(row.getValue("sellPrice"));
-
-        // Format the amount as a dollar amount
-        const formatted = new Intl.NumberFormat("vi-VN", {
-          style: "currency",
-          currency: "VND",
-        }).format(amount);
-
-        return <div className="text-right font-medium">{formatted}</div>;
-      },
-    },
-    {
-      accessorKey: "isActive",
-      header: () => {
-        return (
-          <div className="font-semibold flex justify-center">Trạng thái</div>
-        );
-      },
-      cell: ({ row }) => {
-        const status = row.getValue("isActive");
-        return (
-          <div className="flex justify-center">
-            <div
-              className={`truncate leading-6 text-sm rounded-full px-2 text-center w-24 ${
-                status
-                  ? "text-green-700 bg-green-100"
-                  : "text-rose-600 bg-rose-100"
-              } text-center`}
-            >
-              {status ? "Đang bán" : "Ngừng bán"}
-            </div>
-          </div>
-        );
-      },
-    },
-  ];
   const [expanded, setExpanded] = React.useState<ExpandedState>({});
 
   const table = useReactTable({
@@ -274,9 +339,10 @@ export function BookTable({
     { type: "minSellPrice", name: "Giá bán nhỏ nhất" },
     { type: "maxSellPrice", name: "Giá bán lớn nhất" },
     { type: "publisher", name: "Mã nhà xuất bản" },
-    // { type: "categories", name: "Thể loại" },
-    // { type: "authors", name: "Tác giả" },
+    { type: "categories", name: "Thể loại" },
+    { type: "authors", name: "Tác giả" },
   ];
+  const [nxb, setNxb] = useState("");
 
   const search = searchParams.get("search") ?? undefined;
   const minSellPrice = searchParams.get("minSellPrice") ?? undefined;
@@ -305,8 +371,11 @@ export function BookTable({
   if (publisher) {
     filters = filters.concat({ type: "publisher", value: publisher });
   }
-
-  const [nxb, setNxb] = useState("");
+  useEffect(() => {
+    if (publisher) {
+      setNxb(publisher);
+    }
+  }, [publisher]);
   const { register, handleSubmit, reset, control, getValues } =
     useForm<FormValues>({
       defaultValues: {
@@ -363,15 +432,44 @@ export function BookTable({
                       );
                       if (item.type === "categories") {
                         return (
-                          <div
-                            className="flex gap-2 items-center"
-                            key={item.id}
-                          >
+                          <div className="flex gap-2 items-start" key={item.id}>
                             <Label className="basis-1/3">{name?.name}</Label>
                             <div className="flex-1">
-                              <CategoryList
-                                checkedCategory={[]}
-                                onCheckChanged={(idCate) => {}}
+                              <Controller
+                                control={control}
+                                name={`filters.${index}.value`}
+                                render={({ field }) => {
+                                  const checkedIds = field.value
+                                    .split("|")
+                                    .filter((item) => item != "");
+                                  return (
+                                    <CategoryList
+                                      isEdit
+                                      checkedCategory={checkedIds}
+                                      onCheckChanged={(idCate) => {
+                                        const selectedIndex =
+                                          checkedIds.findIndex(
+                                            (cate) => cate === idCate
+                                          );
+                                        if (selectedIndex > -1) {
+                                          field.onChange(
+                                            checkedIds
+                                              .splice(selectedIndex, 1)
+                                              .join("|")
+                                          );
+                                        } else {
+                                          checkedIds.push(idCate);
+                                          field.onChange(checkedIds.join("|"));
+                                        }
+                                      }}
+                                      onRemove={(index) => {
+                                        field.onChange(
+                                          checkedIds.splice(index, 1).join("|")
+                                        );
+                                      }}
+                                    />
+                                  );
+                                }}
                               />
                             </div>
 
@@ -419,15 +517,44 @@ export function BookTable({
                         );
                       } else if (item.type === "authors") {
                         return (
-                          <div
-                            className="flex gap-2 items-center"
-                            key={item.id}
-                          >
+                          <div className="flex gap-2 items-start" key={item.id}>
                             <Label className="basis-1/3">{name?.name}</Label>
                             <div className="flex-1">
-                              <AuthorList
-                                checkedAuthor={[]}
-                                onCheckChanged={(id) => {}}
+                              <Controller
+                                control={control}
+                                name={`filters.${index}.value`}
+                                render={({ field }) => {
+                                  const checkedIds = field.value
+                                    .split("|")
+                                    .filter((item) => item != "");
+                                  return (
+                                    <AuthorList
+                                      isEdit
+                                      checkedAuthor={checkedIds}
+                                      onCheckChanged={(id) => {
+                                        const selectedIndex =
+                                          checkedIds.findIndex(
+                                            (author) => author === id
+                                          );
+                                        if (selectedIndex > -1) {
+                                          field.onChange(
+                                            checkedIds
+                                              .splice(selectedIndex, 1)
+                                              .join("|")
+                                          );
+                                        } else {
+                                          checkedIds.push(id);
+                                          field.onChange(checkedIds.join("|"));
+                                        }
+                                      }}
+                                      onRemove={(index) => {
+                                        field.onChange(
+                                          checkedIds.splice(index, 1).join("|")
+                                        );
+                                      }}
+                                    />
+                                  );
+                                }}
                               />
                             </div>
                             <Button
@@ -447,7 +574,7 @@ export function BookTable({
                             className="flex gap-2 items-center"
                             key={item.id}
                           >
-                            <Label className="basis-1/4">{name?.name}</Label>
+                            <Label className="basis-1/3">{name?.name}</Label>
                             {item.type === "search" ? (
                               <Input
                                 {...register(`filters.${index}.value`)}
@@ -528,7 +655,7 @@ export function BookTable({
               return (
                 <div
                   key={item.type}
-                  className="rounded-xl flex self-start px-3 py-1 h-fit outline-none text-sm text-primary  bg-blue-100 items-center gap-1 group"
+                  className="rounded-xl flex self-start px-3 py-1 h-fit outline-none text-sm text-primary bg-blue-100 items-center gap-1 group"
                 >
                   <span>
                     {name?.name}
@@ -567,8 +694,8 @@ export function BookTable({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
-        <Table>
+      <div className="rounded-md border overflow-x-auto flex-1 min-w-full max-w-[50vw]">
+        <Table className="min-w-full w-max">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

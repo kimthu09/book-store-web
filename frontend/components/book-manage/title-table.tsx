@@ -48,17 +48,12 @@ import {
   useForm,
 } from "react-hook-form";
 import { LuFilter } from "react-icons/lu";
-import { FiUnlock, FiLock } from "react-icons/fi";
 import { Label } from "../ui/label";
 import { AiOutlineClose } from "react-icons/ai";
-import StaffList from "../staff-list";
 import getAllTitle from "@/lib/book/getAllTitle";
 import { FilterDatePicker } from "../date-picker";
 import { getFilterString } from "@/app/product/title/table-layout";
 import TitleEditInline from "./title-edit-inline";
-import ConfirmDialog from "../confirm-dialog";
-import deleteBookTitle from "@/lib/book/deleteBookTitle";
-import { toast } from "../ui/use-toast";
 
 export const columns: ColumnDef<BookTitle>[] = [
   {
@@ -441,7 +436,12 @@ export function TitleTable() {
                           row.getIsExpanded() ? "table-cell" : "hidden"
                         }`}
                       >
-                        <TitleEditInline {...row.original} />
+                        <TitleEditInline
+                          book={row.original}
+                          handleTitleEdited={() => {
+                            mutate();
+                          }}
+                        />
                       </TableCell>
                     </TableRow>
                   </Fragment>

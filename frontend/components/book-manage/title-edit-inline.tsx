@@ -1,5 +1,5 @@
 import { BookTitle } from "@/types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { FaPen } from "react-icons/fa";
@@ -31,21 +31,16 @@ const FormSchema = z.object({
     .array(z.object({ idCate: z.string() }))
     .nonempty("Vui lòng chọn ít nhất một thể loại"),
 });
-const TitleEditInline = (book: BookTitle) => {
+const TitleEditInline = ({
+  book,
+  handleTitleEdited,
+}: {
+  book: BookTitle;
+  handleTitleEdited: () => void;
+}) => {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      idBook: book.id,
-      name: book.name,
-      desc: book.desc,
-      authorIds: book.authors.map((item) => {
-        return { idAuthor: item.id };
-      }),
-      categoryIds: book.categories.map((item) => {
-        return { idCate: item.id };
-      }),
-    },
   });
   const {
     register,
@@ -103,10 +98,24 @@ const TitleEditInline = (book: BookTitle) => {
         title: "Thành công",
         description: "Chỉnh sửa đầu sách mới thành công",
       });
-      // handleTitleAdded(responseData.data);
+      handleTitleEdited();
     }
   };
   const [isEdit, setIsEdit] = useState(false);
+  useEffect(() => {
+    // Optionally log the error to an error reporting service
+    reset({
+      idBook: book.id,
+      name: book.name,
+      desc: book.desc,
+      authorIds: book.authors.map((item) => {
+        return { idAuthor: item.id };
+      }),
+      categoryIds: book.categories.map((item) => {
+        return { idCate: item.id };
+      }),
+    });
+  }, [book]);
   return (
     <div className="flex bg-background lg:flex-row flex-col p-4 px-6 gap-6">
       <div className="flex basis-1/2 flex-col gap-4 items-start ">
