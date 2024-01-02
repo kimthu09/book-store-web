@@ -15,7 +15,7 @@ import (
 
 // @BasePath /v1
 // @Security BearerAuth
-// @Summary Get all categories
+// @Summary list categories
 // @Tags categories
 // @Accept json
 // @Produce json
