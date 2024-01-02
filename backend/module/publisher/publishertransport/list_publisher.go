@@ -15,7 +15,7 @@ import (
 
 // @BasePath /v1
 // @Security BearerAuth
-// @Summary Get all publishers
+// @Summary List publishers
 // @Tags publishers
 // @Accept json
 // @Produce json

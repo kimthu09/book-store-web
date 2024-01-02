@@ -11,6 +11,7 @@ func SetupRoutes(router *gin.RouterGroup, appCtx appctx.AppContext) {
 	publishers := router.Group("/publishers", middleware.RequireAuth(appCtx))
 	{
 		publishers.GET("", ListPublisher(appCtx))
+		publishers.GET("/all", GetAllPublisher(appCtx))
 		publishers.POST("", CreatePublisher(appCtx))
 		publishers.POST("/many", CreateListPublisher(appCtx))
 		publishers.PATCH("/:id", UpdatePublisher(appCtx))

@@ -35,7 +35,7 @@ const docTemplate = `{
                 "tags": [
                     "authors"
                 ],
-                "summary": "Get all authors",
+                "summary": "List authors",
                 "parameters": [
                     {
                         "type": "integer",
@@ -91,6 +91,33 @@ const docTemplate = `{
                         "description": "author id",
                         "schema": {
                             "$ref": "#/definitions/authormodel.ResCreateAuthor"
+                        }
+                    }
+                }
+            }
+        },
+        "/authors/all": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "authors"
+                ],
+                "summary": "Get all authors",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/authormodel.ResGetAllAuthor"
                         }
                     }
                 }
@@ -598,7 +625,7 @@ const docTemplate = `{
                 "tags": [
                     "categories"
                 ],
-                "summary": "Get all categories",
+                "summary": "list categories",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -640,6 +667,33 @@ const docTemplate = `{
                         "description": "category id",
                         "schema": {
                             "$ref": "#/definitions/categorymodel.ResCreateCategory"
+                        }
+                    }
+                }
+            }
+        },
+        "/categories/all": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "Get all categories",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/categorymodel.ResGetAllCategory"
                         }
                     }
                 }
@@ -1527,7 +1581,7 @@ const docTemplate = `{
                 "tags": [
                     "publishers"
                 ],
-                "summary": "Get all publishers",
+                "summary": "List publishers",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1569,6 +1623,33 @@ const docTemplate = `{
                         "description": "publisher id",
                         "schema": {
                             "$ref": "#/definitions/publishermodel.ResCreatePublisher"
+                        }
+                    }
+                }
+            }
+        },
+        "/publishers/all": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "publishers"
+                ],
+                "summary": "Get all publishers",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/publishermodel.ResGetAllPublisher"
                         }
                     }
                 }
@@ -2934,6 +3015,17 @@ const docTemplate = `{
                 }
             }
         },
+        "authormodel.ResGetAllAuthor": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/authormodel.SimpleAuthor"
+                    }
+                }
+            }
+        },
         "authormodel.ResListAuthor": {
             "type": "object",
             "properties": {
@@ -3426,6 +3518,17 @@ const docTemplate = `{
             "properties": {
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "categorymodel.ResGetAllCategory": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/categorymodel.SimpleCategory"
+                    }
                 }
             }
         },
@@ -4307,6 +4410,17 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "type": "string"
+                }
+            }
+        },
+        "publishermodel.ResGetAllPublisher": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/publishermodel.Publisher"
+                    }
                 }
             }
         },

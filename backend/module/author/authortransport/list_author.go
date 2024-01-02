@@ -14,7 +14,7 @@ import (
 
 // @BasePath /v1
 // @Security BearerAuth
-// @Summary Get all authors
+// @Summary List authors
 // @Tags authors
 // @Accept json
 // @Produce json
@@ -38,7 +38,7 @@ func ListAuthor(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		store := authorstore.NewSQLStore(appCtx.GetMainDBConnection())
 		repo := authorrepo.NewListAuthorRepo(store)
-		
+
 		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
 
 		biz := authorbiz.NewListAuthorRepo(repo, requester)
