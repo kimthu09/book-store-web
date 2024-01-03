@@ -20,6 +20,8 @@ import { Textarea } from "../ui/textarea";
 import AuthorList from "./author-list";
 import updateBookTitle from "@/lib/book/updateBookTitle";
 import ConfirmDialog from "../confirm-dialog";
+import { useCurrentUser } from "@/hooks/use-user";
+import { includesRoles } from "@/lib/utils";
 const FormSchema = z.object({
   idBook: z.string().max(12, "Tối đa 12 ký tự"),
   name: required,
@@ -116,6 +118,8 @@ const TitleEditInline = ({
       }),
     });
   }, [book]);
+
+  const { currentUser } = useCurrentUser();
   return (
     <div className="flex bg-background lg:flex-row flex-col p-4 px-6 gap-6">
       <div className="flex basis-1/2 flex-col gap-4 items-start ">
@@ -236,7 +240,11 @@ const TitleEditInline = ({
                 </Button>
               </ConfirmDialog>
             </>
-          ) : (
+          ) : currentUser &&
+            includesRoles({
+              currentUser: currentUser,
+              allowedFeatures: ["BOOK_TITLE_UPDATE"],
+            }) ? (
             <Button
               variant={"ghost"}
               size={"icon"}
@@ -246,7 +254,7 @@ const TitleEditInline = ({
             >
               <FaPen />
             </Button>
-          )}
+          ) : null}
         </div>
       </div>
     </div>

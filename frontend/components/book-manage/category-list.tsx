@@ -11,16 +11,17 @@ import {
   CommandInput,
   CommandItem,
 } from "../ui/command";
-import { LuCheck, LuChevronsUpDown } from "react-icons/lu";
+import { LuChevronsUpDown } from "react-icons/lu";
 import { Button } from "../ui/button";
-import { AiFillPlusCircle, AiOutlineClose } from "react-icons/ai";
-import { cn } from "@/lib/utils";
+import { AiOutlineClose } from "react-icons/ai";
+import { includesRoles } from "@/lib/utils";
 import { CategoryListProps } from "@/types";
 import { Checkbox } from "../ui/checkbox";
-import getAllCategory from "@/lib/book/getAllCategory";
 import Loading from "../loading";
 import CreateCategory from "./create-category";
 import { FaPlus } from "react-icons/fa";
+import { useCurrentUser } from "@/hooks/use-user";
+import getAllCategoryList from "@/lib/book/getAllCategoryList";
 
 const CategoryList = ({
   checkedCategory,
@@ -31,13 +32,12 @@ const CategoryList = ({
   onRemove,
 }: CategoryListProps) => {
   const [openCategory, setOpenCategory] = useState(false);
-  const { categories, isLoading, isError, mutate } = getAllCategory({
-    limit: 1000,
-  });
+  const { categories, isLoading, isError, mutate } = getAllCategoryList();
   const handleCategoryAdded = async (idCate: string) => {
     await mutate();
     onCheckChanged(idCate);
   };
+  const { currentUser } = useCurrentUser();
   if (isError) return <div>Failed to load</div>;
   if (isLoading) {
     return <Loading />;
@@ -88,11 +88,17 @@ const CategoryList = ({
             </DropdownMenuContent>
           </DropdownMenu>
           {canAdd && (isEdit === true || isEdit === null) ? (
-            <CreateCategory handleCategoryAdded={handleCategoryAdded}>
-              <Button type="button" size={"icon"} className="px-3">
-                <FaPlus />
-              </Button>
-            </CreateCategory>
+            currentUser &&
+            includesRoles({
+              currentUser: currentUser,
+              allowedFeatures: ["CATEGORY_CREATE"],
+            }) ? (
+              <CreateCategory handleCategoryAdded={handleCategoryAdded}>
+                <Button type="button" size={"icon"} className="px-3">
+                  <FaPlus />
+                </Button>
+              </CreateCategory>
+            ) : null
           ) : null}
         </div>
         {isEdit !== null ? (

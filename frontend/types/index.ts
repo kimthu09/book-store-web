@@ -26,6 +26,7 @@ export type Book = {
   sellPrice: number;
   importPrice: number;
   isActive: boolean;
+  image: string;
 };
 export type BookProps = {
   id: string;
@@ -139,7 +140,7 @@ export type SaleReportDetail = {
     name: string;
   };
   totalSales: number;
-}
+};
 
 export type StockReportDetail = {
   book: {
@@ -151,7 +152,7 @@ export type StockReportDetail = {
   initial: number;
   modify: number;
   sell: number;
-}
+};
 
 export enum StatusNote {
   Inprogress = "InProgress",
@@ -253,6 +254,7 @@ export interface PublisherListProps {
   publisherId: string;
   setPublisherId: (nameId: string) => void;
   canAdd?: boolean;
+  readOnly?: boolean;
 }
 export type PagingProps = {
   page: number;

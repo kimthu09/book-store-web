@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import TableLayout from "./table-layout";
+import { withAuth } from "@/lib/role/withAuth";
 export const metadata: Metadata = {
   title: "Thể loại",
 };
@@ -11,4 +12,4 @@ const CategoryPage = ({
   return <TableLayout searchParams={searchParams} />;
 };
 
-export default CategoryPage;
+export default withAuth(CategoryPage, ["CATEGORY_VIEW"]);

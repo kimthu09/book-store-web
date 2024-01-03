@@ -7,11 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import getAllAuthor from "@/lib/book/getAllAuthor";
-import getAllCategory from "@/lib/book/getAllCategory";
 import { useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { AiOutlineClose } from "react-icons/ai";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Loading from "@/components/loading";
@@ -24,6 +21,8 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { FaPlus } from "react-icons/fa";
+import getAllAuthorList from "@/lib/book/getAllAuthorList";
+import getAllCategoryList from "@/lib/book/getAllCategoryList";
 
 const FormSchema = z.object({
   idBook: z.string().max(12, "Tối đa 12 ký tự"),
@@ -116,12 +115,12 @@ const CreateTitleDialog = ({
       setOpen(false);
     }
   };
-  const { categories, isLoading, isError } = getAllCategory({ limit: 1000 });
+  const { categories, isLoading, isError } = getAllCategoryList();
   const {
     authors,
     isLoading: isAuthorLoading,
     isError: isAuthorError,
-  } = getAllAuthor({ limit: 1000 });
+  } = getAllAuthorList();
 
   if (isError || isAuthorError) return <div>Failed to load</div>;
   else
@@ -171,6 +170,7 @@ const CreateTitleDialog = ({
                       {/* Category select */}
                       <Label>Thể loại</Label>
                       <CategoryList
+                        isEdit
                         canAdd
                         checkedCategory={fieldsCate.map((cate) => cate.idCate)}
                         onCheckChanged={(idCate) => {
@@ -183,42 +183,21 @@ const CreateTitleDialog = ({
                             appendCate({ idCate: idCate });
                           }
                         }}
+                        onRemove={(index) => {
+                          removeCate(index);
+                        }}
                       />
                       {errors.categoryIds && (
                         <span className="error___message">
                           {errors.categoryIds.message}
                         </span>
                       )}
-                      <div className="flex flex-wrap gap-2 mt-3">
-                        {fieldsCate.map((cate, index) => (
-                          <div
-                            key={cate.id}
-                            className="rounded-xl flex  px-3 py-1 h-fit outline-none text-sm text-primary  bg-blue-100 items-center gap-1 group"
-                          >
-                            {
-                              categories.data.find(
-                                (item: any) => item.id === cate.idCate
-                              )?.name
-                            }
-                            <div className="cursor-pointer w-4">
-                              <AiOutlineClose className="group-hover:hidden" />
-                              <AiOutlineClose
-                                color="red"
-                                fill="red"
-                                className="text-primary group-hover:flex hidden h-4 w-4"
-                                onClick={() => {
-                                  removeCate(index);
-                                }}
-                              />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
                     </div>
                     <div>
                       {/* Category select */}
                       <Label>Tác giả</Label>
                       <AuthorList
+                        isEdit
                         canAdd
                         checkedAuthor={fieldsAuthor.map(
                           (author) => author.idAuthor
@@ -233,37 +212,15 @@ const CreateTitleDialog = ({
                             appendAuthor({ idAuthor: idAuthor });
                           }
                         }}
+                        onRemove={(index) => {
+                          removeAuthor(index);
+                        }}
                       />
                       {errors.authorIds && (
                         <span className="error___message">
                           {errors.authorIds.message}
                         </span>
                       )}
-                      <div className="flex flex-wrap gap-2 mt-3">
-                        {fieldsAuthor.map((author, index) => (
-                          <div
-                            key={author.id}
-                            className="rounded-xl flex  px-3 py-1 h-fit outline-none text-sm text-primary  bg-blue-100 items-center gap-1 group"
-                          >
-                            {
-                              authors.data.find(
-                                (item: any) => item.id === author.idAuthor
-                              )?.name
-                            }
-                            <div className="cursor-pointer w-4">
-                              <AiOutlineClose className="group-hover:hidden" />
-                              <AiOutlineClose
-                                color="red"
-                                fill="red"
-                                className="text-primary group-hover:flex hidden h-4 w-4"
-                                onClick={() => {
-                                  removeAuthor(index);
-                                }}
-                              />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
                     </div>
 
                     <div className="flex-1">

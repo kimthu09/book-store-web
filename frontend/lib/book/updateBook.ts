@@ -2,38 +2,20 @@ import { endPoint } from "@/constants";
 import axios from "axios";
 import { getApiKey } from "../auth/action";
 
-export default async function createBook({
-  id,
-  name,
-  bookTitleId,
-  edition,
-  listedPrice,
-  publisherId,
-  sellPrice,
-  image,
-}: {
-  id?: string;
-  name: string;
+export type Props = {
   bookTitleId: string;
   edition: number;
+  image: string;
   listedPrice: number;
+  name: string;
   publisherId: string;
   sellPrice: number;
-  image: string;
-}) {
-  const url = `${endPoint}/v1/books`;
-  const token = await getApiKey();
-  const data = {
-    id: id,
-    name: name,
-    bookTitleId: bookTitleId,
-    edition: edition,
-    listedPrice: listedPrice,
-    publisherId: publisherId,
-    sellPrice: sellPrice,
-    image: image,
-  };
+};
+export default async function updateBook(data: Props, bookId: string) {
+  const url = `${endPoint}/v1/books/${bookId}/info`;
+
   console.log(data);
+  const token = await getApiKey();
   const headers = {
     accept: "application/json",
     "Content-Type": "application/json",
@@ -43,7 +25,7 @@ export default async function createBook({
 
   // Make a POST request with headers
   const res = axios
-    .post(url, data, { headers: headers })
+    .patch(url, data, { headers: headers })
     .then((response) => {
       if (response) return response.data;
     })

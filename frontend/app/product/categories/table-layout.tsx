@@ -6,9 +6,12 @@ import Loading from "@/components/loading";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { endPoint } from "@/constants";
+import { useCurrentUser } from "@/hooks/use-user";
+import { getUser } from "@/lib/auth/action";
 import createListCategory from "@/lib/book/createListCategory";
+import { includesRoles } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSWRConfig } from "swr";
 
 const TableLayout = ({
@@ -63,24 +66,30 @@ const TableLayout = ({
       handleCategoryAdded("");
     }
   };
+  const { currentUser } = useCurrentUser();
   return (
     <div className="col">
       <div className="flex flex-row justify-between items-center">
         <h1>Thể loại</h1>
-        <div className="flex gap-4">
-          <ImportSheet
-            handleFile={handleFile}
-            sampleFileLink="/category-sample.xlsx"
-          />
-          <CreateCategory handleCategoryAdded={handleCategoryAdded}>
-            <Button>Thêm thể loại</Button>
-          </CreateCategory>
-        </div>
+        {currentUser &&
+        includesRoles({
+          currentUser: currentUser,
+          allowedFeatures: ["CATEGORY_CREATE"],
+        }) ? (
+          <div className="flex gap-4">
+            <CreateCategory handleCategoryAdded={handleCategoryAdded}>
+              <Button>Thêm thể loại</Button>
+            </CreateCategory>
+          </div>
+        ) : null}
       </div>
       <div className="flex flex-row flex-wrap gap-2"></div>
       <div className="mb-4 p-3 sha bg-white shadow-[0_1px_3px_0_rgba(0,0,0,0.2)]">
         <Suspense fallback={<Loading />}>
-          <CategoryTable searchParams={searchParams} />
+          <CategoryTable
+            searchParams={searchParams}
+            currentUser={currentUser}
+          />
         </Suspense>
       </div>
     </div>

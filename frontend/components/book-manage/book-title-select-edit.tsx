@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,20 +20,29 @@ import { FaPlus } from "react-icons/fa";
 import CreateTitleDialog from "./create-title-dialog";
 import { useCurrentUser } from "@/hooks/use-user";
 import getAllTitleList from "@/lib/book/getAllTitleList";
-
-const BookTitleSelect = ({ handleTitleSet }: TitleListProps) => {
+export interface Props {
+  handleTitleSet: (titleId: string) => void;
+  titleId: string;
+  readOnly?: boolean;
+}
+const BookTitleSelect = ({ handleTitleSet, titleId, readOnly }: Props) => {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState<BookTitle>();
   const { titles, isLoading, isError, mutate } = getAllTitleList();
-
+  useEffect(() => {
+    console.log("hi");
+    if (titles) {
+      onSetTitle(titles.data.find((item: BookTitle) => item.id === titleId));
+    }
+  }, [titles, titleId]);
   const onSetTitle = (title: BookTitle) => {
     setTitle(title);
     handleTitleSet(title.id);
   };
-  const handleTitleAdded = async (titleId: string) => {
+  const handleTitleAdded = async (value: string) => {
     const newTitleList = await mutate();
-    setTitle(newTitleList?.data.find((item: BookTitle) => item.id === titleId));
-    handleTitleSet(titleId);
+    setTitle(newTitleList?.data.find((item: BookTitle) => item.id === value));
+    handleTitleSet(value);
   };
   const { currentUser } = useCurrentUser();
   if (isError) return <div>Failed to load</div>;
@@ -46,6 +55,7 @@ const BookTitleSelect = ({ handleTitleSet }: TitleListProps) => {
           <DropdownMenu open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger asChild>
               <Button
+                disabled={readOnly}
                 variant="outline"
                 role="combobox"
                 aria-expanded={open}
@@ -95,7 +105,8 @@ const BookTitleSelect = ({ handleTitleSet }: TitleListProps) => {
           includesRoles({
             currentUser: currentUser,
             allowedFeatures: ["BOOK_TITLE_CREATE"],
-          }) ? (
+          }) &&
+          !readOnly ? (
             <CreateTitleDialog handleTitleAdded={handleTitleAdded}>
               <Button type="button" size={"icon"} className="px-3">
                 <FaPlus />

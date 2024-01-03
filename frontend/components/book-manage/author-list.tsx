@@ -15,10 +15,12 @@ import { LuChevronsUpDown } from "react-icons/lu";
 import { Button } from "../ui/button";
 import { AuthorListProps } from "@/types";
 import { Checkbox } from "../ui/checkbox";
-import getAllAuthor from "@/lib/book/getAllAuthor";
 import CreateAuthor from "./create-author";
 import { FaPlus } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
+import { useCurrentUser } from "@/hooks/use-user";
+import { includesRoles } from "@/lib/utils";
+import getAllAuthorList from "@/lib/book/getAllAuthorList";
 
 const AuthorList = ({
   checkedAuthor,
@@ -29,14 +31,14 @@ const AuthorList = ({
   onRemove,
 }: AuthorListProps) => {
   const [openAuthor, setOpenAuthor] = useState(false);
-  const { authors, isLoading, isError, mutate } = getAllAuthor({ limit: 1000 });
+  const { authors, isLoading, isError, mutate } = getAllAuthorList();
   const handleAuthorAdded = async (idAuthor: string) => {
     await mutate();
     onCheckChanged(idAuthor);
   };
+  const { currentUser } = useCurrentUser();
   if (isError) return <div>Failed to load</div>;
   if (!authors) {
-    console.log(authors);
   } else
     return (
       <div className="flex flex-col">
@@ -84,11 +86,17 @@ const AuthorList = ({
             </DropdownMenuContent>
           </DropdownMenu>
           {canAdd && (isEdit === true || isEdit === null) ? (
-            <CreateAuthor handleAuthorAdded={handleAuthorAdded}>
-              <Button type="button" size={"icon"} className="px-3">
-                <FaPlus />
-              </Button>
-            </CreateAuthor>
+            currentUser &&
+            includesRoles({
+              currentUser: currentUser,
+              allowedFeatures: ["AUTHOR_CREATE"],
+            }) ? (
+              <CreateAuthor handleAuthorAdded={handleAuthorAdded}>
+                <Button type="button" size={"icon"} className="px-3">
+                  <FaPlus />
+                </Button>
+              </CreateAuthor>
+            ) : null
           ) : null}
         </div>
         {isEdit !== null ? (

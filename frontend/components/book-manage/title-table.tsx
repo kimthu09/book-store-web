@@ -54,6 +54,8 @@ import getAllTitle from "@/lib/book/getAllTitle";
 import { FilterDatePicker } from "../date-picker";
 import { getFilterString } from "@/app/product/title/table-layout";
 import TitleEditInline from "./title-edit-inline";
+import { includesRoles } from "@/lib/utils";
+import { useCurrentUser } from "@/hooks/use-user";
 
 export const columns: ColumnDef<BookTitle>[] = [
   {
@@ -221,6 +223,8 @@ export function TitleTable() {
     });
     router.push(`/product/title?page=${Number(page)}${filterString}`);
   };
+  const { currentUser } = useCurrentUser();
+
   if (isError) return <div>Failed to load</div>;
   else if (isLoading) {
     return <Loading />;
@@ -428,22 +432,27 @@ export function TitleTable() {
                         </TableCell>
                       ))}
                     </TableRow>
-
-                    <TableRow>
-                      <TableCell
-                        colSpan={columns.length}
-                        className={`w-full p-0 border-none ${
-                          row.getIsExpanded() ? "table-cell" : "hidden"
-                        }`}
-                      >
-                        <TitleEditInline
-                          book={row.original}
-                          handleTitleEdited={() => {
-                            mutate();
-                          }}
-                        />
-                      </TableCell>
-                    </TableRow>
+                    {currentUser &&
+                    includesRoles({
+                      currentUser: currentUser,
+                      allowedFeatures: ["BOOK_TITLE_VIEW"],
+                    }) ? (
+                      <TableRow>
+                        <TableCell
+                          colSpan={columns.length}
+                          className={`w-full p-0 border-none ${
+                            row.getIsExpanded() ? "table-cell" : "hidden"
+                          }`}
+                        >
+                          <TitleEditInline
+                            book={row.original}
+                            handleTitleEdited={() => {
+                              mutate();
+                            }}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ) : null}
                   </Fragment>
                 ))
               ) : (
@@ -452,7 +461,7 @@ export function TitleTable() {
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No results.
+                    Không tìm thấy kết quả.
                   </TableCell>
                 </TableRow>
               )}
@@ -461,8 +470,8 @@ export function TitleTable() {
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
           <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
+            {table.getFilteredSelectedRowModel().rows.length} trong{" "}
+            {table.getFilteredRowModel().rows.length} dòng được chọn.
           </div>
           <Paging
             page={page}

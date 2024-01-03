@@ -37,6 +37,7 @@ import { FaPen } from "react-icons/fa";
 import EditCategory from "./edit-category";
 import { useSWRConfig } from "swr";
 import { endPoint } from "@/constants";
+import { includesRoles } from "@/lib/utils";
 
 export const columns: ColumnDef<Category>[] = [
   {
@@ -89,8 +90,16 @@ export const columns: ColumnDef<Category>[] = [
 ];
 export function CategoryTable({
   searchParams,
+  currentUser,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
+  currentUser:
+    | {
+        name?: string | null | undefined;
+        email?: string | null | undefined;
+        image?: string | null | undefined;
+      }
+    | undefined;
 }) {
   const router = useRouter();
   const page = searchParams["page"] ?? "1";
@@ -149,16 +158,27 @@ export function CategoryTable({
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    );
+                    if (
+                      header.id.includes("actions") &&
+                      (currentUser ||
+                        (currentUser &&
+                          !includesRoles({
+                            currentUser: currentUser,
+                            allowedFeatures: ["CATEGORY_UPDATE"],
+                          })))
+                    ) {
+                      return null;
+                    } else
+                      return (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
+                      );
                   })}
                 </TableRow>
               ))}
@@ -173,20 +193,26 @@ export function CategoryTable({
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
                         {cell.id.includes("actions") ? (
-                          <div className=" flex justify-end ">
-                            <EditCategory
-                              category={row.original}
-                              handleCategoryEdited={handleCategoryEdited}
-                            >
-                              <Button
-                                size={"icon"}
-                                variant={"ghost"}
-                                className="rounded-full bg-blue-200/60 hover:bg-blue-200/90 text-primary hover:text-primary"
+                          currentUser &&
+                          includesRoles({
+                            currentUser: currentUser,
+                            allowedFeatures: ["CATEGORY_UPDATE"],
+                          }) ? (
+                            <div className=" flex justify-end ">
+                              <EditCategory
+                                category={row.original}
+                                handleCategoryEdited={handleCategoryEdited}
                               >
-                                <FaPen />
-                              </Button>
-                            </EditCategory>
-                          </div>
+                                <Button
+                                  size={"icon"}
+                                  variant={"ghost"}
+                                  className="rounded-full bg-blue-200/60 hover:bg-blue-200/90 text-primary hover:text-primary"
+                                >
+                                  <FaPen />
+                                </Button>
+                              </EditCategory>
+                            </div>
+                          ) : null
                         ) : (
                           flexRender(
                             cell.column.columnDef.cell,
@@ -203,7 +229,7 @@ export function CategoryTable({
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No results.
+                    Không tìm thấy kết quả.
                   </TableCell>
                 </TableRow>
               )}
@@ -212,8 +238,8 @@ export function CategoryTable({
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
           <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
+            {table.getFilteredSelectedRowModel().rows.length} trong{" "}
+            {table.getFilteredRowModel().rows.length} dòng được chọn.
           </div>
           <Paging
             page={page.toString()}

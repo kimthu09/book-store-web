@@ -1,7 +1,11 @@
 import TableLayout from "@/components/invoice/table-layout";
 import Loading from "@/components/loading";
+import { withAuth } from "@/lib/role/withAuth";
+import { Metadata } from "next";
 import { Suspense } from "react";
-
+export const metadata: Metadata = {
+  title: "Hóa đơn",
+};
 const Invoice = ({
   searchParams,
 }: {
@@ -23,4 +27,4 @@ const Invoice = ({
   );
 };
 
-export default Invoice;
+export default withAuth(Invoice, ["INVOICE_VIEW"]);
