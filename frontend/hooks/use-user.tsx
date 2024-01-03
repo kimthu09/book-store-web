@@ -1,3 +1,4 @@
+"use client";
 import { getUser } from "@/lib/auth/action";
 import { useEffect, useState } from "react";
 

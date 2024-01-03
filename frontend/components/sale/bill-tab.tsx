@@ -115,7 +115,7 @@ const BillTab = ({
         <div className="flex items-center justify-between bg-white p-2 px-4 shadow-[0_2px_2px_-2px_rgba(0,0,0,0.2)]">
           <div>
             <span className="font-medium text-primary">Hóa đơn</span>
-            <CurrentDate></CurrentDate>
+            {/* <CurrentDate></CurrentDate> */}
           </div>
 
           <Button
@@ -173,6 +173,7 @@ const BillTab = ({
                           type="number"
                           className="px-1 w-10 text-center [&::-webkit-inner-spin-button]:appearance-none"
                           {...register(`details.${index}.qty` as const)}
+                          min={1}
                         ></Input>
 
                         <Button
@@ -206,15 +207,15 @@ const BillTab = ({
                         <AddUp control={control} index={index} />
                       </div>
                     </div>
-                    <Button
-                      variant={"ghost"}
-                      className="h-8 p-0 ml-2 px-2 rounded-lg"
-                      onClick={() => remove(index)}
-                    >
-                      <FiTrash2 className="opacity-50" />
-                    </Button>
                   </div>
                 </div>
+                <Button
+                  variant={"ghost"}
+                  className="h-8 p-0 ml-2 px-2 rounded-lg self-center"
+                  onClick={() => remove(index)}
+                >
+                  <FiTrash2 className="opacity-50" />
+                </Button>
               </div>
             );
           })}

@@ -5,10 +5,12 @@ import React, { ReactNode, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { sidebarItems } from "@/constants";
+import { adminSidebarItems, sidebarItems } from "@/constants";
 import { SidebarItem } from "@/types";
 import { motion, useCycle } from "framer-motion";
 import { LuChevronDown } from "react-icons/lu";
+import { useCurrentUser } from "@/hooks/use-user";
+import { isAdmin } from "@/lib/utils";
 
 type MenuItemWithSubMenuProps = {
   item: SidebarItem;
@@ -17,7 +19,7 @@ type MenuItemWithSubMenuProps = {
 
 const sidebar = {
   open: (height = 1000) => ({
-    clipPath: `circle(${height * 2 + 200}px at 100% 0)`,
+    clipPath: `circle(${height * 2 + 200}px at 0% 0)`,
     transition: {
       type: "spring",
       stiffness: 20,
@@ -25,7 +27,7 @@ const sidebar = {
     },
   }),
   closed: {
-    clipPath: "circle(0px at 100% 0)",
+    clipPath: "circle(0px at 0% 0)",
     transition: {
       type: "spring",
       stiffness: 400,
@@ -39,7 +41,16 @@ const HeaderMobile = () => {
   const containerRef = useRef(null);
   const { height } = useDimensions(containerRef);
   const [isOpen, toggleOpen] = useCycle(false, true);
+  const { currentUser } = useCurrentUser();
 
+  const [items, setItems] = useState<SidebarItem[]>(sidebarItems);
+  useEffect(() => {
+    if (currentUser) {
+      if (isAdmin({ currentUser: currentUser })) {
+        setItems(adminSidebarItems);
+      }
+    }
+  }, [currentUser]);
   return (
     <motion.nav
       initial={false}
@@ -51,15 +62,15 @@ const HeaderMobile = () => {
       ref={containerRef}
     >
       <motion.div
-        className="absolute inset-0 right-0 w-full bg-white"
+        className="absolute inset-0 left-0 w-full bg-white"
         variants={sidebar}
       />
       <motion.ul
         variants={variants}
         className="absolute grid w-full gap-3 px-10 py-16"
       >
-        {sidebarItems.map((item, idx) => {
-          const isLastItem = idx === sidebarItems.length - 1; // Check if it's the last item
+        {items.map((item, idx) => {
+          const isLastItem = idx === items.length - 1; // Check if it's the last item
 
           return (
             <div key={idx}>
@@ -96,7 +107,7 @@ export default HeaderMobile;
 const MenuToggle = ({ toggle }: { toggle: any }) => (
   <button
     onClick={toggle}
-    className="pointer-events-auto absolute right-4 top-[14px] z-30"
+    className="pointer-events-auto absolute left-4 top-[14px] z-30"
   >
     <svg width="23" height="23" viewBox="0 0 23 23">
       <Path

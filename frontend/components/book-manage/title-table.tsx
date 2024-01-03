@@ -59,29 +59,9 @@ import { useCurrentUser } from "@/hooks/use-user";
 
 export const columns: ColumnDef<BookTitle>[] = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-    size: 4,
-  },
-  {
     accessorKey: "id",
     header: () => {
-      return <span className="font-semibold">Mã số</span>;
+      return <span className="font-semibold">ID</span>;
     },
     cell: ({ row }) => <div className="leading-6">{row.getValue("id")}</div>,
     size: 4,
@@ -469,10 +449,7 @@ export function TitleTable() {
           </Table>
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
-          <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} trong{" "}
-            {table.getFilteredRowModel().rows.length} dòng được chọn.
-          </div>
+          <div className="flex-1 text-sm text-muted-foreground"></div>
           <Paging
             page={page}
             onNavigateNext={() =>

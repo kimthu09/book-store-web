@@ -184,7 +184,7 @@ const EditBook = ({ params }: { params: { bookId: string } }) => {
     currentUser &&
     !includesRoles({
       currentUser: currentUser,
-      allowedFeatures: ["BOOK_CREATE"],
+      allowedFeatures: ["BOOK_UPDATE"],
     })
   ) {
     return <NoRole></NoRole>;
