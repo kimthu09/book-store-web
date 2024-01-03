@@ -1,32 +1,29 @@
 import { BookProps } from "@/types";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { FaPen } from "react-icons/fa";
 import { Button } from "../ui/button";
+import { toVND } from "@/lib/utils";
 
-const BookEditInline = (book: BookProps) => {
+const BookEditInline = ({ currentBook }: { currentBook: BookProps }) => {
+  const [book, setBook] = useState<BookProps | undefined>(undefined);
+  useEffect(() => {
+    // Optionally log the error to an error reporting service
+    setBook(currentBook);
+  }, [currentBook]);
   return (
-    <div className="flex bg-background p-3 gap-[5%] relative">
-      <div className="absolute bottom-4 right-4">
-        <Button
-          variant={"ghost"}
-          size={"icon"}
-          className="rounded-full bg-blue-200/60 hover:bg-blue-200/90 text-primary hover:text-primary"
-        >
-          <FaPen />
-        </Button>
-      </div>
-      <div className="flex basis-1/3 flex-col gap-2 items-start ">
+    <div className="flex bg-background lg:flex-row flex-col p-4 px-6 gap-8">
+      <div className="flex flex-1 flex-col gap-2 items-start ">
         <div className="flex items-center gap-2">
-          <span className="w-20">Đầu sách: </span>
+          <span className="w-[6rem]">Đầu sách: </span>
           <span className="font-semibold text-primary">
-            {book.bookTitle.name}
+            {book?.bookTitle.name}
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="w-20">Thể loại:</span>
-          {book.bookTitle.categories.map((cate) => {
+          <span className="w-[6rem]">Thể loại:</span>
+          {book?.bookTitle.categories.map((cate) => {
             return (
               <div
                 key={cate.id}
@@ -38,8 +35,8 @@ const BookEditInline = (book: BookProps) => {
           })}
         </div>
         <div className="flex items-center gap-2">
-          <span className="w-20">Tác giả:</span>
-          {book.bookTitle.authors.map((author) => {
+          <span className="w-[6rem]">Tác giả:</span>
+          {book?.bookTitle.authors.map((author) => {
             return (
               <div
                 key={author.id}
@@ -51,22 +48,18 @@ const BookEditInline = (book: BookProps) => {
           })}
         </div>
       </div>
-      <div className="flex basis-1/3 flex-col gap-2 items-start">
+      <div className="flex flex-1 flex-col gap-2 items-start">
         <div className="flex items-center gap-2">
           <span className="min-w-[6rem]">Nhà xuất bản: </span>
-          <Input
-            className=" bg-white"
-            readOnly
-            defaultValue={book.publisher.name}
-          ></Input>
+          <span className="font-semibold">{book?.publisher.name}</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="min-w-[6rem]">Lần tái bản: </span>
-          <Input
-            className=" bg-white"
-            readOnly
-            defaultValue={book.edition}
-          ></Input>
+          <span className="font-semibold">{book?.edition}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="min-w-[6rem]">Giá nhập </span>
+          <span className="font-semibold">{toVND(book?.importPrice!)}</span>
         </div>
       </div>
     </div>

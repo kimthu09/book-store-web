@@ -1,6 +1,6 @@
 import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 import { Button } from "../ui/button";
-import { DialogClose, DialogContent, DialogTitle } from "../ui/dialog";
+import { DialogContent, DialogTitle } from "../ui/dialog";
 import { Label } from "../ui/label";
 import StatusList from "../status-list";
 import { useState } from "react";
@@ -17,14 +17,14 @@ const ChangeStatusDialog = ({
   disabled: boolean;
 }) => {
   const displayStatus = {
-    trueText: "Đang làm việc",
-    falseText: "Đã nghỉ việc",
+    trueText: "Đang bán",
+    falseText: "Ngừng bán",
   };
   const [open, setOpen] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={"outline"} disabled={disabled}>
+        <Button variant={"outline"} className="px-2" disabled={disabled}>
           Đổi trạng thái
         </Button>
       </DialogTrigger>

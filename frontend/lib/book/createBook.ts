@@ -10,6 +10,7 @@ export default async function createBook({
   listedPrice,
   publisherId,
   sellPrice,
+  image,
 }: {
   id?: string;
   name: string;
@@ -18,6 +19,7 @@ export default async function createBook({
   listedPrice: number;
   publisherId: string;
   sellPrice: number;
+  image: string;
 }) {
   const url = `${endPoint}/v1/books`;
   const token = await getApiKey();
@@ -29,6 +31,7 @@ export default async function createBook({
     listedPrice: listedPrice,
     publisherId: publisherId,
     sellPrice: sellPrice,
+    image: image,
   };
   console.log(data);
   const headers = {

@@ -1,11 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  CaretSortIcon,
-  ChevronDownIcon,
-  DotsHorizontalIcon,
-} from "@radix-ui/react-icons";
+import { CaretSortIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -66,9 +62,13 @@ import CategoryList from "./category-list";
 import PublisherList from "./publisher-list";
 import AuthorList from "./author-list";
 import BookEditInline from "./book-edit-inline";
-import { FiLock, FiUnlock } from "react-icons/fi";
-import ConfirmDialog from "../confirm-dialog";
 import { toast } from "../ui/use-toast";
+import Image from "next/image";
+import ChangeStatusDialog from "./change-status-dialog";
+import changeBookStatus from "@/lib/book/changeBookStatus";
+import { FaPen } from "react-icons/fa";
+import Link from "next/link";
+
 const columns: ColumnDef<Book>[] = [
   {
     id: "select",
@@ -95,6 +95,21 @@ const columns: ColumnDef<Book>[] = [
       return <div className="font-semibold">ID</div>;
     },
     cell: ({ row }) => <div>{row.getValue("id")}</div>,
+  },
+  {
+    accessorKey: "image",
+    header: () => {},
+    cell: ({ row }) => (
+      <div className="flex justify-end">
+        <Image
+          src={row.getValue("image") || "https://picsum.photos/200"}
+          alt="image"
+          className="object-contain h-14 w-14 min-w-[3rem]"
+          width={56}
+          height={56}
+        ></Image>
+      </div>
+    ),
   },
   {
     accessorKey: "name",
@@ -215,52 +230,13 @@ const columns: ColumnDef<Book>[] = [
       const status = row.getValue("isActive");
       return (
         <div className=" flex justify-end ">
-          <ConfirmDialog
-            title={"Xác nhận"}
-            description={`${
-              status
-                ? "Bạn muốn ngừng bán đầu sách này ?"
-                : "Bạn muốn mở bán đầu sách này ?"
-            } `}
-            handleYes={async () => {
-              // const response: Promise<any> = deleteBookTitle(row.original.id);
-              // const responseData = await response;
-              // if (responseData.hasOwnProperty("errorKey")) {
-              //   toast({
-              //     variant: "destructive",
-              //     title: "Có lỗi",
-              //     description: responseData.message,
-              //   });
-              // } else {
-              //   toast({
-              //     variant: "success",
-              //     title: "Thành công",
-              //     description: "Chuyển trạng thái thành công",
-              //   });
-              //   // handleTitleAdded(responseData.data);
-              // }
-            }}
+          <Link
+            href={`/product/books/${row.original.id}`}
+            title="Chỉnh sửa"
+            className="rounded-full p-2 bg-blue-200/60 hover:bg-blue-200/90 text-primary hover:text-primary"
           >
-            {status ? (
-              <Button
-                variant={"ghost"}
-                size={"icon"}
-                title="Ngừng bán"
-                className="rounded-full hover:bg-rose-100"
-              >
-                <FiLock className="h-5 w-5 text-rose-500" />
-              </Button>
-            ) : (
-              <Button
-                variant={"ghost"}
-                size={"icon"}
-                title="Mở bán"
-                className="rounded-full hover:bg-green-100"
-              >
-                <FiUnlock className="h-5 w-5 text-green-500" />
-              </Button>
-            )}
-          </ConfirmDialog>
+            <FaPen />
+          </Link>
         </div>
       );
     },
@@ -397,11 +373,49 @@ export function BookTable({
     router.push(`/product/books?page=${Number(page)}${filterString}`);
   };
   const [openFilter, setOpenFilter] = useState(false);
+  const [statusToChange, setStatusToChange] = useState(false);
+  const handleChangeStatus = async () => {
+    if (table.getFilteredSelectedRowModel().rows.length < 1) {
+      toast({
+        variant: "destructive",
+        title: "Có lỗi",
+        description: "Chưa chọn sách",
+      });
+    } else {
+      const bookIds = table
+        .getFilteredSelectedRowModel()
+        .rows.map((item) => item.original.id);
+      const responseData = await changeBookStatus({
+        bookIds: bookIds,
+        isActive: statusToChange,
+      });
+      if (responseData.hasOwnProperty("errorKey")) {
+        toast({
+          variant: "destructive",
+          title: "Có lỗi",
+          description: responseData.message,
+        });
+      } else {
+        toast({
+          variant: "success",
+          title: "Thành công",
+          description: "Thay đổi trạng thái sách thành công",
+        });
+        router.refresh();
+      }
+    }
+  };
   return (
     <div className="w-full">
       <div className="flex items-start py-4 gap-2">
         <div className="flex-1">
           <div className="flex gap-2">
+            <ChangeStatusDialog
+              disabled={table.getFilteredSelectedRowModel().rows.length < 1}
+              status={statusToChange}
+              handleSetStatus={setStatusToChange}
+              handleChangeStatus={handleChangeStatus}
+            />
             <Popover
               open={openFilter}
               onOpenChange={(open) => {
@@ -669,8 +683,8 @@ export function BookTable({
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              Cột hiển thị <ChevronDownIcon className="ml-2 h-4 w-4" />
+            <Button variant="outline" className="px-2">
+              Cột hiển thị <ChevronDownIcon className="ml-1 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -695,7 +709,7 @@ export function BookTable({
         </DropdownMenu>
       </div>
       <div className="rounded-md border overflow-x-auto flex-1 min-w-full max-w-[50vw]">
-        <Table className="min-w-full w-max">
+        <Table className="min-w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -723,8 +737,14 @@ export function BookTable({
                       <TableCell
                         key={cell.id}
                         onClick={() => {
-                          if (!cell.id.includes("select")) {
-                            row.toggleExpanded();
+                          if (
+                            !cell.id.includes("select") &&
+                            !cell.id.includes("actions")
+                          ) {
+                            table.resetExpanded();
+                            if (!row.getIsExpanded()) {
+                              row.toggleExpanded();
+                            }
                           }
                         }}
                       >
@@ -743,7 +763,7 @@ export function BookTable({
                         row.getIsExpanded() ? "table-cell" : "hidden"
                       }`}
                     >
-                      <BookEditInline {...row.original} />
+                      <BookEditInline currentBook={row.original} />
                     </TableCell>
                   </TableRow>
                 </Fragment>
@@ -754,7 +774,7 @@ export function BookTable({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Không tìm thấy kết quả.
                 </TableCell>
               </TableRow>
             )}
@@ -763,8 +783,8 @@ export function BookTable({
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {table.getFilteredSelectedRowModel().rows.length} trong{" "}
+          {table.getFilteredRowModel().rows.length} dòng được chọn.{" "}
         </div>
         <Paging
           page={page}
