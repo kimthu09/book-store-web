@@ -341,42 +341,6 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
-            "patch": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "books"
-                ],
-                "summary": "Update Book Info",
-                "parameters": [
-                    {
-                        "description": "Update Book",
-                        "name": "book",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/bookmodel.ReqUpdateBook"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "book id",
-                        "schema": {
-                            "$ref": "#/definitions/common.ResSuccess"
-                        }
-                    }
-                }
             }
         },
         "/books/all": {
@@ -437,6 +401,57 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/bookmodel.ReqUpdateStatusBooks"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/books/{id}/info": {
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "books"
+                ],
+                "summary": "Update Book Info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "book id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update Book",
+                        "name": "book",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/bookmodel.ReqUpdateBook"
                         }
                     }
                 ],
@@ -3202,9 +3217,6 @@ const docTemplate = `{
                 },
                 "edition": {
                     "type": "integer"
-                },
-                "id": {
-                    "type": "string"
                 },
                 "image": {
                     "type": "string"

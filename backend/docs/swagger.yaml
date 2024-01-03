@@ -117,8 +117,6 @@ definitions:
         type: string
       edition:
         type: integer
-      id:
-        type: string
       image:
         type: string
       listedPrice:
@@ -1808,28 +1806,6 @@ paths:
       summary: List book
       tags:
       - books
-    patch:
-      consumes:
-      - application/json
-      parameters:
-      - description: Update Book
-        in: body
-        name: book
-        required: true
-        schema:
-          $ref: '#/definitions/bookmodel.ReqUpdateBook'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: book id
-          schema:
-            $ref: '#/definitions/common.ResSuccess'
-      security:
-      - BearerAuth: []
-      summary: Update Book Info
-      tags:
-      - books
     post:
       consumes:
       - application/json
@@ -1850,6 +1826,38 @@ paths:
       security:
       - BearerAuth: []
       summary: Create Book
+      tags:
+      - books
+  /books/{id}/info:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: book id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update Book
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/bookmodel.ReqUpdateBook'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Update Book Info
       tags:
       - books
   /books/all:

@@ -21,9 +21,11 @@ import (
 // @Tags books
 // @Accept json
 // @Produce json
+// @Param id path string true "book id"
 // @Param book body bookmodel.ReqUpdateBook true "Update Book"
-// @Response 200 {object} common.ResSuccess "book id"
-// @Router /books [patch]
+// @Response 200 {object} common.ResSuccess "status of response"
+// @Response 400 {object} common.AppError "error"
+// @Router /books/{id}/info [patch]
 func UpdateBookInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		fmt.Println(c.Param("id"))

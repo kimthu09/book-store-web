@@ -5,7 +5,6 @@ import (
 )
 
 type ReqUpdateBook struct {
-	ID          *string `json:"id" gorm:"column:id"`
 	Name        *string `json:"name" gorm:"column:name"`
 	Image       *string `json:"image" gorm:"column:imgUrl"`
 	BookTitleID *string `json:"bookTitleId" gorm:"column:booktitleid,fk"`
