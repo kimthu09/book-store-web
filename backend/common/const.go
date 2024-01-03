@@ -37,10 +37,11 @@ const (
 	CategoryViewFeatureCode   = "CATEGORY_VIEW"
 	CategoryUpdateFeatureCode = "CATEGORY_UPDATE"
 
-	BookCreateFeatureCode = "BOOK_CREATE"
-	BookUpdateFeatureCode = "BOOK_UPDATE"
-	BookViewFeatureCode   = "BOOK_VIEW"
-	BookDeleteFeatureCode = "BOOK_DELETE"
+	BookCreateFeatureCode       = "BOOK_CREATE"
+	BookUpdateFeatureCode       = "BOOK_UPDATE"
+	BookUpdateStatusFeatureCode = "BOOK_UPDATE"
+	BookViewFeatureCode         = "BOOK_VIEW"
+	BookDeleteFeatureCode       = "BOOK_DELETE"
 
 	BookTitleCreateFeatureCode = "BOOK_TITLE_CREATE"
 	BookTitleUpdateFeatureCode = "BOOK_TITLE_UPDATE"

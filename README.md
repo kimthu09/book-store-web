@@ -19,5 +19,5 @@
 ### Run docker-compose
 
 ```bash
-docker-compose up
+docker-compose up -d
 ```

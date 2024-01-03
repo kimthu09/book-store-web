@@ -16,6 +16,11 @@ var (
 		"Bạn không có quyền chỉnh sửa thông tin sách",
 		"ErrBookUpdateNoPermission",
 	)
+	ErrBookUpdateStatusNoPermission = common.NewCustomError(
+		errors.New("no permission to update status book"),
+		"Bạn không có quyền chỉnh sửa trạng thái sách",
+		"ErrBookUpdateStatusNoPermission",
+	)
 	ErrBookViewNoPermission = common.NewCustomError(
 		errors.New("no permission to view book"),
 		"Bạn không có quyền xem sách",
@@ -26,7 +31,11 @@ var (
 		"Bạn không có quyền xóa sách",
 		"ErrBookDeleteNoPermission",
 	)
-
+	ErrBookStatusEmpty = common.NewCustomError(
+		errors.New("book status is empty"),
+		"Trạng thái sách đang trống",
+		"ErrBookStatusEmpty",
+	)
 	ErrBookIdInvalid = common.NewCustomError(
 		errors.New("id of Book is invalid"),
 		"Mã của sách không hợp lệ",

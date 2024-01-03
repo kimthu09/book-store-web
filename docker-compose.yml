@@ -2,12 +2,12 @@ version: "3.9"
 services:
   bsm-mysql:
     container_name: bsm-mysql
-    image: mysql:8.0.33-debian
+    image: mysql:8.0
     cap_add:
       - SYS_NICE
     volumes:
       - ./sql:/docker-entrypoint-initdb.d
-    command: --default-authentication-plugin=mysql_native_password --innodb-buffer-pool-size=6G --group-concat-max-len=4294967295 --innodb_log_buffer_size=256M --innodb_write_io_threads=8 --innodb_flush_log_at_trx_commit=0 --innodb_doublewrite=0
+    command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
       MYSQL_ROOT_PASSWORD: 123456
       MYSQL_DATABASE: bookstoremanagement
@@ -19,7 +19,6 @@ services:
     volumes:
       - ./backend:/data
       - ./backend/static:/data/static
-      - ./bin/gin:/usr/bin/gin
       - $HOME/.aws:/root/.aws
     working_dir: /data
     environment:
