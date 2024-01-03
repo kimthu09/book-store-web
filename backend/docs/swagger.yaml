@@ -1828,6 +1828,32 @@ paths:
       summary: Create Book
       tags:
       - books
+  /books/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: book id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: book
+          schema:
+            $ref: '#/definitions/bookmodel.ResDetailUnitBook'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See detail of book
+      tags:
+      - books
   /books/{id}/info:
     patch:
       consumes:
