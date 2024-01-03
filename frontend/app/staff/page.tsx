@@ -1,13 +1,14 @@
 import Loading from "@/components/loading";
 import CreateStaffDialog from "@/components/staff/create-staff-dialog";
 import TableLayout from "@/components/staff/table-layout";
+import { withAuth } from "@/lib/role/withAuth";
 
 import { Metadata } from "next";
 import { Suspense } from "react";
 export const metadata: Metadata = {
   title: "Quản lý nhân viên",
 };
-const StaffManage = async ({
+const StaffManage = ({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -27,4 +28,4 @@ const StaffManage = async ({
   );
 };
 
-export default StaffManage;
+export default withAuth(StaffManage, ["USER_VIEW"]);

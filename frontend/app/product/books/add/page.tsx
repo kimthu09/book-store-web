@@ -16,7 +16,6 @@ import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import { useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { AiOutlineClose } from "react-icons/ai";
 import { LuCheck } from "react-icons/lu";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -157,13 +156,14 @@ const InsertNewBook = () => {
     }
   };
   const { currentUser } = useCurrentUser();
-  if (
-    !currentUser ||
-    (currentUser &&
-      !includesRoles({
-        currentUser: currentUser,
-        allowedFeatures: ["BOOK_CREATE"],
-      }))
+  if (!currentUser) {
+    return <Loading />;
+  } else if (
+    currentUser &&
+    !includesRoles({
+      currentUser: currentUser,
+      allowedFeatures: ["BOOK_CREATE"],
+    })
   ) {
     return <NoRole></NoRole>;
   } else

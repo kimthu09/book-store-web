@@ -14,11 +14,12 @@ import {
 } from "../ui/command";
 import { LuCheck, LuChevronsUpDown } from "react-icons/lu";
 import { Button } from "../ui/button";
-import { cn } from "@/lib/utils";
+import { cn, includesRoles } from "@/lib/utils";
 import Loading from "../loading";
 import CreatePublisher from "./create-publisher";
 import { FaPlus } from "react-icons/fa";
 import getAllPublisherList from "@/lib/book/getAllPublisherList";
+import { useCurrentUser } from "@/hooks/use-user";
 
 const PublisherList = ({
   publisherId,
@@ -32,6 +33,8 @@ const PublisherList = ({
     await mutate();
     setPublisherId(publisherId);
   };
+  const { currentUser } = useCurrentUser();
+
   if (isError) return <div>Failed to load</div>;
   if (!publishers) {
     <Loading />;
@@ -87,11 +90,17 @@ const PublisherList = ({
           </DropdownMenuContent>
         </DropdownMenu>
         {canAdd ? (
-          <CreatePublisher handlePublisherAdded={handlePublisherAdded}>
-            <Button type="button" size={"icon"} className="px-3">
-              <FaPlus />
-            </Button>
-          </CreatePublisher>
+          currentUser &&
+          includesRoles({
+            currentUser: currentUser,
+            allowedFeatures: ["PUBLISHER_CREATE"],
+          }) ? (
+            <CreatePublisher handlePublisherAdded={handlePublisherAdded}>
+              <Button type="button" size={"icon"} className="px-3">
+                <FaPlus />
+              </Button>
+            </CreatePublisher>
+          ) : null
         ) : null}
       </div>
     );
