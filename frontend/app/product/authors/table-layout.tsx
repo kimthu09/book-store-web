@@ -5,8 +5,12 @@ import ImportSheet from "@/components/book-manage/import-sheet";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { endPoint } from "@/constants";
+import { useCurrentUser } from "@/hooks/use-user";
+import { getUser } from "@/lib/auth/action";
 import createListAuthor from "@/lib/book/createListAuthor";
+import { includesRoles } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useSWRConfig } from "swr";
 
 const TableLayout = ({
@@ -62,23 +66,27 @@ const TableLayout = ({
       handleAuthorAdded("");
     }
   };
+
+  const { currentUser } = useCurrentUser();
   return (
     <div className="col">
       <div className="flex flex-row justify-between items-center">
         <h1>Tác giả</h1>
-        <div className="flex gap-4">
-          <ImportSheet
-            handleFile={handleFile}
-            sampleFileLink="/category-sample.xlsx"
-          />
-          <CreateAuthor handleAuthorAdded={handleAuthorAdded}>
-            <Button>Thêm tác giả</Button>
-          </CreateAuthor>
-        </div>
+        {currentUser &&
+        includesRoles({
+          currentUser: currentUser,
+          allowedFeatures: ["AUTHOR_CREATE"],
+        }) ? (
+          <div className="flex gap-4">
+            <CreateAuthor handleAuthorAdded={handleAuthorAdded}>
+              <Button>Thêm tác giả</Button>
+            </CreateAuthor>
+          </div>
+        ) : null}
       </div>
       <div className="flex flex-row flex-wrap gap-2"></div>
       <div className="mb-4 p-3 sha bg-white shadow-[0_1px_3px_0_rgba(0,0,0,0.2)]">
-        <AuthorTable searchParams={searchParams} />
+        <AuthorTable searchParams={searchParams} currentUser={currentUser} />
       </div>
     </div>
   );

@@ -28,7 +28,6 @@ import {
 
 import { useState } from "react";
 import { Input } from "../ui/input";
-import getAllCategory from "@/lib/book/getAllCategory";
 import Loading from "../loading";
 import Paging from "../paging";
 import { useRouter } from "next/navigation";
@@ -38,6 +37,7 @@ import EditAuthor from "./edit-author";
 import { FaPen } from "react-icons/fa";
 import { useSWRConfig } from "swr";
 import { endPoint } from "@/constants";
+import { includesRoles } from "@/lib/utils";
 
 export const columns: ColumnDef<Author>[] = [
   {
@@ -90,8 +90,16 @@ export const columns: ColumnDef<Author>[] = [
 ];
 export function AuthorTable({
   searchParams,
+  currentUser,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
+  currentUser:
+    | {
+        name?: string | null | undefined;
+        email?: string | null | undefined;
+        image?: string | null | undefined;
+      }
+    | undefined;
 }) {
   const router = useRouter();
   const page = searchParams["page"] ?? "1";
@@ -155,16 +163,27 @@ export function AuthorTable({
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    );
+                    if (
+                      header.id.includes("actions") &&
+                      (currentUser ||
+                        (currentUser &&
+                          !includesRoles({
+                            currentUser: currentUser,
+                            allowedFeatures: ["AUTHOR_UPDATE"],
+                          })))
+                    ) {
+                      return null;
+                    } else
+                      return (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
+                      );
                   })}
                 </TableRow>
               ))}
@@ -179,20 +198,26 @@ export function AuthorTable({
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
                         {cell.id.includes("actions") ? (
-                          <div className=" flex justify-end ">
-                            <EditAuthor
-                              author={row.original}
-                              handleAuthorEdited={handleAuthorEdited}
-                            >
-                              <Button
-                                size={"icon"}
-                                variant={"ghost"}
-                                className="rounded-full bg-blue-200/60 hover:bg-blue-200/90 text-primary hover:text-primary"
+                          currentUser &&
+                          includesRoles({
+                            currentUser: currentUser,
+                            allowedFeatures: ["AUTHOR_UPDATE"],
+                          }) ? (
+                            <div className=" flex justify-end ">
+                              <EditAuthor
+                                author={row.original}
+                                handleAuthorEdited={handleAuthorEdited}
                               >
-                                <FaPen />
-                              </Button>
-                            </EditAuthor>
-                          </div>
+                                <Button
+                                  size={"icon"}
+                                  variant={"ghost"}
+                                  className="rounded-full bg-blue-200/60 hover:bg-blue-200/90 text-primary hover:text-primary"
+                                >
+                                  <FaPen />
+                                </Button>
+                              </EditAuthor>
+                            </div>
+                          ) : null
                         ) : (
                           flexRender(
                             cell.column.columnDef.cell,
@@ -209,7 +234,7 @@ export function AuthorTable({
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No results.
+                    Không tìm thấy kết quả.
                   </TableCell>
                 </TableRow>
               )}
@@ -218,8 +243,8 @@ export function AuthorTable({
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
           <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
+            {table.getFilteredSelectedRowModel().rows.length} trong{" "}
+            {table.getFilteredRowModel().rows.length} dòng được chọn.
           </div>
           <Paging
             page={page.toString()}

@@ -5,10 +5,11 @@ import Link from "next/link";
 import React, { Suspense } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { Metadata } from "next";
+import { withAuth } from "@/lib/role/withAuth";
 export const metadata: Metadata = {
   title: "Sách",
 };
-async function BookManagement({
+function BookManagement({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -38,4 +39,4 @@ async function BookManagement({
   );
 }
 
-export default BookManagement;
+export default withAuth(BookManagement, ["BOOK_VIEW"]);

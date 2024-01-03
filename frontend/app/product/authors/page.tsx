@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import TableLayout from "./table-layout";
+import { withAuth } from "@/lib/role/withAuth";
 export const metadata: Metadata = {
   title: "Tác giả",
 };
@@ -11,4 +12,4 @@ const AuthorPage = ({
   return <TableLayout searchParams={searchParams} />;
 };
 
-export default AuthorPage;
+export default withAuth(AuthorPage, ["AUTHOR_VIEW"]);

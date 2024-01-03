@@ -13,17 +13,18 @@ import {
   CommandItem,
 } from "../ui/command";
 import { LuCheck, LuChevronsUpDown } from "react-icons/lu";
-import { cn } from "@/lib/utils";
-import getAllTitle from "@/lib/book/getAllTitle";
+import { cn, includesRoles } from "@/lib/utils";
 import Loading from "../loading";
 import { BookTitle, TitleListProps } from "@/types";
 import { FaPlus } from "react-icons/fa";
 import CreateTitleDialog from "./create-title-dialog";
+import { useCurrentUser } from "@/hooks/use-user";
+import getAllTitleList from "@/lib/book/getAllTitleList";
 
 const BookTitleSelect = ({ handleTitleSet }: TitleListProps) => {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState<BookTitle>();
-  const { titles, isLoading, isError, mutate } = getAllTitle({ limit: 1000 });
+  const { titles, isLoading, isError, mutate } = getAllTitleList();
 
   const onSetTitle = (title: BookTitle) => {
     setTitle(title);
@@ -34,6 +35,7 @@ const BookTitleSelect = ({ handleTitleSet }: TitleListProps) => {
     setTitle(newTitleList?.data.find((item: BookTitle) => item.id === titleId));
     handleTitleSet(titleId);
   };
+  const { currentUser } = useCurrentUser();
   if (isError) return <div>Failed to load</div>;
   if (!titles || isLoading) {
     <Loading />;
@@ -89,11 +91,17 @@ const BookTitleSelect = ({ handleTitleSet }: TitleListProps) => {
               </Command>
             </DropdownMenuContent>
           </DropdownMenu>
-          <CreateTitleDialog handleTitleAdded={handleTitleAdded}>
-            <Button type="button" size={"icon"} className="px-3">
-              <FaPlus />
-            </Button>
-          </CreateTitleDialog>
+          {currentUser &&
+          includesRoles({
+            currentUser: currentUser,
+            allowedFeatures: ["BOOK_TITLE_CREATE"],
+          }) ? (
+            <CreateTitleDialog handleTitleAdded={handleTitleAdded}>
+              <Button type="button" size={"icon"} className="px-3">
+                <FaPlus />
+              </Button>
+            </CreateTitleDialog>
+          ) : null}
         </div>
         {title ? (
           <div className="flex flex-col gap-3 text-sm font-medium mt-2">

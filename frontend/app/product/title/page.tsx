@@ -1,3 +1,4 @@
+import { withAuth } from "@/lib/role/withAuth";
 import TableLayout from "./table-layout";
 import { Metadata } from "next";
 
@@ -8,4 +9,4 @@ const BookTitleScreen = () => {
   return <TableLayout />;
 };
 
-export default BookTitleScreen;
+export default withAuth(BookTitleScreen, ["BOOK_TITLE_VIEW"]);

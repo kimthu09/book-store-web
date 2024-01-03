@@ -16,19 +16,18 @@ import { LuCheck, LuChevronsUpDown } from "react-icons/lu";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import Loading from "../loading";
-import getAllPublisher from "@/lib/book/getAllPublisher";
 import CreatePublisher from "./create-publisher";
 import { FaPlus } from "react-icons/fa";
+import getAllPublisherList from "@/lib/book/getAllPublisherList";
 
 const PublisherList = ({
   publisherId,
   setPublisherId,
   canAdd,
+  readOnly,
 }: PublisherListProps) => {
   const [open, setOpen] = useState(false);
-  const { publishers, isLoading, isError, mutate } = getAllPublisher({
-    limit: 1000,
-  });
+  const { publishers, isLoading, isError, mutate } = getAllPublisherList();
   const handlePublisherAdded = async (publisherId: string) => {
     await mutate();
     setPublisherId(publisherId);
@@ -42,6 +41,7 @@ const PublisherList = ({
         <DropdownMenu open={open} onOpenChange={setOpen}>
           <DropdownMenuTrigger asChild>
             <Button
+              disabled={readOnly}
               variant="outline"
               role="combobox"
               aria-expanded={open}
