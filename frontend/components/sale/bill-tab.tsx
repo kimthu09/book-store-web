@@ -1,4 +1,3 @@
-import { FormValues } from "@/app/sale/page";
 import { useEffect, useState } from "react";
 import {
   Control,
@@ -31,6 +30,7 @@ import { toast } from "../ui/use-toast";
 import { IoRemoveOutline } from "react-icons/io5";
 import { PiClipboardTextLight } from "react-icons/pi";
 import { CurrentDate } from "../ui/date-context";
+import { FormValues } from "@/app/sale/page-layout";
 
 const AddUp = ({
   control,

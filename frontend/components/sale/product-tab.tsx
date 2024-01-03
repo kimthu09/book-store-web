@@ -6,15 +6,14 @@ import {
   FieldArrayWithId,
   UseFieldArrayAppend,
   UseFieldArrayUpdate,
-  useFieldArray,
 } from "react-hook-form";
-import { FormValues } from "@/app/sale/page";
 import { toVND } from "@/lib/utils";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import getAllCategory from "@/lib/book/getAllCategory";
 import Loading from "../loading";
 import { BookProps } from "@/types";
 import getAllBookForSale from "@/lib/book/getAllBookForSale";
+import { FormValues } from "@/app/sale/page-layout";
+import getAllCategoryList from "@/lib/book/getAllCategoryList";
 const ProductTab = ({
   append,
   fields,
@@ -24,9 +23,7 @@ const ProductTab = ({
   fields: FieldArrayWithId<FormValues, "details", "id">[];
   update: UseFieldArrayUpdate<FormValues, "details">;
 }) => {
-  const { categories, isLoading, isError, mutate } = getAllCategory({
-    limit: 1000,
-  });
+  const { categories, isLoading, isError, mutate } = getAllCategoryList();
   const {
     books,
     isLoading: isLoadingBook,

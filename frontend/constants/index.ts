@@ -7,10 +7,6 @@ import { LuClipboardList } from "react-icons/lu";
 import { FaRegHandshake } from "react-icons/fa";
 import { BsShop } from "react-icons/bs";
 import { z } from "zod";
-import { auth } from "@/lib/auth/auth";
-
-export const apiKey =
-  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXJJZCI6ImczVzIxQTdTUiIsInJvbGUiOiIifSwiZXhwIjoxNzA1MTk3NDIxLCJpYXQiOjE3MDI2MDU0MjF9.SJxvTYBk6fNodXd_8M0vqM4hjJpCg5MkonTtbLjOtNU";
 
 export const endPoint = "http://localhost:8080";
 

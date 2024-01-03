@@ -1,13 +1,11 @@
-import { InvoiceDetailTable } from "@/components/invoice/invoice-detail-table";
 import RecordNotFound from "@/components/record-notfound";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+
 import getInvoiceDetail from "@/lib/invoice/getInvoiceDetail";
-import { toVND } from "@/lib/utils";
-import Image from "next/image";
-import { useRef } from "react";
-import ReactToPrint from "react-to-print";
+
 import DetailLayout from "./detail-layout";
+import { getUser } from "@/lib/auth/action";
+import { includesRoles } from "@/lib/utils";
+import NoRole from "@/components/no-role";
 
 export type InvoiceDetailProps = {
   book: { id: string; name: string };
@@ -19,22 +17,29 @@ const InvoiceDetails = async ({
 }: {
   params: { invoiceId: string };
 }) => {
-  const response: Promise<any> = getInvoiceDetail({
-    idInvoice: params.invoiceId,
-  });
-  const responseData = await response;
-  if (responseData.hasOwnProperty("errorKey")) {
-    return <RecordNotFound />;
+  const user = await getUser();
+  if (
+    !includesRoles({ currentUser: user, allowedFeatures: ["INVOICE_VIEW"] })
+  ) {
+    return <NoRole />;
   } else {
-    // console.log(responseData.details);
+    const response: Promise<any> = getInvoiceDetail({
+      idInvoice: params.invoiceId,
+    });
+    const responseData = await response;
+    if (responseData.hasOwnProperty("errorKey")) {
+      return <RecordNotFound />;
+    } else {
+      // console.log(responseData.details);
 
-    return (
-      <div className="col items-center">
-        <div className="col xl:w-4/5 w-full xl:px-0 md:px-8 px-0">
-          <DetailLayout {...responseData} />
+      return (
+        <div className="col items-center">
+          <div className="col xl:w-4/5 w-full xl:px-0 md:px-8 px-0">
+            <DetailLayout {...responseData} />
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 };
 
