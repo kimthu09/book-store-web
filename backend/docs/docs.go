@@ -341,6 +341,42 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "books"
+                ],
+                "summary": "Update Book Info",
+                "parameters": [
+                    {
+                        "description": "Update Book",
+                        "name": "book",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/bookmodel.ReqUpdateBook"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "book id",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    }
+                }
             }
         },
         "/books/all": {
@@ -3130,6 +3166,35 @@ const docTemplate = `{
             }
         },
         "bookmodel.ReqCreateBook": {
+            "type": "object",
+            "properties": {
+                "bookTitleId": {
+                    "type": "string"
+                },
+                "edition": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "listedPrice": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "publisherId": {
+                    "type": "string"
+                },
+                "sellPrice": {
+                    "type": "integer"
+                }
+            }
+        },
+        "bookmodel.ReqUpdateBook": {
             "type": "object",
             "properties": {
                 "bookTitleId": {

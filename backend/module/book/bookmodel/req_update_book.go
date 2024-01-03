@@ -1,0 +1,42 @@
+package bookmodel
+
+import (
+	"book-store-management-backend/common"
+)
+
+type ReqUpdateBook struct {
+	ID          *string `json:"id" gorm:"column:id"`
+	Name        *string `json:"name" gorm:"column:name"`
+	Image       *string `json:"image" gorm:"column:imgUrl"`
+	BookTitleID *string `json:"bookTitleId" gorm:"column:booktitleid,fk"`
+	PublisherID *string `json:"publisherId" gorm:"column:publisherid,fk"`
+	Edition     *int    `json:"edition" gorm:"column:edition"`
+	ListedPrice *int    `json:"listedPrice" gorm:"column:listedPrice"`
+	SellPrice   *int    `json:"sellPrice" gorm:"column:sellPrice"`
+}
+
+func (*ReqUpdateBook) TableName() string {
+	return common.TableBook
+}
+
+func (b *ReqUpdateBook) Validate() error {
+	if b.Name != nil && common.ValidateEmptyString(*b.Name) {
+		b.Name = nil
+	}
+	if b.BookTitleID != nil && common.ValidateEmptyString(*b.BookTitleID) {
+		return ErrBookTitleIdInvalid
+	}
+	if b.PublisherID != nil && common.ValidateEmptyString(*b.PublisherID) {
+		return ErrPublisherIdInvalid
+	}
+	if b.Edition != nil && !common.ValidatePositiveNumber(*b.Edition) {
+		return ErrBookEditionInvalid
+	}
+	if b.ListedPrice != nil && !common.ValidatePositiveNumber(*b.ListedPrice) {
+		return ErrBookListedPriceInvalid
+	}
+	if b.SellPrice != nil && !common.ValidatePositiveNumber(*b.SellPrice) {
+		return ErrBookSellPriceInvalid
+	}
+	return nil
+}

@@ -4,25 +4,31 @@ import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/appctx"
 	"book-store-management-backend/middleware"
-	"book-store-management-backend/module/author/authorrepo"
-	"book-store-management-backend/module/author/authorstore"
-	"book-store-management-backend/module/booktitle/booktitlebiz"
-	"book-store-management-backend/module/booktitle/booktitlemodel"
-	"book-store-management-backend/module/booktitle/booktitlerepo"
-	"book-store-management-backend/module/booktitle/booktitlestore"
-	"book-store-management-backend/module/category/categoryrepo"
-	"book-store-management-backend/module/category/categorystore"
+	"book-store-management-backend/module/book/bookbiz"
+	"book-store-management-backend/module/book/bookmodel"
+	"book-store-management-backend/module/book/bookrepo"
+	"book-store-management-backend/module/book/bookstore"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
 )
 
+// UpdateBookInfo
+// @BasePath /v1
+// @Security BearerAuth
+// @Summary Update Book Info
+// @Tags books
+// @Accept json
+// @Produce json
+// @Param book body bookmodel.ReqUpdateBook true "Update Book"
+// @Response 200 {object} common.ResSuccess "book id"
+// @Router /books [patch]
 func UpdateBookInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		fmt.Println(c.Param("id"))
 		id := strings.Trim(c.Param("id"), " ")
-		var reqData booktitlemodel.ReqUpdateBookInfo
+		var reqData bookmodel.ReqUpdateBook
 
 		if err := c.ShouldBind(&reqData); err != nil {
 			panic(common.ErrInvalidRequest(err))
@@ -36,17 +42,13 @@ func UpdateBookInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		db := appCtx.GetMainDBConnection().Begin()
 
-		store := booktitlestore.NewSQLStore(db)
-		authorStore := authorstore.NewSQLStore(db)
-		categoryStore := categorystore.NewSQLStore(db)
+		store := bookstore.NewSQLStore(db)
 
-		repo := booktitlerepo.NewUpdateBookRepo(store)
-		authorRepo := authorrepo.NewAuthorPublicRepo(authorStore)
-		categoryRepo := categoryrepo.NewCategoryPublicRepo(categoryStore)
+		repo := bookrepo.NewUpdateBookRepo(store)
 
-		biz := booktitlebiz.NewUpdateBookBiz(repo, authorRepo, categoryRepo, requester)
+		biz := bookbiz.NewUpdateBookInfoBiz(repo, requester)
 
-		err := biz.UpdateBookTitle(c.Request.Context(), id, &reqData)
+		err := biz.UpdateBook(c.Request.Context(), id, &reqData)
 		if err != nil {
 			db.Rollback()
 			panic(err)

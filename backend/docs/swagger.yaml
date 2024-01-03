@@ -111,6 +111,25 @@ definitions:
       sellPrice:
         type: integer
     type: object
+  bookmodel.ReqUpdateBook:
+    properties:
+      bookTitleId:
+        type: string
+      edition:
+        type: integer
+      id:
+        type: string
+      image:
+        type: string
+      listedPrice:
+        type: integer
+      name:
+        type: string
+      publisherId:
+        type: string
+      sellPrice:
+        type: integer
+    type: object
   bookmodel.ReqUpdateStatusBooks:
     properties:
       bookIds:
@@ -1787,6 +1806,28 @@ paths:
       security:
       - BearerAuth: []
       summary: List book
+      tags:
+      - books
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: Update Book
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/bookmodel.ReqUpdateBook'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: book id
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+      security:
+      - BearerAuth: []
+      summary: Update Book Info
       tags:
       - books
     post:
