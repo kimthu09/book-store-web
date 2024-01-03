@@ -111,6 +111,33 @@ definitions:
       sellPrice:
         type: integer
     type: object
+  bookmodel.ReqUpdateBook:
+    properties:
+      bookTitleId:
+        type: string
+      edition:
+        type: integer
+      image:
+        type: string
+      listedPrice:
+        type: integer
+      name:
+        type: string
+      publisherId:
+        type: string
+      sellPrice:
+        type: integer
+    type: object
+  bookmodel.ReqUpdateStatusBooks:
+    properties:
+      bookIds:
+        items:
+          type: string
+        type: array
+      isActive:
+        example: true
+        type: boolean
+    type: object
   bookmodel.ResCreateBook:
     properties:
       id:
@@ -1801,6 +1828,38 @@ paths:
       summary: Create Book
       tags:
       - books
+  /books/{id}/info:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: book id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update Book
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/bookmodel.ReqUpdateBook'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Update Book Info
+      tags:
+      - books
   /books/all:
     get:
       consumes:
@@ -1819,6 +1878,33 @@ paths:
       security:
       - BearerAuth: []
       summary: Get all book
+      tags:
+      - books
+  /books/status:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: list book id and status want to be updated
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/bookmodel.ReqUpdateStatusBooks'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Change status books
       tags:
       - books
   /booktitles:

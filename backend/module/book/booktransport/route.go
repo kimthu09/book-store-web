@@ -13,7 +13,8 @@ func SetupRoutes(router *gin.RouterGroup, appCtx appctx.AppContext) {
 		books.GET("", ListBook(appCtx))
 		books.POST("", CreateBook(appCtx))
 		books.GET("/all", GetAllBook(appCtx))
-		//books.PATCH("/:id", UpdateBookInfo(appCtx))
+		books.PATCH("/status", ChangeStatusBooks(appCtx))
+		books.PATCH("/:id/info", UpdateBookInfo(appCtx))
 		//books.DELETE("/:id", DeleteBookTitle(appCtx))
 	}
 }
