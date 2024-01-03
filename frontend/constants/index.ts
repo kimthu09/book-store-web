@@ -12,7 +12,7 @@ import { auth } from "@/lib/auth/auth";
 export const apiKey =
   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXJJZCI6ImczVzIxQTdTUiIsInJvbGUiOiIifSwiZXhwIjoxNzA1MTk3NDIxLCJpYXQiOjE3MDI2MDU0MjF9.SJxvTYBk6fNodXd_8M0vqM4hjJpCg5MkonTtbLjOtNU";
 
-export const endPoint = "http://103.57.221.113:8080";
+export const endPoint = "http://localhost:8080";
 
 export const required = z.string().min(1, "Không để trống trường này");
 export const phoneRegex = new RegExp(/(0[3|5|7|8|9])+([0-9]{8})\b/g);
@@ -46,13 +46,17 @@ export const sidebarItems: SidebarItem[] = [
     icon: BsShop,
     submenu: false,
   },
-  // {
-  //   title: "Báo cáo",
-  //   href: "/report",
-  //   icon: AiOutlineLineChart,
-  //   submenu: true,
-  //   subMenuItems: [{ title: "Báo cáo nợ", href: "/report/debt" }],
-  // },
+  {
+    title: "Báo cáo",
+    href: "/storereport/stock",
+    icon: AiOutlineLineChart,
+    submenu: true,
+    subMenuItems: [
+      { title: "Báo cáo tồn kho", href: "/storereport/stock" },
+      { title: "Báo cáo nợ", href: "/storereport/debt" },
+      { title: "Báo cáo mặt hàng", href: "/storereport/sale" },
+    ],
+  },
   {
     title: "Quản lý hóa đơn",
     href: "/invoice",
@@ -72,13 +76,16 @@ export const sidebarItems: SidebarItem[] = [
       { title: "Nhà xuất bản", href: "/product/publishers" },
     ],
   },
-  // {
-  //   title: "Quản lý kho",
-  //   href: "/stock",
-  //   icon: MdOutlineWarehouse,
-  //   submenu: true,
-  //   subMenuItems: [{ title: "Nhập kho", href: "/stock/import" }],
-  // },
+  {
+    title: "Quản lý kho",
+    href: "/stock",
+    icon: MdOutlineWarehouse,
+    submenu: true,
+    subMenuItems: [
+      { title: "Nhập kho", href: "/stock/import" },
+      { title: "Kiểm kho", href: "/stock/inventorycheck" },
+    ],
+  },
   {
     title: "Quản lý nhà cung cấp",
     href: "/supplier",
