@@ -653,6 +653,39 @@ const docTemplate = `{
                 }
             }
         },
+        "/booktitles/all": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "booktitles"
+                ],
+                "summary": "Get all book title",
+                "responses": {
+                    "200": {
+                        "description": "list book title",
+                        "schema": {
+                            "$ref": "#/definitions/booktitlemodel.ResGetAllBookTitle"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
         "/booktitles/{id}": {
             "get": {
                 "security": [
@@ -3582,6 +3615,17 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "type": "string"
+                }
+            }
+        },
+        "booktitlemodel.ResGetAllBookTitle": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/booktitlemodel.SimpleBookTitle"
+                    }
                 }
             }
         },

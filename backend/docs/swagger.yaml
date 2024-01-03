@@ -339,6 +339,13 @@ definitions:
       data:
         type: string
     type: object
+  booktitlemodel.ResGetAllBookTitle:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/booktitlemodel.SimpleBookTitle'
+        type: array
+    type: object
   booktitlemodel.ResListBookTitle:
     properties:
       data:
@@ -2076,6 +2083,26 @@ paths:
       security:
       - BearerAuth: []
       summary: Update info booktitle
+      tags:
+      - booktitles
+  /booktitles/all:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list book title
+          schema:
+            $ref: '#/definitions/booktitlemodel.ResGetAllBookTitle'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Get all book title
       tags:
       - booktitles
   /categories:

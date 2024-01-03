@@ -1,40 +1,40 @@
-package booktransport
+package booktitletransport
 
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/appctx"
 	"book-store-management-backend/module/author/authorstore"
-	"book-store-management-backend/module/book/bookbiz"
-	"book-store-management-backend/module/book/bookrepo"
-	"book-store-management-backend/module/book/bookstore"
+	"book-store-management-backend/module/booktitle/booktitlebiz"
+	"book-store-management-backend/module/booktitle/booktitlerepo"
+	"book-store-management-backend/module/booktitle/booktitlestore"
 	"book-store-management-backend/module/category/categorystore"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
-// GetAllBook
+// GetAllBookTitle
 // @BasePath /v1
 // @Security BearerAuth
-// @Summary Get all book
-// @Tags books
+// @Summary Get all book title
+// @Tags booktitles
 // @Accept json
 // @Produce json
-// @Response 200 {object} bookmodel.ResGetAllBook "list book"
+// @Response 200 {object} booktitlemodel.ResGetAllBookTitle "list book title"
 // @Response 400 {object} common.AppError "error"
-// @Router /books/all [get]
-func GetAllBook(appCtx appctx.AppContext) gin.HandlerFunc {
+// @Router /booktitles/all [get]
+func GetAllBookTitle(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db := appCtx.GetMainDBConnection().Begin()
 
-		bookStore := bookstore.NewSQLStore(db)
+		bookTitleStore := booktitlestore.NewSQLStore(db)
 		authorStore := authorstore.NewSQLStore(db)
 		categoryStore := categorystore.NewSQLStore(db)
 
-		repo := bookrepo.NewGetAllBookRepo(bookStore, categoryStore, authorStore)
+		repo := booktitlerepo.NewGetAllBookTitleRepo(bookTitleStore, categoryStore, authorStore)
 
-		biz := bookbiz.NewGetAllBookBiz(repo)
+		biz := booktitlebiz.NewGetAllBookTitleBiz(repo)
 
-		books, err := biz.GetAllBook(c.Request.Context())
+		books, err := biz.GetAllBookTitle(c.Request.Context())
 		if err != nil {
 			panic(err)
 		}
