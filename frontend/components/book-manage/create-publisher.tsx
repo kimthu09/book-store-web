@@ -40,10 +40,10 @@ const CreatePublisher = ({
   const router = useRouter();
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     setOpen(false);
-    console.log(data);
+
     const response: Promise<any> = createPublisher(data);
     const responseData = await response;
-    console.log(responseData);
+
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",

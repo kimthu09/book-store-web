@@ -79,9 +79,7 @@ const BookInsert = ({
   const { books: data, isLoading, isError, mutate } = getAllBookForSale();
   const [value, setValue] = useState<BookProps>();
   const handleOnValueChange = (item: BookProps) => {
-    console.log("hi..........");
     if (!fieldsBook.find((book) => book.bookId === item.id)) {
-      console.log("quao.....");
       appendBook({
         bookId: item.id,
         qtyImport: 0,
@@ -89,7 +87,6 @@ const BookInsert = ({
         oldPrice: item.importPrice,
         isReplacePrice: false,
       });
-      console.log(fieldsBook);
     }
   };
   if (isError) {
@@ -128,7 +125,7 @@ const BookInsert = ({
             ) : null}
             {fieldsBook.map((book, index) => {
               const value = data.data.find((item) => item.id === book.bookId);
-              console.log("sách: " + value);
+
               if (value) {
                 return (
                   <div

@@ -15,7 +15,7 @@ export default async function createInvoice({
   const data = {
     details,
   };
-  console.log(data);
+
   const token = await getApiKey();
   const headers = {
     accept: "application/json",

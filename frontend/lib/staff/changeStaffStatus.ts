@@ -15,7 +15,7 @@ export default async function changeStaffStatus({
     isActive: isActive,
     userIds: userIds,
   };
-  console.log(data);
+
   const token = await getApiKey();
   const headers = {
     accept: "application/json",

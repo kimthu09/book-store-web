@@ -14,7 +14,7 @@ export default async function paySupplier({
   const data = {
     qtyUpdate: quantity,
   };
-  console.log(data);
+
   const token = await getApiKey();
   const headers = {
     accept: "application/json",

@@ -252,7 +252,6 @@ export function SupplierTable({
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data);
     let search = "";
     let minDebt = "";
     let maxDebt = "";
@@ -343,7 +342,6 @@ export function SupplierTable({
                       <Select
                         value={latestFilter}
                         onValueChange={(value) => {
-                          console.log(value);
                           append({ type: value, value: "" });
                         }}
                       >

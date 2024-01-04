@@ -92,7 +92,6 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
   const onSubmitPass: SubmitHandler<z.infer<typeof PasswordSchema>> = async (
     data
   ) => {
-    console.log(data);
     const token = await getApiKey();
     const res = axios
       .patch(
@@ -133,7 +132,7 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
   };
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     setReadOnly(true);
-    console.log(data);
+
     const response: Promise<any> = updateStaff({
       id: params.staffId,
       address: data.address,
@@ -200,7 +199,6 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
     }
   };
   const changeRole = async () => {
-    console.log(data);
     const token = await getApiKey();
     const res = axios
       .patch(
@@ -241,7 +239,6 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
     }
   };
   const changeStatus = async () => {
-    console.log(data);
     const responseData = await changeStaffStatus({
       userIds: [params.staffId],
       isActive: status,

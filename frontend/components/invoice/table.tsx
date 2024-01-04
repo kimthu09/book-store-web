@@ -235,7 +235,6 @@ const InvoiceTable = ({
     }
   }, [createdBy]);
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data);
     let search = "";
     let minPrice = "";
     let maxPrice = "";
@@ -340,7 +339,6 @@ const InvoiceTable = ({
                       <Select
                         value={latestFilter}
                         onValueChange={(value) => {
-                          console.log(value);
                           append({ type: value, value: "" });
                         }}
                       >

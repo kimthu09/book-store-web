@@ -16,7 +16,7 @@ export default async function updateBookTitle({
   authorIds: string[];
 }) {
   const url = `${endPoint}/v1/booktitles/${id}/info`;
-  console.log(url);
+
   const data = {
     id: id,
     name: name,
@@ -24,7 +24,7 @@ export default async function updateBookTitle({
     categoryIds: categoryIds,
     authorIds: authorIds,
   };
-  console.log(data);
+
   const token = await getApiKey();
   const headers = {
     accept: "application/json",

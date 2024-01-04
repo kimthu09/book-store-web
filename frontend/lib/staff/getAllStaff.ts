@@ -14,7 +14,7 @@ export default async function getAllStaff({
   const isActiveString = isActive ? `&active=${isActive}` : "";
   const searchString = search ? `&search=${search}` : "";
   const url = `${endPoint}/v1/users?page=${page}${isActiveString}${searchString}`;
-  console.log(url);
+
   const token = await getApiKey();
 
   const res = await fetch(url, {

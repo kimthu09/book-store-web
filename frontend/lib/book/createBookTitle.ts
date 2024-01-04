@@ -24,7 +24,7 @@ export default async function createBookTitle({
     categoryIds: categoryIds,
     authorIds: authorIds,
   };
-  console.log(data);
+
   const token = await getApiKey();
   const headers = {
     accept: "application/json",

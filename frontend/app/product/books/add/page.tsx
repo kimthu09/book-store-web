@@ -79,7 +79,6 @@ const InsertNewBook = () => {
   };
   const { mutate } = useSWRConfig();
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
-    console.log(data);
     if (image) {
       let formData = new FormData();
 
@@ -95,7 +94,6 @@ const InsertNewBook = () => {
         });
         return;
       }
-      console.log(imgRes.data);
 
       data.image = imgRes.data;
     }
@@ -134,7 +132,6 @@ const InsertNewBook = () => {
     if (file) {
       if (file && file.type.includes("image")) {
         setImage(file);
-        console.log(file.type);
         const reader = new FileReader();
         reader.onload = () => {
           setImagePreviews(reader.result);

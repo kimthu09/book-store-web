@@ -25,7 +25,6 @@ export default async function updateStaff({
     ...(phone && { phone: phone }),
   };
 
-  console.log(data);
   const token = await getApiKey();
   const headers = {
     accept: "application/json",

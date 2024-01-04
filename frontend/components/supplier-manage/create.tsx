@@ -43,10 +43,9 @@ const CreateDialog = () => {
     data
   ) => {
     setOpen(false);
-    console.log(data);
+
     const response: Promise<any> = createSupplier(data);
     const responseData = await response;
-    console.log(responseData);
 
     if (responseData.hasOwnProperty("errorKey")) {
       toast({

@@ -19,7 +19,7 @@ export default async function updateSupplier({
     name: name,
     phone: phone,
   };
-  console.log(data);
+
   const token = await getApiKey();
   const headers = {
     "Content-Type": "application/json",

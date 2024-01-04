@@ -83,7 +83,6 @@ const EditBook = ({ params }: { params: { bookId: string } }) => {
     trigger("publisherId");
   };
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
-    console.log(data);
     if (image) {
       let formData = new FormData();
 
@@ -99,7 +98,6 @@ const EditBook = ({ params }: { params: { bookId: string } }) => {
         });
         return;
       }
-      console.log(imgRes.data);
 
       data.image = imgRes.data;
     }
@@ -122,7 +120,6 @@ const EditBook = ({ params }: { params: { bookId: string } }) => {
     }
   };
   const onErrors: SubmitErrorHandler<z.infer<typeof FormSchema>> = (data) => {
-    console.log(data);
     toast({
       variant: "destructive",
       title: "Có lỗi",
@@ -170,7 +167,6 @@ const EditBook = ({ params }: { params: { bookId: string } }) => {
       image: data.image,
     });
     handlePublisherIdSet(data.publisher.id);
-    console.log("parent " + data.bookTitle.id);
     setTitle(data.bookTitle.id);
     setImage(null);
   };

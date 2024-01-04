@@ -211,7 +211,6 @@ export function ImportTable({ supplierId }: { supplierId: string }) {
   if (isLoading) {
     return <Loading />;
   } else {
-    console.log(importNotes);
     return (
       <div className="flex flex-col">
         <ExportDialog

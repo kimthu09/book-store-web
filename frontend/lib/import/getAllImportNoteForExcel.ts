@@ -4,14 +4,13 @@ import { getApiKey } from "../auth/action";
 export default async function getAllImportNoteForExcel({
   limit,
   page,
-
 }: {
   limit?: number;
   page: string;
 }) {
   const url = `${endPoint}/v1/importNotes?page=${page}&limit=${limit ?? "10"}`;
-  console.log(url);
-  const token=await getApiKey()
+
+  const token = await getApiKey();
   const res = await fetch(url, {
     headers: {
       accept: "application/json",

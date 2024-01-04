@@ -9,7 +9,7 @@ export default async function createListAuthor({ names }: { names: string[] }) {
     names: names,
   };
   const token = await getApiKey();
-  console.log(data);
+
   const headers = {
     accept: "application/json",
     "Content-Type": "application/json",

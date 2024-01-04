@@ -163,40 +163,7 @@ export function TitleTable() {
       rowSelection,
     },
   });
-  const [exportOption, setExportOption] = useState("all");
-  const handleExport = async () => {
-    // if (exportOption === "all") {
-    //   const importNoteData: Promise<{
-    //     data: ImportNote[];
-    //     paging: PagingProps;
-    //   }> = getAllImportNoteForExcel({ page: "1", limit: 10000 });
-    //   const notesToExport = await importNoteData;
-    //   if (notesToExport.data.length < 1) {
-    //     toast({
-    //       variant: "destructive",
-    //       title: "Có lỗi",
-    //       description: "Không có phiếu nhập nào",
-    //     });
-    //   } else {
-    //     ExportImportNote(notesToExport.data, `Danh sách phiếu nhập.xlsx`);
-    //   }
-    // } else {
-    //   if (table.getFilteredSelectedRowModel().rows.length < 1) {
-    //     toast({
-    //       variant: "destructive",
-    //       title: "Có lỗi",
-    //       description: "Không có phiếu nhập nào",
-    //     });
-    //   } else {
-    //     ExportImportNote(
-    //       table.getFilteredSelectedRowModel().rows.map((row) => row.original),
-    //       `Danh sách phiếu nhập.xlsx`
-    //     );
-    //   }
-    // }
-  };
   const onSubmit: SubmitHandler<FilterValue> = async (data) => {
-    console.log(data);
     let filterString = "";
     data.filters.forEach((item) => {
       filterString = filterString.concat(`&${item.type}=${item.value}`);
@@ -301,7 +268,6 @@ export function TitleTable() {
                         <Select
                           value={latestFilter}
                           onValueChange={(value) => {
-                            console.log(value);
                             append({ type: value, value: "" });
                           }}
                         >

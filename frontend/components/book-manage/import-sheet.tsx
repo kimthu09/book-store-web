@@ -30,7 +30,6 @@ const ImportSheet = ({
     if (selectedFile) {
       if (selectedFile && fileType.includes(selectedFile.type)) {
         if (selectedFile.size > 2000000) {
-          console.log(e.target.files[0].size);
           console.log("Dung lượng file không hợp lệ");
           toast({
             variant: "destructive",
