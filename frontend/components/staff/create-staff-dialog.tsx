@@ -47,7 +47,7 @@ const CreateStaffDialog = () => {
       phone: "",
       address: "",
       roleId: "",
-      img: "https://picsum.photos/200",
+      img: "/avatar.png",
     },
   });
   const router = useRouter();
@@ -135,7 +135,7 @@ const CreateStaffDialog = () => {
             phone: "",
             address: "",
             roleId: "",
-            img: "https://picsum.photos/200",
+            img: "/avatar.png",
           });
           setRole("");
           setImage(null);

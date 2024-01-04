@@ -109,7 +109,7 @@ export const columns: ColumnDef<Staff>[] = [
     cell: ({ row }) => (
       <div className="flex justify-end">
         <Image
-          src={row.getValue("img") || "https://picsum.photos/200"}
+          src={row.getValue("img") || "/avatar.png"}
           alt="image"
           className="object-contain max-h-10"
           width={40}
