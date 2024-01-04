@@ -22,7 +22,7 @@ const SaleReport = () => {
             timeTo: timeTo,
             type: "sale"
         });
-        setTotal(report.total)
+        setTotal(report.data.total)
         setData(report.data.details)
     }
 
