@@ -4372,14 +4372,6 @@ const docTemplate = `{
                             "$ref": "#/definitions/inventorychecknotemodel.ResDetailInventoryCheckNote"
                         }
                     ]
-                },
-                "paging": {
-                    "description": "Paging provides information about pagination.",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/common.Paging"
-                        }
-                    ]
                 }
             }
         },

@@ -847,10 +847,6 @@ definitions:
         - $ref: '#/definitions/inventorychecknotemodel.ResDetailInventoryCheckNote'
         description: Data contains the detailed information about inventory check
           note details.
-      paging:
-        allOf:
-        - $ref: '#/definitions/common.Paging'
-        description: Paging provides information about pagination.
     type: object
   invoicedetailmodel.InvoiceDetail:
     properties:
