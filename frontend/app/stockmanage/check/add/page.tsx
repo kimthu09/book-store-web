@@ -48,6 +48,7 @@ const AddNote = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
+      id: "",
       details: [],
     },
   });
@@ -60,6 +61,7 @@ const AddNote = () => {
     reset,
     formState: { errors, isDirty },
   } = form;
+  const { mutate: mutateAllBook } = useSWRConfig();
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     const response: Promise<any> = createCheckNote({
       id: data.id,
@@ -81,9 +83,13 @@ const AddNote = () => {
       toast({
         variant: "success",
         title: "Thành công",
-        description: "Thêm phiếu nhập thành công",
+        description: "Thêm phiếu kiểm kho thành công",
       });
-      reset();
+      reset({
+        id: "",
+        details: [],
+      });
+      mutateAllBook(`${endPoint}/v1/books/all`);
     }
   };
   const { currentUser } = useCurrentUser();
