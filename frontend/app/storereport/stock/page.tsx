@@ -5,6 +5,7 @@ import { StockReportDetail } from '@/types';
 import getReport from '@/lib/report/getReport';
 import { useState } from 'react';
 import { StockReportTable } from '@/components/report/StockReportTable';
+import MonthReportHeader from '@/components/report/MonthReportHeader';
 
 const SaleReport = () => {
     const [data, setData] = useState<StockReportDetail[]>([])
@@ -28,7 +29,7 @@ const SaleReport = () => {
     return (
         <div>
             <div>
-                <ReportHeader
+                <MonthReportHeader
                     title="Báo cáo tồn"
                     firstAction="Xem báo cáo"
                     secondAction="Tải excel"

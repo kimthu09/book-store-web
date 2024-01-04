@@ -6,6 +6,7 @@ import { DebtReportTable } from '@/components/report/DebtReportTable';
 import { DebtReportDetail } from '@/types';
 import getReport from '@/lib/report/getReport';
 import { useState } from 'react';
+import MonthReportHeader from '@/components/report/MonthReportHeader';
 
 
 const DebtReport = () => {
@@ -31,7 +32,12 @@ const DebtReport = () => {
     return (
         <div>
             <div>
-                <ReportHeader
+                {/* <ReportHeader
+                    title="Báo cáo nợ"
+                    firstAction="Xem báo cáo"
+                    secondAction="Tải excel"
+                    onClick={onGetDebt} /> */}
+                <MonthReportHeader
                     title="Báo cáo nợ"
                     firstAction="Xem báo cáo"
                     secondAction="Tải excel"
