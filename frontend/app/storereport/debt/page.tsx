@@ -3,12 +3,10 @@ import { withAuth } from "@/lib/role/withAuth";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Báo cáo nợ",
+  title: "Báo cáo nợ",
 };
 const DebtReportPage = () => {
-    return (
-        <DebtReport />
-    );
-}
+  return <DebtReport />;
+};
 
 export default withAuth(DebtReportPage, ["REPORT_VIEW_SUPPLIER"]);
