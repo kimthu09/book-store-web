@@ -72,7 +72,6 @@ const Profile = () => {
   const onSubmitPass: SubmitHandler<z.infer<typeof PasswordSchema>> = async (
     data
   ) => {
-    console.log(data);
     const token = await getApiKey();
     const res = axios
       .patch(

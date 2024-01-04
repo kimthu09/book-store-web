@@ -17,9 +17,6 @@ import { toast } from "@/components/ui/use-toast";
 import createImportNote from "@/lib/import/createImportNote";
 import { Switch } from "@/components/ui/switch";
 import { useSWRConfig } from "swr";
-import Loading from "@/components/loading";
-import { getApiKey } from "@/lib/auth/action";
-import getAllBookList from "@/lib/book/getAllBookList";
 
 export const FormSchema = z.object({
   id: z.string().max(12, "Tối đa 12 ký tự"),
@@ -66,7 +63,6 @@ const AddNote = () => {
     formState: { errors, isDirty },
   } = form;
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
-    console.log(data);
     const response: Promise<any> = createImportNote({
       details: data.details.map((item) => {
         return {
@@ -101,7 +97,6 @@ const AddNote = () => {
     }
   };
   const onError: SubmitErrorHandler<z.infer<typeof FormSchema>> = (data) => {
-    console.log(data);
     if (data.hasOwnProperty("details")) {
       toast({
         variant: "destructive",
@@ -113,7 +108,7 @@ const AddNote = () => {
 
   return (
     <div className="col items-center">
-      <div className="col xl:w-4/5 w-full xl:px-0 md:px-6 px-0">
+      <div className="col xl:w-4/5 w-full px-0">
         <div className="flex justify-between gap-2">
           <h1 className="font-medium text-xxl self-start">Thêm phiếu nhập</h1>
         </div>

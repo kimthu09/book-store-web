@@ -7,8 +7,10 @@ const nextConfig = {
         hostname: "*",
         pathname: "**",
       },
+      {
+        hostname: "localhost",
+      },
     ],
-    domains: ["localhost"],
   },
   typescript: {
     // !! WARN !!
