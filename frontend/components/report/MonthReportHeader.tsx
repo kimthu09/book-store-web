@@ -18,22 +18,21 @@ const MonthReportHeader = (props: any) => {
     };
 
     const [from, setFrom] = useState(dayjs('2023-12-1'))
-    const [to, setTo] = useState(dayjs('2024-01-01'))
+    // const [to, setTo] = useState(dayjs('2024-01-01'))
     return (
         <div className='flex justify-between items-center'>
             <h1>{title}</h1>
             <div className='flex-[0.9] justify-end flex gap-[15px] items-center'>
                 <div className={cn("grid gap-2 ")}>
                     <div>
-                        <RangePicker
+                        <DatePicker
                             className='w-[300px] bg-white border border-primary hover:text-primary justify-start items-center text-left font-normal'
                             picker='month'
                             format={monthFormat}
-                            placeholder={["Từ", "Đến"]}
-                            value={[from, to]}
+                            placeholder={"Tháng"}
+                            value={from}
                             onChange={(values, string) => {
-                                setFrom(values![0]!)
-                                setTo(values![1]!)
+                                setFrom(values!)
                             }}
                             disabledDate={disabledDate}
                         />
@@ -41,8 +40,8 @@ const MonthReportHeader = (props: any) => {
                 </div>
                 {/* 1701388800 */}
                 <Button onClick={() => onClick({
-                    timeFrom: from.valueOf() / 1000,
-                    timeTo: to.valueOf() / 1000
+                    timeFrom: from.startOf('month').valueOf() / 1000,
+                    timeTo: from.endOf('month').valueOf() / 1000
                 })}
                     className='px-5'>{firstAction}</Button>
                 <Button
