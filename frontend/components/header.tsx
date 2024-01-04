@@ -5,6 +5,7 @@ import Image from "next/image";
 import { logOut } from "@/lib/auth/action";
 import { Button } from "./ui/button";
 import { LuLogOut } from "react-icons/lu";
+import Profile from "./profile";
 
 const Header = () => {
   return (
@@ -19,25 +20,7 @@ const Header = () => {
           </Link>
         </div>
         <div className="self-center flex">
-          <form action={logOut}>
-            <Button variant={"link"}>
-              <div className="flex gap-2 text-primary">
-                Đăng xuất
-                <LuLogOut className="h-5 w-5 " />
-              </div>
-            </Button>
-          </form>
-          <Button className="p-0 h-fit rounded-full overflow-clip">
-            <div>
-              <Image
-                src="/no-image.jpg"
-                className="h-9 w-9"
-                alt="avatar"
-                width={36}
-                height={36}
-              ></Image>
-            </div>
-          </Button>
+          <Profile />
         </div>
       </div>
     </div>
