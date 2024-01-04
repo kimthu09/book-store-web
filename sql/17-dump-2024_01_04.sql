@@ -398,7 +398,7 @@ DROP TABLE IF EXISTS `MUser`;
 CREATE TABLE `MUser` (
   `id` varchar(12) NOT NULL,
   `name` text NOT NULL,
-  `phone` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
+  `phone` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
   `address` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
   `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `password` text NOT NULL,
@@ -656,7 +656,7 @@ CREATE TABLE `SupplierDebt` (
   `qty` int NOT NULL,
   `qtyLeft` int NOT NULL,
   `type` enum('Debt','Pay') NOT NULL,
-  `createdBy` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `createdBy` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deletedAt` datetime DEFAULT NULL,
