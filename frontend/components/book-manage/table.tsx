@@ -367,12 +367,11 @@ export function BookTable({
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data);
     let filterString = "";
     data.filters.forEach((item) => {
       filterString = filterString.concat(`&${item.type}=${item.value}`);
     });
-    console.log(filterString);
+
     router.push(`/product/books?page=${Number(page)}${filterString}`);
   };
   const [openFilter, setOpenFilter] = useState(false);
@@ -650,7 +649,6 @@ export function BookTable({
                         <Select
                           value={latestFilter}
                           onValueChange={(value) => {
-                            console.log(value);
                             append({ type: value, value: "" });
                           }}
                         >

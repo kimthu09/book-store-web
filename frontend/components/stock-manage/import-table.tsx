@@ -399,12 +399,11 @@ export function ImportTable() {
     }
   };
   const onSubmit: SubmitHandler<FilterValue> = async (data) => {
-    console.log(data);
     let filterString = "";
     data.filters.forEach((item) => {
       filterString = filterString.concat(`&${item.type}=${item.value}`);
     });
-    router.push(`/stock-manage/import?page=${Number(page)}${filterString}`);
+    router.push(`/stockmanage/import?page=${Number(page)}${filterString}`);
   };
   if (isError) return <div>Failed to load</div>;
   else if (isLoading) {
@@ -414,6 +413,7 @@ export function ImportTable() {
       <div>
         <div className="flex items-start py-4 gap-2">
           <ExportDialog
+            style="m-0"
             handleExport={handleExport}
             setExportOption={setExportOption}
             isImport
@@ -557,7 +557,6 @@ export function ImportTable() {
                         <Select
                           value={latestFilter}
                           onValueChange={(value) => {
-                            console.log(value);
                             append({ type: value, value: "" });
                           }}
                         >
@@ -603,7 +602,7 @@ export function ImportTable() {
                 return (
                   <div
                     key={item.type}
-                    className="rounded-xl flex self-start px-3 py-1 h-fit outline-none text-sm text-primary  bg-orange-100 items-center gap-1 group"
+                    className="rounded-xl flex self-start px-3 py-1 h-fit outline-none text-sm text-primary  bg-blue-100 items-center gap-1 group"
                   >
                     <span>
                       {name?.name}
@@ -627,10 +626,7 @@ export function ImportTable() {
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow
-                  key={headerGroup.id}
-                  className="bg-orange-50 hover:bg-orange-50"
-                >
+                <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     return (
                       <TableHead key={header.id}>
@@ -659,7 +655,7 @@ export function ImportTable() {
                         onClick={() => {
                           if (!cell.id.includes("select")) {
                             router.push(
-                              `/stock-manage/import/${row.getValue("id")}`
+                              `/stockmanage/import/${row.getValue("id")}`
                             );
                           }
                         }}
@@ -693,20 +689,18 @@ export function ImportTable() {
           <Paging
             page={page}
             onNavigateNext={() =>
-              router.push(`/stock-manage/import?page=${+page + 1}`)
+              router.push(`/stockmanage/import?page=${+page + 1}`)
             }
             onNavigateBack={() =>
-              router.push(`/stock-manage/import?page=${+page - 1}`)
+              router.push(`/stockmanage/import?page=${+page - 1}`)
             }
             totalPage={totalPage}
             onPageSelect={(selectedPage) => {
-              router.push(`/stock-manage/import?page=${selectedPage}`);
+              router.push(`/stockmanage/import?page=${selectedPage}`);
             }}
-            onNavigateFirst={() =>
-              router.push(`/stock-manage/import?page=${1}`)
-            }
+            onNavigateFirst={() => router.push(`/stockmanage/import?page=${1}`)}
             onNavigateLast={() =>
-              router.push(`/stock-manage/import?page=${totalPage}`)
+              router.push(`/stockmanage/import?page=${totalPage}`)
             }
           />
         </div>

@@ -50,9 +50,7 @@ export const columns: ColumnDef<ImportNoteDetail>[] = [
     header: () => {
       return <span className="font-semibold">Mã sách</span>;
     },
-    cell: ({ row }) => (
-      <div className="leading-6">{row.original.book.id}</div>
-    ),
+    cell: ({ row }) => <div className="leading-6">{row.original.book.id}</div>,
     size: 4,
   },
   {
@@ -61,9 +59,7 @@ export const columns: ColumnDef<ImportNoteDetail>[] = [
       return <span className="font-semibold">Tên sách</span>;
     },
     cell: ({ row }) => (
-      <div className="leading-6 flex flex-col">
-        {row.original.book.name}
-      </div>
+      <div className="leading-6 flex flex-col">{row.original.book.name}</div>
     ),
     size: 4,
   },
@@ -154,14 +150,11 @@ export function ImportDetailTable(details: ImportNoteDetail[]) {
     },
   });
   return (
-    <div className="rounded-md border w-full">
+    <div className="rounded-md border overflow-x-auto flex-1 min-w-full max-w-[50vw]">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow
-              key={headerGroup.id}
-              className="bg-orange-50 hover:bg-orange-50"
-            >
+            <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>

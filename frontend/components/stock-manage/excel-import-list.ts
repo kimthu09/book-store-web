@@ -91,6 +91,8 @@ export const ExportImportNote = (excelData: ImportNote[], fileName: string) => {
       if (!cell.font?.size) {
         cell.font = Object.assign(cell.font || {}, { size: 13 });
       }
+
+      // Set cell border regardless of content
       sheet.getCell(cell.address).border = {
         top: { style: "thin" },
         left: { style: "thin" },
@@ -98,8 +100,6 @@ export const ExportImportNote = (excelData: ImportNote[], fileName: string) => {
         right: { style: "thin" },
       };
     });
-
-    // row.getCell(6).value = "quao quao quao";
   });
 
   workbook.xlsx

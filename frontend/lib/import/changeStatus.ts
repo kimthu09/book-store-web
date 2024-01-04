@@ -6,18 +6,16 @@ import { getApiKey } from "../auth/action";
 export default async function updateStatus({
   id: id,
   status,
-  
 }: {
   id: string;
   status: StatusNote;
-
 }) {
   const url = `${endPoint}/v1/importNotes/${id}`;
   const data = {
     status: status,
   };
-  console.log(data);
-  const token=await getApiKey()
+
+  const token = await getApiKey();
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
@@ -25,7 +23,7 @@ export default async function updateStatus({
   };
 
   const res = axios
-    .post(url, data, { headers: headers })
+    .patch(url, data, { headers: headers })
     .then((response) => {
       if (response) return response.data;
     })

@@ -71,7 +71,6 @@ const SaleScreen = () => {
       });
       return;
     }
-    console.log(data);
     const response: Promise<any> = createInvoice({
       details: data.details.map((item) => {
         return {

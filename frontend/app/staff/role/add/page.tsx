@@ -48,13 +48,12 @@ const AddRole = () => {
   };
 
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
-    console.log(data);
     const response: Promise<any> = createRole({
       name: data.name,
       features: data.features.map((item) => item.idFeature),
     });
     const responseData = await response;
-    console.log(responseData);
+
     if (responseData.hasOwnProperty("data")) {
       if (responseData.data) {
         toast({

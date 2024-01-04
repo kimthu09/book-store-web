@@ -17,7 +17,7 @@ import {
 
 import { cn, toVND } from "@/lib/utils";
 import { Check } from "lucide-react";
-import {BookProps } from "@/types";
+import { BookProps } from "@/types";
 
 // export type Option = Record<"value" | "label", string> & Record<string, string>;
 
@@ -138,7 +138,7 @@ export const AutoComplete = ({
                     return (
                       <CommandItem
                         key={option.id}
-                        value={option.name}
+                        value={option.id}
                         onMouseDown={(event) => {
                           event.preventDefault();
                           event.stopPropagation();

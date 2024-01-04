@@ -12,7 +12,7 @@ export default async function createListCategory({
   const data = {
     names: names,
   };
-  console.log(data);
+
   const token = await getApiKey();
 
   const headers = {

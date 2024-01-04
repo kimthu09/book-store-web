@@ -47,10 +47,9 @@ const TableLayout = ({
       });
     };
 
-    console.log(categories);
     const response: Promise<any> = createListAuthor({ names: categories });
     const responseData = await response;
-    console.log(responseData);
+
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",

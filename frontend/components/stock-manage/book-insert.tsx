@@ -14,11 +14,11 @@ import { CiBoxes } from "react-icons/ci";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { z } from "zod";
 import { FormSchema } from "@/app/stockmanage/import/add/page";
-import { Book, BookProps } from "@/types";
+import { BookProps } from "@/types";
 import { toVND } from "@/lib/utils";
 import { toast } from "../ui/use-toast";
 import Loading from "../loading";
-import { getApiKey  } from "@/lib/auth/action";
+import { getApiKey } from "@/lib/auth/action";
 import { AutoComplete } from "../ui/autocomplete";
 import getAllBookList from "@/lib/book/getAllBookList";
 import getAllBookForSale from "@/lib/book/getAllBookForSale";
@@ -76,7 +76,7 @@ const BookInsert = ({
     control: control,
     name: "details",
   });
-  const { books:data, isLoading, isError, mutate } =  getAllBookForSale();
+  const { books: data, isLoading, isError, mutate } = getAllBookForSale();
   const [value, setValue] = useState<BookProps>();
   const handleOnValueChange = (item: BookProps) => {
     if (!fieldsBook.find((book) => book.bookId === item.id)) {
@@ -104,11 +104,11 @@ const BookInsert = ({
           value={value}
         />
         <div>
-          <div className="grid grid-cols-4 lg:gap-3 gap-2 font-medium py-2 px-2 mt-2 rounded-t-md bg-[#ffe9db]">
-            <h2 className="">Tên sách</h2>
-            <h2 className=" text-left">Đơn giá</h2>
-            <h2 className=" text-left">Số lượng</h2>
-            <h2 className=" text-right pr-12 ">Thành tiền</h2>
+          <div className="grid grid-cols-5 lg:gap-3 gap-2 font-medium py-2 px-2 mt-2 rounded-t-md bg-[#a4c5ff]">
+            <h2 className="col-span-2">Tên sách</h2>
+            <h2 className=" text-left col-span-1">Đơn giá</h2>
+            <h2 className=" text-left col-span-1">Số lượng</h2>
+            <h2 className=" text-right col-span-1 pr-12 ">Thành tiền</h2>
           </div>
           <div className="border border-t-0 py-2 rounded-b-md">
             {fieldsBook.length < 1 ? (
@@ -124,19 +124,18 @@ const BookInsert = ({
               </div>
             ) : null}
             {fieldsBook.map((book, index) => {
-              const value = data.data.find(
-                (item) => item.id === book.id
-              );
+              const value = data.data.find((item) => item.id === book.bookId);
+
               if (value) {
                 return (
                   <div
                     key={book.id}
-                    className="grid md:grid-cols-4 grid-cols-3 items-center p-2 lg:gap-3 gap-2"
+                    className="grid grid-cols-5 items-center p-2 lg:gap-3 gap-2"
                   >
-                    <div className="flex">
+                    <div className="flex col-span-2">
                       <h2 className="font-medium">{value?.name}</h2>
                     </div>
-                    <div className="relative p-1">
+                    <div className="relative p-1 col-span-1">
                       <Input
                         type="number"
                         defaultValue={book.price}
@@ -164,13 +163,13 @@ const BookInsert = ({
 
                     <Input
                       type="number"
-                      className="lg:w-full w-4/5"
+                      className="lg:w-full col-span-1"
                       defaultValue={book.qtyImport}
                       {...register(`details.${index}.qtyImport` as const)}
                       min={1}
                     ></Input>
 
-                    <div className="text-right flex justify-end gap-2 items-center">
+                    <div className="text-right flex justify-end gap-2 items-center col-span-1">
                       <AddUp control={control} index={index} />
                       <Button
                         type="button"

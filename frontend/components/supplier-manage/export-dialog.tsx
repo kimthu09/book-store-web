@@ -9,15 +9,20 @@ const ExportDialog = ({
   handleExport,
   setExportOption,
   isImport,
+  style,
 }: {
   handleExport: () => void;
   setExportOption: (value: string) => void;
   isImport: boolean;
+  style?: string;
 }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={"outline"} className="absolute top-6 right-6">
+        <Button
+          variant={"outline"}
+          className={style ? style : "absolute top-6 right-6"}
+        >
           Xuất file
         </Button>
       </DialogTrigger>

@@ -18,13 +18,13 @@ export default async function createImportNote({
 }) {
   const url = `${endPoint}/v1/importNotes`;
   const token = await getApiKey();
-  
+
   const data = {
     details,
     id: id,
     supplierId: supplierId,
   };
-  console.log(data);
+
   const headers = {
     accept: "application/json",
     "Content-Type": "application/json",

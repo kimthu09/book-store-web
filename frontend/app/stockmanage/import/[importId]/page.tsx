@@ -15,12 +15,10 @@ import { BiBox } from "react-icons/bi";
 import { FaRegFileExcel } from "react-icons/fa";
 import { FiTrash2 } from "react-icons/fi";
 import { LuPackageCheck, LuPhone } from "react-icons/lu";
-const ImportDetail =  ({ params }: { params: { importId: string } }) => {
-  
+const ImportDetail = ({ params }: { params: { importId: string } }) => {
   const router = useRouter();
   const { data, isLoading, isError, mutate } = getImportNoteDetail({
     id: params.importId,
-   
   });
   const changeStatus = async (status: StatusNote) => {
     const response: Promise<any> = updateStatus({
@@ -28,7 +26,7 @@ const ImportDetail =  ({ params }: { params: { importId: string } }) => {
       status: status,
     });
     const responseData = await response;
-    console.log(responseData);
+
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",
@@ -56,7 +54,7 @@ const ImportDetail =  ({ params }: { params: { importId: string } }) => {
               <span className="font-light">Mã phiếu nhập</span>
               <span>{data.id}</span>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-nowrap">
               <Button
                 variant={"outline"}
                 className="p-2"
@@ -65,7 +63,7 @@ const ImportDetail =  ({ params }: { params: { importId: string } }) => {
                 }}
               >
                 <FaRegFileExcel className="mr-1 h-5 w-5 text-green-700" />
-                <span>Xuất file</span>
+                <span className="whitespace-nowrap">Xuất file</span>
               </Button>
               <div
                 className={`${
@@ -77,7 +75,9 @@ const ImportDetail =  ({ params }: { params: { importId: string } }) => {
                   description="Trạng thái sẽ không được thay đổi khi đã hoàn thành."
                   handleYes={() => changeStatus(StatusNote.Done)}
                 >
-                  <Button className={`p-2  bg-teal-600 hover:bg-teal-600/90`}>
+                  <Button
+                    className={`p-2  bg-teal-600 hover:bg-teal-600/90 whitespace-nowrap`}
+                  >
                     <LuPackageCheck className="mr-1 h-6 w-6" />
                     <span>Hoàn thành</span>
                   </Button>

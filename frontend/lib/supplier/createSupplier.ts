@@ -23,7 +23,7 @@ export default async function createSupplier({
     phone: phone,
     debt: +debt,
   };
-  console.log(data);
+
   const token = await getApiKey();
   const headers = {
     "Content-Type": "application/json",

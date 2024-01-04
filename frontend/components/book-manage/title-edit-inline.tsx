@@ -74,11 +74,8 @@ const TitleEditInline = ({
   });
   const onError: SubmitErrorHandler<z.infer<typeof FormSchema>> = async (
     data
-  ) => {
-    console.log(data);
-  };
+  ) => {};
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
-    console.log(data);
     setIsEdit(false);
     const response: Promise<any> = updateBookTitle({
       id: data.idBook,
@@ -225,7 +222,6 @@ const TitleEditInline = ({
                 title={"Xác nhận"}
                 description="Bạn xác nhận chỉnh sửa đầu sách này ?"
                 handleYes={() => {
-                  console.log("hi");
                   handleSubmit(onSubmit, onError)();
                 }}
               >

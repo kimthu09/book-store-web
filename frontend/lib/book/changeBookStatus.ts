@@ -15,7 +15,6 @@ export default async function changeBookStatus({
     isActive: isActive,
     bookIds: bookIds,
   };
-  console.log(data);
   const token = await getApiKey();
   const headers = {
     accept: "application/json",

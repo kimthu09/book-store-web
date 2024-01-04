@@ -43,13 +43,13 @@ const EditCategory = ({
     data
   ) => {
     setOpen(false);
-    console.log(data);
+
     const response: Promise<any> = updateCategory({
       idCate: category.id,
       name: data.name,
     });
     const responseData = await response;
-    console.log(responseData);
+
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",

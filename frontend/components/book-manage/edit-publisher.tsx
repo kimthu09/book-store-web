@@ -43,13 +43,13 @@ const EditPublisher = ({
     data
   ) => {
     setOpen(false);
-    console.log(data);
+
     const response: Promise<any> = updatePubliser({
       idPub: publisher.id,
       name: data.name,
     });
     const responseData = await response;
-    console.log(responseData);
+
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",

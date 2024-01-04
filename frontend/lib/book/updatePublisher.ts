@@ -14,7 +14,7 @@ export default async function updatePubliser({
   const data = {
     name: name,
   };
-  console.log(data);
+
   const token = await getApiKey();
 
   const headers = {

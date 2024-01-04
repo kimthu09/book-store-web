@@ -90,7 +90,6 @@ const CreateTitleDialog = ({
     }
   };
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
-    console.log(data);
     const response: Promise<any> = createBookTitle({
       id: data.idBook,
       name: data.name,

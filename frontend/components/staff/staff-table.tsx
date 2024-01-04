@@ -269,7 +269,6 @@ export function StaffTable({
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data);
     let search = "";
     let active = "";
     data.filters.forEach((item) => {
@@ -421,7 +420,6 @@ export function StaffTable({
                       <Select
                         value={latestFilter}
                         onValueChange={(value) => {
-                          console.log(value);
                           append({ type: value, value: "" });
                         }}
                       >

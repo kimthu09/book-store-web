@@ -25,7 +25,7 @@ export default async function getAllBooks({
   const categoriesString = categoryIds ? `&categories=${categoryIds}` : "";
   const authorsString = authorIds ? `&authors=${authorIds}` : "";
   const url = `${endPoint}/v1/books?page=${page}${maxString}${minString}${searchString}${publisherString}${categoriesString}${authorsString}`;
-  console.log(url);
+
   const token = await getApiKey();
 
   const res = await fetch(url, {

@@ -53,7 +53,7 @@ const CreateStaffDialog = () => {
   const router = useRouter();
   const onSubmit: SubmitHandler<z.infer<typeof StaffSchema>> = async (data) => {
     setOpen(false);
-    console.log(data);
+
     let formData = new FormData();
 
     formData.append("file", image);
@@ -68,12 +68,10 @@ const CreateStaffDialog = () => {
       });
       return;
     }
-    console.log(imgRes.data);
 
     data.img = imgRes.data;
     const response: Promise<any> = createStaff({ staff: data });
     const responseData = await response;
-    console.log(responseData);
 
     if (responseData.hasOwnProperty("errorKey")) {
       toast({

@@ -50,7 +50,6 @@ const RoleDetail = ({ params }: { params: { roleId: string } }) => {
     name: "features",
   });
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
-    console.log(data);
     setReadOnly(true);
     const response: Promise<any> = updateRole({
       id: params.roleId,
@@ -58,7 +57,7 @@ const RoleDetail = ({ params }: { params: { roleId: string } }) => {
       features: data.features.map((item) => item.idFeature),
     });
     const responseData = await response;
-    console.log(responseData);
+
     if (responseData.hasOwnProperty("data")) {
       if (responseData.data) {
         toast({
@@ -108,7 +107,6 @@ const RoleDetail = ({ params }: { params: { roleId: string } }) => {
   const onError: SubmitErrorHandler<z.infer<typeof FormSchema>> = async (
     data
   ) => {
-    console.log(data);
     setReadOnly(true);
   };
 

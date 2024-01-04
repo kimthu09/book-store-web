@@ -17,7 +17,7 @@ export default async function updateRole({
     name: name,
     features: features,
   };
-  console.log(data);
+
   const token = await getApiKey();
   const headers = {
     accept: "application/json",

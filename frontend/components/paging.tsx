@@ -56,7 +56,6 @@ const Paging = ({
       <Select
         value={page}
         onValueChange={(value) => {
-          console.log(value);
           if (value != page) onPageSelect(value);
         }}
       >

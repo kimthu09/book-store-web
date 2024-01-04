@@ -17,7 +17,7 @@ export default async function getListSupplier({
   const minString = minDebt ? `&minDebt=${minDebt}` : "";
   const searchString = search ? `&search=${search}` : "";
   const url = `${endPoint}/v1/suppliers?page=${page}${maxString}${minString}${searchString}`;
-  console.log(url);
+
   const token = await getApiKey();
   const res = await fetch(url, {
     headers: {

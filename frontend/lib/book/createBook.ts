@@ -31,7 +31,7 @@ export default async function createBook({
     sellPrice: sellPrice,
     image: image,
   };
-  console.log(data);
+
   const headers = {
     accept: "application/json",
     "Content-Type": "application/json",

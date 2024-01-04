@@ -8,7 +8,7 @@ export default async function createPublisher({ name }: { name: string }) {
   const data = {
     name: name,
   };
-  console.log(data);
+
   const token = await getApiKey();
   const headers = {
     accept: "application/json",

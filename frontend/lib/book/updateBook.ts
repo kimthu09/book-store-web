@@ -13,7 +13,6 @@ export type Props = {
 export default async function updateBook(data: Props, bookId: string) {
   const url = `${endPoint}/v1/books/${bookId}/info`;
 
-  console.log(data);
   const token = await getApiKey();
   const headers = {
     accept: "application/json",

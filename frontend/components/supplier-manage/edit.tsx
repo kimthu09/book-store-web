@@ -50,7 +50,7 @@ const EditDialog = ({
     data
   ) => {
     setOpen(false);
-    console.log(data);
+
     const response: Promise<any> = updateSupplier({
       name: data.name,
       phone: data.phone,
@@ -58,7 +58,7 @@ const EditDialog = ({
       idSupplier: supplier.id,
     });
     const responseData = await response;
-    console.log(responseData);
+
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",
@@ -92,12 +92,7 @@ const EditDialog = ({
       }}
     >
       <DialogTrigger asChild>
-        <Button
-          className="lg:px-4 px-2 whitespace-nowrap "
-          onClick={() => console.log("hi there " + supplier.name)}
-        >
-          Chỉnh sửa
-        </Button>
+        <Button className="lg:px-4 px-2 whitespace-nowrap ">Chỉnh sửa</Button>
       </DialogTrigger>
       <DialogContent className="xl:max-w-[720px] max-w-[472px] p-0 bg-white">
         <DialogHeader>
@@ -139,7 +134,6 @@ const EditDialog = ({
                 type="button"
                 variant={"outline"}
                 onClick={() => {
-                  console.log(supplier);
                   reset({
                     name: supplier.name,
                     email: supplier.email,

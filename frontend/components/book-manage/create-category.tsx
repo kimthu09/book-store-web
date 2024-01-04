@@ -42,10 +42,10 @@ const CreateCategory = ({
     data
   ) => {
     setOpen(false);
-    console.log(data);
+
     const response: Promise<any> = createCategory(data);
     const responseData = await response;
-    console.log(responseData);
+
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",
