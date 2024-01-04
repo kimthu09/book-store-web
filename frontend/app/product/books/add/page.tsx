@@ -34,7 +34,6 @@ import NoRole from "@/components/no-role";
 const FormSchema = z.object({
   bookTitleId: z.string().min(1, "Vui lòng chọn một đầu sách"),
   idBook: z.string().max(12, "Tối đa 12 ký tự"),
-  name: required,
   edition: z.coerce.number().gte(1, "Lần tái bản phải lớn hơn 0"),
   publisherId: z.string().min(1, "Vui lòng chọn một nhà xuất bản"),
   listedPrice: z.coerce.number().gte(1, "Giá niêm yết phải lớn hơn 0"),
@@ -49,7 +48,6 @@ const InsertNewBook = () => {
     defaultValues: {
       bookTitleId: "",
       idBook: "",
-      name: "",
       edition: 1,
       publisherId: "",
       listedPrice: 0,
@@ -63,6 +61,7 @@ const InsertNewBook = () => {
     handleSubmit,
     control,
     setValue,
+    reset,
     trigger,
     formState: { errors },
   } = form;
@@ -103,7 +102,6 @@ const InsertNewBook = () => {
 
     const response: Promise<any> = createBook({
       id: data.idBook,
-      name: data.name,
       bookTitleId: data.bookTitleId,
       sellPrice: data.sellPrice,
       listedPrice: data.listedPrice,
@@ -209,15 +207,7 @@ const InsertNewBook = () => {
                       </span>
                     )}
                   </div>
-                  <div className="flex-1">
-                    <Label>Tên sách</Label>
-                    <Input {...register("name")}></Input>
-                    {errors.name && (
-                      <span className="error___message">
-                        {errors.name.message}
-                      </span>
-                    )}
-                  </div>
+
                   <div className="flex lg:gap-4 gap-3 xl:flex-col sm:flex-row flex-col">
                     <div className="flex-1">
                       <Label>Nhà xuất bản</Label>

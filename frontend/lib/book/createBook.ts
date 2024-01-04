@@ -4,7 +4,6 @@ import { getApiKey } from "../auth/action";
 
 export default async function createBook({
   id,
-  name,
   bookTitleId,
   edition,
   listedPrice,
@@ -13,7 +12,6 @@ export default async function createBook({
   image,
 }: {
   id?: string;
-  name: string;
   bookTitleId: string;
   edition: number;
   listedPrice: number;

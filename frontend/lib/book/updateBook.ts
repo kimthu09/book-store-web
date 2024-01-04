@@ -7,7 +7,6 @@ export type Props = {
   edition: number;
   image: string;
   listedPrice: number;
-  name: string;
   publisherId: string;
   sellPrice: number;
 };

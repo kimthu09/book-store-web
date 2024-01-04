@@ -106,7 +106,7 @@ const columns: ColumnDef<Book>[] = [
     cell: ({ row }) => (
       <div className="flex justify-end">
         <Image
-          src={row.getValue("image") || "https://picsum.photos/200"}
+          src={row.getValue("image") || "/avatar.png"}
           alt="image"
           className="object-contain h-14 w-14 min-w-[3rem]"
           width={56}

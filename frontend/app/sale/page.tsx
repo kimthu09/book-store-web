@@ -4,7 +4,7 @@ import { withAuth } from "@/lib/role/withAuth";
 export const metadata: Metadata = {
   title: "Bán hàng",
 };
-const Sale = ({
+export const Sale = ({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };

@@ -39,7 +39,6 @@ import BookTitleSelectEdit from "@/components/book-manage/book-title-select-edit
 
 const FormSchema = z.object({
   bookTitleId: z.string().min(1, "Vui lòng chọn một đầu sách"),
-  name: required,
   edition: z.coerce.number().gte(1, "Lần tái bản phải lớn hơn 0"),
   publisherId: z.string().min(1, "Vui lòng chọn một nhà xuất bản"),
   listedPrice: z.coerce.number().gte(1, "Giá niêm yết phải lớn hơn 0"),
@@ -164,7 +163,6 @@ const EditBook = ({ params }: { params: { bookId: string } }) => {
   const resetForm = () => {
     reset({
       bookTitleId: data.bookTitle.id,
-      name: data.name,
       edition: data.edition,
       publisherId: data.publisher.id,
       listedPrice: data.listedPrice,
@@ -287,15 +285,6 @@ const EditBook = ({ params }: { params: { bookId: string } }) => {
                   </div>
 
                   <div className="flex-col flex-1 flex gap-5">
-                    <div className="flex-1">
-                      <Label>Tên sách</Label>
-                      <Input readOnly={readOnly} {...register("name")}></Input>
-                      {errors.name && (
-                        <span className="error___message">
-                          {errors.name.message}
-                        </span>
-                      )}
-                    </div>
                     <div className="flex lg:gap-4 gap-3 xl:flex-col sm:flex-row flex-col">
                       <div className="flex-1">
                         <Label>Nhà xuất bản</Label>
