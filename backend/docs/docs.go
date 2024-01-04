@@ -3273,9 +3273,6 @@ const docTemplate = `{
                 "listedPrice": {
                     "type": "integer"
                 },
-                "name": {
-                    "type": "string"
-                },
                 "publisherId": {
                     "type": "string"
                 },
@@ -3298,9 +3295,6 @@ const docTemplate = `{
                 },
                 "listedPrice": {
                     "type": "integer"
-                },
-                "name": {
-                    "type": "string"
                 },
                 "publisherId": {
                     "type": "string"

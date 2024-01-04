@@ -8,12 +8,14 @@ import (
 	"gorm.io/gorm"
 )
 
-func (store *sqlStore) FindBook(
+func (store *sqlStore) FindBookTitle(
 	ctx context.Context,
 	conditions map[string]interface{},
-	moreKeys ...string) (*booktitlemodel.BookTitle, error) {
-	var data booktitlemodel.BookTitle
+	moreKeys ...string) (*booktitlemodel.SimpleBookTitle, error) {
+	var data booktitlemodel.SimpleBookTitle
 	db := store.db
+
+	db = db.Table(common.TableBookTitle)
 
 	for i := range moreKeys {
 		db = db.Preload(moreKeys[i])

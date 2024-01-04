@@ -11,17 +11,28 @@ type UpdateBookRepo interface {
 }
 
 type updateBookRepo struct {
-	store UpdateBookRepo
+	bookStore      UpdateBookRepo
+	bookTitleStore GetBookTitleStore
 }
 
-func NewUpdateBookRepo(store UpdateBookRepo) *updateBookRepo {
-	return &updateBookRepo{store: store}
+func NewUpdateBookRepo(
+	bookStore UpdateBookRepo,
+	bookTitleStore GetBookTitleStore) *updateBookRepo {
+	return &updateBookRepo{
+		bookStore:      bookStore,
+		bookTitleStore: bookTitleStore,
+	}
 }
 
 func (repo *updateBookRepo) UpdateBook(ctx context.Context, data *bookmodel.Book) error {
+	bookTitle, err := repo.bookTitleStore.FindBookTitle(ctx, map[string]interface{}{"id": data.BookTitleID})
+	if err != nil {
+		return err
+	}
+
 	dbData := bookstore.BookDBModel{
 		ID:          data.ID,
-		Name:        data.Name,
+		Name:        &bookTitle.Name,
 		BookTitleID: data.BookTitleID,
 		Image:       data.Image,
 		PublisherID: data.PublisherID,
@@ -32,8 +43,7 @@ func (repo *updateBookRepo) UpdateBook(ctx context.Context, data *bookmodel.Book
 		ImportPrice: data.ListedPrice,
 	}
 
-	err := repo.store.UpdateBook(ctx, *dbData.ID, &dbData)
-	if err != nil {
+	if err := repo.bookStore.UpdateBook(ctx, *dbData.ID, &dbData); err != nil {
 		return err
 	}
 

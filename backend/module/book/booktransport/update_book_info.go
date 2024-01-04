@@ -8,6 +8,7 @@ import (
 	"book-store-management-backend/module/book/bookmodel"
 	"book-store-management-backend/module/book/bookrepo"
 	"book-store-management-backend/module/book/bookstore"
+	"book-store-management-backend/module/booktitle/booktitlestore"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -44,9 +45,10 @@ func UpdateBookInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		db := appCtx.GetMainDBConnection().Begin()
 
-		store := bookstore.NewSQLStore(db)
+		bookStore := bookstore.NewSQLStore(db)
+		bookTitleStore := booktitlestore.NewSQLStore(db)
 
-		repo := bookrepo.NewUpdateBookRepo(store)
+		repo := bookrepo.NewUpdateBookRepo(bookStore, bookTitleStore)
 
 		biz := bookbiz.NewUpdateBookInfoBiz(repo, requester)
 

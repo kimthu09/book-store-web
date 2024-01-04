@@ -6,7 +6,6 @@ import (
 
 type ReqCreateBook struct {
 	ID          *string `json:"id" gorm:"column:id"`
-	Name        *string `json:"name" gorm:"column:name"`
 	Image       *string `json:"image" gorm:"column:imgUrl"`
 	BookTitleID *string `json:"bookTitleId" gorm:"column:booktitleid,fk"`
 	PublisherID *string `json:"publisherId" gorm:"column:publisherid,fk"`
@@ -22,9 +21,6 @@ func (*ReqCreateBook) TableName() string {
 func (b *ReqCreateBook) Validate() error {
 	if b.ID != nil && common.ValidateEmptyString(*b.ID) {
 		b.ID = nil
-	}
-	if b.Name != nil && common.ValidateEmptyString(*b.Name) {
-		b.Name = nil
 	}
 	if b.BookTitleID == nil || common.ValidateEmptyString(*b.BookTitleID) {
 		return ErrBookTitleIdInvalid
