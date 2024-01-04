@@ -1,7 +1,5 @@
-"use client";
-
 import { CheckTable } from "@/components/stock-manage/check-table";
-import { ImportTable } from "@/components/stock-manage/import-table";
+import { withAuth } from "@/lib/role/withAuth";
 import Link from "next/link";
 import React from "react";
 import { FaPlus } from "react-icons/fa";
@@ -28,5 +26,4 @@ const CheckStock = () => {
   );
 };
 
-// export default withAuth(ImportStock, ["IMPORT_NOTE_VIEW"]);
-export default CheckStock;
+export default withAuth(CheckStock, ["INVENTORY_NOTE_VIEW"]);

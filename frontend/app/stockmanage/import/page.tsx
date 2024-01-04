@@ -1,4 +1,3 @@
-"use client";
 import ImportSheet from "@/components/book-manage/import-sheet";
 import { ImportTable } from "@/components/stock-manage/import-table";
 import { Button } from "@/components/ui/button";
@@ -29,5 +28,4 @@ const ImportStock = () => {
   );
 };
 
-// export default withAuth(ImportStock, ["IMPORT_NOTE_VIEW"]);
-export default ImportStock
+export default withAuth(ImportStock, ["IMPORT_NOTE_VIEW"]);

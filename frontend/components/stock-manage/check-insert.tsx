@@ -115,8 +115,9 @@ const CheckInsert = ({
                     key={book.id}
                     className="grid grid-cols-4  p-2 lg:gap-3 gap-2 items-start"
                   >
-                    <div className="flex col-span-1 ">
+                    <div className="flex flex-col col-span-1 ">
                       <h2 className="font-medium">{value?.name}</h2>
+                      <span className="text-sm text-light">({value.id})</span>
                     </div>
                     <div className="relative p-1 col-span-1 text-right">
                       <p>{book.initial}</p>

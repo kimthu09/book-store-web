@@ -132,8 +132,9 @@ const BookInsert = ({
                     key={book.id}
                     className="grid grid-cols-5 items-center p-2 lg:gap-3 gap-2"
                   >
-                    <div className="flex col-span-2">
+                    <div className="flex flex-col col-span-2">
                       <h2 className="font-medium">{value?.name}</h2>
+                      <span className="text-sm text-light">({value.id})</span>
                     </div>
                     <div className="relative p-1 col-span-1">
                       <Input
