@@ -39,7 +39,6 @@ func (biz *createBookBiz) CreateBook(ctx context.Context, reqData *bookmodel.Req
 	}
 	data := &bookmodel.Book{
 		ID:          reqData.ID,
-		Name:        reqData.Name,
 		Image:       reqData.Image,
 		BookTitleID: reqData.BookTitleID,
 		PublisherID: reqData.PublisherID,

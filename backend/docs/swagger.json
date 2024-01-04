@@ -3267,9 +3267,6 @@
                 "listedPrice": {
                     "type": "integer"
                 },
-                "name": {
-                    "type": "string"
-                },
                 "publisherId": {
                     "type": "string"
                 },
@@ -3292,9 +3289,6 @@
                 },
                 "listedPrice": {
                     "type": "integer"
-                },
-                "name": {
-                    "type": "string"
                 },
                 "publisherId": {
                     "type": "string"

@@ -76,29 +76,31 @@ export type Invoice = {
 };
 export type ImportNote = {
   id: string;
-  supplier: {
-    id: string;
-    name: string;
-  };
   totalPrice: number;
   status: StatusNote;
-  createdBy: {
-    id: string;
-    name: string;
-  };
+  closedAt?: Date;
   closedBy?: {
     id: string;
     name: string;
   };
   createdAt: Date;
-  closedAt?: Date;
+  createdBy: {
+    id: string;
+    name: string;
+  };
+  supplier: {
+    id: string;
+    name: string;
+    phone: string;
+  };
 };
-
-export type ImportDetail = {
-  book: Book;
-  idNote: string;
-  quantity: number;
+export type ImportNoteDetail = {
+  book: {
+    id: string;
+    name: string;
+  };
   price: number;
+  qtyImport: number;
 };
 
 export type Supplier = {

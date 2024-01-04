@@ -34,7 +34,6 @@ func (biz *updateBookBiz) UpdateBook(ctx context.Context, id string, reqData *bo
 
 	data := &bookmodel.Book{
 		ID:          &id,
-		Name:        reqData.Name,
 		Image:       reqData.Image,
 		BookTitleID: reqData.BookTitleID,
 		PublisherID: reqData.PublisherID,

@@ -1,39 +1,35 @@
 import { endPoint } from "@/constants";
+import { Supplier } from "@/types";
+import useSWR from "swr";
 import { getApiKey } from "../auth/action";
 
-export type FilterProps = {
-  page: number;
-  maxDebt?: string;
-  minDebt?: string;
-  search?: string;
-};
-export default async function getAllSupplier({
-  page,
-  maxDebt,
-  minDebt,
-  search,
-}: FilterProps) {
-  const maxString = maxDebt ? `&maxDebt=${maxDebt}` : "";
-  const minString = minDebt ? `&minDebt=${minDebt}` : "";
-  const searchString = search ? `&search=${search}` : "";
-  const url = `${endPoint}/v1/suppliers?page=${page}${maxString}${minString}${searchString}`;
-  console.log(url);
-  const token = await getApiKey();
-  const res = await fetch(url, {
-    headers: {
-      accept: "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    cache: "no-store",
-  });
+export default function getAllSupplier() {
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  return res.json().then((json) => {
-    return {
-      paging: json.paging,
-      data: json.data,
-    };
-  });
+  const fetcher = async (url: string) =>
+    {
+      const token=await getApiKey()
+      return fetch(url, {
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((json) => {
+          return json.data as Supplier[];
+        });
+    }
+  const { data, error, isLoading, mutate } = useSWR(
+    `${endPoint}/v1/suppliers/all`,
+    fetcher
+  );
+
+  return {
+    suppliers: data ,
+    isLoading,
+    isError: error,
+    mutate: mutate,
+  };
 }

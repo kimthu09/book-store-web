@@ -1,3 +1,4 @@
+import { StatusNote } from "@/types";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -43,6 +44,16 @@ export const includesRoles = ({
   }
 };
 
+
+export const statusNoteToString = (status: StatusNote) => {
+  if (status === StatusNote.Inprogress) {
+    return "Đang tiến hành";
+  } else if (status === StatusNote.Done) {
+    return "Đã hoàn thành";
+  } else {
+    return "Đã hủy";
+  }
+};
 export const isAdmin = ({
   currentUser,
 }: {

@@ -5,7 +5,6 @@ import (
 )
 
 type ReqUpdateBook struct {
-	Name        *string `json:"name" gorm:"column:name"`
 	Image       *string `json:"image" gorm:"column:imgUrl"`
 	BookTitleID *string `json:"bookTitleId" gorm:"column:booktitleid,fk"`
 	PublisherID *string `json:"publisherId" gorm:"column:publisherid,fk"`
@@ -19,9 +18,6 @@ func (*ReqUpdateBook) TableName() string {
 }
 
 func (b *ReqUpdateBook) Validate() error {
-	if b.Name != nil && common.ValidateEmptyString(*b.Name) {
-		b.Name = nil
-	}
 	if b.BookTitleID != nil && common.ValidateEmptyString(*b.BookTitleID) {
 		return ErrBookTitleIdInvalid
 	}

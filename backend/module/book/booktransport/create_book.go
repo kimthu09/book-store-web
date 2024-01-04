@@ -9,6 +9,7 @@ import (
 	"book-store-management-backend/module/book/bookmodel"
 	"book-store-management-backend/module/book/bookrepo"
 	"book-store-management-backend/module/book/bookstore"
+	"book-store-management-backend/module/booktitle/booktitlestore"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -33,8 +34,10 @@ func CreateBook(appCtx appctx.AppContext) gin.HandlerFunc {
 		db := appCtx.GetMainDBConnection().Begin()
 
 		gen := generator.NewShortIdGenerator()
-		store := bookstore.NewSQLStore(db)
-		repo := bookrepo.NewCreateBookRepo(store)
+		bookStore := bookstore.NewSQLStore(db)
+		bookTitleStore := booktitlestore.NewSQLStore(db)
+
+		repo := bookrepo.NewCreateBookRepo(bookStore, bookTitleStore)
 		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
 
 		biz := bookbiz.NewCreateBookBiz(gen, repo, requester)
