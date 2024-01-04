@@ -1,4 +1,4 @@
-import getAllSupplier from "@/lib/supplier/getAllSupplier";
+import getListSupplier from "@/lib/supplier/getListSupplier";
 import { PagingProps, Supplier } from "@/types";
 import React from "react";
 import { SupplierTable } from "./table";
@@ -13,7 +13,7 @@ const TableLayout = async ({
   const minDebt = searchParams["minDebt"] ?? undefined;
   const search = searchParams["search"] ?? undefined;
   const booksData: Promise<{ paging: PagingProps; data: Supplier[] }> =
-    getAllSupplier({
+    getListSupplier({
       page: +page,
       maxDebt: maxDebt?.toString(),
       minDebt: minDebt?.toString(),

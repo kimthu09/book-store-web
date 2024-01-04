@@ -74,11 +74,11 @@ export const sidebarItems: SidebarItem[] = [
   },
   {
     title: "Quản lý kho",
-    href: "/stock",
+    href: "/stockmanage/import",
     icon: MdOutlineWarehouse,
     submenu: true,
     subMenuItems: [
-      { title: "Nhập kho", href: "/stock/import" },
+      { title: "Nhập kho", href: "/stockmanage/import" },
       { title: "Kiểm kho", href: "/stock/inventorycheck" },
     ],
   },

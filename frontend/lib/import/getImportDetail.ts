@@ -1,35 +1,36 @@
 import { endPoint } from "@/constants";
 import useSWR from "swr";
 import { getApiKey } from "../auth/action";
-import {  BookProps } from "@/types";
 
-const fetcher = async (url: string) => {
-  const token = await getApiKey();
-  return fetch(url, {
+export default function getImportNoteDetail({
+  id: id,
+
+}: {
+  id: string;
+
+}) {
+  const fetcher = async (url: string) =>
+{
+  const token=await getApiKey()
+  return     fetch(url, {
     headers: {
       accept: "application/json",
       Authorization: `Bearer ${token}`,
     },
+    cache: "no-store",
   })
     .then((res) => {
       return res.json();
     })
-    .then((json) => {
-      return {
-        paging: json.paging,
-        data: json.data as BookProps[],
-      };
-    });
-};
-
-export default function getAllBookForSale() {
+    .then((json) => json.data);
+}
   const { data, error, isLoading, mutate } = useSWR(
-    `${endPoint}/v1/books/all`,
+    `${endPoint}/v1/importNotes/${id}`,
     fetcher
   );
 
   return {
-    books: data,
+    data: data,
     isLoading,
     isError: error,
     mutate: mutate,
