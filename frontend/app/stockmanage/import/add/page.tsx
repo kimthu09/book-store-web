@@ -17,6 +17,10 @@ import { toast } from "@/components/ui/use-toast";
 import createImportNote from "@/lib/import/createImportNote";
 import { Switch } from "@/components/ui/switch";
 import { useSWRConfig } from "swr";
+import { useCurrentUser } from "@/hooks/use-user";
+import Loading from "@/components/loading";
+import { includesRoles } from "@/lib/utils";
+import NoRole from "@/components/no-role";
 
 export const FormSchema = z.object({
   id: z.string().max(12, "Tối đa 12 ký tự"),
@@ -105,94 +109,105 @@ const AddNote = () => {
       });
     }
   };
-
-  return (
-    <div className="col items-center">
-      <div className="col xl:w-4/5 w-full px-0">
-        <div className="flex justify-between gap-2">
-          <h1 className="font-medium text-xxl self-start">Thêm phiếu nhập</h1>
-        </div>
-
-        <form onSubmit={handleSubmit(onSubmit, onError)}>
-          <div className="flex flex-col gap-4">
-            <div className="flex lg:flex-row flex-col gap-4">
-              <Card className="basis-3/4">
-                <CardContent className="lg:p-6 p-4 flex lg:flex-row flex-col gap-4">
-                  <div className="flex-1">
-                    <Label>Mã phiếu</Label>
-                    <Input
-                      placeholder="Mã sinh tự động nếu để trống"
-                      {...register("id")}
-                    ></Input>
-                    {errors.id && (
-                      <span className="error___message">
-                        {errors.id.message}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <Label>Nhà cung cấp</Label>
-                    <SupplierList
-                      supplierId={supplierId}
-                      setSupplierId={handleSupplierIdSet}
-                    />
-                    {errors.supplierId && (
-                      <span className="error___message">
-                        {errors.supplierId.message}
-                      </span>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className="basis-1/4">
-                <CardContent className="lg:p-6 p-4 flex justify-between gap-4">
-                  <span className="w-2/3 text-sm font-medium">
-                    Cập nhật giá mới khi thêm
-                  </span>
-                  <Switch
-                    checked={isReplacePrice}
-                    onCheckedChange={setIsReplacePrice}
-                  />
-                </CardContent>
-              </Card>
-            </div>
-            <Card>
-              <CardContent className="lg:p-6 p-4">
-                <BookInsert form={form} />
-              </CardContent>
-            </Card>
-            <div className="flex md:justify-end justify-stretch gap-2">
-              <Button
-                className="px-4 bg-white md:flex-none flex-1"
-                disabled={!isDirty}
-                variant={"outline"}
-                type="button"
-                onClick={() => {
-                  reset({
-                    id: "",
-                    supplierId: "",
-                    details: [],
-                  });
-                  setSupplierId("");
-                }}
-              >
-                <div className="flex flex-wrap gap-2 items-center">
-                  <FiTrash2 className="text-muted-foreground" />
-                  Hủy
-                </div>
-              </Button>
-              <Button className="px-4 pl-2 md:flex-none  flex-1">
-                <div className="flex flex-wrap gap-2 items-center">
-                  <LuCheck />
-                  Thêm
-                </div>
-              </Button>
-            </div>
+  const { currentUser } = useCurrentUser();
+  if (!currentUser) {
+    return <Loading />;
+  } else if (
+    currentUser &&
+    !includesRoles({
+      currentUser: currentUser,
+      allowedFeatures: ["IMPORT_NOTE_CREATE"],
+    })
+  ) {
+    return <NoRole></NoRole>;
+  } else
+    return (
+      <div className="col items-center">
+        <div className="col xl:w-4/5 w-full px-0">
+          <div className="flex justify-between gap-2">
+            <h1 className="font-medium text-xxl self-start">Thêm phiếu nhập</h1>
           </div>
-        </form>
+
+          <form onSubmit={handleSubmit(onSubmit, onError)}>
+            <div className="flex flex-col gap-4">
+              <div className="flex lg:flex-row flex-col gap-4">
+                <Card className="basis-3/4">
+                  <CardContent className="lg:p-6 p-4 flex lg:flex-row flex-col gap-4">
+                    <div className="flex-1">
+                      <Label>Mã phiếu</Label>
+                      <Input
+                        placeholder="Mã sinh tự động nếu để trống"
+                        {...register("id")}
+                      ></Input>
+                      {errors.id && (
+                        <span className="error___message">
+                          {errors.id.message}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <Label>Nhà cung cấp</Label>
+                      <SupplierList
+                        supplierId={supplierId}
+                        setSupplierId={handleSupplierIdSet}
+                      />
+                      {errors.supplierId && (
+                        <span className="error___message">
+                          {errors.supplierId.message}
+                        </span>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card className="basis-1/4">
+                  <CardContent className="lg:p-6 p-4 flex justify-between gap-4">
+                    <span className="w-2/3 text-sm font-medium">
+                      Cập nhật giá mới khi thêm
+                    </span>
+                    <Switch
+                      checked={isReplacePrice}
+                      onCheckedChange={setIsReplacePrice}
+                    />
+                  </CardContent>
+                </Card>
+              </div>
+              <Card>
+                <CardContent className="lg:p-6 p-4">
+                  <BookInsert form={form} />
+                </CardContent>
+              </Card>
+              <div className="flex md:justify-end justify-stretch gap-2">
+                <Button
+                  className="px-4 bg-white md:flex-none flex-1"
+                  disabled={!isDirty}
+                  variant={"outline"}
+                  type="button"
+                  onClick={() => {
+                    reset({
+                      id: "",
+                      supplierId: "",
+                      details: [],
+                    });
+                    setSupplierId("");
+                  }}
+                >
+                  <div className="flex flex-wrap gap-2 items-center">
+                    <FiTrash2 className="text-muted-foreground" />
+                    Hủy
+                  </div>
+                </Button>
+                <Button className="px-4 pl-2 md:flex-none  flex-1">
+                  <div className="flex flex-wrap gap-2 items-center">
+                    <LuCheck />
+                    Thêm
+                  </div>
+                </Button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
-  );
+    );
 };
 
 export default AddNote;

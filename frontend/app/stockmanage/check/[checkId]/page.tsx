@@ -1,12 +1,15 @@
 "use client";
 import Loading from "@/components/loading";
+import NoRole from "@/components/no-role";
 import { CheckDetailTable } from "@/components/stock-manage/check-detail-table";
 import {
   ExportCheckNoteDetail,
   ExportImportNoteDetail,
 } from "@/components/stock-manage/excel-import-detail";
 import { Button } from "@/components/ui/button";
+import { useCurrentUser } from "@/hooks/use-user";
 import getCheckNoteDetail from "@/lib/import/getCheckDetail";
+import { includesRoles } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { FaRegFileExcel } from "react-icons/fa";
 const CheckDetail = ({ params }: { params: { checkId: string } }) => {
@@ -14,9 +17,18 @@ const CheckDetail = ({ params }: { params: { checkId: string } }) => {
   const { data, isLoading, isError, mutate } = getCheckNoteDetail({
     id: params.checkId,
   });
+  const { currentUser } = useCurrentUser();
   if (isError) return <div>Failed to load</div>;
-  if (isLoading) {
+  else if (!currentUser || isLoading) {
     return <Loading />;
+  } else if (
+    currentUser &&
+    !includesRoles({
+      currentUser: currentUser,
+      allowedFeatures: ["INVENTORY_NOTE_VIEW"],
+    })
+  ) {
+    return <NoRole></NoRole>;
   } else
     return (
       <div className="flex flex-col xl:mx-[20%] gap-6">

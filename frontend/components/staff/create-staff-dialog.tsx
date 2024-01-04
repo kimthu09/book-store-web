@@ -20,6 +20,8 @@ import createStaff from "@/lib/staff/createStaff";
 import { toast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 import { imageUpload } from "@/lib/staff/uploadImage";
+import { useCurrentUser } from "@/hooks/use-user";
+import { isAdmin } from "@/lib/utils";
 
 const StaffSchema = z.object({
   name: required,
@@ -122,121 +124,128 @@ const CreateStaffDialog = () => {
     }
   };
 
-  return (
-    <Dialog
-      open={open}
-      onOpenChange={(open) => {
-        if (open) {
-          reset({
-            name: "",
-            email: "",
-            phone: "",
-            address: "",
-            roleId: "",
-            img: "/avatar.png",
-          });
-          setRole("");
-          setImage(null);
-        }
-        register("roleId");
-        setOpen(open);
-      }}
-    >
-      <DialogTrigger asChild>
-        <Button className="lg:px-4 px-2 whitespace-nowrap">
-          <div className="flex flex-wrap gap-1 items-center">
-            <FaPlus />
-            Thêm nhân viên
-          </div>
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="xl:max-w-[720px] max-w-[472px] p-0 bg-white">
-        <DialogHeader>
-          <DialogTitle className="p-6 pb-0"> Thêm nhân viên</DialogTitle>
-        </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="p-6 flex flex-col gap-4 border-y-[1px]">
-            <div>
-              <Label htmlFor="nameNcc">Tên nhân viên</Label>
-              <Input id="nameNcc" {...register("name")}></Input>
-              {errors.name && (
-                <span className="error___message">{errors.name.message}</span>
-              )}
+  const { currentUser } = useCurrentUser();
+  const isAdminRole = currentUser && isAdmin({ currentUser: currentUser });
+  if (!isAdminRole) {
+    return null;
+  } else
+    return (
+      <Dialog
+        open={open}
+        onOpenChange={(open) => {
+          if (open) {
+            reset({
+              name: "",
+              email: "",
+              phone: "",
+              address: "",
+              roleId: "",
+              img: "/avatar.png",
+            });
+            setRole("");
+            setImage(null);
+          }
+          register("roleId");
+          setOpen(open);
+        }}
+      >
+        <DialogTrigger asChild>
+          <Button className="lg:px-4 px-2 whitespace-nowrap">
+            <div className="flex flex-wrap gap-1 items-center">
+              <FaPlus />
+              Thêm nhân viên
             </div>
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" {...register("email")}></Input>
-              {errors.email && (
-                <span className="error___message">{errors.email.message}</span>
-              )}
-            </div>
-            <div>
-              <Label htmlFor="address">Địa chỉ</Label>
-              <Input id="address" {...register("address")}></Input>
-              {errors.address && (
-                <span className="error___message">
-                  {errors.address.message}
-                </span>
-              )}
-            </div>
-            <div className="flex gap-4">
-              <div className="flex-1">
-                <Label htmlFor="phone">Số điện thoại</Label>
-                <Input id="phone" {...register("phone")}></Input>
-                {errors.phone && (
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="xl:max-w-[720px] max-w-[472px] p-0 bg-white">
+          <DialogHeader>
+            <DialogTitle className="p-6 pb-0"> Thêm nhân viên</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="p-6 flex flex-col gap-4 border-y-[1px]">
+              <div>
+                <Label htmlFor="nameNcc">Tên nhân viên</Label>
+                <Input id="nameNcc" {...register("name")}></Input>
+                {errors.name && (
+                  <span className="error___message">{errors.name.message}</span>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" {...register("email")}></Input>
+                {errors.email && (
                   <span className="error___message">
-                    {errors.phone.message}
+                    {errors.email.message}
                   </span>
                 )}
               </div>
-              <div className="flex-1">
-                <Label>Phân quyền</Label>
-                <RoleList role={role} setRole={handleRole} />
-                {errors.roleId && (
+              <div>
+                <Label htmlFor="address">Địa chỉ</Label>
+                <Input id="address" {...register("address")}></Input>
+                {errors.address && (
                   <span className="error___message">
-                    Không để trống trường này
+                    {errors.address.message}
                   </span>
                 )}
               </div>
-            </div>
-            <div>
-              <Label htmlFor="img">Hình ảnh</Label>
-              <div className="flex items-center gap-4">
-                <Input
-                  className="basis-1/2"
-                  id="img"
-                  type="file"
-                  onChange={handleMultipleImage}
-                ></Input>
-                <div>
-                  {image && (
-                    <img
-                      src={imagePreviews}
-                      alt={`Preview`}
-                      className="h-24 w-auto"
-                    />
+              <div className="flex gap-4">
+                <div className="flex-1">
+                  <Label htmlFor="phone">Số điện thoại</Label>
+                  <Input id="phone" {...register("phone")}></Input>
+                  {errors.phone && (
+                    <span className="error___message">
+                      {errors.phone.message}
+                    </span>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <Label>Phân quyền</Label>
+                  <RoleList role={role} setRole={handleRole} />
+                  {errors.roleId && (
+                    <span className="error___message">
+                      Không để trống trường này
+                    </span>
                   )}
                 </div>
               </div>
+              <div>
+                <Label htmlFor="img">Hình ảnh</Label>
+                <div className="flex items-center gap-4">
+                  <Input
+                    className="basis-1/2"
+                    id="img"
+                    type="file"
+                    onChange={handleMultipleImage}
+                  ></Input>
+                  <div>
+                    {image && (
+                      <img
+                        src={imagePreviews}
+                        alt={`Preview`}
+                        className="h-24 w-auto"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="p-4 flex-1 flex justify-end">
-            <div className="flex gap-4">
-              <Button
-                type="reset"
-                variant={"outline"}
-                onClick={() => setOpen(false)}
-              >
-                Huỷ
-              </Button>
+            <div className="p-4 flex-1 flex justify-end">
+              <div className="flex gap-4">
+                <Button
+                  type="reset"
+                  variant={"outline"}
+                  onClick={() => setOpen(false)}
+                >
+                  Huỷ
+                </Button>
 
-              <Button type="submit">Thêm</Button>
+                <Button type="submit">Thêm</Button>
+              </div>
             </div>
-          </div>
-        </form>
-      </DialogContent>
-    </Dialog>
-  );
+          </form>
+        </DialogContent>
+      </Dialog>
+    );
 };
 
 export default CreateStaffDialog;
