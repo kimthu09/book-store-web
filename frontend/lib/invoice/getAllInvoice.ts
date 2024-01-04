@@ -20,7 +20,7 @@ export default async function getAllInvoice({
   const searchString = search ? `&search=${search}` : "";
   const createdByString = createdBy ? `&createdBy=${createdBy}` : "";
   const url = `${endPoint}/v1/invoices?page=${page}${maxString}${minString}${searchString}${createdByString}`;
-  console.log(url);
+
   const token = await getApiKey();
   const res = await fetch(url, {
     headers: {
