@@ -37,27 +37,9 @@ import EditPublisher from "./edit-publisher";
 import { FaPen } from "react-icons/fa";
 import { useSWRConfig } from "swr";
 import { endPoint } from "@/constants";
+import { includesRoles } from "@/lib/utils";
 
 export const columns: ColumnDef<Publisher>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -89,8 +71,16 @@ export const columns: ColumnDef<Publisher>[] = [
 ];
 export function PublisherTable({
   searchParams,
+  currentUser,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
+  currentUser:
+    | {
+        name?: string | null | undefined;
+        email?: string | null | undefined;
+        image?: string | null | undefined;
+      }
+    | undefined;
 }) {
   const router = useRouter();
   const page = searchParams["page"] ?? "1";
@@ -150,16 +140,27 @@ export function PublisherTable({
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    );
+                    if (
+                      header.id.includes("actions") &&
+                      (currentUser ||
+                        (currentUser &&
+                          !includesRoles({
+                            currentUser: currentUser,
+                            allowedFeatures: ["PUBLISHER_UPDATE"],
+                          })))
+                    ) {
+                      return null;
+                    } else
+                      return (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
+                      );
                   })}
                 </TableRow>
               ))}
@@ -174,20 +175,26 @@ export function PublisherTable({
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
                         {cell.id.includes("actions") ? (
-                          <div className=" flex justify-end ">
-                            <EditPublisher
-                              publisher={row.original}
-                              handlePublisherEdited={handlePublisherEdited}
-                            >
-                              <Button
-                                size={"icon"}
-                                variant={"ghost"}
-                                className="rounded-full bg-blue-200/60 hover:bg-blue-200/90 text-primary hover:text-primary"
+                          currentUser &&
+                          includesRoles({
+                            currentUser: currentUser,
+                            allowedFeatures: ["CATEGORY_UPDATE"],
+                          }) ? (
+                            <div className=" flex justify-end ">
+                              <EditPublisher
+                                publisher={row.original}
+                                handlePublisherEdited={handlePublisherEdited}
                               >
-                                <FaPen />
-                              </Button>
-                            </EditPublisher>
-                          </div>
+                                <Button
+                                  size={"icon"}
+                                  variant={"ghost"}
+                                  className="rounded-full bg-blue-200/60 hover:bg-blue-200/90 text-primary hover:text-primary"
+                                >
+                                  <FaPen />
+                                </Button>
+                              </EditPublisher>
+                            </div>
+                          ) : null
                         ) : (
                           flexRender(
                             cell.column.columnDef.cell,
@@ -212,10 +219,7 @@ export function PublisherTable({
           </Table>
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
-          <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} trong{" "}
-            {table.getFilteredRowModel().rows.length} dòng được chọn.
-          </div>
+          <div className="flex-1 text-sm text-muted-foreground"></div>
           <Paging
             page={page.toString()}
             totalPage={totalPage}

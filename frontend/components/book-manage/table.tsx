@@ -68,6 +68,10 @@ import ChangeStatusDialog from "./change-status-dialog";
 import changeBookStatus from "@/lib/book/changeBookStatus";
 import { FaPen } from "react-icons/fa";
 import Link from "next/link";
+import { useCurrentUser } from "@/hooks/use-user";
+import Loading from "../loading";
+import { includesRoles } from "@/lib/utils";
+import NoRole from "../no-role";
 
 const columns: ColumnDef<Book>[] = [
   {
@@ -275,7 +279,6 @@ export function BookTable({
   data: Book[];
   totalPage: number;
 }) {
-  // const data: Book[] = books;
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = searchParams.get("page") ?? "1";
@@ -405,403 +408,459 @@ export function BookTable({
       }
     }
   };
-  return (
-    <div className="w-full">
-      <div className="flex items-start py-4 gap-2">
-        <div className="flex-1">
-          <div className="flex gap-2">
-            <ChangeStatusDialog
-              disabled={table.getFilteredSelectedRowModel().rows.length < 1}
-              status={statusToChange}
-              handleSetStatus={setStatusToChange}
-              handleChangeStatus={handleChangeStatus}
-            />
-            <Popover
-              open={openFilter}
-              onOpenChange={(open) => {
-                setOpenFilter(open);
-                reset({ filters: filters });
-              }}
-            >
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="lg:px-3 px-2">
-                  Lọc
-                  <LuFilter className="ml-1 h-4 w-4" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-96">
-                <form
-                  className="flex flex-col gap-4"
-                  onSubmit={handleSubmit(onSubmit)}
-                >
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">
-                      Hiển thị sách theo
-                    </p>
-                  </div>
-                  <div className="flex flex-col gap-4">
-                    {fields.map((item, index) => {
-                      const name = filterValues.find(
-                        (v) => v.type === item.type
-                      );
-                      if (item.type === "categories") {
-                        return (
-                          <div className="flex gap-2 items-start" key={item.id}>
-                            <Label className="basis-1/3">{name?.name}</Label>
-                            <div className="flex-1">
-                              <Controller
-                                control={control}
-                                name={`filters.${index}.value`}
-                                render={({ field }) => {
-                                  const checkedIds = field.value
-                                    .split("|")
-                                    .filter((item) => item != "");
-                                  return (
-                                    <CategoryList
-                                      isEdit
-                                      checkedCategory={checkedIds}
-                                      onCheckChanged={(idCate) => {
-                                        const selectedIndex =
-                                          checkedIds.findIndex(
-                                            (cate) => cate === idCate
-                                          );
-                                        if (selectedIndex > -1) {
-                                          field.onChange(
-                                            checkedIds
-                                              .splice(selectedIndex, 1)
-                                              .join("|")
-                                          );
-                                        } else {
-                                          checkedIds.push(idCate);
-                                          field.onChange(checkedIds.join("|"));
-                                        }
-                                      }}
-                                      onRemove={(index) => {
-                                        field.onChange(
-                                          checkedIds.splice(index, 1).join("|")
-                                        );
-                                      }}
-                                    />
-                                  );
-                                }}
-                              />
-                            </div>
+  const { currentUser } = useCurrentUser();
+  if (!currentUser) {
+    return <Loading></Loading>;
+  } else
+    return (
+      <div className="w-full">
+        <div className="flex items-start py-4 gap-2">
+          <div className="flex-1">
+            <div className="flex gap-2">
+              {currentUser &&
+              includesRoles({
+                currentUser: currentUser,
+                allowedFeatures: ["BOOK_UPDATE"],
+              }) ? (
+                <ChangeStatusDialog
+                  disabled={table.getFilteredSelectedRowModel().rows.length < 1}
+                  status={statusToChange}
+                  handleSetStatus={setStatusToChange}
+                  handleChangeStatus={handleChangeStatus}
+                />
+              ) : null}
 
-                            <Button
-                              variant={"ghost"}
-                              className={`px-3 `}
-                              onClick={() => {
-                                remove(index);
-                              }}
-                            >
-                              <AiOutlineClose />
-                            </Button>
-                          </div>
-                        );
-                      } else if (item.type === "publisher") {
-                        return (
-                          <div
-                            className="flex gap-2 items-center"
-                            key={item.id}
-                          >
-                            <Label className="basis-1/3">{name?.name}</Label>
-                            <div className="flex-1">
-                              <PublisherList
-                                publisherId={nxb}
-                                setPublisherId={(id) => {
-                                  setNxb(id);
-                                  update(index, {
-                                    type: item.type,
-                                    value: id,
-                                  });
-                                }}
-                              />
-                            </div>
-
-                            <Button
-                              variant={"ghost"}
-                              className={`px-3 `}
-                              onClick={() => {
-                                remove(index);
-                              }}
-                            >
-                              <AiOutlineClose />
-                            </Button>
-                          </div>
-                        );
-                      } else if (item.type === "authors") {
-                        return (
-                          <div className="flex gap-2 items-start" key={item.id}>
-                            <Label className="basis-1/3">{name?.name}</Label>
-                            <div className="flex-1">
-                              <Controller
-                                control={control}
-                                name={`filters.${index}.value`}
-                                render={({ field }) => {
-                                  const checkedIds = field.value
-                                    .split("|")
-                                    .filter((item) => item != "");
-                                  return (
-                                    <AuthorList
-                                      isEdit
-                                      checkedAuthor={checkedIds}
-                                      onCheckChanged={(id) => {
-                                        const selectedIndex =
-                                          checkedIds.findIndex(
-                                            (author) => author === id
-                                          );
-                                        if (selectedIndex > -1) {
-                                          field.onChange(
-                                            checkedIds
-                                              .splice(selectedIndex, 1)
-                                              .join("|")
-                                          );
-                                        } else {
-                                          checkedIds.push(id);
-                                          field.onChange(checkedIds.join("|"));
-                                        }
-                                      }}
-                                      onRemove={(index) => {
-                                        field.onChange(
-                                          checkedIds.splice(index, 1).join("|")
-                                        );
-                                      }}
-                                    />
-                                  );
-                                }}
-                              />
-                            </div>
-                            <Button
-                              variant={"ghost"}
-                              className={`px-3 `}
-                              onClick={() => {
-                                remove(index);
-                              }}
-                            >
-                              <AiOutlineClose />
-                            </Button>
-                          </div>
-                        );
-                      } else
-                        return (
-                          <div
-                            className="flex gap-2 items-center"
-                            key={item.id}
-                          >
-                            <Label className="basis-1/3">{name?.name}</Label>
-                            {item.type === "search" ? (
-                              <Input
-                                {...register(`filters.${index}.value`)}
-                                className="flex-1"
-                                type="text"
-                                required
-                              ></Input>
-                            ) : (
-                              <Input
-                                {...register(`filters.${index}.value`)}
-                                className="flex-1"
-                                type="number"
-                                required
-                              ></Input>
-                            )}
-                            <Button
-                              variant={"ghost"}
-                              className={`px-3 `}
-                              onClick={() => {
-                                remove(index);
-                              }}
-                            >
-                              <AiOutlineClose />
-                            </Button>
-                          </div>
-                        );
-                    })}
-                  </div>
-                  {fields.length === filterValues.length ? null : (
-                    <div className="flex justify-end pr-12">
-                      <Select
-                        value={latestFilter}
-                        onValueChange={(value) => {
-                          console.log(value);
-                          append({ type: value, value: "" });
-                        }}
-                      >
-                        <SelectTrigger className="w-[180px] flex justify-center ml-8 px-3">
-                          <SelectValue placeholder="Chọn điều kiện lọc" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            {filterValues.map((item) => {
-                              return fields.findIndex(
-                                (v) => v.type === item.type
-                              ) === -1 ? (
-                                <SelectItem key={item.type} value={item.type}>
-                                  {item.name}
-                                </SelectItem>
-                              ) : null;
-                            })}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  )}
-                  <Button type="submit" className="self-end">
+              <Popover
+                open={openFilter}
+                onOpenChange={(open) => {
+                  setOpenFilter(open);
+                  reset({ filters: filters });
+                }}
+              >
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className="lg:px-3 px-2">
                     Lọc
+                    <LuFilter className="ml-1 h-4 w-4" />
                   </Button>
-                </form>
-              </PopoverContent>
-            </Popover>
-            <div className="flex-1">
-              <Input
-                placeholder="Tìm kiếm tên sách"
-                value={
-                  (table.getColumn("name")?.getFilterValue() as string) ?? ""
-                }
-                onChange={(event) =>
-                  table.getColumn("name")?.setFilterValue(event.target.value)
-                }
-              />
-            </div>
-          </div>
-          <div className="flex gap-2 mt-2">
-            {filters.map((item, index) => {
-              const name = filterValues.find((v) => v.type === item.type);
-              return (
-                <div
-                  key={item.type}
-                  className="rounded-xl flex self-start px-3 py-1 h-fit outline-none text-sm text-primary bg-blue-100 items-center gap-1 group"
-                >
-                  <span>
-                    {name?.name}
-                    {": "}
-                    {item.value}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="px-2">
-              Cột hiển thị <ChevronDownIcon className="ml-1 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
+                </PopoverTrigger>
+                <PopoverContent className="w-96">
+                  <form
+                    className="flex flex-col gap-4"
+                    onSubmit={handleSubmit(onSubmit)}
                   >
-                    {idToName(column.id)}
-                  </DropdownMenuCheckboxItem>
+                    <div className="space-y-2">
+                      <p className="text-sm text-muted-foreground">
+                        Hiển thị sách theo
+                      </p>
+                    </div>
+                    <div className="flex flex-col gap-4">
+                      {fields.map((item, index) => {
+                        const name = filterValues.find(
+                          (v) => v.type === item.type
+                        );
+                        if (item.type === "categories") {
+                          return (
+                            <div
+                              className="flex gap-2 items-start"
+                              key={item.id}
+                            >
+                              <Label className="basis-1/3">{name?.name}</Label>
+                              <div className="flex-1">
+                                <Controller
+                                  control={control}
+                                  name={`filters.${index}.value`}
+                                  render={({ field }) => {
+                                    const checkedIds = field.value
+                                      .split("|")
+                                      .filter((item) => item != "");
+                                    return (
+                                      <CategoryList
+                                        isEdit
+                                        checkedCategory={checkedIds}
+                                        onCheckChanged={(idCate) => {
+                                          const selectedIndex =
+                                            checkedIds.findIndex(
+                                              (cate) => cate === idCate
+                                            );
+                                          if (selectedIndex > -1) {
+                                            field.onChange(
+                                              checkedIds
+                                                .splice(selectedIndex, 1)
+                                                .join("|")
+                                            );
+                                          } else {
+                                            checkedIds.push(idCate);
+                                            field.onChange(
+                                              checkedIds.join("|")
+                                            );
+                                          }
+                                        }}
+                                        onRemove={(index) => {
+                                          field.onChange(
+                                            checkedIds
+                                              .splice(index, 1)
+                                              .join("|")
+                                          );
+                                        }}
+                                      />
+                                    );
+                                  }}
+                                />
+                              </div>
+
+                              <Button
+                                variant={"ghost"}
+                                className={`px-3 `}
+                                onClick={() => {
+                                  remove(index);
+                                }}
+                              >
+                                <AiOutlineClose />
+                              </Button>
+                            </div>
+                          );
+                        } else if (item.type === "publisher") {
+                          return (
+                            <div
+                              className="flex gap-2 items-center"
+                              key={item.id}
+                            >
+                              <Label className="basis-1/3">{name?.name}</Label>
+                              <div className="flex-1">
+                                <PublisherList
+                                  publisherId={nxb}
+                                  setPublisherId={(id) => {
+                                    setNxb(id);
+                                    update(index, {
+                                      type: item.type,
+                                      value: id,
+                                    });
+                                  }}
+                                />
+                              </div>
+
+                              <Button
+                                variant={"ghost"}
+                                className={`px-3 `}
+                                onClick={() => {
+                                  remove(index);
+                                }}
+                              >
+                                <AiOutlineClose />
+                              </Button>
+                            </div>
+                          );
+                        } else if (item.type === "authors") {
+                          return (
+                            <div
+                              className="flex gap-2 items-start"
+                              key={item.id}
+                            >
+                              <Label className="basis-1/3">{name?.name}</Label>
+                              <div className="flex-1">
+                                <Controller
+                                  control={control}
+                                  name={`filters.${index}.value`}
+                                  render={({ field }) => {
+                                    const checkedIds = field.value
+                                      .split("|")
+                                      .filter((item) => item != "");
+                                    return (
+                                      <AuthorList
+                                        isEdit
+                                        checkedAuthor={checkedIds}
+                                        onCheckChanged={(id) => {
+                                          const selectedIndex =
+                                            checkedIds.findIndex(
+                                              (author) => author === id
+                                            );
+                                          if (selectedIndex > -1) {
+                                            field.onChange(
+                                              checkedIds
+                                                .splice(selectedIndex, 1)
+                                                .join("|")
+                                            );
+                                          } else {
+                                            checkedIds.push(id);
+                                            field.onChange(
+                                              checkedIds.join("|")
+                                            );
+                                          }
+                                        }}
+                                        onRemove={(index) => {
+                                          field.onChange(
+                                            checkedIds
+                                              .splice(index, 1)
+                                              .join("|")
+                                          );
+                                        }}
+                                      />
+                                    );
+                                  }}
+                                />
+                              </div>
+                              <Button
+                                variant={"ghost"}
+                                className={`px-3 `}
+                                onClick={() => {
+                                  remove(index);
+                                }}
+                              >
+                                <AiOutlineClose />
+                              </Button>
+                            </div>
+                          );
+                        } else
+                          return (
+                            <div
+                              className="flex gap-2 items-center"
+                              key={item.id}
+                            >
+                              <Label className="basis-1/3">{name?.name}</Label>
+                              {item.type === "search" ? (
+                                <Input
+                                  {...register(`filters.${index}.value`)}
+                                  className="flex-1"
+                                  type="text"
+                                  required
+                                ></Input>
+                              ) : (
+                                <Input
+                                  {...register(`filters.${index}.value`)}
+                                  className="flex-1"
+                                  type="number"
+                                  required
+                                ></Input>
+                              )}
+                              <Button
+                                variant={"ghost"}
+                                className={`px-3 `}
+                                onClick={() => {
+                                  remove(index);
+                                }}
+                              >
+                                <AiOutlineClose />
+                              </Button>
+                            </div>
+                          );
+                      })}
+                    </div>
+                    {fields.length === filterValues.length ? null : (
+                      <div className="flex justify-end pr-12">
+                        <Select
+                          value={latestFilter}
+                          onValueChange={(value) => {
+                            console.log(value);
+                            append({ type: value, value: "" });
+                          }}
+                        >
+                          <SelectTrigger className="w-[180px] flex justify-center ml-8 px-3">
+                            <SelectValue placeholder="Chọn điều kiện lọc" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              {filterValues.map((item) => {
+                                return fields.findIndex(
+                                  (v) => v.type === item.type
+                                ) === -1 ? (
+                                  <SelectItem key={item.type} value={item.type}>
+                                    {item.name}
+                                  </SelectItem>
+                                ) : null;
+                              })}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+                    <Button type="submit" className="self-end">
+                      Lọc
+                    </Button>
+                  </form>
+                </PopoverContent>
+              </Popover>
+              <div className="flex-1">
+                <Input
+                  placeholder="Tìm kiếm tên sách"
+                  value={
+                    (table.getColumn("name")?.getFilterValue() as string) ?? ""
+                  }
+                  onChange={(event) =>
+                    table.getColumn("name")?.setFilterValue(event.target.value)
+                  }
+                />
+              </div>
+            </div>
+            <div className="flex gap-2 mt-2">
+              {filters.map((item, index) => {
+                const name = filterValues.find((v) => v.type === item.type);
+                return (
+                  <div
+                    key={item.type}
+                    className="rounded-xl flex self-start px-3 py-1 h-fit outline-none text-sm text-primary bg-blue-100 items-center gap-1 group"
+                  >
+                    <span>
+                      {name?.name}
+                      {": "}
+                      {item.value}
+                    </span>
+                  </div>
                 );
               })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <div className="rounded-md border overflow-x-auto flex-1 min-w-full max-w-[50vw]">
-        <Table className="min-w-full">
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
+            </div>
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="px-2">
+                Cột hiển thị <ChevronDownIcon className="ml-1 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
                   return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {idToName(column.id)}
+                    </DropdownMenuCheckboxItem>
                   );
                 })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <Fragment key={row.id}>
-                  <TableRow data-state={row.getIsSelected() && "selected"}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell
-                        key={cell.id}
-                        onClick={() => {
-                          if (
-                            !cell.id.includes("select") &&
-                            !cell.id.includes("actions")
-                          ) {
-                            table.resetExpanded();
-                            if (!row.getIsExpanded()) {
-                              row.toggleExpanded();
-                            }
-                          }
-                        }}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-
-                  <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className={`w-full p-0 border-none ${
-                        row.getIsExpanded() ? "table-cell" : "hidden"
-                      }`}
-                    >
-                      <BookEditInline currentBook={row.original} />
-                    </TableCell>
-                  </TableRow>
-                </Fragment>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  Không tìm thấy kết quả.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} trong{" "}
-          {table.getFilteredRowModel().rows.length} dòng được chọn.{" "}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-        <Paging
-          page={page}
-          totalPage={totalPage}
-          onNavigateBack={() =>
-            router.push(`/product/books?page=${Number(page) - 1}`)
-          }
-          onNavigateNext={() =>
-            router.push(`/product/books?page=${Number(page) + 1}`)
-          }
-          onPageSelect={(selectedPage) =>
-            router.push(`/product/books?page=${selectedPage}`)
-          }
-          onNavigateLast={() => router.push(`/product/books?page=${totalPage}`)}
-          onNavigateFirst={() => router.push(`/product/books?page=${1}`)}
-        />
+        <div className="rounded-md border overflow-x-auto flex-1 min-w-full max-w-[50vw]">
+          <Table className="min-w-full">
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    if (
+                      header.id.includes("actions") &&
+                      (currentUser ||
+                        (currentUser &&
+                          !includesRoles({
+                            currentUser: currentUser,
+                            allowedFeatures: ["BOOK_UPDATE"],
+                          })))
+                    ) {
+                      return null;
+                    } else
+                      return (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
+                      );
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <Fragment key={row.id}>
+                    <TableRow data-state={row.getIsSelected() && "selected"}>
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell
+                          key={cell.id}
+                          onClick={() => {
+                            if (
+                              !cell.id.includes("select") &&
+                              !cell.id.includes("actions")
+                            ) {
+                              table.resetExpanded();
+                              if (!row.getIsExpanded()) {
+                                row.toggleExpanded();
+                              }
+                            }
+                          }}
+                        >
+                          {cell.id.includes("actions") ? (
+                            currentUser &&
+                            includesRoles({
+                              currentUser: currentUser,
+                              allowedFeatures: ["BOOK_UPDATE"],
+                            }) ? (
+                              <div className=" flex justify-end ">
+                                <Link
+                                  href={`/product/books/${row.original.id}`}
+                                  title="Chỉnh sửa"
+                                  className="rounded-full p-2 bg-blue-200/60 hover:bg-blue-200/90 text-primary hover:text-primary"
+                                >
+                                  <FaPen />
+                                </Link>
+                              </div>
+                            ) : null
+                          ) : (
+                            flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell
+                        colSpan={columns.length}
+                        className={`w-full p-0 border-none ${
+                          row.getIsExpanded() ? "table-cell" : "hidden"
+                        }`}
+                      >
+                        <BookEditInline currentBook={row.original} />
+                      </TableCell>
+                    </TableRow>
+                  </Fragment>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    Không tìm thấy kết quả.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <div className="flex-1 text-sm text-muted-foreground">
+            {table.getFilteredSelectedRowModel().rows.length} trong{" "}
+            {table.getFilteredRowModel().rows.length} dòng được chọn.{" "}
+          </div>
+          <Paging
+            page={page}
+            totalPage={totalPage}
+            onNavigateBack={() =>
+              router.push(`/product/books?page=${Number(page) - 1}`)
+            }
+            onNavigateNext={() =>
+              router.push(`/product/books?page=${Number(page) + 1}`)
+            }
+            onPageSelect={(selectedPage) =>
+              router.push(`/product/books?page=${selectedPage}`)
+            }
+            onNavigateLast={() =>
+              router.push(`/product/books?page=${totalPage}`)
+            }
+            onNavigateFirst={() => router.push(`/product/books?page=${1}`)}
+          />
+        </div>
       </div>
-    </div>
-  );
+    );
 }

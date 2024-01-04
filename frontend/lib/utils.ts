@@ -54,3 +54,30 @@ export const statusNoteToString = (status: StatusNote) => {
     return "Đã hủy";
   }
 };
+export const isAdmin = ({
+  currentUser,
+}: {
+  currentUser:
+    | {
+        name?: string | null | undefined;
+        email?: string | null | undefined;
+        image?: string | null | undefined;
+      }
+    | undefined;
+}) => {
+  try {
+    if (currentUser) {
+      const json = JSON.stringify(currentUser);
+      const user = JSON.parse(json);
+      const roleId = user.data.role.id;
+      if (roleId === "admin") {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
+  } catch (error) {
+    throw new Error("Có lỗi xảy ra");
+  }
+};

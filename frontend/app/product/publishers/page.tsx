@@ -2,6 +2,7 @@ import { PublisherTable } from "@/components/book-manage/publisher-table";
 
 import { Metadata } from "next";
 import TableLayout from "./table-layout";
+import { withAuth } from "@/lib/role/withAuth";
 export const metadata: Metadata = {
   title: "Nhà xuất bản",
 };
@@ -13,4 +14,4 @@ const PublisherPage = ({
   return <TableLayout searchParams={searchParams} />;
 };
 
-export default PublisherPage;
+export default withAuth(PublisherPage, ["PUBLISHER_VIEW"]);

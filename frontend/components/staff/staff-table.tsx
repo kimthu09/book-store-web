@@ -54,6 +54,8 @@ import Image from "next/image";
 import ChangeStatusDialog from "./change-status-dialog";
 import { toast } from "../ui/use-toast";
 import changeStaffStatus from "@/lib/staff/changeStaffStatus";
+import { useCurrentUser } from "@/hooks/use-user";
+import { includesRoles } from "@/lib/utils";
 
 function idToName(id: string) {
   if (id === "name") {
@@ -333,17 +335,27 @@ export function StaffTable({
       setStatus(false);
     }
   }, [active]);
+  const { currentUser } = useCurrentUser();
+  const canChangeStatus =
+    currentUser &&
+    includesRoles({
+      currentUser: currentUser,
+      allowedFeatures: ["USER_UPDATE_STATE"],
+    });
   return (
     <div className="w-full flex flex-col overflow-x-auto">
       <div className="flex items-start py-4 gap-2">
         <div className="flex-1">
           <div className="flex gap-2">
-            <ChangeStatusDialog
-              disabled={table.getFilteredSelectedRowModel().rows.length < 1}
-              status={statusToChange}
-              handleSetStatus={setStatusToChange}
-              handleChangeStatus={handleChangeStatus}
-            />
+            {canChangeStatus ? (
+              <ChangeStatusDialog
+                disabled={table.getFilteredSelectedRowModel().rows.length < 1}
+                status={statusToChange}
+                handleSetStatus={setStatusToChange}
+                handleChangeStatus={handleChangeStatus}
+              />
+            ) : null}
+
             <Popover
               open={openFilter}
               onOpenChange={(open) => {
