@@ -33,16 +33,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { FilterValue, ImportNote, StatusNote } from "@/types";
+import { CheckNote, FilterValue, StatusNote } from "@/types";
 
 import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
-import { statusNoteToString, toVND } from "@/lib/utils";
-import { ExportImportNote } from "./excel-import-list";
+import { statusNoteToString } from "@/lib/utils";
 import { toast } from "../ui/use-toast";
 import { useRouter, useSearchParams } from "next/navigation";
-import { BiBox } from "react-icons/bi";
-import getAllImportNote from "@/lib/import/getAllImport";
 import Loading from "../loading";
 import Paging, { PagingProps } from "../paging";
 import {
@@ -57,13 +54,14 @@ import { AiOutlineClose } from "react-icons/ai";
 import { FilterDatePicker } from "./date-picker";
 import StaffList from "../staff-list";
 import getAllImportNoteForExcel from "@/lib/import/getAllImportNoteForExcel";
-import { getApiKey } from "@/lib/auth/action";
 import SupplierList from "../supplier-list";
-import StatusList from "../status-list";
 import ExportDialog from "../supplier-manage/export-dialog";
 import StatusNoteList from "../status-note-list";
+import getAllCheckNote from "@/lib/check/getAllImport";
+import { ExportCheckNote } from "./excel-check-list";
+import getAllCheckNoteForExcel from "@/lib/import/getAllCheckNoteForExcel";
 
-export const columns: ColumnDef<ImportNote>[] = [
+export const columns: ColumnDef<CheckNote>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -93,7 +91,7 @@ export const columns: ColumnDef<ImportNote>[] = [
     size: 4,
   },
   {
-    accessorKey: "totalPrice",
+    accessorKey: "qtyDifferent",
     header: ({ column }) => (
       <div className="flex justify-end whitespace-normal">
         <Button
@@ -102,51 +100,41 @@ export const columns: ColumnDef<ImportNote>[] = [
           className="pl-1 pr-2"
         >
           <CaretSortIcon className="h-4 w-4" />
-          <span className="font-semibold">Giá trị nhập</span>
+          <span className="font-semibold">Số lượng thay đổi</span>
         </Button>
       </div>
     ),
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("totalPrice"));
-
       return (
         <div className="text-right font-medium">
-          {toVND(amount)}
-          <div className="text-sm flex font-light items-center justify-end gap-1">
-            {row.original.supplier.name} <BiBox className="h-4 w-4" />
-          </div>
+          {row.original.qtyDifferent}
         </div>
       );
     },
     size: 4,
   },
   {
-    accessorKey: "status",
-    header: () => {
-      return <div className="font-semibold flex justify-end">Trạng thái</div>;
-    },
+    accessorKey: "qtyAfterAdjust",
+    header: ({ column }) => (
+      <div className="flex justify-end whitespace-normal">
+        <Button
+          variant={"ghost"}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="pl-1 pr-2"
+        >
+          <CaretSortIcon className="h-4 w-4" />
+          <span className="font-semibold">Tổng số lượng sau thay đổi</span>
+        </Button>
+      </div>
+    ),
     cell: ({ row }) => {
-      const status = row.getValue("status");
       return (
-        <div className=" flex justify-end ">
-          <div
-            className={`leading-6 text-sm rounded-full px-2 text-center whitespace-nowrap ${
-              status === StatusNote.Done
-                ? "bg-green-100 text-green-700"
-                : status === StatusNote.Inprogress
-                ? "bg-blue-100 text-blue-700"
-                : "bg-rose-100 text-rose-500"
-            }`}
-          >
-            {status === StatusNote.Done
-              ? "Hoàn thành"
-              : status === StatusNote.Inprogress
-              ? "Đang tiến hành"
-              : "Đã hủy"}
-          </div>
+        <div className="text-right font-medium">
+          {row.original.qtyAfterAdjust}
         </div>
       );
     },
+    size: 4,
   },
   {
     accessorKey: "createdAt",
@@ -177,77 +165,21 @@ export const columns: ColumnDef<ImportNote>[] = [
     sortingFn: "datetime",
     size: 5,
   },
-  {
-    accessorKey: "closedAt",
-    header: ({ column }) => {
-      return (
-        <div className="flex justify-end">
-          <Button
-            className="p-2 justify-end whitespace-normal"
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            <CaretSortIcon className="h-4 w-4" />
-            <span className="font-semibold">Ngày đóng</span>
-          </Button>
-        </div>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="text-right">
-        {row.original.closedAt && row.original.closedBy ? (
-          <div className="leading-6 flex flex-col text-right ">
-            <span>
-              {new Date(row.original.closedAt).toLocaleDateString("vi-VN")}
-            </span>
-            <span className="font-light">{row.original.closedBy.name}</span>
-          </div>
-        ) : (
-          "Chưa đóng phiếu"
-        )}
-      </div>
-    ),
-
-    sortingFn: "datetime",
-    size: 2,
-  },
 ];
-export function ImportTable() {
+export function CheckTable() {
   const searchParams = useSearchParams();
   const page = searchParams.get("page") ?? "1";
-  const minPrice = searchParams.get("minPrice") ?? undefined;
-  const maxPrice = searchParams.get("maxPrice") ?? undefined;
   const createdAtFrom = searchParams.get("createdAtFrom") ?? undefined;
   const createdAtTo = searchParams.get("createdAtTo") ?? undefined;
 
   const search = searchParams.get("search") ?? undefined;
-  const closedAtFrom = searchParams.get("closedAtFrom") ?? undefined;
-  const closedAtTo = searchParams.get("closedAtTo") ?? undefined;
 
   const createdBy = searchParams.get("createdBy") ?? undefined;
-  const closedBy = searchParams.get("closedBy") ?? undefined;
-  const supplier = searchParams.get("supplier") ?? undefined;
-  const statusSearch = searchParams.get("status") ?? undefined;
   useEffect(() => {
     if (createdBy) {
       setStaffCreate(createdBy);
     }
   }, [createdBy]);
-  useEffect(() => {
-    if (closedBy) {
-      setStaffClose(closedBy);
-    }
-  }, [closedBy]);
-  useEffect(() => {
-    if (supplier) {
-      setSupplierId(supplier);
-    }
-  }, [supplier]);
-  useEffect(() => {
-    if (statusSearch) {
-      setStatus(statusSearch);
-    }
-  }, [statusSearch]);
   const [latestFilter, setLatestFilter] = useState("");
   const [staffCreate, setStaffCreate] = useState("");
   const [staffClose, setStaffClose] = useState("");
@@ -255,12 +187,6 @@ export function ImportTable() {
   const [status, setStatus] = useState("");
   let filters = [{ type: "", value: "" }];
   filters.pop();
-  if (maxPrice) {
-    filters = filters.concat({ type: "maxPrice", value: maxPrice });
-  }
-  if (minPrice) {
-    filters = filters.concat({ type: "minPrice", value: minPrice });
-  }
   if (search) {
     filters = filters.concat({ type: "search", value: search });
   }
@@ -270,24 +196,7 @@ export function ImportTable() {
   if (createdAtTo) {
     filters = filters.concat({ type: "createdAtTo", value: createdAtTo });
   }
-  if (closedAtFrom) {
-    filters = filters.concat({ type: "closedAtFrom", value: closedAtFrom });
-  }
-  if (closedAtTo) {
-    filters = filters.concat({ type: "closedAtTo", value: closedAtTo });
-  }
-  if (createdBy) {
-    filters = filters.concat({ type: "createdBy", value: createdBy });
-  }
-  if (closedBy) {
-    filters = filters.concat({ type: "closedBy", value: closedBy });
-  }
-  if (supplier) {
-    filters = filters.concat({ type: "supplier", value: supplier });
-  }
-  if (statusSearch) {
-    filters = filters.concat({ type: "status", value: statusSearch });
-  }
+
   let stringToFilter = "";
   filters.forEach((item) => {
     stringToFilter = stringToFilter.concat(`&${item.type}=${item.value}`);
@@ -298,7 +207,7 @@ export function ImportTable() {
     data: response,
     isLoading,
     isError,
-  } = getAllImportNote({
+  } = getAllCheckNote({
     page: page,
     filterString: stringToFilter,
   });
@@ -308,16 +217,12 @@ export function ImportTable() {
 
   const filterValues = [
     { type: "search", name: "Từ khoá" },
-    { type: "minPrice", name: "Giá trị nhỏ nhất" },
-    { type: "maxPrice", name: "Giá trị lớn nhất" },
+
     { type: "createdAtFrom", name: "Tạo từ ngày" },
-    { type: "closedAtFrom", name: "Đóng từ ngày" },
+
     { type: "createdAtTo", name: "Tạo đến ngày" },
-    { type: "closedAtTo", name: "Đóng đến ngày" },
+
     { type: "createdBy", name: "Mã người tạo" },
-    { type: "closedBy", name: "Mã người đóng" },
-    { type: "supplier", name: "Mã nhà cung cấp" },
-    { type: "status", name: "Trạng thái" },
   ];
 
   const { register, handleSubmit, reset, control, getValues } =
@@ -358,28 +263,28 @@ export function ImportTable() {
   const handleExport = async () => {
     if (exportOption === "all") {
       const importNoteData: Promise<{
-        data: ImportNote[];
+        data: CheckNote[];
         paging: PagingProps;
-      }> = getAllImportNoteForExcel({ page: "1", limit: 10000 });
+      }> = getAllCheckNoteForExcel({ page: "1", limit: 10000 });
       const notesToExport = await importNoteData;
       if (notesToExport.data.length < 1) {
         toast({
           variant: "destructive",
           title: "Có lỗi",
-          description: "Không có phiếu nhập nào",
+          description: "Không có phiếu kiểm kho nào",
         });
       } else {
-        ExportImportNote(notesToExport.data, `Danh sách phiếu nhập.xlsx`);
+        ExportCheckNote(notesToExport.data, `Danh sách phiếu kiểm kho.xlsx`);
       }
     } else {
       if (table.getFilteredSelectedRowModel().rows.length < 1) {
         toast({
           variant: "destructive",
           title: "Có lỗi",
-          description: "Không có phiếu nhập nào",
+          description: "Không có phiếu kiểm kho nào",
         });
       } else {
-        ExportImportNote(
+        ExportCheckNote(
           table.getFilteredSelectedRowModel().rows.map((row) => row.original),
           `Danh sách phiếu nhập.xlsx`
         );
@@ -391,7 +296,7 @@ export function ImportTable() {
     data.filters.forEach((item) => {
       filterString = filterString.concat(`&${item.type}=${item.value}`);
     });
-    router.push(`/stockmanage/import?page=${Number(page)}${filterString}`);
+    router.push(`/stockmanage/check?page=${Number(page)}${filterString}`);
   };
   if (isError) return <div>Failed to load</div>;
   else if (isLoading) {
@@ -612,7 +517,7 @@ export function ImportTable() {
           </div>
         </div>
 
-        <div className="rounded-md border overflow-x-auto flex-1 min-w-full max-w-[50vw]">
+        <div className="rounded-md border w-full">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -645,7 +550,7 @@ export function ImportTable() {
                         onClick={() => {
                           if (!cell.id.includes("select")) {
                             router.push(
-                              `/stockmanage/import/${row.getValue("id")}`
+                              `/stockmanage/check/${row.getValue("id")}`
                             );
                           }
                         }}
@@ -679,18 +584,18 @@ export function ImportTable() {
           <Paging
             page={page}
             onNavigateNext={() =>
-              router.push(`/stockmanage/import?page=${+page + 1}`)
+              router.push(`/stockmanage/check?page=${+page + 1}`)
             }
             onNavigateBack={() =>
-              router.push(`/stockmanage/import?page=${+page - 1}`)
+              router.push(`/stockmanage/check?page=${+page - 1}`)
             }
             totalPage={totalPage}
             onPageSelect={(selectedPage) => {
-              router.push(`/stockmanage/import?page=${selectedPage}`);
+              router.push(`/stockmanage/check?page=${selectedPage}`);
             }}
-            onNavigateFirst={() => router.push(`/stockmanage/import?page=${1}`)}
+            onNavigateFirst={() => router.push(`/stockmanage/check?page=${1}`)}
             onNavigateLast={() =>
-              router.push(`/stockmanage/import?page=${totalPage}`)
+              router.push(`/stockmanage/check?page=${totalPage}`)
             }
           />
         </div>

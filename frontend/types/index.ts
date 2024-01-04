@@ -102,7 +102,25 @@ export type ImportNoteDetail = {
   price: number;
   qtyImport: number;
 };
-
+export type CheckNoteDetail = {
+  book: {
+    id: string;
+    name: string;
+  };
+  difference: number;
+  final: number;
+  initial: number;
+};
+export type CheckNote = {
+  id: string;
+  qtyAfterAdjust: number;
+  qtyDifferent: number;
+  createdAt: Date;
+  createdBy: {
+    id: string;
+    name: string;
+  };
+};
 export type Supplier = {
   id: string;
   name: string;

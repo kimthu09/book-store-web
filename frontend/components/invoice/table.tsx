@@ -298,10 +298,12 @@ const InvoiceTable = ({
                         <div className="flex gap-2 items-center" key={item.id}>
                           <Label className="basis-1/4">{name?.name}</Label>
                           {item.type === "createdBy" ? (
-                            <StaffList
-                              staff={staff}
-                              setStaff={handleSetStaff}
-                            />
+                            <div className="flex-1">
+                              <StaffList
+                                staff={staff}
+                                setStaff={handleSetStaff}
+                              />
+                            </div>
                           ) : item.type === "search" ? (
                             <Input
                               {...register(`filters.${index}.value`)}

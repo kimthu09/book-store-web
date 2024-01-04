@@ -1,5 +1,5 @@
 import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { DialogClose, DialogContent, DialogTitle } from "../ui/dialog";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
@@ -16,8 +16,9 @@ const ExportDialog = ({
   isImport: boolean;
   style?: string;
 }) => {
+  const [open, setOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           variant={"outline"}
@@ -27,9 +28,7 @@ const ExportDialog = ({
         </Button>
       </DialogTrigger>
       <DialogContent className="p-0">
-        <DialogTitle className="p-6 pb-0">
-          Xuất danh sách {isImport ? "phiếu nhập" : "phiếu nợ"}
-        </DialogTitle>
+        <DialogTitle className="p-6 pb-0">Xuất danh sách</DialogTitle>
         <div className="flex flex-col border-y-[1px] p-6 gap-4">
           <Label>Giới hạn kết quả xuất</Label>
           <RadioGroup
@@ -51,17 +50,27 @@ const ExportDialog = ({
           </RadioGroup>
         </div>
 
-        <DialogClose className="ml-auto p-6 pt-0">
+        <div className="ml-auto p-6 pt-0">
           <div className="flex gap-4">
-            <Button type="button" variant={"outline"}>
+            <Button
+              type="button"
+              variant={"outline"}
+              onClick={() => setOpen(false)}
+            >
               Thoát
             </Button>
 
-            <Button type="button" onClick={() => handleExport()}>
+            <Button
+              type="button"
+              onClick={() => {
+                handleExport();
+                setOpen(false);
+              }}
+            >
               Hoàn tất
             </Button>
           </div>
-        </DialogClose>
+        </div>
       </DialogContent>
     </Dialog>
   );
