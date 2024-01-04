@@ -46,11 +46,11 @@ func handleFilter(
 		}
 		if filter.DateFromCreatedAt != nil {
 			timeFrom := time.Unix(*filter.DateFromCreatedAt, 0)
-			db = db.Where("createdAt >= ?", timeFrom)
+			db = db.Where("InventoryCheckNote.createdAt >= ?", timeFrom)
 		}
 		if filter.DateToCreatedAt != nil {
 			timeTo := time.Unix(*filter.DateToCreatedAt, 0)
-			db = db.Where("createdAt <= ?", timeTo)
+			db = db.Where("InventoryCheckNote.createdAt <= ?", timeTo)
 		}
 		if filter.CreatedBy != nil {
 			db = db.
