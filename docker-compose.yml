@@ -3,6 +3,7 @@ services:
   bsm-mysql:
     container_name: bsm-mysql
     image: mysql:8.0
+    restart: always
     cap_add:
       - SYS_NICE
     volumes:
