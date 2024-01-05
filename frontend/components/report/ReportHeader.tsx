@@ -65,11 +65,6 @@ const ReportHeader = (props: any) => {
                     timeTo: (date?.to?.getTime() ?? 0) / 1000
                 })}
                     className='px-5'>{firstAction}</Button>
-                <Button
-                    type="button"
-                    className='pl-[20px] pr-[20px] bg-white border border-primary text-primary hover:text-primary' variant={"outline"}
-                >{secondAction}
-                </Button>
             </div>
         </div>
     );

@@ -72,6 +72,33 @@ export const columns: ColumnDef<DebtReportDetail>[] = [
         },
     },
     {
+        accessorKey: "debt",
+        header: ({ column }) => (
+            <div className="flex justify-end">
+                <Button
+                    variant={"ghost"}
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    className="p-1"
+                >
+                    <span className="font-semibold">Nợ</span>
+
+                    <CaretSortIcon className="h-4 w-4" />
+                </Button>
+            </div>
+        ),
+        cell: ({ row }) => {
+            const amount = parseFloat(row.getValue("debt"));
+
+            // Format the amount as a dollar amount
+            const formatted = new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+            }).format(amount);
+
+            return <div className="text-right font-medium">{formatted}</div>;
+        },
+    },
+    {
         accessorKey: "pay",
         header: ({ column }) => (
             <div className="flex justify-end">
@@ -80,7 +107,7 @@ export const columns: ColumnDef<DebtReportDetail>[] = [
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     className="p-1"
                 >
-                    <span className="font-semibold">Chênh lệch</span>
+                    <span className="font-semibold">Trả nợ</span>
 
                     <CaretSortIcon className="h-4 w-4" />
                 </Button>
