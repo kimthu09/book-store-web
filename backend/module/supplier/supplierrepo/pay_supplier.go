@@ -73,7 +73,13 @@ func (repo *paySupplierRepo) UpdateDebtSupplier(
 	ctx context.Context,
 	supplierId string,
 	data *suppliermodel.ReqUpdateDebtSupplier) error {
-	if err := repo.supplierStore.UpdateSupplierDebt(ctx, supplierId, data); err != nil {
+	newUpdate := -*data.QuantityUpdate
+	newData := suppliermodel.ReqUpdateDebtSupplier{
+		Id:             data.Id,
+		QuantityUpdate: &newUpdate,
+		CreatedBy:      data.CreatedBy,
+	}
+	if err := repo.supplierStore.UpdateSupplierDebt(ctx, supplierId, &newData); err != nil {
 		return err
 	}
 	return nil
