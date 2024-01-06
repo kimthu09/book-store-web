@@ -56,7 +56,7 @@ func handleFilter(
 		if filter.CreatedBy != nil {
 			db = db.
 				Joins("JOIN MUser AS CreatedByUser ON Invoice.createdBy = CreatedByUser.id").
-				Where("CreatedByUser.id = ?", *filter.CreatedBy)
+				Where("CreatedByUser.name LIKE ?", "%"+*filter.CreatedBy+"%")
 		}
 	}
 }

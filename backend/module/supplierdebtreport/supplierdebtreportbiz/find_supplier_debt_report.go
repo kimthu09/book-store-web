@@ -11,6 +11,7 @@ import (
 	"book-store-management-backend/module/supplierdebtreportdetail/supplierdebtreportdetailmodel"
 	"context"
 	"errors"
+	"fmt"
 	"time"
 )
 
@@ -139,6 +140,7 @@ func (biz *findSupplierDebtReportBiz) FindSupplierDebtReport(
 				payAmount += supplierDebt.Quantity
 			}
 		}
+		fmt.Println(debtAmount)
 
 		initial := 0
 		if nearly, err := biz.supplierDebtStore.GetNearlySupplierDebt(
@@ -162,7 +164,7 @@ func (biz *findSupplierDebtReportBiz) FindSupplierDebtReport(
 			initial = final - debtAmount - payAmount
 		}
 
-		if initial != 0 && (debtAmount != 0 || payAmount != 0) {
+		if initial != 0 || debtAmount != 0 || payAmount != 0 {
 			detailCreate := supplierdebtreportdetailmodel.ReqCreateSupplierDebtReportDetail{
 				ReportId:   reportId,
 				SupplierId: supplier.Id,
