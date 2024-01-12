@@ -269,6 +269,7 @@ const EditBook = ({ params }: { params: { bookId: string } }) => {
                           className="h-[120px] w-auto  object-cover"
                           height={120}
                           width={120}
+                          placeholder='blur'
                         ></Image>
                       )}
                     </div>

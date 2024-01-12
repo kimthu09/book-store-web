@@ -11,6 +11,7 @@ import (
 	"book-store-management-backend/module/invoice/invoicerepo"
 	"book-store-management-backend/module/invoice/invoicestore"
 	"book-store-management-backend/module/invoicedetail/invoicedetailstore"
+	"book-store-management-backend/module/shopgeneral/shopgeneralstore"
 	"book-store-management-backend/module/stockchangehistory/stockchangehistorystore"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -43,19 +44,21 @@ func CreateInvoice(appCtx appctx.AppContext) gin.HandlerFunc {
 		invoiceDetailStore := invoicedetailstore.NewSQLStore(db)
 		bookStore := bookstore.NewSQLStore(db)
 		stockChangeHistoryStore := stockchangehistorystore.NewSQLStore(db)
+		shopGeneralStore := shopgeneralstore.NewSQLStore(db)
 
 		repo := invoicerepo.NewCreateInvoiceRepo(
 			invoiceStore,
 			invoiceDetailStore,
 			bookStore,
 			stockChangeHistoryStore,
+			shopGeneralStore,
 		)
 
 		gen := generator.NewShortIdGenerator()
 
 		biz := invoicebiz.NewCreateInvoiceBiz(gen, repo, requester)
 
-		resInvoice, err := biz.CreateInvoice(c.Request.Context(), &data)
+		err := biz.CreateInvoice(c.Request.Context(), &data)
 		if err != nil {
 			db.Rollback()
 			panic(err)
@@ -66,6 +69,24 @@ func CreateInvoice(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse(resInvoice.ResCreateInvoiceData))
+		shopStore := shopgeneralstore.NewSQLStore(appCtx.GetMainDBConnection())
+
+		seeDetailRepo := invoicerepo.NewSeeInvoiceDetailRepo(invoiceDetailStore, invoiceStore)
+
+		seeDetailBiz := invoicebiz.NewSeeDetailInvoiceBiz(
+			seeDetailRepo, shopStore, requester)
+
+		result, err := seeDetailBiz.SeeDetailInvoice(c.Request.Context(), data.Id)
+
+		if err != nil {
+			panic(err)
+		}
+
+		if err := db.Commit().Error; err != nil {
+			db.Rollback()
+			panic(err)
+		}
+
+		c.JSON(http.StatusOK, common.SimpleSuccessResponse(result))
 	}
 }

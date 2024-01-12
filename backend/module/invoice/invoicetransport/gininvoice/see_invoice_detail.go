@@ -8,6 +8,7 @@ import (
 	"book-store-management-backend/module/invoice/invoicerepo"
 	"book-store-management-backend/module/invoice/invoicestore"
 	"book-store-management-backend/module/invoicedetail/invoicedetailstore"
+	"book-store-management-backend/module/shopgeneral/shopgeneralstore"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -30,13 +31,14 @@ func SeeInvoiceDetail(appCtx appctx.AppContext) gin.HandlerFunc {
 		invoiceStore := invoicestore.NewSQLStore(db)
 		invoiceDetailStore := invoicedetailstore.NewSQLStore(db)
 
-		repo := invoicerepo.NewSeeInvoiceDetailRepo(invoiceStore, invoiceDetailStore)
+		repo := invoicerepo.NewSeeInvoiceDetailRepo(invoiceDetailStore, invoiceStore)
 		requester := c.MustGet(common.CurrentUserStr).(middleware.Requester)
+		shopStore := shopgeneralstore.NewSQLStore(appCtx.GetMainDBConnection())
 
-		biz := invoicebiz.NewSeeInvoiceDetailBiz(
-			repo, requester)
+		biz := invoicebiz.NewSeeDetailInvoiceBiz(
+			repo, shopStore, requester)
 
-		result, err := biz.SeeInvoiceDetail(c.Request.Context(), id)
+		result, err := biz.SeeDetailInvoice(c.Request.Context(), id)
 
 		if err != nil {
 			panic(err)

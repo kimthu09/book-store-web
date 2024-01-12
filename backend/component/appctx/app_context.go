@@ -9,6 +9,11 @@ type AppContext interface {
 	GetSecretKey() string
 	GetStaticPath() string
 	GetServerHost() string
+	GetEmailTo() string
+	GetSMTPUser() string
+	GetSMTPPass() string
+	GetSMTPHost() string
+	GetSMTPPort() int
 }
 
 type appCtx struct {
@@ -16,6 +21,11 @@ type appCtx struct {
 	secretKey  string
 	staticPath string
 	serverHost string
+	emailTo    string
+	smtpUser   string
+	smtpPass   string
+	smtpHost   string
+	smtpPort   int
 }
 
 func NewAppContext(
@@ -23,12 +33,22 @@ func NewAppContext(
 	secretKey string,
 	staticPath string,
 	serverHost string,
+	emailTo string,
+	smtpUser string,
+	smtpPass string,
+	smtpHost string,
+	smtpPort int,
 ) *appCtx {
 	return &appCtx{
 		db:         db,
 		secretKey:  secretKey,
 		staticPath: staticPath,
 		serverHost: serverHost,
+		emailTo:    emailTo,
+		smtpUser:   smtpUser,
+		smtpPass:   smtpPass,
+		smtpHost:   smtpHost,
+		smtpPort:   smtpPort,
 	}
 }
 
@@ -46,4 +66,24 @@ func (ctx *appCtx) GetStaticPath() string {
 
 func (ctx *appCtx) GetServerHost() string {
 	return ctx.serverHost
+}
+
+func (ctx *appCtx) GetEmailTo() string {
+	return ctx.emailTo
+}
+
+func (ctx *appCtx) GetSMTPUser() string {
+	return ctx.smtpUser
+}
+
+func (ctx *appCtx) GetSMTPPass() string {
+	return ctx.smtpPass
+}
+
+func (ctx *appCtx) GetSMTPHost() string {
+	return ctx.smtpHost
+}
+
+func (ctx *appCtx) GetSMTPPort() int {
+	return ctx.smtpPort
 }

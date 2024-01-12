@@ -44,13 +44,13 @@ export const adminSidebarItems: SidebarItem[] = [
   },
   {
     title: "Báo cáo",
-    href: "/storereport/stock",
+    href: "/report/stock",
     icon: AiOutlineLineChart,
     submenu: true,
     subMenuItems: [
-      { title: "Báo cáo tồn kho", href: "/storereport/stock" },
-      { title: "Báo cáo nợ", href: "/storereport/debt" },
-      { title: "Báo cáo mặt hàng", href: "/storereport/sale" },
+      { title: "Báo cáo tồn kho", href: "/report/stock" },
+      { title: "Báo cáo nợ", href: "/report/debt" },
+      { title: "Báo cáo mặt hàng", href: "/report/sale" },
     ],
   },
   {
@@ -109,13 +109,13 @@ export const sidebarItems: SidebarItem[] = [
   },
   {
     title: "Báo cáo",
-    href: "/storereport/stock",
+    href: "/report/stock",
     icon: AiOutlineLineChart,
     submenu: true,
     subMenuItems: [
-      { title: "Báo cáo tồn kho", href: "/storereport/stock" },
-      { title: "Báo cáo nợ", href: "/storereport/debt" },
-      { title: "Báo cáo mặt hàng", href: "/storereport/sale" },
+      { title: "Báo cáo tồn kho", href: "/report/stock" },
+      { title: "Báo cáo nợ", href: "/report/debt" },
+      { title: "Báo cáo mặt hàng", href: "/report/sale" },
     ],
   },
   {
@@ -158,5 +158,20 @@ export const sidebarItems: SidebarItem[] = [
     href: "/staff",
     icon: GoPeople,
     submenu: false,
+  },
+];
+
+export const typeCharts = [
+  {
+    value: "day",
+    label: "Theo giờ",
+  },
+  {
+    value: "month",
+    label: "Theo ngày",
+  },
+  {
+    value: "month-day",
+    label: "Theo thứ",
   },
 ];

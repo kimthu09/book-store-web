@@ -12,6 +12,11 @@ type ReqFindStockReport struct {
 	TimeTo       int64                                            `json:"timeTo" gorm:"-" example:"1704067199"`
 	TimeFromTime time.Time                                        `json:"-" gorm:"column:timeFrom"`
 	TimeToTime   time.Time                                        `json:"-" gorm:"column:timeTo"`
+	Initial      int                                              `json:"-" gorm:"column:initial;" example:"0"`
+	Sell         int                                              `json:"-" gorm:"column:sell" example:"-10"`
+	Import       int                                              `json:"-" gorm:"column:import;" example:"100"`
+	Modify       int                                              `json:"-" gorm:"column:modify;" example:"-60"`
+	Final        int                                              `json:"-" gorm:"column:final;" example:"30"`
 	Details      []stockreportdetailmodel.StockReportDetailCreate `json:"-" gorm:"foreignkey:ReportId;association_foreignkey:id"`
 }
 

@@ -119,6 +119,13 @@ func (biz *findStockReportBiz) FindStockReport(
 
 	allDetailCreates := make([]stockreportdetailmodel.StockReportDetailCreate, 0)
 	allDetails := make([]stockreportdetailmodel.StockReportDetail, 0)
+
+	qtyInit := 0
+	qtyImport := 0
+	qtyModify := 0
+	qtySell := 0
+	qtyFinal := 0
+
 	for _, book := range allBook {
 		stockChange, err :=
 			biz.stockChangeHistoryStore.ListAllStockChangeForReport(
@@ -192,10 +199,21 @@ func (biz *findStockReportBiz) FindStockReport(
 			}
 			allDetails = append(allDetails, detail)
 		}
+
+		qtyInit += initial
+		qtyImport += importAmount
+		qtyModify += modifyAmount
+		qtySell += sellAmount
+		qtyFinal += final
 	}
 
 	data.Id = reportId
 	data.Details = allDetailCreates
+	data.Initial = qtyInit
+	data.Import = qtyImport
+	data.Modify = qtyModify
+	data.Sell = qtySell
+	data.Final = qtyFinal
 	if reportId != "" {
 		if err := biz.inventoryReportStore.CreateStockReport(
 			ctx, data,
@@ -208,6 +226,11 @@ func (biz *findStockReportBiz) FindStockReport(
 		Id:       reportId,
 		TimeFrom: timeFrom,
 		TimeTo:   timeTo,
+		Initial:  qtyInit,
+		Sell:     qtySell,
+		Import:   qtyImport,
+		Modify:   qtyModify,
+		Final:    qtyFinal,
 		Details:  allDetails,
 	}
 
