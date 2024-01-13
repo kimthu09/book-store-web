@@ -21,7 +21,7 @@ type Invoice struct {
 	CreatedBy                string                             `json:"-" gorm:"column:createdBy;" example:"admin"`
 	CreatedByUser            usermodel.SimpleUser               `json:"createdBy" gorm:"foreignKey:CreatedBy"`
 	CreatedAt                *time.Time                         `json:"createdAt" gorm:"column:createdAt;" example:"2023-12-03T15:02:19.62113565Z"`
-	Details                  []invoicedetailmodel.InvoiceDetail `json:"-"`
+	Details                  []invoicedetailmodel.InvoiceDetail `json:"details"`
 }
 
 func (*Invoice) TableName() string {
