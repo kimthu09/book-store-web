@@ -7,15 +7,19 @@ import (
 	"book-store-management-backend/module/author/authortransport"
 	"book-store-management-backend/module/book/booktransport"
 	"book-store-management-backend/module/booktitle/booktitletransport"
+	"book-store-management-backend/module/customer/customertransport/gincustomer"
+	"book-store-management-backend/module/dashboard/dashboardtransport/gindashboard"
 	"book-store-management-backend/module/feature/featuretransport/ginfeature"
 	"book-store-management-backend/module/importnote/importnotetransport/ginimportnote"
 	"book-store-management-backend/module/inventorychecknote/inventorychecknotetransport/gininventorychecknote"
 	"book-store-management-backend/module/invoice/invoicetransport/gininvoice"
 	"book-store-management-backend/module/role/roletransport/ginrole"
 	"book-store-management-backend/module/salereport/salereporttransport/ginsalereport"
+	"book-store-management-backend/module/shopgeneral/shopgeneraltransport/ginshopgeneral"
 	ginstockreports "book-store-management-backend/module/stockreport/stockreporttransport/ginstockreport"
 	"book-store-management-backend/module/supplierdebtreport/supplierdebtreporttransport/ginsupplierdebtreport"
 	"book-store-management-backend/module/upload/uploadtransport"
+	"strconv"
 	"time"
 
 	"book-store-management-backend/module/category/categorytransport"
@@ -48,6 +52,12 @@ type appConfig struct {
 	DBDatabase string
 
 	SecretKey string
+
+	EmailFrom string
+	SMTPUser  string
+	SMTPass   string
+	SMTHost   string
+	SMTPort   int
 }
 
 // @title           Book Store Management API
@@ -80,7 +90,16 @@ func main() {
 		db = db.Debug()
 	}
 
-	appCtx := appctx.NewAppContext(db, cfg.SecretKey, cfg.StaticPath, cfg.ServerHost)
+	appCtx := appctx.NewAppContext(
+		db,
+		cfg.SecretKey,
+		cfg.StaticPath,
+		cfg.ServerHost,
+		cfg.EmailFrom,
+		cfg.SMTPUser,
+		cfg.SMTPass,
+		cfg.SMTHost,
+		cfg.SMTPort)
 
 	r := gin.Default()
 	r.Use(CORSMiddleware())
@@ -101,10 +120,12 @@ func main() {
 		ginimportnote.SetupRoutes(v1, appCtx)
 		gininventorychecknote.SetupRoutes(v1, appCtx)
 		ginsupplier.SetupRoutes(v1, appCtx)
+		gincustomer.SetupRoutes(v1, appCtx)
 		ginrole.SetupRoutes(v1, appCtx)
 		ginfeature.SetupRoutes(v1, appCtx)
 		ginuser.SetupRoutes(v1, appCtx)
-
+		ginshopgeneral.SetupRoutes(v1, appCtx)
+		gindashboard.SetupRoutes(v1, appCtx)
 		report := v1.Group("/reports")
 		{
 			ginstockreports.SetupRoutes(report, appCtx)
@@ -124,6 +145,8 @@ func loadConfig() (*appConfig, error) {
 		log.Fatalln("Error when loading .env", err)
 	}
 
+	port, _ := strconv.Atoi(env["SMTPORT"])
+
 	return &appConfig{
 		Port:       env["PORT"],
 		Env:        env["GO_ENV"],
@@ -134,6 +157,11 @@ func loadConfig() (*appConfig, error) {
 		DBHost:     env["DB_HOST"],
 		DBDatabase: env["DB_DATABASE"],
 		SecretKey:  env["SECRET_KEY"],
+		EmailFrom:  env["EMAILFROM"],
+		SMTPUser:   env["SMTPUSER"],
+		SMTPass:    env["SMTPASS"],
+		SMTHost:    env["SMTHOST"],
+		SMTPort:    port,
 	}, nil
 }
 

@@ -71,6 +71,17 @@ definitions:
         example: Nguyễn Văn A
         type: string
     type: object
+  bookmodel.BookForDashboard:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      qty:
+        type: integer
+      sale:
+        type: integer
+    type: object
   bookmodel.Filter:
     properties:
       authorIds:
@@ -477,6 +488,146 @@ definitions:
         example: true
         type: boolean
     type: object
+  customermodel.Customer:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      invoices:
+        items:
+          $ref: '#/definitions/invoicemodel.Invoice'
+        type: array
+      name:
+        type: string
+      phone:
+        type: string
+      point:
+        type: integer
+    type: object
+  customermodel.FilterInvoice:
+    properties:
+      from:
+        example: 1709500431
+        type: integer
+      to:
+        example: 1709500431
+        type: integer
+    type: object
+  customermodel.ReqCreateCustomer:
+    properties:
+      email:
+        example: a@gmail.com
+        type: string
+      id:
+        example: customerId
+        type: string
+      name:
+        example: Nguyễn Văn A
+        type: string
+      phone:
+        example: "0123456789"
+        type: string
+    type: object
+  customermodel.ReqUpdateInfoCustomer:
+    properties:
+      email:
+        example: Nếu không sửa email thì xóa trường này
+        type: string
+      name:
+        example: Nếu không sửa tên thì xóa trường này
+        type: string
+      phone:
+        example: Nếu không sửa số điện thoại thì xóa trường này
+        type: string
+    type: object
+  customermodel.ResCreateCustomer:
+    properties:
+      data:
+        example: customerId
+        type: string
+    type: object
+  customermodel.ResGetAllCustomer:
+    properties:
+      data:
+        description: Data contains list of customers.
+        items:
+          $ref: '#/definitions/invoicemodel.SimpleCustomer'
+        type: array
+    type: object
+  customermodel.ResListCustomer:
+    properties:
+      data:
+        description: Data contains list of customer.
+        items:
+          $ref: '#/definitions/customermodel.Customer'
+        type: array
+      filter:
+        allOf:
+        - $ref: '#/definitions/filter.SupplierImportFilter'
+        description: Filter contains the filter parameters used to retrieve customer.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  customermodel.ResSeeInvoiceCustomer:
+    properties:
+      data:
+        description: Data contains the detailed information about customer's invoices.
+        items:
+          $ref: '#/definitions/invoicemodel.Invoice'
+        type: array
+      filter:
+        allOf:
+        - $ref: '#/definitions/customermodel.FilterInvoice'
+        description: Filter contains the filter parameters used to retrieve invoices.
+      paging:
+        allOf:
+        - $ref: '#/definitions/common.Paging'
+        description: Paging provides information about pagination.
+    type: object
+  dashboardmodel.ChartComponent:
+    properties:
+      time:
+        type: string
+      value:
+        type: integer
+    type: object
+  dashboardmodel.ReqSeeDashboard:
+    properties:
+      timeFrom:
+        type: integer
+      timeTo:
+        type: integer
+    type: object
+  dashboardmodel.ResSeeDashboard:
+    properties:
+      chartPriceComponents:
+        items:
+          $ref: '#/definitions/dashboardmodel.ChartComponent'
+        type: array
+      chartProfitComponents:
+        items:
+          $ref: '#/definitions/dashboardmodel.ChartComponent'
+        type: array
+      timeFrom:
+        type: string
+      timeTo:
+        type: string
+      topSoldBooks:
+        items:
+          $ref: '#/definitions/bookmodel.BookForDashboard'
+        type: array
+      totalCustomer:
+        type: integer
+      totalPoint:
+        type: integer
+      totalSale:
+        type: integer
+      totalSold:
+        type: integer
+    type: object
   enum.DebtType:
     enum:
     - Pay
@@ -848,17 +999,6 @@ definitions:
         description: Data contains the detailed information about inventory check
           note details.
     type: object
-  invoicedetailmodel.InvoiceDetail:
-    properties:
-      book:
-        $ref: '#/definitions/bookmodel.SimpleBook'
-      qty:
-        example: 2
-        type: integer
-      unitPrice:
-        example: 60000
-        type: integer
-    type: object
   invoicedetailmodel.ReqCreateInvoiceDetail:
     properties:
       bookId:
@@ -888,12 +1028,26 @@ definitions:
         type: string
       createdBy:
         $ref: '#/definitions/usermodel.SimpleUser'
+      customer:
+        $ref: '#/definitions/invoicemodel.SimpleCustomer'
       id:
         example: "123"
         type: string
+      pointReceive:
+        example: 10000
+        type: integer
+      pointUse:
+        example: 20000
+        type: integer
+      qtyPriceUsePoint:
+        example: 20000
+        type: integer
+      qtyReceived:
+        example: 100000
+        type: integer
       totalPrice:
         example: 120000
-        type: number
+        type: integer
     type: object
   invoicemodel.ReqCreateInvoice:
     properties:
@@ -905,48 +1059,16 @@ definitions:
   invoicemodel.ResCreateInvoice:
     properties:
       data:
-        $ref: '#/definitions/invoicemodel.ResCreateInvoiceData'
-    type: object
-  invoicemodel.ResCreateInvoiceData:
-    properties:
-      createdBy:
-        $ref: '#/definitions/usermodel.SimpleUser'
-      details:
-        items:
-          $ref: '#/definitions/invoicedetailmodel.ReqCreateInvoiceDetail'
-        type: array
-      id:
-        example: "123"
-        type: string
-      total:
-        example: 120000
-        type: integer
+        allOf:
+        - $ref: '#/definitions/invoicemodel.ResDetailInvoice'
+        description: Data contains the detailed information about invoice details.
     type: object
   invoicemodel.ResDetailInvoice:
     properties:
-      createdAt:
-        example: "2023-12-03T15:02:19.62113565Z"
-        type: string
-      createdBy:
-        $ref: '#/definitions/usermodel.SimpleUser'
-      details:
-        items:
-          $ref: '#/definitions/invoicedetailmodel.InvoiceDetail'
-        type: array
-      id:
-        example: "123"
-        type: string
-      totalPrice:
-        example: 120000
-        type: number
-    type: object
-  invoicemodel.ResGetNearestInvoice:
-    properties:
-      data:
-        description: Data contains list of invoice.
-        items:
-          $ref: '#/definitions/invoicemodel.Invoice'
-        type: array
+      invoice:
+        $ref: '#/definitions/invoicemodel.Invoice'
+      shop:
+        $ref: '#/definitions/shopgeneralmodel.ShopGeneral'
     type: object
   invoicemodel.ResListInvoice:
     properties:
@@ -970,6 +1092,21 @@ definitions:
         allOf:
         - $ref: '#/definitions/invoicemodel.ResDetailInvoice'
         description: Data contains the detailed information about invoice details.
+    type: object
+  invoicemodel.SimpleCustomer:
+    properties:
+      id:
+        example: customerId
+        type: string
+      name:
+        example: Nguyễn Văn A
+        type: string
+      phone:
+        example: "0123456789"
+        type: string
+      point:
+        example: 123
+        type: integer
     type: object
   publishermodel.Filter:
     properties:
@@ -1149,6 +1286,40 @@ definitions:
         example: 100000
         type: integer
     type: object
+  shopgeneralmodel.ReqUpdateShopGeneral:
+    properties:
+      accumulatePointPercent:
+        type: number
+      address:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      usePointPercent:
+        type: number
+      wifiPass:
+        type: string
+    type: object
+  shopgeneralmodel.ShopGeneral:
+    properties:
+      accumulatePointPercent:
+        type: number
+      address:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      usePointPercent:
+        type: number
+      wifiPass:
+        type: string
+    type: object
   stockreportdetailmodel.StockReportDetail:
     properties:
       book:
@@ -1191,9 +1362,24 @@ definitions:
         items:
           $ref: '#/definitions/stockreportdetailmodel.StockReportDetail'
         type: array
+      final:
+        example: 30
+        type: integer
       id:
         example: report id
         type: string
+      import:
+        example: 100
+        type: integer
+      initial:
+        example: 0
+        type: integer
+      modify:
+        example: -60
+        type: integer
+      sell:
+        example: -10
+        type: integer
       timeFrom:
         example: "2023-12-03T15:02:19.62113565Z"
         type: string
@@ -1327,7 +1513,7 @@ definitions:
   suppliermodel.ResGetAllSupplier:
     properties:
       data:
-        description: Data contains list of user.
+        description: Data contains list of suppliers.
         items:
           $ref: '#/definitions/importnotemodel.SimpleSupplier'
         type: array
@@ -1472,6 +1658,11 @@ definitions:
         type: string
       password:
         example: app123
+        type: string
+    type: object
+  usermodel.ReqMailForgotPassword:
+    properties:
+      email:
         type: string
     type: object
   usermodel.ReqRefreshToken:
@@ -2210,6 +2401,224 @@ paths:
       summary: Create list category
       tags:
       - categories
+  /customers:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - in: query
+        name: maxPoint
+        type: number
+      - in: query
+        name: minPoint
+        type: number
+      - in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list customer
+          schema:
+            $ref: '#/definitions/customermodel.ResListCustomer'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: List customer
+      tags:
+      - customers
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: customer need to create
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/customermodel.ReqCreateCustomer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: customer id
+          schema:
+            $ref: '#/definitions/customermodel.ResCreateCustomer'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Create customer
+      tags:
+      - customers
+  /customers/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: customer id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: customer
+          schema:
+            $ref: '#/definitions/customermodel.Customer'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See detail of customer
+      tags:
+      - customers
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: customer id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: customer info to update
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/customermodel.ReqUpdateInfoCustomer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Update info customer
+      tags:
+      - customers
+  /customers/{id}/invoices:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: customer id
+        in: path
+        name: id
+        required: true
+        type: string
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      - example: 11
+        in: query
+        name: total
+        type: integer
+      - example: 1709500431
+        in: query
+        name: from
+        type: integer
+      - example: 1709500431
+        in: query
+        name: to
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list invoice
+          schema:
+            $ref: '#/definitions/customermodel.ResSeeInvoiceCustomer'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See invoices of customer
+      tags:
+      - customers
+  /customers/all:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: list customer
+          schema:
+            $ref: '#/definitions/customermodel.ResGetAllCustomer'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Get all customer
+      tags:
+      - customers
+  /dashboard:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: time from and time to
+        in: body
+        name: condition
+        required: true
+        schema:
+          $ref: '#/definitions/dashboardmodel.ReqSeeDashboard'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: dashboard
+          schema:
+            $ref: '#/definitions/dashboardmodel.ResSeeDashboard'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See dashboard
+      tags:
+      - dashboard
   /features:
     get:
       consumes:
@@ -2230,6 +2639,33 @@ paths:
       summary: List feature
       tags:
       - features
+  /forgotPassword:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqMailForgotPassword'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Mail forgot password
+      tags:
+      - auth
   /importNotes:
     get:
       consumes:
@@ -2596,30 +3032,6 @@ paths:
       security:
       - BearerAuth: []
       summary: See detail invoice
-      tags:
-      - invoices
-  /invoices/nearest:
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - in: query
-        name: amountNeed
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: list invoice
-          schema:
-            $ref: '#/definitions/invoicemodel.ResGetNearestInvoice'
-        "400":
-          description: error
-          schema:
-            $ref: '#/definitions/common.AppError'
-      security:
-      - BearerAuth: []
-      summary: Get nearest invoice
       tags:
       - invoices
   /login:
@@ -3018,6 +3430,52 @@ paths:
       summary: Update info role
       tags:
       - roles
+  /shop:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: shop info to update
+        in: body
+        name: shop
+        required: true
+        schema:
+          $ref: '#/definitions/shopgeneralmodel.ReqUpdateShopGeneral'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Update shop general
+      tags:
+      - shop
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: shop
+          schema:
+            $ref: '#/definitions/shopgeneralmodel.ShopGeneral'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: See shop general
+      tags:
+      - shop
   /suppliers:
     get:
       consumes:

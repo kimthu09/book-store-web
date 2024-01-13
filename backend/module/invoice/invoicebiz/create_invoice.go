@@ -5,12 +5,14 @@ import (
 	"book-store-management-backend/component/generator"
 	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/invoice/invoicemodel"
-	"book-store-management-backend/module/invoicedetail/invoicedetailmodel"
-	"book-store-management-backend/module/user/usermodel"
+	"book-store-management-backend/module/shopgeneral/shopgeneralmodel"
 	"context"
 )
 
 type CreateInvoiceRepo interface {
+	GetShopGeneral(
+		ctx context.Context,
+	) (*shopgeneralmodel.ShopGeneral, error)
 	HandleData(
 		ctx context.Context,
 		data *invoicemodel.ReqCreateInvoice,
@@ -40,53 +42,28 @@ func NewCreateInvoiceBiz(
 
 func (biz *createInvoiceBiz) CreateInvoice(
 	ctx context.Context,
-	data *invoicemodel.ReqCreateInvoice) (*invoicemodel.ResCreateInvoice, error) {
+	data *invoicemodel.ReqCreateInvoice) error {
 	if !biz.requester.IsHasFeature(common.InvoiceCreateFeatureCode) {
-		return nil, invoicemodel.ErrInvoiceCreateNoPermission
+		return invoicemodel.ErrInvoiceCreateNoPermission
 	}
 
 	if err := data.Validate(); err != nil {
-		return nil, err
+		return err
 	}
 
 	if err := handleInvoiceId(biz.gen, data); err != nil {
-		return nil, err
+		return err
 	}
 
 	if err := biz.repo.HandleData(ctx, data); err != nil {
-		return nil, err
+		return err
 	}
 
 	if err := biz.repo.HandleInvoice(ctx, data); err != nil {
-		return nil, err
+		return err
 	}
 
-	var details []invoicedetailmodel.ReqCreateInvoiceDetail
-	for _, v := range data.InvoiceDetails {
-		reqCreateInvoiceDetail := invoicedetailmodel.ReqCreateInvoiceDetail{
-			InvoiceId: v.InvoiceId,
-			BookId:    v.BookId,
-			BookName:  v.BookName,
-			Quantity:  v.Quantity,
-			UnitPrice: v.UnitPrice,
-		}
-		details = append(details, reqCreateInvoiceDetail)
-	}
-
-	resCreateInvoiceData := invoicemodel.ResCreateInvoiceData{
-		Id:      data.Id,
-		Details: details,
-		Total:   data.TotalPrice,
-		CreatedBy: usermodel.SimpleUser{
-			Id:   biz.requester.GetUserId(),
-			Name: biz.requester.GetName(),
-		},
-	}
-
-	var resCreateInvoice invoicemodel.ResCreateInvoice
-	resCreateInvoice.ResCreateInvoiceData = resCreateInvoiceData
-
-	return &resCreateInvoice, nil
+	return nil
 }
 
 func handleInvoiceId(gen generator.IdGenerator, data *invoicemodel.ReqCreateInvoice) error {

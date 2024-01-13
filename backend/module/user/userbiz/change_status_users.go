@@ -31,7 +31,7 @@ func NewChangeStatusUserBiz(
 func (biz *changeStatusUserBiz) ChangeStatusUser(
 	ctx context.Context,
 	data *usermodel.ReqUpdateStatusUsers) error {
-	if !biz.requester.IsHasFeature(common.UserUpdateStatusFeatureCode) {
+	if biz.requester.GetRoleId() != common.RoleAdminId {
 		return usermodel.ErrUserUpdateStatusNoPermission
 	}
 

@@ -81,3 +81,63 @@ export const isAdmin = ({
     throw new Error("Có lỗi xảy ra");
   }
 };
+
+export function toLocalTime(utcTime: Date | string): string {
+  // Check if utcTime is a string, and try to parse it as a Date
+  const parsedUtcTime = typeof utcTime === 'string' ? new Date(utcTime) : utcTime;
+
+  // Check if parsing was successful and utcTime is a valid Date object
+  if (!(parsedUtcTime instanceof Date) || isNaN(parsedUtcTime.getTime())) {
+    // Handle the case where utcTime is not a valid Date
+    console.error('Invalid UTC time value:', utcTime);
+    return 'Invalid Time';
+  }
+
+  // Get local date and time in string format
+  const options: Intl.DateTimeFormatOptions = {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false, // Use 24-hour format
+    timeZone: 'Asia/Ho_Chi_Minh', // Set the timezone to Vietnam
+  };
+
+  // Format the date and time using Intl.DateTimeFormat
+  const localTime = new Intl.DateTimeFormat('vi-VN', options).format(parsedUtcTime);
+
+  return localTime;
+}
+
+export function toDateString(utcTime: Date | string): string {
+  // Check if utcTime is a string, and try to parse it as a Date
+  const parsedUtcTime = typeof utcTime === 'string' ? new Date(utcTime) : utcTime;
+
+  // Check if parsing was successful and utcTime is a valid Date object
+  if (!(parsedUtcTime instanceof Date) || isNaN(parsedUtcTime.getTime())) {
+    // Handle the case where utcTime is not a valid Date
+    console.error('Invalid UTC time value:', utcTime);
+    return 'Invalid Time';
+  }
+
+  // Get local date and time in string format
+  const options: Intl.DateTimeFormatOptions = {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: undefined,
+    minute: undefined,
+    hour12: false, // Use 24-hour format
+    timeZone: 'Asia/Ho_Chi_Minh', // Set the timezone to Vietnam
+  };
+
+  // Format the date and time using Intl.DateTimeFormat
+  const localTime = new Intl.DateTimeFormat('vi-VN', options).format(parsedUtcTime);
+
+  return localTime;
+}
+
+export function toLocalDateTime(utcTime: Date | string): Date {
+  return new Date(utcTime);
+}

@@ -25,6 +25,8 @@ const (
 	TableSupplierDebtReportDetail string = "SupplierDebtReportDetail"
 	TableStockReport              string = "StockReport"
 	TableStockReportDetail        string = "StockReportDetail"
+	TableShopGeneral              string = "ShopGeneral"
+	TableCustomer                 string = "Customer"
 )
 
 // FEATURE CODE
@@ -64,9 +66,12 @@ const (
 	SupplierPayFeatureCode        = "SUPPLIER_PAY"
 	SupplierUpdateInfoFeatureCode = "SUPPLIER_UPDATE_INFO"
 
-	UserViewFeatureCode         = "USER_VIEW"
-	UserUpdateInfoFeatureCode   = "USER_UPDATE_INFO"
-	UserUpdateStatusFeatureCode = "USER_UPDATE_STATE"
+	CustomerViewFeatureCode       = "CUSTOMER_VIEW"
+	CustomerCreateFeatureCode     = "CUSTOMER_CREATE"
+	CustomerUpdateInfoFeatureCode = "CUSTOMER_UPDATE_INFO"
+
+	UserViewFeatureCode       = "USER_VIEW"
+	UserUpdateInfoFeatureCode = "USER_UPDATE_INFO"
 
 	InvoiceCreateFeatureCode = "INVOICE_CREATE"
 	InvoiceViewFeatureCode   = "INVOICE_VIEW"

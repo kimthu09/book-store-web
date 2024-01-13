@@ -1,10 +1,13 @@
+import DashboardComponent from "@/components/dashboard/dashboard";
 import { getUser } from "@/lib/auth/action";
 import { withAuth } from "@/lib/role/withAuth";
-import { Sale } from "./sale/page";
+import { Metadata } from "next";
 
-// export default async function Home() {
-//   const test = await getUser()
-//   console.log(test)
-//   return <main className="flex">MainPage</main>;
-// }
-export default withAuth(Sale, ["INVOICE_CREATE"]);
+export const metadata: Metadata = {
+  title: "Trang chủ",
+};
+const DashboardPage = () => {
+  return <DashboardComponent />;
+};
+
+export default withAuth(DashboardPage, ["REPORT_VIEW_SALE"]);

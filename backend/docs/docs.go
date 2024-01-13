@@ -964,6 +964,356 @@ const docTemplate = `{
                 }
             }
         },
+        "/customers": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "List customer",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 11,
+                        "name": "total",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "name": "maxPoint",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "name": "minPoint",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "list customer",
+                        "schema": {
+                            "$ref": "#/definitions/customermodel.ResListCustomer"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Create customer",
+                "parameters": [
+                    {
+                        "description": "customer need to create",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customermodel.ReqCreateCustomer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "customer id",
+                        "schema": {
+                            "$ref": "#/definitions/customermodel.ResCreateCustomer"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/customers/all": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Get all customer",
+                "responses": {
+                    "200": {
+                        "description": "list customer",
+                        "schema": {
+                            "$ref": "#/definitions/customermodel.ResGetAllCustomer"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/customers/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "See detail of customer",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "customer id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "customer",
+                        "schema": {
+                            "$ref": "#/definitions/customermodel.Customer"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Update info customer",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "customer id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "customer info to update",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customermodel.ReqUpdateInfoCustomer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/customers/{id}/invoices": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "See invoices of customer",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "customer id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 11,
+                        "name": "total",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1709500431,
+                        "name": "from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1709500431,
+                        "name": "to",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "list invoice",
+                        "schema": {
+                            "$ref": "#/definitions/customermodel.ResSeeInvoiceCustomer"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/dashboard": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "dashboard"
+                ],
+                "summary": "See dashboard",
+                "parameters": [
+                    {
+                        "description": "time from and time to",
+                        "name": "condition",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dashboardmodel.ReqSeeDashboard"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "dashboard",
+                        "schema": {
+                            "$ref": "#/definitions/dashboardmodel.ResSeeDashboard"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
         "/features": {
             "get": {
                 "security": [
@@ -986,6 +1336,50 @@ const docTemplate = `{
                         "description": "list feature",
                         "schema": {
                             "$ref": "#/definitions/featuremodel.ResListFeature"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/forgotPassword": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Mail forgot password",
+                "parameters": [
+                    {
+                        "description": "email",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.ReqMailForgotPassword"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
                         }
                     },
                     "400": {
@@ -1526,46 +1920,6 @@ const docTemplate = `{
                         "description": "invoice id",
                         "schema": {
                             "$ref": "#/definitions/invoicemodel.ResCreateInvoice"
-                        }
-                    },
-                    "400": {
-                        "description": "error",
-                        "schema": {
-                            "$ref": "#/definitions/common.AppError"
-                        }
-                    }
-                }
-            }
-        },
-        "/invoices/nearest": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "invoices"
-                ],
-                "summary": "Get nearest invoice",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "name": "amountNeed",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "list invoice",
-                        "schema": {
-                            "$ref": "#/definitions/invoicemodel.ResGetNearestInvoice"
                         }
                     },
                     "400": {
@@ -2243,6 +2597,81 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/rolemodel.ReqUpdateRole"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/shop": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shop"
+                ],
+                "summary": "See shop general",
+                "responses": {
+                    "200": {
+                        "description": "shop",
+                        "schema": {
+                            "$ref": "#/definitions/shopgeneralmodel.ShopGeneral"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shop"
+                ],
+                "summary": "Update shop general",
+                "parameters": [
+                    {
+                        "description": "shop info to update",
+                        "name": "shop",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/shopgeneralmodel.ReqUpdateShopGeneral"
                         }
                     }
                 ],
@@ -3226,6 +3655,23 @@ const docTemplate = `{
                 }
             }
         },
+        "bookmodel.BookForDashboard": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "qty": {
+                    "type": "integer"
+                },
+                "sale": {
+                    "type": "integer"
+                }
+            }
+        },
         "bookmodel.Filter": {
             "type": "object",
             "properties": {
@@ -3825,6 +4271,223 @@ const docTemplate = `{
                 }
             }
         },
+        "customermodel.Customer": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "invoices": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/invoicemodel.Invoice"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "point": {
+                    "type": "integer"
+                }
+            }
+        },
+        "customermodel.FilterInvoice": {
+            "type": "object",
+            "properties": {
+                "from": {
+                    "type": "integer",
+                    "example": 1709500431
+                },
+                "to": {
+                    "type": "integer",
+                    "example": 1709500431
+                }
+            }
+        },
+        "customermodel.ReqCreateCustomer": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "a@gmail.com"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "customerId"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Nguyễn Văn A"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "0123456789"
+                }
+            }
+        },
+        "customermodel.ReqUpdateInfoCustomer": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "Nếu không sửa email thì xóa trường này"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Nếu không sửa tên thì xóa trường này"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "Nếu không sửa số điện thoại thì xóa trường này"
+                }
+            }
+        },
+        "customermodel.ResCreateCustomer": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string",
+                    "example": "customerId"
+                }
+            }
+        },
+        "customermodel.ResGetAllCustomer": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains list of customers.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/invoicemodel.SimpleCustomer"
+                    }
+                }
+            }
+        },
+        "customermodel.ResListCustomer": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains list of customer.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/customermodel.Customer"
+                    }
+                },
+                "filter": {
+                    "description": "Filter contains the filter parameters used to retrieve customer.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/filter.SupplierImportFilter"
+                        }
+                    ]
+                },
+                "paging": {
+                    "description": "Paging provides information about pagination.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/common.Paging"
+                        }
+                    ]
+                }
+            }
+        },
+        "customermodel.ResSeeInvoiceCustomer": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains the detailed information about customer's invoices.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/invoicemodel.Invoice"
+                    }
+                },
+                "filter": {
+                    "description": "Filter contains the filter parameters used to retrieve invoices.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/customermodel.FilterInvoice"
+                        }
+                    ]
+                },
+                "paging": {
+                    "description": "Paging provides information about pagination.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/common.Paging"
+                        }
+                    ]
+                }
+            }
+        },
+        "dashboardmodel.ChartComponent": {
+            "type": "object",
+            "properties": {
+                "time": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dashboardmodel.ReqSeeDashboard": {
+            "type": "object",
+            "properties": {
+                "timeFrom": {
+                    "type": "integer"
+                },
+                "timeTo": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dashboardmodel.ResSeeDashboard": {
+            "type": "object",
+            "properties": {
+                "chartPriceComponents": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dashboardmodel.ChartComponent"
+                    }
+                },
+                "chartProfitComponents": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dashboardmodel.ChartComponent"
+                    }
+                },
+                "timeFrom": {
+                    "type": "string"
+                },
+                "timeTo": {
+                    "type": "string"
+                },
+                "topSoldBooks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/bookmodel.BookForDashboard"
+                    }
+                },
+                "totalCustomer": {
+                    "type": "integer"
+                },
+                "totalPoint": {
+                    "type": "integer"
+                },
+                "totalSale": {
+                    "type": "integer"
+                },
+                "totalSold": {
+                    "type": "integer"
+                }
+            }
+        },
         "enum.DebtType": {
             "type": "string",
             "enum": [
@@ -4375,22 +5038,6 @@ const docTemplate = `{
                 }
             }
         },
-        "invoicedetailmodel.InvoiceDetail": {
-            "type": "object",
-            "properties": {
-                "book": {
-                    "$ref": "#/definitions/bookmodel.SimpleBook"
-                },
-                "qty": {
-                    "type": "integer",
-                    "example": 2
-                },
-                "unitPrice": {
-                    "type": "integer",
-                    "example": 60000
-                }
-            }
-        },
         "invoicedetailmodel.ReqCreateInvoiceDetail": {
             "type": "object",
             "properties": {
@@ -4433,12 +5080,31 @@ const docTemplate = `{
                 "createdBy": {
                     "$ref": "#/definitions/usermodel.SimpleUser"
                 },
+                "customer": {
+                    "$ref": "#/definitions/invoicemodel.SimpleCustomer"
+                },
                 "id": {
                     "type": "string",
                     "example": "123"
                 },
+                "pointReceive": {
+                    "type": "integer",
+                    "example": 10000
+                },
+                "pointUse": {
+                    "type": "integer",
+                    "example": 20000
+                },
+                "qtyPriceUsePoint": {
+                    "type": "integer",
+                    "example": 20000
+                },
+                "qtyReceived": {
+                    "type": "integer",
+                    "example": 100000
+                },
                 "totalPrice": {
-                    "type": "number",
+                    "type": "integer",
                     "example": 120000
                 }
             }
@@ -4458,67 +5124,23 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/invoicemodel.ResCreateInvoiceData"
-                }
-            }
-        },
-        "invoicemodel.ResCreateInvoiceData": {
-            "type": "object",
-            "properties": {
-                "createdBy": {
-                    "$ref": "#/definitions/usermodel.SimpleUser"
-                },
-                "details": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/invoicedetailmodel.ReqCreateInvoiceDetail"
-                    }
-                },
-                "id": {
-                    "type": "string",
-                    "example": "123"
-                },
-                "total": {
-                    "type": "integer",
-                    "example": 120000
+                    "description": "Data contains the detailed information about invoice details.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/invoicemodel.ResDetailInvoice"
+                        }
+                    ]
                 }
             }
         },
         "invoicemodel.ResDetailInvoice": {
             "type": "object",
             "properties": {
-                "createdAt": {
-                    "type": "string",
-                    "example": "2023-12-03T15:02:19.62113565Z"
+                "invoice": {
+                    "$ref": "#/definitions/invoicemodel.Invoice"
                 },
-                "createdBy": {
-                    "$ref": "#/definitions/usermodel.SimpleUser"
-                },
-                "details": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/invoicedetailmodel.InvoiceDetail"
-                    }
-                },
-                "id": {
-                    "type": "string",
-                    "example": "123"
-                },
-                "totalPrice": {
-                    "type": "number",
-                    "example": 120000
-                }
-            }
-        },
-        "invoicemodel.ResGetNearestInvoice": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "description": "Data contains list of invoice.",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/invoicemodel.Invoice"
-                    }
+                "shop": {
+                    "$ref": "#/definitions/shopgeneralmodel.ShopGeneral"
                 }
             }
         },
@@ -4560,6 +5182,27 @@ const docTemplate = `{
                             "$ref": "#/definitions/invoicemodel.ResDetailInvoice"
                         }
                     ]
+                }
+            }
+        },
+        "invoicemodel.SimpleCustomer": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "customerId"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Nguyễn Văn A"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "0123456789"
+                },
+                "point": {
+                    "type": "integer",
+                    "example": 123
                 }
             }
         },
@@ -4830,6 +5473,58 @@ const docTemplate = `{
                 }
             }
         },
+        "shopgeneralmodel.ReqUpdateShopGeneral": {
+            "type": "object",
+            "properties": {
+                "accumulatePointPercent": {
+                    "type": "number"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "usePointPercent": {
+                    "type": "number"
+                },
+                "wifiPass": {
+                    "type": "string"
+                }
+            }
+        },
+        "shopgeneralmodel.ShopGeneral": {
+            "type": "object",
+            "properties": {
+                "accumulatePointPercent": {
+                    "type": "number"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "usePointPercent": {
+                    "type": "number"
+                },
+                "wifiPass": {
+                    "type": "string"
+                }
+            }
+        },
         "stockreportdetailmodel.StockReportDetail": {
             "type": "object",
             "properties": {
@@ -4893,9 +5588,29 @@ const docTemplate = `{
                         "$ref": "#/definitions/stockreportdetailmodel.StockReportDetail"
                     }
                 },
+                "final": {
+                    "type": "integer",
+                    "example": 30
+                },
                 "id": {
                     "type": "string",
                     "example": "report id"
+                },
+                "import": {
+                    "type": "integer",
+                    "example": 100
+                },
+                "initial": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "modify": {
+                    "type": "integer",
+                    "example": -60
+                },
+                "sell": {
+                    "type": "integer",
+                    "example": -10
                 },
                 "timeFrom": {
                     "type": "string",
@@ -5090,7 +5805,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "description": "Data contains list of user.",
+                    "description": "Data contains list of suppliers.",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/importnotemodel.SimpleSupplier"
@@ -5312,6 +6027,14 @@ const docTemplate = `{
                 "password": {
                     "type": "string",
                     "example": "app123"
+                }
+            }
+        },
+        "usermodel.ReqMailForgotPassword": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
                 }
             }
         },

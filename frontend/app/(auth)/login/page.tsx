@@ -7,7 +7,12 @@ const Login = async () => {
     return (
         <div className={styles.container}>
             <div className={styles.leftColumn}>
-                <Image src='/login-background.png' alt='' fill className={styles.image} />
+                <Image 
+                src='/login-background.png' 
+                alt='' 
+                fill 
+                placeholder='blur'
+                className={styles.image} />
             </div>
 
             <div className={styles.rightColumn}>

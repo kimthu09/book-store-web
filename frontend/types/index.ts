@@ -141,6 +141,28 @@ export type SupplierDebt = {
   type: string;
 };
 
+export type DebtReport = {
+  timeFrom: Date;
+  timeTo: Date;
+  initial: number;
+  debt: number;
+  pay: number;
+  final: number;
+  details: [
+    {
+      debt: number;
+      final: number;
+      initial: number;
+      pay: number;
+      supplier: {
+        id: string;
+        name: string;
+        phone: string;
+      };
+    }
+  ];
+};
+
 export type DebtReportDetail = {
   debt: number;
   final: number;
@@ -162,16 +184,57 @@ export type SaleReportDetail = {
   totalSales: number;
 };
 
+export type SaleReport = {
+  timeFrom: Date;
+  timeTo: Date;
+  total: number;
+  amount: number;
+  details: [
+    {
+      amount: number;
+      book: {
+        id: string;
+        name: string;
+      };
+      totalSales: number;
+    }
+  ];
+};
+
 export type StockReportDetail = {
   book: {
     id: string;
     name: string;
   };
   final: number;
-  import: number;
   initial: number;
+  import: number;
   modify: number;
   sell: number;
+};
+
+export type StockReport = {
+  id: string;
+  timeFrom: Date;
+  timeTo: Date;
+  initial: number;
+  sell: number;
+  import: number;
+  modify: number;
+  final: number;
+  details: [
+    {
+      book: {
+        id: string;
+        name: string;
+      };
+      initial: number;
+      sell: number;
+      import: number;
+      modify: number;
+      final: number;
+    }
+  ];
 };
 
 export enum StatusNote {
@@ -286,4 +349,44 @@ export type FilterValue = {
     type: string;
     value: string;
   }[];
+};
+
+export type Dashboard = {
+  timeFrom: Date;
+  timeTo: Date;
+  totalSale: number;
+  totalCustomer: number;
+  totalSold: number;
+  totalPoint: number;
+  topSoldBooks: [{ id: string; name: string; qty: number, sale: number }];
+  chartPriceComponents: [
+    {
+      time: Date;
+      value: number;
+    }
+  ];
+  chartProfitComponents: [
+    {
+      time: Date;
+      value: number;
+    }
+  ];
+};
+
+export type CardDashboardInfo = {
+  title: string;
+  value: string;
+  icon: string;
+};
+
+export type TopSoldFood = {
+  id: string;
+  name: string;
+  qty: number;
+  sale: number;
+};
+
+export type CharComponent = {
+  time: Date;
+  value: number;
 };

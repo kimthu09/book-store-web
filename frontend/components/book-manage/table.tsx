@@ -111,6 +111,7 @@ const columns: ColumnDef<Book>[] = [
           className="object-contain h-14 w-14 min-w-[3rem]"
           width={56}
           height={56}
+          placeholder='blur'
         ></Image>
       </div>
     ),

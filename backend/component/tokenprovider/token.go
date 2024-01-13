@@ -17,6 +17,10 @@ type TokenPayload struct {
 	Role   string `json:"role"`
 }
 
+type TokenPayloadEmail struct {
+	Email string `json:"email"`
+}
+
 var (
 	ErrNotFound = common.NewCustomError(
 		errors.New("token not found"),

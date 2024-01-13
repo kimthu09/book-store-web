@@ -29,7 +29,7 @@ func RefreshToken(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		tokenProvider := jwt.NewTokenJWTProvider(appCtx.GetSecretKey())
 
-		business := userbiz.NewRefreshTokenBiz(appCtx, 60*60*24*15, tokenProvider)
+		business := userbiz.NewRefreshTokenBiz(60*60*24*15, tokenProvider)
 		account, err := business.RefreshToken(c.Request.Context(), &data)
 
 		if err != nil {

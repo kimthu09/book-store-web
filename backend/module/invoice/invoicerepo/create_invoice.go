@@ -4,6 +4,7 @@ import (
 	"book-store-management-backend/module/book/bookmodel"
 	"book-store-management-backend/module/invoice/invoicemodel"
 	"book-store-management-backend/module/invoicedetail/invoicedetailmodel"
+	"book-store-management-backend/module/shopgeneral/shopgeneralmodel"
 	"book-store-management-backend/module/stockchangehistory/stockchangehistorymodel"
 	"context"
 )
@@ -39,23 +40,41 @@ type StockChangeHistoryStore interface {
 		data []stockchangehistorymodel.StockChangeHistory) error
 }
 
+type ShopGeneralStore interface {
+	FindShopGeneral(
+		ctx context.Context,
+	) (*shopgeneralmodel.ShopGeneral, error)
+}
+
 type createInvoiceRepo struct {
 	invoiceStore            InvoiceStore
 	invoiceDetailStore      InvoiceDetailStore
 	bookStore               BookStore
 	stockChangeHistoryStore StockChangeHistoryStore
+	shopGeneralStore        ShopGeneralStore
 }
 
 func NewCreateInvoiceRepo(
 	invoiceStore InvoiceStore,
 	invoiceDetailStore InvoiceDetailStore,
 	bookStore BookStore,
-	stockChangeHistoryStore StockChangeHistoryStore) *createInvoiceRepo {
+	stockChangeHistoryStore StockChangeHistoryStore,
+	shopGeneralStore ShopGeneralStore) *createInvoiceRepo {
 	return &createInvoiceRepo{
 		invoiceStore:            invoiceStore,
 		invoiceDetailStore:      invoiceDetailStore,
 		bookStore:               bookStore,
 		stockChangeHistoryStore: stockChangeHistoryStore,
+		shopGeneralStore:        shopGeneralStore,
+	}
+}
+
+func (repo *createInvoiceRepo) GetShopGeneral(
+	ctx context.Context) (*shopgeneralmodel.ShopGeneral, error) {
+	if data, err := repo.shopGeneralStore.FindShopGeneral(ctx); err != nil {
+		return nil, err
+	} else {
+		return data, nil
 	}
 }
 

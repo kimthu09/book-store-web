@@ -226,6 +226,7 @@ const ProductTab = ({
                     alt="image"
                     fill
                     sizes="(max-width: 768px) 33vw, 20vw"
+                    placeholder='blur'
                   ></Image>
                 </AspectRatio>
                 <div className="px-1">

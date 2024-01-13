@@ -295,6 +295,7 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
                       className="h-[100px] w-[100px] object-cover"
                       width={100}
                       height={100}
+                      placeholder='blur'
                     ></Image>
                   </div>
                   {canEdit ? (

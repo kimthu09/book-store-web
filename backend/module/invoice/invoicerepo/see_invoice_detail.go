@@ -6,6 +6,12 @@ import (
 	"context"
 )
 
+type SeeInvoiceDetailStore interface {
+	ListInvoiceDetail(
+		ctx context.Context,
+		invoiceId string) ([]invoicedetailmodel.InvoiceDetail, error)
+}
+
 type FindInvoiceStore interface {
 	FindInvoice(
 		ctx context.Context,
@@ -13,48 +19,42 @@ type FindInvoiceStore interface {
 		moreKeys ...string) (*invoicemodel.Invoice, error)
 }
 
-type ListInvoiceDetailStore interface {
-	ListInvoiceDetail(
-		ctx context.Context,
-		invoiceId string,
-	) ([]invoicedetailmodel.InvoiceDetail, error)
-}
-
 type seeInvoiceDetailRepo struct {
+	invoiceDetailStore SeeInvoiceDetailStore
 	invoiceStore       FindInvoiceStore
-	invoiceDetailStore ListInvoiceDetailStore
 }
 
 func NewSeeInvoiceDetailRepo(
-	invoiceStore FindInvoiceStore,
-	invoiceDetailStore ListInvoiceDetailStore) *seeInvoiceDetailRepo {
+	invoiceDetailStore SeeInvoiceDetailStore,
+	invoiceStore FindInvoiceStore) *seeInvoiceDetailRepo {
 	return &seeInvoiceDetailRepo{
-		invoiceStore:       invoiceStore,
 		invoiceDetailStore: invoiceDetailStore,
+		invoiceStore:       invoiceStore,
 	}
 }
 
 func (biz *seeInvoiceDetailRepo) SeeInvoiceDetail(
 	ctx context.Context,
-	invoiceId string) (*invoicemodel.ResDetailInvoice, error) {
+	invoiceId string) (*invoicemodel.Invoice, error) {
 	invoice, errInvoice := biz.invoiceStore.FindInvoice(
 		ctx,
 		map[string]interface{}{
 			"id": invoiceId,
-		}, "CreatedByUser")
+		},
+		"Customer", "CreatedByUser")
 	if errInvoice != nil {
 		return nil, errInvoice
 	}
 
-	resDetailInvoice := invoicemodel.GetResDetailInvoiceFromInvoice(invoice)
-
 	details, errInvoiceDetail := biz.invoiceDetailStore.ListInvoiceDetail(
 		ctx,
-		invoiceId)
+		invoiceId,
+	)
 	if errInvoiceDetail != nil {
 		return nil, errInvoiceDetail
 	}
-	resDetailInvoice.Details = details
 
-	return resDetailInvoice, nil
+	invoice.Details = details
+
+	return invoice, nil
 }

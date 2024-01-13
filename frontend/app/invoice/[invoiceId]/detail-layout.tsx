@@ -38,6 +38,7 @@ const DetailLayout = (responseData: any) => {
               alt="logo"
               width={50}
               height={50}
+              placeholder='blur'
             ></Image>
             <h1 className=" py-6 text-3xl uppercase font-medium">Nhà sách</h1>
           </div>

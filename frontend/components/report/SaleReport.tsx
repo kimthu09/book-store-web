@@ -1,55 +1,93 @@
-"use client"
-import { Card } from '@/components/ui/card';
-import ReportHeader from '@/components/report/ReportHeader';
-import { SaleReportDetail } from '@/types';
-import getReport from '@/lib/report/getReport';
-import { useState } from 'react';
-import { SaleReportTable } from '@/components/report/SaleReportTable';
+"use client";
+import { Card } from "@/components/ui/card";
+import ReportHeader from "@/components/report/ReportHeader";
+import getReport from "@/lib/report/getReport";
+import { useState } from "react";
+import { SaleReportTable } from "@/components/report/SaleReportTable";
+import { toast } from "../ui/use-toast";
+import Loading from "../loading";
+import { SaleReport, SaleReportDetail } from "@/types";
+import { ExportSaleReport } from "./excel-export-sale-report";
 
 const SaleReport = () => {
-    const [data, setData] = useState<SaleReportDetail[]>([])
-    const [total, setTotal] = useState<number>(0)
+  const [data, setData] = useState<SaleReport>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const onGetDebt = async ({
-        timeFrom,
-        timeTo,
-    }: {
-        timeFrom: number,
-        timeTo: number
-    }) => {
-        const report = await getReport({
-            timeFrom: timeFrom,
-            timeTo: timeTo,
-            type: "sale"
-        });
-        setTotal(report.data.total)
-        setData(report.data.details)
+  const onGetSale = async ({
+    timeFrom,
+    timeTo,
+  }: {
+    timeFrom: number;
+    timeTo: number;
+  }) => {
+    setIsLoading(true);
+    const responseData = await getReport({
+      timeFrom: timeFrom,
+      timeTo: timeTo,
+      type: "sale",
+    });
+    if (responseData.hasOwnProperty("data")) {
+      if (responseData.data) {
+        setData(responseData.data);
+      }
+    } else if (responseData.hasOwnProperty("errorKey")) {
+      toast({
+        variant: "destructive",
+        title: "Có lỗi",
+        description: responseData.message,
+      });
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Có lỗi",
+        description: "Vui lòng thử lại sau",
+      });
     }
+    setIsLoading(false);
+  };
 
-    return (
-        <div>
-            <div>
-                <ReportHeader
-                    title="Báo cáo doanh thu"
-                    firstAction="Xem báo cáo"
-                    secondAction="Tải excel"
-                    onClick={onGetDebt} />
-            </div>
+  const onExport = () => {
+    if (data == undefined || data.details.length < 1) {
+      toast({
+        variant: "destructive",
+        title: "Có lỗi",
+        description: "Không có báo cáo mặt hàng nào",
+      });
+    } else {
+      ExportSaleReport(data, "SaleReport.xlsx");
+    }
+  };
 
-            <div>
-                <Card className='p-[10px] my-[22px]'>
-                    <SaleReportTable data={data} />
-                    <div className='flex justify-between pt-[15px]'>
-                        <p className='text-xl font-bold'>Tổng cộng</p>
-                        <p className='text-xl font-bold'>{`${(new Intl.NumberFormat("vi-VN", {
-                            style: "currency",
-                            currency: "VND",
-                        }).format(total))}`}</p>
-                    </div>
-                </Card>
-            </div>
-        </div>
-    );
-}
+  return (
+    <div>
+      <div>
+        <ReportHeader
+          title="Báo cáo mặt hàng"
+          firstAction="Xem báo cáo"
+          secondAction="Tải excel"
+          onClick={onGetSale}
+          onExport={onExport}
+        />
+      </div>
+
+      <div>
+        <Card className="p-[10px] my-[22px]">
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <SaleReportTable
+              report={data}
+              data={
+                data == undefined || data == null
+                  ? []
+                  : (data!.details as SaleReportDetail[])
+              }
+            />
+          )}
+        </Card>
+      </div>
+    </div>
+  );
+};
 
 export default SaleReport;
