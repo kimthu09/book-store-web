@@ -999,6 +999,17 @@ definitions:
         description: Data contains the detailed information about inventory check
           note details.
     type: object
+  invoicedetailmodel.InvoiceDetail:
+    properties:
+      book:
+        $ref: '#/definitions/bookmodel.SimpleBook'
+      qty:
+        example: 2
+        type: integer
+      unitPrice:
+        example: 60000
+        type: integer
+    type: object
   invoicedetailmodel.ReqCreateInvoiceDetail:
     properties:
       bookId:
@@ -1030,6 +1041,10 @@ definitions:
         $ref: '#/definitions/usermodel.SimpleUser'
       customer:
         $ref: '#/definitions/invoicemodel.SimpleCustomer'
+      details:
+        items:
+          $ref: '#/definitions/invoicedetailmodel.InvoiceDetail'
+        type: array
       id:
         example: "123"
         type: string
@@ -1051,10 +1066,14 @@ definitions:
     type: object
   invoicemodel.ReqCreateInvoice:
     properties:
+      customerId:
+        type: string
       details:
         items:
           $ref: '#/definitions/invoicedetailmodel.ReqCreateInvoiceDetail'
         type: array
+      isUsePoint:
+        type: boolean
     type: object
   invoicemodel.ResCreateInvoice:
     properties:

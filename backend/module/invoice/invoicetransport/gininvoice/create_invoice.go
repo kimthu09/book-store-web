@@ -6,6 +6,7 @@ import (
 	"book-store-management-backend/component/generator"
 	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/book/bookstore"
+	"book-store-management-backend/module/customer/customerstore"
 	"book-store-management-backend/module/invoice/invoicebiz"
 	"book-store-management-backend/module/invoice/invoicemodel"
 	"book-store-management-backend/module/invoice/invoicerepo"
@@ -42,6 +43,7 @@ func CreateInvoice(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		invoiceStore := invoicestore.NewSQLStore(db)
 		invoiceDetailStore := invoicedetailstore.NewSQLStore(db)
+		customerStore := customerstore.NewSQLStore(db)
 		bookStore := bookstore.NewSQLStore(db)
 		stockChangeHistoryStore := stockchangehistorystore.NewSQLStore(db)
 		shopGeneralStore := shopgeneralstore.NewSQLStore(db)
@@ -49,6 +51,7 @@ func CreateInvoice(appCtx appctx.AppContext) gin.HandlerFunc {
 		repo := invoicerepo.NewCreateInvoiceRepo(
 			invoiceStore,
 			invoiceDetailStore,
+			customerStore,
 			bookStore,
 			stockChangeHistoryStore,
 			shopGeneralStore,

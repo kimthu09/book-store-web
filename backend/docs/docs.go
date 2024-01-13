@@ -5038,6 +5038,22 @@ const docTemplate = `{
                 }
             }
         },
+        "invoicedetailmodel.InvoiceDetail": {
+            "type": "object",
+            "properties": {
+                "book": {
+                    "$ref": "#/definitions/bookmodel.SimpleBook"
+                },
+                "qty": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "unitPrice": {
+                    "type": "integer",
+                    "example": 60000
+                }
+            }
+        },
         "invoicedetailmodel.ReqCreateInvoiceDetail": {
             "type": "object",
             "properties": {
@@ -5083,6 +5099,12 @@ const docTemplate = `{
                 "customer": {
                     "$ref": "#/definitions/invoicemodel.SimpleCustomer"
                 },
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/invoicedetailmodel.InvoiceDetail"
+                    }
+                },
                 "id": {
                     "type": "string",
                     "example": "123"
@@ -5112,11 +5134,17 @@ const docTemplate = `{
         "invoicemodel.ReqCreateInvoice": {
             "type": "object",
             "properties": {
+                "customerId": {
+                    "type": "string"
+                },
                 "details": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/invoicedetailmodel.ReqCreateInvoiceDetail"
                     }
+                },
+                "isUsePoint": {
+                    "type": "boolean"
                 }
             }
         },
