@@ -34,6 +34,11 @@ var (
 		"Danh sách sản phẩm cần thanh toán đang trống",
 		"ErrInvoiceDetailsEmpty",
 	)
+	ErrInvoiceNotHaveCustomerToUsePoint = common.NewCustomError(
+		errors.New("customer is required for this invoice"),
+		"Khách hàng bắt buộc phải có cho hóa đơn này",
+		"ErrInvoiceNotHaveCustomerToUsePoint",
+	)
 	ErrInvoiceBookIsNotEnough = common.NewCustomError(
 		errors.New("exist book in the stock is not enough for the invoice"),
 		"Tồn tại 1 sách có số lượng trong kho không đủ để bán",

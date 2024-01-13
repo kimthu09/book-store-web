@@ -4,6 +4,7 @@ import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/generator"
 	"book-store-management-backend/middleware"
+	"book-store-management-backend/module/customer/customermodel"
 	"book-store-management-backend/module/invoice/invoicemodel"
 	"book-store-management-backend/module/shopgeneral/shopgeneralmodel"
 	"context"
@@ -16,6 +17,15 @@ type CreateInvoiceRepo interface {
 	HandleData(
 		ctx context.Context,
 		data *invoicemodel.ReqCreateInvoice,
+	) error
+	FindCustomer(
+		ctx context.Context,
+		customerId string,
+	) (*customermodel.Customer, error)
+	UpdateCustomerPoint(
+		ctx context.Context,
+		customerId string,
+		data customermodel.CustomerUpdatePoint,
 	) error
 	HandleInvoice(
 		ctx context.Context,
@@ -57,6 +67,55 @@ func (biz *createInvoiceBiz) CreateInvoice(
 
 	if err := biz.repo.HandleData(ctx, data); err != nil {
 		return err
+	}
+
+	general, errGetShopGeneral := biz.repo.GetShopGeneral(ctx)
+	if errGetShopGeneral != nil {
+		return errGetShopGeneral
+	}
+	if data.CustomerId != "" {
+		customer, errGetCustomer := biz.repo.FindCustomer(ctx, data.CustomerId)
+		if errGetCustomer != nil {
+			return errGetCustomer
+		}
+
+		priceUseForPoint := float32(0)
+		pointUse := 0
+		if data.IsUsePoint {
+			if float32(data.TotalPrice) >= float32(customer.Point)*general.UsePointPercent {
+				pointUse = customer.Point
+				priceUseForPoint = float32(customer.Point) * general.UsePointPercent
+			} else {
+				pointUse = common.RoundToInt(float32(data.TotalPrice) / general.UsePointPercent)
+				priceUseForPoint = float32(data.TotalPrice)
+			}
+		}
+
+		priceUseForPointInt := common.RoundToInt(priceUseForPoint)
+		data.QuantityReceived = data.TotalPrice - priceUseForPointInt
+		data.QuantityPriceUseForPoint = priceUseForPointInt
+
+		pointReceive := common.RoundToInt(float32(data.QuantityReceived) * general.AccumulatePointPercent)
+
+		data.PointUse = pointUse
+		data.PointReceive = pointReceive
+
+		amountPointNeedUpdate :=
+			pointReceive - pointUse
+
+		customerUpdatePoint := customermodel.CustomerUpdatePoint{
+			Amount: &amountPointNeedUpdate,
+		}
+		if err := biz.repo.UpdateCustomerPoint(
+			ctx, data.CustomerId, customerUpdatePoint); err != nil {
+			return err
+		}
+
+	} else {
+		data.QuantityReceived = data.TotalPrice
+		if data.IsUsePoint {
+			return invoicemodel.ErrInvoiceNotHaveCustomerToUsePoint
+		}
 	}
 
 	if err := biz.repo.HandleInvoice(ctx, data); err != nil {

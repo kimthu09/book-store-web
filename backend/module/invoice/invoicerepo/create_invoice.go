@@ -2,6 +2,7 @@ package invoicerepo
 
 import (
 	"book-store-management-backend/module/book/bookmodel"
+	"book-store-management-backend/module/customer/customermodel"
 	"book-store-management-backend/module/invoice/invoicemodel"
 	"book-store-management-backend/module/invoicedetail/invoicedetailmodel"
 	"book-store-management-backend/module/shopgeneral/shopgeneralmodel"
@@ -20,6 +21,19 @@ type InvoiceDetailStore interface {
 	CreateListImportNoteDetail(
 		ctx context.Context,
 		data []invoicedetailmodel.ReqCreateInvoiceDetail,
+	) error
+}
+
+type CustomerStore interface {
+	FindCustomer(
+		ctx context.Context,
+		conditions map[string]interface{},
+		moreKeys ...string,
+	) (*customermodel.Customer, error)
+	UpdateCustomerPoint(
+		ctx context.Context,
+		id string,
+		data *customermodel.CustomerUpdatePoint,
 	) error
 }
 
@@ -49,6 +63,7 @@ type ShopGeneralStore interface {
 type createInvoiceRepo struct {
 	invoiceStore            InvoiceStore
 	invoiceDetailStore      InvoiceDetailStore
+	customerStore           CustomerStore
 	bookStore               BookStore
 	stockChangeHistoryStore StockChangeHistoryStore
 	shopGeneralStore        ShopGeneralStore
@@ -57,12 +72,14 @@ type createInvoiceRepo struct {
 func NewCreateInvoiceRepo(
 	invoiceStore InvoiceStore,
 	invoiceDetailStore InvoiceDetailStore,
+	customerStore CustomerStore,
 	bookStore BookStore,
 	stockChangeHistoryStore StockChangeHistoryStore,
 	shopGeneralStore ShopGeneralStore) *createInvoiceRepo {
 	return &createInvoiceRepo{
 		invoiceStore:            invoiceStore,
 		invoiceDetailStore:      invoiceDetailStore,
+		customerStore:           customerStore,
 		bookStore:               bookStore,
 		stockChangeHistoryStore: stockChangeHistoryStore,
 		shopGeneralStore:        shopGeneralStore,
@@ -82,6 +99,8 @@ func (repo *createInvoiceRepo) HandleData(
 	ctx context.Context,
 	data *invoicemodel.ReqCreateInvoice) error {
 	totalPrice := 0
+	totalImportPrice := 0
+
 	var history []stockchangehistorymodel.StockChangeHistory
 	for i, invoiceDetail := range data.InvoiceDetails {
 		book, errGetActiveBook := repo.getBook(ctx, invoiceDetail.BookId)
@@ -96,7 +115,9 @@ func (repo *createInvoiceRepo) HandleData(
 
 		data.InvoiceDetails[i].BookName = *book.Name
 		data.InvoiceDetails[i].UnitPrice = *book.SellPrice
+
 		totalPrice += data.InvoiceDetails[i].UnitPrice * invoiceDetail.Quantity
+		totalImportPrice += *book.ImportPrice * invoiceDetail.Quantity
 
 		typeChange := stockchangehistorymodel.Sell
 		stockChangeHistory := stockchangehistorymodel.StockChangeHistory{
@@ -118,6 +139,7 @@ func (repo *createInvoiceRepo) HandleData(
 	}
 
 	data.TotalPrice = totalPrice
+	data.TotalImportPrice = totalImportPrice
 
 	if err := repo.stockChangeHistoryStore.CreateLisStockChangeHistory(
 		ctx, history); err != nil {
@@ -145,6 +167,30 @@ func (repo *createInvoiceRepo) getBook(
 	}
 
 	return book, nil
+}
+
+func (repo *createInvoiceRepo) FindCustomer(
+	ctx context.Context,
+	customerId string) (*customermodel.Customer, error) {
+	customer, err := repo.customerStore.FindCustomer(
+		ctx, map[string]interface{}{"id": customerId},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return customer, nil
+}
+
+func (repo *createInvoiceRepo) UpdateCustomerPoint(
+	ctx context.Context,
+	customerId string,
+	data customermodel.CustomerUpdatePoint) error {
+	if err := repo.customerStore.UpdateCustomerPoint(
+		ctx, customerId, &data,
+	); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (repo *createInvoiceRepo) HandleInvoice(
