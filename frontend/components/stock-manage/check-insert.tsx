@@ -126,26 +126,19 @@ const CheckInsert = ({
                     <div className="relative p-1 col-span-1 flex-col flex items-end">
                       <Input
                         className="text-right p-2 max-w-[8rem]"
-                        type="number"
                         defaultValue={book.difference}
                         {...register(`details.${index}.difference` as const)}
                       ></Input>
-                      {Array.isArray(errors.details) &&
-                        errors.details.length > 0 &&
-                        errors.details.map((detailError, idx) => {
-                          if (idx === index) {
-                            if (
-                              detailError &&
-                              detailError.root &&
-                              detailError.root.message
-                            )
-                              return (
-                                <span key={index} className="error___message">
-                                  {detailError.root.message}
-                                </span>
-                              );
-                          }
-                        })}
+                      {errors &&
+                      errors.details &&
+                      errors.details[index] &&
+                      (errors.details[index]!.difference as
+                        | { message: string }
+                        | undefined) ? (
+                        <span className="error___message">
+                          {errors.details[index]!.difference!.message}
+                        </span>
+                      ) : null}
                     </div>
                     <div className="text-right flex justify-end gap-2 items-center col-span-1">
                       <div className="text-right">

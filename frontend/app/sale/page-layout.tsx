@@ -27,6 +27,11 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ToastAction } from "@/components/ui/toast";
 export type FormValues = {
+  customer: {
+    customerId: string;
+    customerPoint: number;
+  };
+  isUsePoint: boolean;
   details: {
     bookId: string;
     qty: number;
@@ -38,6 +43,8 @@ export type FormValues = {
 const SaleScreen = () => {
   const form = useForm<FormValues>({
     defaultValues: {
+      customer: {},
+      isUsePoint: false,
       details: [],
     },
   });
@@ -72,6 +79,8 @@ const SaleScreen = () => {
       return;
     }
     const response: Promise<any> = createInvoice({
+      customerId: data.customer.customerId,
+      isUsePoint: data.isUsePoint,
       details: data.details.map((item) => {
         return {
           bookId: item.bookId,

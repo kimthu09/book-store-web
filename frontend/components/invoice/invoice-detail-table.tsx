@@ -111,9 +111,11 @@ export const columns: ColumnDef<InvoiceDetailProps>[] = [
     size: 4,
   },
 ];
-export function InvoiceDetailTable(details: InvoiceDetailProps[]) {
-  const data = Object.values(details);
-
+export function InvoiceDetailTable({
+  details: data,
+}: {
+  details: InvoiceDetailProps[];
+}) {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);

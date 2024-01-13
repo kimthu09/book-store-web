@@ -64,7 +64,7 @@ const CheckDetail = ({ params }: { params: { checkId: string } }) => {
           </div>
         </div>
         <div className="shadow-sm bg-white flex flex-col gap-6 py-6 md:px-6 px-4">
-          <CheckDetailTable {...data.details} />
+          <CheckDetailTable details={data.details} />
           <div className="flex justify-end space-x-2 pb-4 font-semibold">
             <span>Số lượng thay đổi: </span>
             <span>{data.qtyDifferent}</span>

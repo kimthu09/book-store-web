@@ -118,9 +118,11 @@ export const columns: ColumnDef<ImportNoteDetail>[] = [
     size: 4,
   },
 ];
-export function ImportDetailTable(details: ImportNoteDetail[]) {
-  const data = Object.values(details);
-
+export function ImportDetailTable({
+  details: data,
+}: {
+  details: ImportNoteDetail[];
+}) {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);

@@ -114,7 +114,6 @@ export const columns: ColumnDef<Staff>[] = [
           className="object-contain max-h-10"
           width={40}
           height={40}
-          placeholder='blur'
         ></Image>
       </div>
     ),

@@ -62,7 +62,7 @@ const ImportDetail = ({ params }: { params: { importId: string } }) => {
     })
   ) {
     return <NoRole></NoRole>;
-  } else
+  } else {
     return (
       <div className="flex flex-col xl:mx-[20%] gap-6">
         <div className="shadow-sm bg-white flex flex-col gap-6 md:px-8 px-4 pb-6">
@@ -162,7 +162,7 @@ const ImportDetail = ({ params }: { params: { importId: string } }) => {
           </div>
         </div>
         <div className="shadow-sm bg-white flex flex-col gap-6 py-6 md:px-6 px-4">
-          <ImportDetailTable {...data.details} />
+          <ImportDetailTable details={data.details} />
           <div className="flex justify-end space-x-2 pb-4 font-semibold">
             <span>Tổng tiền: </span>
             <span>{toVND(data.totalPrice)}</span>
@@ -170,6 +170,7 @@ const ImportDetail = ({ params }: { params: { importId: string } }) => {
         </div>
       </div>
     );
+  }
 };
 
 export default ImportDetail;

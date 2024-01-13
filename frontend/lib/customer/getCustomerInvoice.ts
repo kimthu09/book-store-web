@@ -21,26 +21,24 @@ const fetcher = async (url: string) => {
     });
 };
 
-export default function getAllTitle({
-  limit,
+export default function getCustomerInvoice({
+  idCustomer,
   page,
-  filter,
+  limit,
 }: {
-  limit?: string;
-  page?: string;
-  filter?: string;
+  idCustomer: string;
+  page: number;
+  limit?: number;
 }) {
-  const { data, error, isLoading, mutate } = useSWR(
-    `${endPoint}/v1/booktitles?page=${page ?? 1}&limit=${limit ?? 10}${
-      filter ?? ""
-    }`,
+  const { data, error, isLoading } = useSWR(
+    `${endPoint}/v1/customers/${idCustomer}/invoices?limit=${
+      limit ?? 10
+    }&page=${page}`,
     fetcher
   );
-
   return {
-    titles: data,
+    data: data,
     isLoading,
     isError: error,
-    mutate: mutate,
   };
 }

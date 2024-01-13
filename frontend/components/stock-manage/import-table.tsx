@@ -492,16 +492,18 @@ export function ImportTable() {
                                 />
                               </div>
                             ) : item.type === "closedBy" ? (
-                              <StaffList
-                                staff={staffClose}
-                                setStaff={(value) => {
-                                  setStaffClose(value);
-                                  update(index, {
-                                    type: item.type,
-                                    value: value,
-                                  });
-                                }}
-                              />
+                              <div className="flex-1">
+                                <StaffList
+                                  staff={staffClose}
+                                  setStaff={(value) => {
+                                    setStaffClose(value);
+                                    update(index, {
+                                      type: item.type,
+                                      value: value,
+                                    });
+                                  }}
+                                />
+                              </div>
                             ) : item.type === "supplier" ? (
                               <div className="flex-1">
                                 <SupplierList
@@ -673,8 +675,8 @@ export function ImportTable() {
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
           <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
+            {table.getFilteredSelectedRowModel().rows.length} trong{" "}
+            {table.getFilteredRowModel().rows.length} dòng được chọn.
           </div>
           <Paging
             page={page}

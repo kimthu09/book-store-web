@@ -58,7 +58,6 @@ const DashboardComponent = () => {
     }
     setIsLoading(false);
   };
-
   let cardInfos: CardDashboardInfo[] = [];
 
   const totalSaleFormat = new Intl.NumberFormat("vi-VN", {
@@ -72,55 +71,59 @@ const DashboardComponent = () => {
 
   const totalSoldFormat = data.totalSold.toLocaleString("vi-VN");
 
-  if (data != undefined) {
-    cardInfos.push({
-      title: "Doanh thu",
-      value: totalSaleFormat,
-      icon: "",
-    });
-    cardInfos.push({
-      title: "Số điểm tích được",
-      value: pointFormat,
-      icon: "",
-    });
-    cardInfos.push({
-      title: "Số khách đã mua",
-      value: customerFormat,
-      icon: "",
-    });
-    cardInfos.push({
-      title: "Số sản phẩm bán được",
-      value: totalSoldFormat,
-      icon: "",
-    });
-  }
-  return (
-    <div className="flex flex-col lg:gap-[6] gap-4">
-      <div>
-        <DashboardHeader onClick={onGetDashboard} />
-      </div>
-      {isLoading ? (
-        <Loading></Loading>
-      ) : (
-        <div className="flex flex-col w-full lg:gap-[6] gap-4">
-          <DashboardCardHolder cardInfos={cardInfos} />
-          <div className="flex lg:flex-row flex-col w-full lg:gap-[6] gap-4 h-auto basis-2/3">
-            <DashboardChartContainer
-              price={data?.chartPriceComponents}
-              profit={data?.chartProfitComponents}
-              timeFrom={data?.timeFrom}
-              timeTo={data?.timeTo}
-              chartType={chartType}
-              setChartType={setChartType}
-            />
-            <div className="basis-1/3 flex h-full">
-              <DashboardTopFoodContainer foods={data?.topSoldBooks} />
+  if (!data) {
+    return <Loading />;
+  } else {
+    if (data != undefined) {
+      cardInfos.push({
+        title: "Doanh thu",
+        value: totalSaleFormat,
+        icon: "",
+      });
+      cardInfos.push({
+        title: "Số điểm tích được",
+        value: pointFormat,
+        icon: "",
+      });
+      cardInfos.push({
+        title: "Số khách đã mua",
+        value: customerFormat,
+        icon: "",
+      });
+      cardInfos.push({
+        title: "Số sản phẩm bán được",
+        value: totalSoldFormat,
+        icon: "",
+      });
+    }
+    return (
+      <div className="flex flex-col lg:gap-[6] gap-4">
+        <div>
+          <DashboardHeader onClick={onGetDashboard} />
+        </div>
+        {isLoading ? (
+          <Loading></Loading>
+        ) : (
+          <div className="flex flex-col w-full lg:gap-[6] gap-4">
+            <DashboardCardHolder cardInfos={cardInfos} />
+            <div className="flex lg:flex-row flex-col w-full lg:gap-[6] gap-4 h-auto basis-2/3">
+              <DashboardChartContainer
+                price={data?.chartPriceComponents}
+                profit={data?.chartProfitComponents}
+                timeFrom={data?.timeFrom}
+                timeTo={data?.timeTo}
+                chartType={chartType}
+                setChartType={setChartType}
+              />
+              <div className="basis-1/3 flex h-full">
+                <DashboardTopFoodContainer foods={data?.topSoldBooks} />
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
-  );
+        )}
+      </div>
+    );
+  }
 };
 
 export default DashboardComponent;

@@ -1,4 +1,5 @@
 import { endPoint } from "@/constants";
+import { Customer } from "@/types";
 import useSWR from "swr";
 import { getApiKey } from "../auth/action";
 
@@ -9,38 +10,23 @@ const fetcher = async (url: string) => {
       accept: "application/json",
       Authorization: `Bearer ${token}`,
     },
+    cache: "no-store",
   })
     .then((res) => {
       return res.json();
     })
-    .then((json) => {
-      return {
-        paging: json.paging,
-        data: json.data,
-      };
-    });
+    .then((json) => json.data);
 };
 
-export default function getAllTitle({
-  limit,
-  page,
-  filter,
-}: {
-  limit?: string;
-  page?: string;
-  filter?: string;
-}) {
-  const { data, error, isLoading, mutate } = useSWR(
-    `${endPoint}/v1/booktitles?page=${page ?? 1}&limit=${limit ?? 10}${
-      filter ?? ""
-    }`,
+export default function getCustomer(idCustomer: string) {
+  const { data, error, isLoading } = useSWR(
+    `${endPoint}/v1/customers/${idCustomer}`,
     fetcher
   );
 
   return {
-    titles: data,
+    data: data as Customer,
     isLoading,
     isError: error,
-    mutate: mutate,
   };
 }

@@ -131,7 +131,6 @@ const Profile = () => {
                 alt="avatar"
                 width={36}
                 height={36}
-                placeholder='blur'
               ></Image>
             </div>
           </Button>
