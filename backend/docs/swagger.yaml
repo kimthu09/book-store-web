@@ -1034,6 +1034,12 @@ definitions:
     type: object
   invoicemodel.Invoice:
     properties:
+      amountPriceUsePoint:
+        example: 20000
+        type: integer
+      amountReceived:
+        example: 100000
+        type: integer
       createdAt:
         example: "2023-12-03T15:02:19.62113565Z"
         type: string
@@ -1053,12 +1059,6 @@ definitions:
         type: integer
       pointUse:
         example: 20000
-        type: integer
-      qtyPriceUsePoint:
-        example: 20000
-        type: integer
-      qtyReceived:
-        example: 100000
         type: integer
       totalPrice:
         example: 120000

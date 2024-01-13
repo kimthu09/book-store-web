@@ -6,17 +6,17 @@ import (
 )
 
 type ReqCreateInvoice struct {
-	Id                       string                                      `json:"-" gorm:"column:id;"`
-	CustomerId               string                                      `json:"customerId" gorm:"column:customerId;"`
-	IsUsePoint               bool                                        `json:"isUsePoint" gorm:"-"`
-	TotalPrice               int                                         `json:"-" gorm:"column:totalPrice;"`
-	TotalImportPrice         int                                         `json:"-" gorm:"column:totalImportPrice;"`
-	QuantityReceived         int                                         `json:"-" gorm:"column:qtyReceived"`
-	QuantityPriceUseForPoint int                                         `json:"-" gorm:"column:qtyPriceUsePoint"`
-	PointUse                 int                                         `json:"-" gorm:"column:pointUse;"`
-	PointReceive             int                                         `json:"-" gorm:"column:pointReceive;"`
-	CreatedBy                string                                      `json:"-" gorm:"column:createdBy;"`
-	InvoiceDetails           []invoicedetailmodel.ReqCreateInvoiceDetail `json:"details" gorm:"-"`
+	Id                     string                                      `json:"-" gorm:"column:id;"`
+	CustomerId             string                                      `json:"customerId" gorm:"column:customerId;"`
+	IsUsePoint             bool                                        `json:"isUsePoint" gorm:"-"`
+	TotalPrice             int                                         `json:"-" gorm:"column:totalPrice;"`
+	TotalImportPrice       int                                         `json:"-" gorm:"column:totalImportPrice;"`
+	AmountReceived         int                                         `json:"-" gorm:"column:amountReceived"`
+	AmountPriceUseForPoint int                                         `json:"-" gorm:"column:amountPriceUsePoint"`
+	PointUse               int                                         `json:"-" gorm:"column:pointUse;"`
+	PointReceive           int                                         `json:"-" gorm:"column:pointReceive;"`
+	CreatedBy              string                                      `json:"-" gorm:"column:createdBy;"`
+	InvoiceDetails         []invoicedetailmodel.ReqCreateInvoiceDetail `json:"details" gorm:"-"`
 }
 
 func (*ReqCreateInvoice) TableName() string {

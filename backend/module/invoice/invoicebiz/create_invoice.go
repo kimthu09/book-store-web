@@ -92,10 +92,10 @@ func (biz *createInvoiceBiz) CreateInvoice(
 		}
 
 		priceUseForPointInt := common.RoundToInt(priceUseForPoint)
-		data.QuantityReceived = data.TotalPrice - priceUseForPointInt
-		data.QuantityPriceUseForPoint = priceUseForPointInt
+		data.AmountReceived = data.TotalPrice - priceUseForPointInt
+		data.AmountPriceUseForPoint = priceUseForPointInt
 
-		pointReceive := common.RoundToInt(float32(data.QuantityReceived) * general.AccumulatePointPercent)
+		pointReceive := common.RoundToInt(float32(data.AmountReceived) * general.AccumulatePointPercent)
 
 		data.PointUse = pointUse
 		data.PointReceive = pointReceive
@@ -112,7 +112,7 @@ func (biz *createInvoiceBiz) CreateInvoice(
 		}
 
 	} else {
-		data.QuantityReceived = data.TotalPrice
+		data.AmountReceived = data.TotalPrice
 		if data.IsUsePoint {
 			return invoicemodel.ErrInvoiceNotHaveCustomerToUsePoint
 		}

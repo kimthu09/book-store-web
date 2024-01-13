@@ -5089,6 +5089,14 @@ const docTemplate = `{
         "invoicemodel.Invoice": {
             "type": "object",
             "properties": {
+                "amountPriceUsePoint": {
+                    "type": "integer",
+                    "example": 20000
+                },
+                "amountReceived": {
+                    "type": "integer",
+                    "example": 100000
+                },
                 "createdAt": {
                     "type": "string",
                     "example": "2023-12-03T15:02:19.62113565Z"
@@ -5116,14 +5124,6 @@ const docTemplate = `{
                 "pointUse": {
                     "type": "integer",
                     "example": 20000
-                },
-                "qtyPriceUsePoint": {
-                    "type": "integer",
-                    "example": 20000
-                },
-                "qtyReceived": {
-                    "type": "integer",
-                    "example": 100000
                 },
                 "totalPrice": {
                     "type": "integer",
