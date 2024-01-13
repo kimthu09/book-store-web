@@ -1670,6 +1670,12 @@ definitions:
         example: role id
         type: string
     type: object
+  usermodel.ReqForgetPassword:
+    properties:
+      newPassword:
+        example: mật khẩu mới
+        type: string
+    type: object
   usermodel.ReqLoginUser:
     properties:
       email:
@@ -2658,7 +2664,7 @@ paths:
       summary: List feature
       tags:
       - features
-  /forgotPassword:
+  /forgetPassword:
     post:
       consumes:
       - application/json
@@ -2682,7 +2688,39 @@ paths:
             $ref: '#/definitions/common.AppError'
       security:
       - BearerAuth: []
-      summary: Mail forgot password
+      summary: Mail forget password
+      tags:
+      - auth
+  /forgetPassword/{token}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: token
+        in: path
+        name: token
+        required: true
+        type: string
+      - description: new password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.ReqForgetPassword'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status of response
+          schema:
+            $ref: '#/definitions/common.ResSuccess'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/common.AppError'
+      security:
+      - BearerAuth: []
+      summary: Verify forget password
       tags:
       - auth
   /importNotes:

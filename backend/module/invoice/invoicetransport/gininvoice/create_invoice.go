@@ -80,13 +80,7 @@ func CreateInvoice(appCtx appctx.AppContext) gin.HandlerFunc {
 			seeDetailRepo, shopStore, requester)
 
 		result, err := seeDetailBiz.SeeDetailInvoice(c.Request.Context(), data.Id)
-
 		if err != nil {
-			panic(err)
-		}
-
-		if err := db.Commit().Error; err != nil {
-			db.Rollback()
 			panic(err)
 		}
 

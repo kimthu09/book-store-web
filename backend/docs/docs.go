@@ -1347,7 +1347,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/forgotPassword": {
+        "/forgetPassword": {
             "post": {
                 "security": [
                     {
@@ -1363,7 +1363,7 @@ const docTemplate = `{
                 "tags": [
                     "auth"
                 ],
-                "summary": "Mail forgot password",
+                "summary": "Mail forget password",
                 "parameters": [
                     {
                         "description": "email",
@@ -1372,6 +1372,57 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/usermodel.ReqMailForgotPassword"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status of response",
+                        "schema": {
+                            "$ref": "#/definitions/common.ResSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/common.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/forgetPassword/{token}": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Verify forget password",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "new password",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.ReqForgetPassword"
                         }
                     }
                 ],
@@ -6042,6 +6093,15 @@ const docTemplate = `{
                 "roleId": {
                     "type": "string",
                     "example": "role id"
+                }
+            }
+        },
+        "usermodel.ReqForgetPassword": {
+            "type": "object",
+            "properties": {
+                "newPassword": {
+                    "type": "string",
+                    "example": "mật khẩu mới"
                 }
             }
         },

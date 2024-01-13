@@ -96,7 +96,6 @@ func main() {
 		cfg.StaticPath,
 		cfg.ServerHost,
 		cfg.EmailFrom,
-		cfg.SMTPUser,
 		cfg.SMTPass,
 		cfg.SMTHost,
 		cfg.SMTPort)

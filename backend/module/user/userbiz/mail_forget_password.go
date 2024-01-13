@@ -3,6 +3,7 @@ package userbiz
 import (
 	"book-store-management-backend/common"
 	"book-store-management-backend/component/tokenprovider"
+	"book-store-management-backend/module/user/usermodel"
 	"bytes"
 	"context"
 	"crypto/tls"
@@ -13,47 +14,63 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strconv"
 )
 
+type MailForgetPasswordRepo interface {
+	VerifyUser(
+		ctx context.Context,
+		email string) error
+}
+
 type mailForgetPasswordBiz struct {
+	repo          MailForgetPasswordRepo
 	tokenProvider tokenprovider.Provider
 }
 
 func NewMailForgetPasswordBiz(
+	repo MailForgetPasswordRepo,
 	tokenProvider tokenprovider.Provider) *mailForgetPasswordBiz {
 	return &mailForgetPasswordBiz{
+		repo:          repo,
 		tokenProvider: tokenProvider,
 	}
 }
 
 func (biz *mailForgetPasswordBiz) MailForgetPassword(
 	ctx context.Context,
-	email string,
+	data *usermodel.ReqMailForgotPassword,
 	emailFrom string,
 	smtpPass string,
-	smtpUser string,
 	smtpHost string,
 	smtpPort int) error {
-	payLoad := tokenprovider.TokenPayloadEmail{
-		Email: email,
+	if err := data.Validate(); err != nil {
+		return err
 	}
 
-	token, err := biz.tokenProvider.GenerateTokenForPayLoadEmail(payLoad, 60*60*15)
+	if err := biz.repo.VerifyUser(ctx, data.Email); err != nil {
+		return err
+	}
+
+	payLoad := tokenprovider.TokenPayloadEmail{
+		Email: data.Email,
+	}
+	token, err := biz.tokenProvider.GenerateTokenForPayLoadEmail(payLoad, 60*60*common.MinuteVerifyEmail)
 	if err != nil {
 		return common.ErrInternal(err)
 	}
 
 	emailData := EmailData{
 		URL:       "http://localhost/resetpassword/" + token.Token,
-		FirstName: "",
-		Subject:   "Your password reset token (valid for 15min)",
+		FirstName: data.Email,
+		Subject: "Your password reset token (valid for " +
+			strconv.Itoa(common.MinuteVerifyEmail) + " min)",
 	}
 
 	err = SendEmail(
 		emailFrom,
-		email,
+		data.Email,
 		smtpPass,
-		smtpUser,
 		smtpHost,
 		smtpPort,
 		&emailData,
@@ -75,7 +92,6 @@ func SendEmail(
 	emailFrom string,
 	emailTo string,
 	smtpPass string,
-	smtpUser string,
 	smtpHost string,
 	smtpPort int,
 	data *EmailData,
@@ -83,7 +99,7 @@ func SendEmail(
 
 	var body bytes.Buffer
 
-	template, err := ParseTemplateDir("../../mailtemplate")
+	template, err := ParseTemplateDir("mailtemplate")
 	if err != nil {
 		log.Fatal("Could not parse template", err)
 	}
@@ -100,7 +116,10 @@ func SendEmail(
 	m.SetBody("text/html", body.String())
 	m.AddAlternative("text/plain", html2text.HTML2Text(body.String()))
 
-	d := gomail.NewDialer(smtpHost, smtpPort, smtpUser, smtpPass)
+	fmt.Println(emailFrom)
+	fmt.Println(smtpPass)
+
+	d := gomail.NewDialer(smtpHost, smtpPort, emailFrom, smtpPass)
 	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 
 	if err := d.DialAndSend(m); err != nil {

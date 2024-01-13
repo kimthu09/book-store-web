@@ -93,7 +93,7 @@ func (biz *createInvoiceBiz) CreateInvoice(
 
 		priceUseForPointInt := common.RoundToInt(priceUseForPoint)
 		data.AmountReceived = data.TotalPrice - priceUseForPointInt
-		data.AmountPriceUseForPoint = priceUseForPointInt
+		data.AmountPriceUsePoint = priceUseForPointInt
 
 		pointReceive := common.RoundToInt(float32(data.AmountReceived) * general.AccumulatePointPercent)
 

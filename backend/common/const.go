@@ -89,3 +89,5 @@ const RoleAdminId = "admin"
 const DefaultPass = "app123"
 
 const CurrentUserStr = "current_user"
+
+const MinuteVerifyEmail = 15
