@@ -5038,6 +5038,22 @@ const docTemplate = `{
                 }
             }
         },
+        "invoicedetailmodel.InvoiceDetail": {
+            "type": "object",
+            "properties": {
+                "book": {
+                    "$ref": "#/definitions/bookmodel.SimpleBook"
+                },
+                "qty": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "unitPrice": {
+                    "type": "integer",
+                    "example": 60000
+                }
+            }
+        },
         "invoicedetailmodel.ReqCreateInvoiceDetail": {
             "type": "object",
             "properties": {
@@ -5073,6 +5089,14 @@ const docTemplate = `{
         "invoicemodel.Invoice": {
             "type": "object",
             "properties": {
+                "amountPriceUsePoint": {
+                    "type": "integer",
+                    "example": 20000
+                },
+                "amountReceived": {
+                    "type": "integer",
+                    "example": 100000
+                },
                 "createdAt": {
                     "type": "string",
                     "example": "2023-12-03T15:02:19.62113565Z"
@@ -5082,6 +5106,12 @@ const docTemplate = `{
                 },
                 "customer": {
                     "$ref": "#/definitions/invoicemodel.SimpleCustomer"
+                },
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/invoicedetailmodel.InvoiceDetail"
+                    }
                 },
                 "id": {
                     "type": "string",
@@ -5095,14 +5125,6 @@ const docTemplate = `{
                     "type": "integer",
                     "example": 20000
                 },
-                "qtyPriceUsePoint": {
-                    "type": "integer",
-                    "example": 20000
-                },
-                "qtyReceived": {
-                    "type": "integer",
-                    "example": 100000
-                },
                 "totalPrice": {
                     "type": "integer",
                     "example": 120000
@@ -5112,11 +5134,17 @@ const docTemplate = `{
         "invoicemodel.ReqCreateInvoice": {
             "type": "object",
             "properties": {
+                "customerId": {
+                    "type": "string"
+                },
                 "details": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/invoicedetailmodel.ReqCreateInvoiceDetail"
                     }
+                },
+                "isUsePoint": {
+                    "type": "boolean"
                 }
             }
         },

@@ -71,7 +71,7 @@ func (repo *seeDashboardRepo) SeeDashboard(
 	for _, invoice := range allInvoices {
 		chartSale := dashboardmodel.ChartComponent{
 			Time:  *invoice.CreatedAt,
-			Value: invoice.QuantityReceived - invoice.TotalImportPrice,
+			Value: invoice.AmountReceived - invoice.TotalImportPrice,
 		}
 		listProfit = append(listProfit, chartSale)
 
