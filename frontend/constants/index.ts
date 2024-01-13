@@ -7,6 +7,7 @@ import { LuClipboardList } from "react-icons/lu";
 import { FaRegHandshake } from "react-icons/fa";
 import { BsShop } from "react-icons/bs";
 import { z } from "zod";
+import { IoSettingsOutline } from "react-icons/io5";
 
 export const endPoint = "http://localhost:8080";
 
@@ -89,6 +90,12 @@ export const adminSidebarItems: SidebarItem[] = [
     submenu: false,
   },
   {
+    title: "Quản lý khách hàng",
+    href: "/customer",
+    icon: GoPerson,
+    submenu: false,
+  },
+  {
     title: "Quản lý nhân viên",
     href: "/staff",
     icon: GoPeople,
@@ -97,6 +104,12 @@ export const adminSidebarItems: SidebarItem[] = [
       { title: "Danh sách nhân viên", href: "/staff" },
       { title: "Phân quyền nhân viên", href: "/staff/role" },
     ],
+  },
+  {
+    title: "Thiết lập cửa hàng",
+    href: "/setting",
+    icon: IoSettingsOutline,
+    submenu: false,
   },
 ];
 
@@ -154,9 +167,21 @@ export const sidebarItems: SidebarItem[] = [
     submenu: false,
   },
   {
+    title: "Quản lý khách hàng",
+    href: "/customer",
+    icon: GoPerson,
+    submenu: false,
+  },
+  {
     title: "Quản lý nhân viên",
     href: "/staff",
     icon: GoPeople,
+    submenu: false,
+  },
+  {
+    title: "Thiết lập cửa hàng",
+    href: "/setting",
+    icon: IoSettingsOutline,
     submenu: false,
   },
 ];

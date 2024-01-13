@@ -2,26 +2,32 @@ import { endPoint } from "@/constants";
 import axios from "axios";
 import { getApiKey } from "../auth/action";
 
-type InvoiceProps = {
-  customerId: string;
-  isUsePoint: boolean;
-  details: {
-    bookId: string;
-    qty: number;
-  }[];
-};
-export default async function createInvoice(data: InvoiceProps) {
-  const url = `${endPoint}/v1/invoices`;
+export default async function createCustomer({
+  id,
+  name,
+  email,
+  phone,
+}: {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+}) {
+  const url = `${endPoint}/v1/customers`;
+  const data = {
+    email: email,
+    id: id,
+    name: name,
+    phone: phone,
+  };
 
   const token = await getApiKey();
   const headers = {
-    accept: "application/json",
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
-    // Add other headers as needed
+    accept: "application/json",
   };
 
-  // Make a POST request with headers
   const res = axios
     .post(url, data, { headers: headers })
     .then((response) => {

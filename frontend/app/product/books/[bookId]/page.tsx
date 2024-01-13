@@ -39,10 +39,25 @@ import BookTitleSelectEdit from "@/components/book-manage/book-title-select-edit
 
 const FormSchema = z.object({
   bookTitleId: z.string().min(1, "Vui lòng chọn một đầu sách"),
-  edition: z.coerce.number().gte(1, "Lần tái bản phải lớn hơn 0"),
+  edition: z.coerce
+    .number({ invalid_type_error: "Lần tái bản phải là một số" })
+    .gte(1, "Lần tái bản phải lớn hơn hoặc bằng 1")
+    .refine((value) => Number.isInteger(value), {
+      message: "Lần tái bản phải là số nguyên",
+    }),
   publisherId: z.string().min(1, "Vui lòng chọn một nhà xuất bản"),
-  listedPrice: z.coerce.number().gte(1, "Giá niêm yết phải lớn hơn 0"),
-  sellPrice: z.coerce.number().gte(1, "Giá bán phải lớn hơn 0"),
+  listedPrice: z.coerce
+    .number({ invalid_type_error: "Giá niêm yết phải là một số" })
+    .gt(0, "Giá niêm yết phải lớn hơn 0")
+    .refine((value) => Number.isInteger(value), {
+      message: "Giá niêm yết phải là số nguyên",
+    }),
+  sellPrice: z.coerce
+    .number({ invalid_type_error: "Giá bán phải là một số" })
+    .gt(0, "Giá bán phải lớn hơn 0")
+    .refine((value) => Number.isInteger(value), {
+      message: "Giá bán phải là số nguyên",
+    }),
   image: z.string(),
 });
 
@@ -269,7 +284,6 @@ const EditBook = ({ params }: { params: { bookId: string } }) => {
                           className="h-[120px] w-auto  object-cover"
                           height={120}
                           width={120}
-                          placeholder='blur'
                         ></Image>
                       )}
                     </div>

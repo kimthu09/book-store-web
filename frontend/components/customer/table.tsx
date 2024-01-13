@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { CaretSortIcon, ChevronDownIcon } from "@radix-ui/react-icons";
+import { LuFilter } from "react-icons/lu";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -18,6 +19,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   Table,
   TableBody,
   TableCell,
@@ -25,22 +32,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Staff } from "@/types";
-import { useEffect, useState } from "react";
+import { Customer } from "@/types";
+import { useState } from "react";
 import { Input } from "../ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+// import { ExportSupplierList } from "./excel-export";
+import { Label } from "../ui/label";
+
 import Paging from "../paging";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { LuFilter } from "react-icons/lu";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { Label } from "../ui/label";
-import { AiOutlineClose } from "react-icons/ai";
+// import DialogSupplierExport from "./dialog-supplier-export";
 import {
   Select,
   SelectContent,
@@ -49,34 +50,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import StatusList from "../status-list";
-import Image from "next/image";
-import ChangeStatusDialog from "./change-status-dialog";
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { AiOutlineClose } from "react-icons/ai";
 import { toast } from "../ui/use-toast";
-import changeStaffStatus from "@/lib/staff/changeStaffStatus";
-import { useCurrentUser } from "@/hooks/use-user";
-import { includesRoles } from "@/lib/utils";
 
-function idToName(id: string) {
-  if (id === "name") {
-    return "Tên";
-  } else if (id === "phone") {
-    return "Số điện thoại";
-  } else if (id === "address") {
-    return "Địa chỉ";
-  } else if (id === "role") {
-    return "Phân quyền";
-  } else {
-    return id;
-  }
-}
-type FormValues = {
-  filters: {
-    type: string;
-    value: string;
-  }[];
-};
-export const columns: ColumnDef<Staff>[] = [
+export const columns: ColumnDef<Customer>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -104,21 +82,6 @@ export const columns: ColumnDef<Staff>[] = [
     cell: ({ row }) => <div>{row.getValue("id")}</div>,
   },
   {
-    accessorKey: "img",
-    header: () => {},
-    cell: ({ row }) => (
-      <div className="flex justify-end">
-        <Image
-          src={row.getValue("img") || "/avatar.png"}
-          alt="image"
-          className="object-contain max-h-10"
-          width={40}
-          height={40}
-        ></Image>
-      </div>
-    ),
-  },
-  {
     accessorKey: "name",
     header: ({ column }) => {
       return (
@@ -127,15 +90,13 @@ export const columns: ColumnDef<Staff>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          <span className="font-semibold">Tên nhân viên</span>
+          <span className="font-semibold">Tên khách hàng</span>
 
-          <CaretSortIcon className="ml-2 h-4 w-4" />
+          <CaretSortIcon className="ml-1 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => (
-      <div className="capitalize pl-2 leading-6">{row.getValue("name")}</div>
-    ),
+    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
   {
     accessorKey: "email",
@@ -143,7 +104,7 @@ export const columns: ColumnDef<Staff>[] = [
       return <div className="font-semibold">Email</div>;
     },
     cell: ({ row }) => (
-      <div className="lg:max-w-[24rem] max-w-[5rem] truncate">
+      <div className="lg:max-w-[16rem] max-w-[4rem] truncate">
         {row.getValue("email")}
       </div>
     ),
@@ -160,58 +121,64 @@ export const columns: ColumnDef<Staff>[] = [
     ),
   },
   {
-    accessorKey: "address",
-    header: () => {
-      return <div className="font-semibold">Địa chỉ</div>;
-    },
-    cell: ({ row }) => (
-      <div className="lg:max-w-[16rem] max-w-[3rem] truncate">
-        {row.getValue("address")}
+    accessorKey: "point",
+    header: ({ column }) => (
+      <div className=" flex justify-end">
+        <Button
+          className="p-1"
+          variant={"ghost"}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <span className="font-semibold">Điểm</span>
+
+          <CaretSortIcon className="ml-1 h-4 w-4" />
+        </Button>
       </div>
     ),
-  },
-  {
-    accessorKey: "role",
-    accessorFn: (row) => row.role.name,
-    header: () => {
-      return <span className="font-semibold">Phân quyền</span>;
-    },
-    cell: ({ row }) => (
-      <div className="lg:max-w-[24rem] max-w-[3rem] truncate">
-        {row.getValue("role")}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "isActive",
-    header: () => {
-      return <div className="font-semibold flex justify-end">Trạng thái</div>;
-    },
     cell: ({ row }) => {
-      const status = row.getValue("isActive");
-      return (
-        <div className=" flex justify-end ">
-          <div
-            className={`leading-6 w-32 text-sm rounded-full px-2 text-center whitespace-nowrap h-fit ${
-              status
-                ? "bg-green-100 text-green-700"
-                : "bg-rose-100 text-rose-500"
-            }`}
-          >
-            {status ? "Đang làm việc" : "Đã nghỉ việc"}
-          </div>
-        </div>
-      );
+      const amount = parseFloat(row.getValue("point"));
+
+      // Format the amount as a dollar amount
+      const formatted = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(amount);
+
+      return <div className="text-right font-medium">{formatted}</div>;
     },
   },
 ];
-export function StaffTable({
+
+function idToName(id: string) {
+  if (id === "name") {
+    return "Tên";
+  } else if (id === "email") {
+    return "Email";
+  } else if (id === "phone") {
+    return "Điện thoại";
+  } else if (id === "point") {
+    return "Điểm";
+  }
+  return id;
+}
+
+type FormValues = {
+  filters: {
+    type: string;
+    value: string;
+  }[];
+};
+export function CustomerTable({
   data,
   totalPage,
 }: {
-  data: Staff[];
+  data: Customer[];
   totalPage: number;
 }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const page = searchParams.get("page") ?? "1";
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -234,21 +201,42 @@ export function StaffTable({
       rowSelection,
     },
   });
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const page = searchParams.get("page") ?? "1";
+
+  const [exportOption, setExportOption] = useState("all");
+  const handleExport = () => {
+    //TODO
+    // if (exportOption === "all") {
+    //   ExportSupplierList(data, "Suppliers.xlsx");
+    // } else if (table.getFilteredSelectedRowModel().rows.length < 1) {
+    //   toast({
+    //     variant: "destructive",
+    //     title: "Có lỗi",
+    //     description: "Không có nhà cung cấp nào",
+    //   });
+    // } else {
+    //   const values = table
+    //     .getFilteredSelectedRowModel()
+    //     .rows.map((row) => row.original);
+    //   ExportSupplierList(values, "Suppliers.xlsx");
+    // }
+  };
 
   const [latestFilter, setLatestFilter] = useState("");
   const filterValues = [
     { type: "search", name: "Từ khoá" },
-    { type: "active", name: "Trạng thái" },
+    { type: "minPoint", name: "Điểm nhỏ nhất" },
+    { type: "maxPoint", name: "Điểm lớn nhất" },
   ];
-  const active = searchParams.get("active") ?? undefined;
+  const maxPoint = searchParams.get("maxPoint") ?? undefined;
+  const minPoint = searchParams.get("minPoint") ?? undefined;
   const search = searchParams.get("search") ?? undefined;
   let filters = [{ type: "", value: "" }];
   filters.pop();
-  if (active) {
-    filters = filters.concat({ type: "active", value: active });
+  if (maxPoint) {
+    filters = filters.concat({ type: "maxPoint", value: maxPoint });
+  }
+  if (minPoint) {
+    filters = filters.concat({ type: "minPoint", value: minPoint });
   }
   if (search) {
     filters = filters.concat({ type: "search", value: search });
@@ -270,91 +258,31 @@ export function StaffTable({
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     let search = "";
-    let active = "";
+    let minPoint = "";
+    let maxPoint = "";
     data.filters.forEach((item) => {
-      if (item.type === "active") {
-        active = `&active=${item.value}`;
+      if (item.type === "minPoint") {
+        minPoint = `&minPoint=${item.value}`;
+      } else if (item.type === "maxPoint") {
+        maxPoint = `&maxPoint=${item.value}`;
       } else if (item.type === "search") {
         search = `&search=${item.value}`;
       }
     });
-    router.push(`/staff?page=${Number(page)}${active}${search}`);
+
+    router.push(`/customer?page=1${minPoint}${maxPoint}${search}`);
   };
   const [openFilter, setOpenFilter] = useState(false);
-  const [status, setStatus] = useState<boolean>();
-  const [statusToChange, setStatusToChange] = useState(false);
-  const handleChangeStatus = async () => {
-    if (table.getFilteredSelectedRowModel().rows.length < 1) {
-      toast({
-        variant: "destructive",
-        title: "Có lỗi",
-        description: "Chưa chọn nhân viên",
-      });
-    } else {
-      const userIds = table
-        .getFilteredSelectedRowModel()
-        .rows.map((item) => item.original.id);
-      const responseData = await changeStaffStatus({
-        userIds: userIds,
-        isActive: statusToChange,
-      });
-      if (responseData.hasOwnProperty("errorKey")) {
-        toast({
-          variant: "destructive",
-          title: "Có lỗi",
-          description: responseData.message,
-        });
-      } else {
-        toast({
-          variant: "success",
-          title: "Thành công",
-          description: "Thay đổi trạng thái nhân viên thành công",
-        });
-        router.refresh();
-      }
-    }
-  };
-  const handleSetStatus = (value: boolean) => {
-    setStatus(value);
-    const index = fields.findIndex((item) => item.type === "active");
-    if (index > -1) {
-      update(index, { type: "active", value: value.toString() });
-    } else {
-      append({ type: "createdBy", value: value.toString() });
-    }
-  };
-  const displayStatus = {
-    trueText: "Đang làm việc",
-    falseText: "Đã nghỉ việc",
-  };
-  useEffect(() => {
-    if (active === "true") {
-      setStatus(true);
-    } else if (active === "false") {
-      setStatus(false);
-    }
-  }, [active]);
-  const { currentUser } = useCurrentUser();
-  const canChangeStatus =
-    currentUser &&
-    includesRoles({
-      currentUser: currentUser,
-      allowedFeatures: ["USER_UPDATE_STATE"],
-    });
+
   return (
-    <div className="w-full flex flex-col overflow-x-auto">
+    <div className="w-full">
       <div className="flex items-start py-4 gap-2">
+        {/* <DialogSupplierExport
+          handleExport={handleExport}
+          setExportOption={setExportOption}
+        /> */}
         <div className="flex-1">
           <div className="flex gap-2">
-            {canChangeStatus ? (
-              <ChangeStatusDialog
-                disabled={table.getFilteredSelectedRowModel().rows.length < 1}
-                status={statusToChange}
-                handleSetStatus={setStatusToChange}
-                handleChangeStatus={handleChangeStatus}
-              />
-            ) : null}
-
             <Popover
               open={openFilter}
               onOpenChange={(open) => {
@@ -368,14 +296,14 @@ export function StaffTable({
                   <LuFilter className="ml-1 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-80">
+              <PopoverContent className="w-80 max-h-[32rem] mx-6 overflow-y-auto">
                 <form
                   className="flex flex-col gap-4"
                   onSubmit={handleSubmit(onSubmit)}
                 >
                   <div className="space-y-2">
                     <p className="text-sm text-muted-foreground">
-                      Hiển thị nhà cung cấp theo
+                      Hiển thị khách hàng theo
                     </p>
                   </div>
                   <div className="flex flex-col gap-4">
@@ -394,13 +322,12 @@ export function StaffTable({
                               required
                             ></Input>
                           ) : (
-                            <div className="w-[160px]">
-                              <StatusList
-                                status={status}
-                                setStatus={handleSetStatus}
-                                display={displayStatus}
-                              />
-                            </div>
+                            <Input
+                              {...register(`filters.${index}.value`)}
+                              className="flex-1"
+                              type="number"
+                              required
+                            ></Input>
                           )}
                           <Button
                             variant={"ghost"}
@@ -423,7 +350,7 @@ export function StaffTable({
                           append({ type: value, value: "" });
                         }}
                       >
-                        <SelectTrigger className="w-[160px] flex justify-center ml-8 px-3">
+                        <SelectTrigger className="w-[160px] flex justify-center ml-8 px-2">
                           <SelectValue placeholder="Chọn điều kiện lọc" />
                         </SelectTrigger>
                         <SelectContent>
@@ -450,8 +377,7 @@ export function StaffTable({
             </Popover>
             <div className="flex-1">
               <Input
-                className="flex-1"
-                placeholder="Tìm kiếm nhân viên"
+                placeholder="Tìm kiếm khách hàng"
                 value={
                   (table.getColumn("name")?.getFilterValue() as string) ?? ""
                 }
@@ -467,29 +393,27 @@ export function StaffTable({
               return (
                 <div
                   key={item.type}
-                  className="rounded-xl flex self-start px-3 py-1 h-fit outline-none text-sm text-primary  bg-blue-100 items-center gap-1 group"
+                  className="rounded-xl flex self-start px-3 py-1 h-fit outline-none text-sm text-primary  bg-orange-100 items-center gap-1 group"
                 >
                   <span>
                     {name?.name}
                     {": "}
-                    {item.type === "active"
-                      ? item.value === "true"
-                        ? displayStatus.trueText
-                        : displayStatus.falseText
-                      : item.value}
+                    {item.value}
                   </span>
                 </div>
               );
             })}
           </div>
         </div>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              Cột hiển thị <ChevronDownIcon className="ml-2 h-4 w-4" />
+            <Button variant="outline" className="lg:px-3 px-2">
+              Cột hiển thị
+              <ChevronDownIcon className="ml-1 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
+          <DropdownMenuContent className="DropdownMenuContent">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -510,8 +434,8 @@ export function StaffTable({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border overflow-x-auto flex-1 min-w-full max-w-[50vw]">
-        <Table className="min-w-full w-max">
+      <div className="rounded-md border overflow-x-auto min-w-full max-w-[50vw]">
+        <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -532,7 +456,7 @@ export function StaffTable({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row, index) => (
+              table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
@@ -542,7 +466,7 @@ export function StaffTable({
                       key={cell.id}
                       onClick={() => {
                         if (!cell.id.includes("select")) {
-                          router.push(`/staff/${row.getValue("id")}`);
+                          router.push(`/customer/${row.getValue("id")}`);
                         }
                       }}
                     >
@@ -576,19 +500,19 @@ export function StaffTable({
           page={page}
           totalPage={totalPage}
           onNavigateBack={() =>
-            router.push(`/staff?page=${Number(page) - 1}${stringToFilter}`)
+            router.push(`/customer?page=${Number(page) - 1}${stringToFilter}`)
           }
           onNavigateNext={() =>
-            router.push(`/staff?page=${Number(page) + 1}${stringToFilter}`)
+            router.push(`/customer?page=${Number(page) + 1}${stringToFilter}`)
           }
           onPageSelect={(selectedPage) =>
-            router.push(`/staff?page=${selectedPage}`)
+            router.push(`/customer?page=${selectedPage}${stringToFilter}`)
           }
           onNavigateFirst={() =>
-            router.push(`/staff?page=${1}${stringToFilter}`)
+            router.push(`/customer?page=${1}${stringToFilter}`)
           }
           onNavigateLast={() =>
-            router.push(`/staff?page=${totalPage}${stringToFilter}`)
+            router.push(`/customer?page=${totalPage}${stringToFilter}`)
           }
         />
       </div>

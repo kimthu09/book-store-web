@@ -156,9 +156,9 @@ export const AutoComplete = ({
                               ({option.publisher.name} - {option.edition})
                             </span>
                           </span>
-                          <div className="basis-1/3 flex justify-between">
+                          <div className="basis-1/3 flex justify-end">
                             <span className="font-medium text-teal-800">
-                              {option.importPrice}
+                              {toVND(option.importPrice)}
                             </span>
                           </div>
                         </div>

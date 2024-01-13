@@ -103,9 +103,9 @@ const BookInsert = ({
           onValueChange={handleOnValueChange}
           value={value}
         />
-        <div>
-          <div className="grid grid-cols-5 lg:gap-3 gap-2 font-medium py-2 px-2 mt-2 rounded-t-md bg-[#a4c5ff]">
-            <h2 className="col-span-2">Tên sách</h2>
+        <div className="text-sm">
+          <div className="grid grid-cols-4 lg:gap-3 gap-2 font-medium py-2 px-2 mt-2 rounded-t-md bg-[#a4c5ff]">
+            <h2 className="col-span-1">Tên sách</h2>
             <h2 className=" text-left col-span-1">Đơn giá</h2>
             <h2 className=" text-left col-span-1">Số lượng</h2>
             <h2 className=" text-right col-span-1 pr-12 ">Thành tiền</h2>
@@ -130,25 +130,28 @@ const BookInsert = ({
                 return (
                   <div
                     key={book.id}
-                    className="grid grid-cols-5 items-center p-2 lg:gap-3 gap-2"
+                    className="grid grid-cols-4  p-2 lg:gap-3 gap-2 items-start"
                   >
-                    <div className="flex flex-col col-span-2">
+                    <div className="flex flex-col col-span-1">
                       <h2 className="font-medium">{value?.name}</h2>
                       <span className="text-sm text-light">({value.id})</span>
                     </div>
-                    <div className="relative p-1 col-span-1">
+                    <div className="relative col-span-1">
                       <Input
-                        type="number"
                         defaultValue={book.price}
                         {...register(`details.${index}.price` as const)}
-                        min={1}
                       ></Input>
-                      {errors.details && errors.details[index] ? (
+                      {errors &&
+                      errors.details &&
+                      errors.details[index] &&
+                      (errors.details[index]!.price as
+                        | { message: string }
+                        | undefined) ? (
                         <span className="error___message">
-                          {errors.details[index]?.message}
+                          {errors.details[index]!.price!.message}
                         </span>
                       ) : null}
-                      <div className="absolute top-0 right-0 cursor-pointer group">
+                      <div className="absolute top-[-4px] right-[-4px] cursor-pointer group">
                         <IoMdInformationCircleOutline
                           className={`h-5 w-5 text-teal-700`}
                         />
@@ -161,14 +164,22 @@ const BookInsert = ({
                         </span>
                       </div>
                     </div>
-
-                    <Input
-                      type="number"
-                      className="lg:w-full col-span-1"
-                      defaultValue={book.qtyImport}
-                      {...register(`details.${index}.qtyImport` as const)}
-                      min={1}
-                    ></Input>
+                    <div className="col-span-1">
+                      <Input
+                        defaultValue={book.qtyImport}
+                        {...register(`details.${index}.qtyImport` as const)}
+                      ></Input>
+                      {errors &&
+                      errors.details &&
+                      errors.details[index] &&
+                      (errors.details[index]!.qtyImport as
+                        | { message: string }
+                        | undefined) ? (
+                        <span className="error___message">
+                          {errors.details[index]!.qtyImport!.message}
+                        </span>
+                      ) : null}
+                    </div>
 
                     <div className="text-right flex justify-end gap-2 items-center col-span-1">
                       <AddUp control={control} index={index} />

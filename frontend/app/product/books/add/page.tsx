@@ -34,10 +34,25 @@ import NoRole from "@/components/no-role";
 const FormSchema = z.object({
   bookTitleId: z.string().min(1, "Vui lòng chọn một đầu sách"),
   idBook: z.string().max(12, "Tối đa 12 ký tự"),
-  edition: z.coerce.number().gte(1, "Lần tái bản phải lớn hơn 0"),
+  edition: z.coerce
+    .number({ invalid_type_error: "Lần tái bản phải là một số" })
+    .gte(1, "Lần tái bản phải lớn hơn hoặc bằng 1")
+    .refine((value) => Number.isInteger(value), {
+      message: "Lần tái bản phải là số nguyên",
+    }),
   publisherId: z.string().min(1, "Vui lòng chọn một nhà xuất bản"),
-  listedPrice: z.coerce.number().gte(1, "Giá niêm yết phải lớn hơn 0"),
-  sellPrice: z.coerce.number().gte(1, "Giá bán phải lớn hơn 0"),
+  listedPrice: z.coerce
+    .number({ invalid_type_error: "Giá niêm yết phải là một số" })
+    .gt(0, "Giá niêm yết phải lớn hơn 0")
+    .refine((value) => Number.isInteger(value), {
+      message: "Giá niêm yết phải là số nguyên",
+    }),
+  sellPrice: z.coerce
+    .number({ invalid_type_error: "Giá bán phải là một số" })
+    .gt(0, "Giá bán phải lớn hơn 0")
+    .refine((value) => Number.isInteger(value), {
+      message: "Giá bán phải là số nguyên",
+    }),
   image: z.string(),
 });
 
@@ -233,7 +248,7 @@ const InsertNewBook = () => {
                   <div className="flex lg:gap-4 gap-3 xl:flex-col sm:flex-row flex-col">
                     <div className="flex-1">
                       <Label>Giá niêm yết (VNĐ)</Label>
-                      <Input type="number" {...register("listedPrice")} />
+                      <Input {...register("listedPrice")} />
                       {errors.listedPrice && (
                         <span className="error___message">
                           {errors.listedPrice.message}
@@ -242,7 +257,7 @@ const InsertNewBook = () => {
                     </div>
                     <div className="flex-1">
                       <Label>Đơn giá (VNĐ)</Label>
-                      <Input type="number" {...register("sellPrice")} />
+                      <Input {...register("sellPrice")} />
                       {errors.sellPrice && (
                         <span className="error___message">
                           {errors.sellPrice.message}

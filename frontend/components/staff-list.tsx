@@ -30,8 +30,8 @@ const StaffList = ({ staff, setStaff }: StaffListProps) => {
             className="justify-between w-full min-w-0"
           >
             {staff
-              ? staffs.find((item) => item.name === staff)?.name
-              : "Chọn người tạo"}
+              ? staffs.find((item) => item.id === staff)?.name
+              : "Chọn nhân viên"}
             <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </DropdownMenuTrigger>
@@ -43,7 +43,7 @@ const StaffList = ({ staff, setStaff }: StaffListProps) => {
                   value={item.name}
                   key={item.id}
                   onSelect={() => {
-                    setStaff(item.name);
+                    setStaff(item.id);
                     setOpenRole(false);
                   }}
                 >

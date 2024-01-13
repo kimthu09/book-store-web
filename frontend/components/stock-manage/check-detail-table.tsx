@@ -108,9 +108,11 @@ export const columns: ColumnDef<CheckNoteDetail>[] = [
     size: 4,
   },
 ];
-export function CheckDetailTable(details: CheckNoteDetail[]) {
-  const data = Object.values(details);
-
+export function CheckDetailTable({
+  details: data,
+}: {
+  details: CheckNoteDetail[];
+}) {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);

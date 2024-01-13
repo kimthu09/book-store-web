@@ -1,6 +1,5 @@
 "use client";
 
-import BookInsert from "@/components/stock-manage/book-insert";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,20 +22,27 @@ import { useCurrentUser } from "@/hooks/use-user";
 import Loading from "@/components/loading";
 import { includesRoles } from "@/lib/utils";
 import NoRole from "@/components/no-role";
+import ImportSheet from "@/components/book-manage/import-sheet";
+import getAllBookForSale from "@/lib/book/getAllBookForSale";
 
 export const FormSchema = z.object({
   id: z.string().max(12, "Tối đa 12 ký tự"),
   details: z
     .array(
-      z
-        .object({
-          bookId: z.string(),
-          difference: z.coerce.number(),
-          initial: z.coerce.number(),
-        })
-        .refine((data) => data.difference !== 0, {
-          message: "Chênh lệch phải khác 0",
-        })
+      z.object({
+        bookId: z.string(),
+        difference: z.coerce
+          .number({
+            invalid_type_error: "Chênh lệch phải là một số",
+          })
+          .refine((value) => Number.isInteger(value), {
+            message: "Chênh lệch phải là số nguyên",
+          })
+          .refine((value) => value !== 0, {
+            message: "Chênh lệch phải khác 0",
+          }),
+        initial: z.coerce.number(),
+      })
     )
     .nonempty("Vui lòng chọn ít nhất một sách nhập"),
 });
@@ -92,6 +98,74 @@ const AddNote = () => {
       mutateAllBook(`${endPoint}/v1/books/all`);
     }
   };
+  const onError: SubmitErrorHandler<z.infer<typeof FormSchema>> = (data) => {
+    if (data.hasOwnProperty("details")) {
+      toast({
+        variant: "destructive",
+        title: "Có lỗi",
+        description: data.details?.message,
+      });
+    }
+  };
+  const { books, isLoading, isError } = getAllBookForSale();
+
+  const handleFile = (reader: FileReader) => {
+    let importNote = {
+      id: "",
+      supplierId: "",
+      details: [{}],
+    };
+    const ExcelJS = require("exceljs");
+    const wb = new ExcelJS.Workbook();
+    reader.onload = () => {
+      const buffer = reader.result;
+      wb.xlsx.load(buffer).then((workbook: any) => {
+        workbook.eachSheet((sheet: any, id: any) => {
+          sheet.eachRow((row: any, rowIndex: number) => {
+            if (rowIndex === 1) {
+              importNote.id =
+                row.getCell(2).value === "Nhập mã phiếu dưới 12 ký tự"
+                  ? ""
+                  : row.getCell(2).value;
+            }
+            if (rowIndex > 2) {
+              const idBook = row.getCell(1).value.toString();
+              console.log(idBook);
+              const oldQty = books?.data.find(
+                (ingre) => ingre.id === idBook
+              )?.quantity;
+              console.log(oldQty);
+
+              if (oldQty) {
+                const detail = {
+                  bookId: idBook,
+                  difference: row.getCell(3).value,
+                  initial: oldQty,
+                };
+
+                importNote.details.push(detail);
+              } else {
+                toast({
+                  variant: "destructive",
+                  title: "Có lỗi",
+                  description:
+                    "Vui lòng kiểm tra thông tin điền vào file đúng mẫu",
+                });
+                return;
+              }
+            }
+          });
+          console.log(importNote);
+          reset({
+            id: importNote.id,
+            details: importNote.details.filter(
+              (value) => JSON.stringify(value) !== "{}"
+            ),
+          });
+        });
+      });
+    };
+  };
   const { currentUser } = useCurrentUser();
   if (!currentUser) {
     return <Loading />;
@@ -111,9 +185,13 @@ const AddNote = () => {
             <h1 className="font-medium text-xxl self-start">
               Thêm phiếu kiểm kho
             </h1>
+            <ImportSheet
+              sampleFileLink="/check-sample.xlsx"
+              handleFile={handleFile}
+            />
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit, onError)}>
             <div className="flex flex-col gap-4">
               <div className="flex lg:flex-row flex-col gap-4">
                 <Card className="flex-1">

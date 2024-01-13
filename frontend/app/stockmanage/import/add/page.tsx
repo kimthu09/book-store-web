@@ -21,6 +21,8 @@ import { useCurrentUser } from "@/hooks/use-user";
 import Loading from "@/components/loading";
 import { includesRoles } from "@/lib/utils";
 import NoRole from "@/components/no-role";
+import ImportSheet from "@/components/book-manage/import-sheet";
+import getAllBookForSale from "@/lib/book/getAllBookForSale";
 
 export const FormSchema = z.object({
   id: z.string().max(12, "Tối đa 12 ký tự"),
@@ -30,9 +32,13 @@ export const FormSchema = z.object({
       z.object({
         bookId: z.string(),
         isReplacePrice: z.boolean(),
-        price: z.coerce.number().gte(1, "Đơn giá phải lớn hơn 0"),
+        price: z.coerce
+          .number({ invalid_type_error: "Đơn giá phải là một số" })
+          .gt(0, "Đơn giá phải lớn hơn 0"),
         oldPrice: z.coerce.number(),
-        qtyImport: z.coerce.number().gte(1, "Số lượng phải lớn hơn 0"),
+        qtyImport: z.coerce
+          .number({ invalid_type_error: "Số lượng phải là một số" })
+          .gt(0, "Số lượng phải lớn hơn 0"),
       })
     )
     .nonempty("Vui lòng chọn ít nhất một sách nhập"),
@@ -64,7 +70,7 @@ const AddNote = () => {
     trigger,
     watch,
     reset,
-    formState: { errors, isDirty },
+    formState: { errors },
   } = form;
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     const response: Promise<any> = createImportNote({
@@ -92,10 +98,14 @@ const AddNote = () => {
         title: "Thành công",
         description: "Thêm phiếu nhập thành công",
       });
-      reset();
+      reset({
+        id: "",
+        supplierId: "",
+        details: [],
+      });
       setSupplierId("");
       if (isReplacePrice) {
-        mutate(`${endPoint}/books/all`);
+        mutate(`${endPoint}/v1/books/all`);
         setIsReplacePrice(false);
       }
     }
@@ -109,6 +119,8 @@ const AddNote = () => {
       });
     }
   };
+  const { books, isLoading, isError } = getAllBookForSale();
+
   const { currentUser } = useCurrentUser();
   if (!currentUser) {
     return <Loading />;
@@ -120,12 +132,76 @@ const AddNote = () => {
     })
   ) {
     return <NoRole></NoRole>;
-  } else
+  } else {
+    const handleFile = (reader: FileReader) => {
+      let importNote = {
+        id: "",
+        supplierId: "",
+        details: [{}],
+      };
+      const ExcelJS = require("exceljs");
+      const wb = new ExcelJS.Workbook();
+      reader.onload = () => {
+        const buffer = reader.result;
+        wb.xlsx.load(buffer).then((workbook: any) => {
+          workbook.eachSheet((sheet: any, id: any) => {
+            sheet.eachRow((row: any, rowIndex: number) => {
+              if (rowIndex === 1) {
+                importNote.id =
+                  row.getCell(2).value === "Nhập mã phiếu dưới 12 ký tự"
+                    ? ""
+                    : row.getCell(2).value;
+              }
+              if (rowIndex > 2) {
+                const idBook = row.getCell(1).value.toString();
+                console.log(idBook);
+                const oldPrice = books?.data.find(
+                  (ingre) => ingre.id === idBook
+                )?.importPrice;
+                console.log(oldPrice);
+
+                if (oldPrice) {
+                  const detail = {
+                    bookId: idBook,
+                    qtyImport: row.getCell(3).value,
+                    price: row.getCell(4).value,
+                    oldPrice: oldPrice,
+                    isReplacePrice: false,
+                  };
+
+                  importNote.details.push(detail);
+                } else {
+                  toast({
+                    variant: "destructive",
+                    title: "Có lỗi",
+                    description:
+                      "Vui lòng kiểm tra thông tin điền vào file đúng mẫu",
+                  });
+                  return;
+                }
+              }
+            });
+            console.log(importNote);
+            reset({
+              id: importNote.id,
+              supplierId: importNote.supplierId,
+              details: importNote.details.filter(
+                (value) => JSON.stringify(value) !== "{}"
+              ),
+            });
+          });
+        });
+      };
+    };
     return (
       <div className="col items-center">
         <div className="col xl:w-4/5 w-full px-0">
           <div className="flex justify-between gap-2">
             <h1 className="font-medium text-xxl self-start">Thêm phiếu nhập</h1>
+            <ImportSheet
+              sampleFileLink="/import-sample.xlsx"
+              handleFile={handleFile}
+            />
           </div>
 
           <form onSubmit={handleSubmit(onSubmit, onError)}>
@@ -179,7 +255,6 @@ const AddNote = () => {
               <div className="flex md:justify-end justify-stretch gap-2">
                 <Button
                   className="px-4 bg-white md:flex-none flex-1"
-                  disabled={!isDirty}
                   variant={"outline"}
                   type="button"
                   onClick={() => {
@@ -208,6 +283,7 @@ const AddNote = () => {
         </div>
       </div>
     );
+  }
 };
 
 export default AddNote;

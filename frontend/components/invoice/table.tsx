@@ -195,7 +195,7 @@ const InvoiceTable = ({
     { type: "search", name: "Từ khoá" },
     { type: "minPrice", name: "Tổng tiền nhỏ nhất" },
     { type: "maxPrice", name: "Tổng tiền lớn nhất" },
-    { type: "createdBy", name: "Người tạo" },
+    { type: "createdBy", name: "Mã người tạo" },
   ];
   const maxPrice = searchParams.get("maxPrice") ?? undefined;
   const minPrice = searchParams.get("minPrice") ?? undefined;
