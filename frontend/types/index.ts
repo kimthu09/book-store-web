@@ -162,7 +162,35 @@ export type DebtReport = {
     }
   ];
 };
-
+export type Customer = {
+  id: string;
+  name: string;
+  email?: string;
+  phone: string;
+  point: number;
+};
+export type CustomerInvoice = {
+  id: string;
+  totalPrice: number;
+  amountReceived: number;
+  amountPriceUsePoint: number;
+  pointUse: number;
+  pointReceive: number;
+  createdBy: {
+    id: string;
+    name: string;
+  };
+  createdAt: Date;
+};
+export type ShopGeneral = {
+  name: string;
+  email?: string;
+  phone: string;
+  address: string;
+  wifiPass: string;
+  accumulatePointPercent: number;
+  usePointPercent: number;
+};
 export type DebtReportDetail = {
   debt: number;
   final: number;
@@ -358,7 +386,7 @@ export type Dashboard = {
   totalCustomer: number;
   totalSold: number;
   totalPoint: number;
-  topSoldBooks: [{ id: string; name: string; qty: number, sale: number }];
+  topSoldBooks: [{ id: string; name: string; qty: number; sale: number }];
   chartPriceComponents: [
     {
       time: Date;

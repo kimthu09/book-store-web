@@ -1,19 +1,13 @@
 import { endPoint } from "@/constants";
 import axios from "axios";
 import { getApiKey } from "../auth/action";
+import { ShopGeneral } from "@/types";
 
-type InvoiceProps = {
-  customerId: string;
-  isUsePoint: boolean;
-  details: {
-    bookId: string;
-    qty: number;
-  }[];
-};
-export default async function createInvoice(data: InvoiceProps) {
-  const url = `${endPoint}/v1/invoices`;
+export default async function updateShop(data: ShopGeneral) {
+  const url = `${endPoint}/v1/shop`;
 
   const token = await getApiKey();
+
   const headers = {
     accept: "application/json",
     "Content-Type": "application/json",
@@ -23,7 +17,7 @@ export default async function createInvoice(data: InvoiceProps) {
 
   // Make a POST request with headers
   const res = axios
-    .post(url, data, { headers: headers })
+    .patch(url, data, { headers: headers })
     .then((response) => {
       if (response) return response.data;
     })

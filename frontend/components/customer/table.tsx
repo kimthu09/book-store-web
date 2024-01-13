@@ -1,10 +1,8 @@
 "use client";
-import { Invoice } from "@/types";
-import { Checkbox } from "../ui/checkbox";
-import { toVND } from "@/lib/utils";
+
+import * as React from "react";
 import { CaretSortIcon, ChevronDownIcon } from "@radix-ui/react-icons";
-import { Button } from "../ui/button";
-import Paging from "../paging";
+import { LuFilter } from "react-icons/lu";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -17,6 +15,15 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -25,9 +32,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Customer } from "@/types";
+import { useState } from "react";
+import { Input } from "../ui/input";
+// import { ExportSupplierList } from "./excel-export";
+import { Label } from "../ui/label";
+
+import Paging from "../paging";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+// import DialogSupplierExport from "./dialog-supplier-export";
 import {
   Select,
   SelectContent,
@@ -36,38 +50,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { LuFilter } from "react-icons/lu";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { AiOutlineClose } from "react-icons/ai";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import StaffList from "../staff-list";
+import { toast } from "../ui/use-toast";
 
-type FormValues = {
-  filters: {
-    type: string;
-    value: string;
-  }[];
-};
-function idToName(id: string) {
-  if (id === "id") {
-    return "Mã hóa đơn";
-  } else if (id === "createdAt") {
-    return "Ngày tạo";
-  } else if (id === "createdBy") {
-    return "Người tạo";
-  } else if (id === "totalPrice") {
-    return "Tổng tiền";
-  }
-  return id;
-}
-export const columns: ColumnDef<Invoice>[] = [
+export const columns: ColumnDef<Customer>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected()}
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "id",
     header: () => {
@@ -76,42 +82,46 @@ export const columns: ColumnDef<Invoice>[] = [
     cell: ({ row }) => <div>{row.getValue("id")}</div>,
   },
   {
-    accessorKey: "createdAt",
-    accessorFn: (row) => new Date(row.createdAt).toLocaleDateString("vi-VN"),
-
+    accessorKey: "name",
     header: ({ column }) => {
       return (
-        <div className="flex justify-end">
-          <Button
-            className="p-2 justify-end whitespace-normal"
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            <CaretSortIcon className=" h-4 w-4" />
-            <span className="font-semibold">Ngày tạo</span>
-          </Button>
-        </div>
+        <Button
+          className="p-2"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <span className="font-semibold">Tên khách hàng</span>
+
+          <CaretSortIcon className="ml-1 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
+  },
+  {
+    accessorKey: "email",
+    header: () => {
+      return <div className="font-semibold">Email</div>;
+    },
+    cell: ({ row }) => (
+      <div className="lg:max-w-[16rem] max-w-[4rem] truncate">
+        {row.getValue("email")}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "phone",
+    header: () => {
+      return (
+        <div className="font-semibold flex justify-end">Số điện thoại</div>
       );
     },
     cell: ({ row }) => (
-      <div className="leading-6 flex flex-col text-right">
-        <span>
-          {new Date(row.original.createdAt).toLocaleDateString("vi-VN")}
-        </span>
-      </div>
+      <div className="text-right">{row.getValue("phone")}</div>
     ),
-    sortingFn: "datetime",
   },
   {
-    accessorKey: "createdBy",
-    accessorFn: (row) => row.createdBy.name,
-    header: () => {
-      return <div className="font-semibold">Người tạo</div>;
-    },
-    cell: ({ row }) => <span>{row.getValue("createdBy")}</span>,
-  },
-  {
-    accessorKey: "totalPrice",
+    accessorKey: "point",
     header: ({ column }) => (
       <div className=" flex justify-end">
         <Button
@@ -119,26 +129,52 @@ export const columns: ColumnDef<Invoice>[] = [
           variant={"ghost"}
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          <span className="font-semibold">Tổng đơn</span>
+          <span className="font-semibold">Điểm</span>
 
           <CaretSortIcon className="ml-1 h-4 w-4" />
         </Button>
       </div>
     ),
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("totalPrice"));
-      const formatted = toVND(amount);
+      const amount = parseFloat(row.getValue("point"));
+
+      // Format the amount as a dollar amount
+      const formatted = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(amount);
+
       return <div className="text-right font-medium">{formatted}</div>;
     },
   },
 ];
-const InvoiceTable = ({
+
+function idToName(id: string) {
+  if (id === "name") {
+    return "Tên";
+  } else if (id === "email") {
+    return "Email";
+  } else if (id === "phone") {
+    return "Điện thoại";
+  } else if (id === "point") {
+    return "Điểm";
+  }
+  return id;
+}
+
+type FormValues = {
+  filters: {
+    type: string;
+    value: string;
+  }[];
+};
+export function CustomerTable({
   data,
   totalPage,
 }: {
-  data: Invoice[];
+  data: Customer[];
   totalPage: number;
-}) => {
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = searchParams.get("page") ?? "1";
@@ -168,52 +204,42 @@ const InvoiceTable = ({
 
   const [exportOption, setExportOption] = useState("all");
   const handleExport = () => {
-    if (exportOption === "all") {
-      // ExportSupplierList(data, "Suppliers.xlsx");
-    }
-    if (table.getFilteredSelectedRowModel().rows.length < 1) {
-      //TODO: show notification
-    } else {
-      const values = table
-        .getFilteredSelectedRowModel()
-        .rows.map((row) => row.original);
-      // ExportSupplierList(values, "Suppliers.xlsx");
-    }
+    //TODO
+    // if (exportOption === "all") {
+    //   ExportSupplierList(data, "Suppliers.xlsx");
+    // } else if (table.getFilteredSelectedRowModel().rows.length < 1) {
+    //   toast({
+    //     variant: "destructive",
+    //     title: "Có lỗi",
+    //     description: "Không có nhà cung cấp nào",
+    //   });
+    // } else {
+    //   const values = table
+    //     .getFilteredSelectedRowModel()
+    //     .rows.map((row) => row.original);
+    //   ExportSupplierList(values, "Suppliers.xlsx");
+    // }
   };
-  const [staff, setStaff] = useState("");
-  const handleSetStaff = (staff: string) => {
-    setStaff(staff);
-    const index = fields.findIndex((item) => item.type === "createdBy");
-    if (index > -1) {
-      update(index, { type: "createdBy", value: staff });
-    } else {
-      append({ type: "createdBy", value: staff });
-    }
-  };
+
   const [latestFilter, setLatestFilter] = useState("");
   const filterValues = [
     { type: "search", name: "Từ khoá" },
-    { type: "minPrice", name: "Tổng tiền nhỏ nhất" },
-    { type: "maxPrice", name: "Tổng tiền lớn nhất" },
-    { type: "createdBy", name: "Mã người tạo" },
+    { type: "minPoint", name: "Điểm nhỏ nhất" },
+    { type: "maxPoint", name: "Điểm lớn nhất" },
   ];
-  const maxPrice = searchParams.get("maxPrice") ?? undefined;
-  const minPrice = searchParams.get("minPrice") ?? undefined;
+  const maxPoint = searchParams.get("maxPoint") ?? undefined;
+  const minPoint = searchParams.get("minPoint") ?? undefined;
   const search = searchParams.get("search") ?? undefined;
-  const createdBy = searchParams.get("createdBy") ?? undefined;
   let filters = [{ type: "", value: "" }];
   filters.pop();
-  if (maxPrice) {
-    filters = filters.concat({ type: "maxPrice", value: maxPrice });
+  if (maxPoint) {
+    filters = filters.concat({ type: "maxPoint", value: maxPoint });
   }
-  if (minPrice) {
-    filters = filters.concat({ type: "minPrice", value: minPrice });
+  if (minPoint) {
+    filters = filters.concat({ type: "minPoint", value: minPoint });
   }
   if (search) {
     filters = filters.concat({ type: "search", value: search });
-  }
-  if (createdBy) {
-    filters = filters.concat({ type: "createdBy", value: createdBy });
   }
   let stringToFilter = "";
   filters.forEach((item) => {
@@ -229,31 +255,22 @@ const InvoiceTable = ({
     control: control,
     name: "filters",
   });
-  useEffect(() => {
-    if (createdBy) {
-      setStaff(createdBy);
-    }
-  }, [createdBy]);
+
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     let search = "";
-    let minPrice = "";
-    let maxPrice = "";
-    let createdBy = "";
+    let minPoint = "";
+    let maxPoint = "";
     data.filters.forEach((item) => {
-      if (item.type === "minPrice") {
-        minPrice = `&minPrice=${item.value}`;
-      } else if (item.type === "maxPrice") {
-        maxPrice = `&maxPrice=${item.value}`;
+      if (item.type === "minPoint") {
+        minPoint = `&minPoint=${item.value}`;
+      } else if (item.type === "maxPoint") {
+        maxPoint = `&maxPoint=${item.value}`;
       } else if (item.type === "search") {
         search = `&search=${item.value}`;
-      } else if (item.type === "createdBy") {
-        createdBy = `&createdBy=${item.value}`;
       }
     });
 
-    router.push(
-      `/invoice?page=${Number(page)}${minPrice}${maxPrice}${search}${createdBy}`
-    );
+    router.push(`/customer?page=1${minPoint}${maxPoint}${search}`);
   };
   const [openFilter, setOpenFilter] = useState(false);
 
@@ -279,14 +296,14 @@ const InvoiceTable = ({
                   <LuFilter className="ml-1 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-80">
+              <PopoverContent className="w-80 max-h-[32rem] mx-6 overflow-y-auto">
                 <form
                   className="flex flex-col gap-4"
                   onSubmit={handleSubmit(onSubmit)}
                 >
                   <div className="space-y-2">
                     <p className="text-sm text-muted-foreground">
-                      Hiển thị nhà cung cấp theo
+                      Hiển thị khách hàng theo
                     </p>
                   </div>
                   <div className="flex flex-col gap-4">
@@ -297,14 +314,7 @@ const InvoiceTable = ({
                       return (
                         <div className="flex gap-2 items-center" key={item.id}>
                           <Label className="basis-1/4">{name?.name}</Label>
-                          {item.type === "createdBy" ? (
-                            <div className="flex-1">
-                              <StaffList
-                                staff={staff}
-                                setStaff={handleSetStaff}
-                              />
-                            </div>
-                          ) : item.type === "search" ? (
+                          {item.type === "search" ? (
                             <Input
                               {...register(`filters.${index}.value`)}
                               className="flex-1"
@@ -319,14 +329,10 @@ const InvoiceTable = ({
                               required
                             ></Input>
                           )}
-
                           <Button
                             variant={"ghost"}
                             className={`px-3 `}
                             onClick={() => {
-                              if (item.type === "createdBy") {
-                                setStaff("");
-                              }
                               remove(index);
                             }}
                           >
@@ -344,7 +350,7 @@ const InvoiceTable = ({
                           append({ type: value, value: "" });
                         }}
                       >
-                        <SelectTrigger className="w-[160px] flex justify-center ml-8 px-3">
+                        <SelectTrigger className="w-[160px] flex justify-center ml-8 px-2">
                           <SelectValue placeholder="Chọn điều kiện lọc" />
                         </SelectTrigger>
                         <SelectContent>
@@ -371,12 +377,12 @@ const InvoiceTable = ({
             </Popover>
             <div className="flex-1">
               <Input
-                placeholder="Tìm kiếm hóa đơn"
+                placeholder="Tìm kiếm khách hàng"
                 value={
-                  (table.getColumn("id")?.getFilterValue() as string) ?? ""
+                  (table.getColumn("name")?.getFilterValue() as string) ?? ""
                 }
                 onChange={(event) =>
-                  table.getColumn("id")?.setFilterValue(event.target.value)
+                  table.getColumn("name")?.setFilterValue(event.target.value)
                 }
               />
             </div>
@@ -387,7 +393,7 @@ const InvoiceTable = ({
               return (
                 <div
                   key={item.type}
-                  className="rounded-xl flex self-start px-3 py-1 h-fit outline-none text-sm text-primary  bg-blue-100 items-center gap-1 group"
+                  className="rounded-xl flex self-start px-3 py-1 h-fit outline-none text-sm text-primary  bg-orange-100 items-center gap-1 group"
                 >
                   <span>
                     {name?.name}
@@ -460,7 +466,7 @@ const InvoiceTable = ({
                       key={cell.id}
                       onClick={() => {
                         if (!cell.id.includes("select")) {
-                          router.push(`/invoice/${row.getValue("id")}`);
+                          router.push(`/customer/${row.getValue("id")}`);
                         }
                       }}
                     >
@@ -486,29 +492,30 @@ const InvoiceTable = ({
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground"></div>
+        <div className="flex-1 text-sm text-muted-foreground">
+          {table.getFilteredSelectedRowModel().rows.length} trong{" "}
+          {table.getFilteredRowModel().rows.length} dòng được chọn.
+        </div>
         <Paging
           page={page}
           totalPage={totalPage}
           onNavigateBack={() =>
-            router.push(`/invoice?page=${Number(page) - 1}${stringToFilter}`)
+            router.push(`/customer?page=${Number(page) - 1}${stringToFilter}`)
           }
           onNavigateNext={() =>
-            router.push(`/invoice?page=${Number(page) + 1}${stringToFilter}`)
+            router.push(`/customer?page=${Number(page) + 1}${stringToFilter}`)
           }
           onPageSelect={(selectedPage) =>
-            router.push(`/invoice?page=${selectedPage}${stringToFilter}`)
+            router.push(`/customer?page=${selectedPage}${stringToFilter}`)
           }
           onNavigateFirst={() =>
-            router.push(`/invoice?page=${1}${stringToFilter}`)
+            router.push(`/customer?page=${1}${stringToFilter}`)
           }
           onNavigateLast={() =>
-            router.push(`/invoice?page=${totalPage}${stringToFilter}`)
+            router.push(`/customer?page=${totalPage}${stringToFilter}`)
           }
         />
       </div>
     </div>
   );
-};
-
-export default InvoiceTable;
+}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   Control,
+  Controller,
   FieldArrayWithId,
   UseFieldArrayRemove,
   UseFormRegister,
@@ -31,6 +32,11 @@ import { IoRemoveOutline } from "react-icons/io5";
 import { PiClipboardTextLight } from "react-icons/pi";
 import { CurrentDate } from "../ui/date-context";
 import { FormValues } from "@/app/sale/page-layout";
+import { useSWRConfig } from "swr";
+import { useShop } from "@/hooks/use-shop";
+import { Checkbox } from "../ui/checkbox";
+import CustomerList from "../customer-list";
+import { endPoint } from "@/constants";
 
 const AddUp = ({
   control,
@@ -46,8 +52,8 @@ const AddUp = ({
   const addUp = formValues.sellPrice * formValues.qty;
   return <span className="text-sm font-bold">{toVND(addUp)}</span>;
 };
-
 export const Total = ({ control }: { control: Control<FormValues> }) => {
+  const { shop } = useShop();
   const formValues = useWatch({
     name: "details",
     control,
@@ -61,10 +67,68 @@ export const Total = ({ control }: { control: Control<FormValues> }) => {
     0
   );
   return (
-    <div className="flex gap-2 items-center">
-      <span>Tổng tiền</span>
-      <div className="border rounded-lg px-2 py-1">{totalQuantity}</div>
-      <h1 className="text-sm">{toVND(total)}</h1>
+    <div className="flex flex-col w-max">
+      <div className="flex gap-2 items-center justify-between">
+        <div className="flex gap-2 items-center">
+          <span className="min-w-[5rem]">Tổng tiền</span>
+          <div className="pr-2 py-1">({totalQuantity})</div>
+        </div>
+
+        <h1 className="text-sm">{toVND(total)}</h1>
+      </div>
+      <Controller
+        control={control}
+        name="customer"
+        render={({ field }) => {
+          return (
+            <div className="flex flex-col gap-2">
+              <Controller
+                control={control}
+                name="isUsePoint"
+                render={({ field: checkedField }) => {
+                  const discount =
+                    field.value.customerId &&
+                    field.value.customerId !== "" &&
+                    checkedField.value &&
+                    field.value.customerPoint &&
+                    shop
+                      ? field.value.customerPoint * shop?.usePointPercent
+                      : 0;
+                  shop?.usePointPercent;
+                  const finalTotal = total - discount;
+                  return (
+                    <div className="w-full flex flex-col gap-2">
+                      {field.value.customerId &&
+                        field.value.customerId !== "" &&
+                        checkedField.value &&
+                        shop && (
+                          <div className="flex flex-col gap-2">
+                            <div className="flex justify-between gap-2 items-center">
+                              <span className="min-w-[5rem] \">Giảm</span>
+                              <h1 className="text-sm self-end">
+                                -{" "}
+                                {toVND(
+                                  field.value.customerPoint *
+                                    (shop?.usePointPercent ?? 0)
+                                )}
+                              </h1>
+                            </div>
+                          </div>
+                        )}
+                      <div className="flex gap-2 items-center justify-between">
+                        <div className="flex gap-2 items-center">
+                          <span className="min-w-[5rem]">Thành tiền</span>
+                        </div>
+                        <h1 className="text-sm">{toVND(finalTotal)}</h1>
+                      </div>
+                    </div>
+                  );
+                }}
+              />
+            </div>
+          );
+        }}
+      />
     </div>
   );
 };
@@ -105,6 +169,9 @@ const BillTab = ({
       document.removeEventListener("keydown", detectKeyDown);
     };
   };
+  const { mutate } = useSWRConfig();
+  const { shop } = useShop();
+
   return (
     <Card className="sticky right-0 top-0 h-[86vh] overflow-hidden">
       <CardContent
@@ -112,21 +179,97 @@ const BillTab = ({
           isSheet ? "rounded-none" : ""
         }`}
       >
-        <div className="flex items-center justify-between bg-white p-2 px-4 shadow-[0_2px_2px_-2px_rgba(0,0,0,0.2)]">
-          <div>
-            <span className="font-medium text-primary">Hóa đơn</span>
-            {/* <CurrentDate></CurrentDate> */}
-          </div>
+        <div className="bg-white  shadow-[0_2px_2px_-2px_rgba(0,0,0,0.2)]">
+          <div className="p-4 flex flex-col gap-4">
+            <Controller
+              control={control}
+              name="customer"
+              render={({ field }) => (
+                <>
+                  <div className="flex gap-1">
+                    <div className="flex-1">
+                      <CustomerList
+                        onRemove={() => {
+                          field.onChange({
+                            customerId: "",
+                            customerPoint: 0,
+                          });
+                          setValue("isUsePoint", false);
+                        }}
+                        canRemove
+                        handleCustomerAdded={(customerId) => {
+                          mutate(`${endPoint}/customers/all`);
+                          field.onChange({
+                            customerId: customerId,
+                            customerPoint: 0,
+                          });
+                        }}
+                        canAdd
+                        customerId={field.value.customerId}
+                        setCustomerId={(id, point) =>
+                          field.onChange({
+                            customerId: id,
+                            customerPoint: point,
+                          })
+                        }
+                      />
+                    </div>
 
-          <Button
-            disabled={!isDirty}
-            variant={"ghost"}
-            size={"icon"}
-            className="rounded-full"
-            onClick={() => reset()}
-          >
-            <IoRemoveOutline className="w-5 h-5" />
-          </Button>
+                    <Button
+                      variant={"ghost"}
+                      className="h-8 p-0 px-2 rounded-lg"
+                      onClick={() => {
+                        reset({
+                          customer: {},
+                          isUsePoint: false,
+                          details: [],
+                        });
+                      }}
+                    >
+                      <FiTrash2 className="opacity-50" />
+                    </Button>
+                  </div>
+                  <Controller
+                    control={control}
+                    name="isUsePoint"
+                    render={({ field: checkedField }) => (
+                      <div className="flex gap-2">
+                        {field.value.customerId &&
+                          field.value.customerId !== "" &&
+                          shop && (
+                            <Checkbox
+                              className="mr-2"
+                              id="cbPoint"
+                              checked={checkedField.value}
+                              onCheckedChange={(isCheck) => {
+                                if (isCheck && field.value.customerPoint > 0) {
+                                  checkedField.onChange(isCheck);
+                                } else if (!isCheck) {
+                                  checkedField.onChange(isCheck);
+                                }
+                              }}
+                            ></Checkbox>
+                          )}
+
+                        {field.value.customerId &&
+                          field.value.customerId !== "" &&
+                          shop && (
+                            <Label>
+                              Dùng {field.value.customerPoint} điểm (giảm{" "}
+                              {toVND(
+                                field.value.customerPoint *
+                                  (shop?.usePointPercent ?? 0)
+                              )}
+                              )
+                            </Label>
+                          )}
+                      </div>
+                    )}
+                  />
+                </>
+              )}
+            />
+          </div>
         </div>
         <div className="flex flex-col gap-2  overflow-auto pt-4 flex-1">
           {fields.length < 1 ? (
@@ -143,14 +286,13 @@ const BillTab = ({
                   index === fields.length - 1 ? "" : "border-b"
                 }  xl:px-4 px-2 pb-2 group gap-2`}
               >
-                <span className="text-sm leading-6 self-center">
-                  {index + 1}
-                </span>
                 <div className="flex flex-col flex-1">
                   {/* Name size price row */}
                   <div className="flex">
                     <div className="flex basis-[30%] self-center">
-                      <h1 className="text-base font-medium">{item.name}</h1>
+                      <h1 className="text-base font-medium">
+                        {index + 1}. {item.name}
+                      </h1>
                     </div>
 
                     <div className="flex flex-wrap basis-[70%] items-center justify-between xl:gap-3 gap-2">
