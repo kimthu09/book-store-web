@@ -110,6 +110,11 @@ var (
 		"Trạng thái của người dùng đang trống",
 		"ErrUserStatusEmpty",
 	)
+	ErrUserEmailNotExist = common.NewCustomError(
+		errors.New("email of user is not existed"),
+		"Người dùng không tồn tại trong hệ thống",
+		"ErrUserEmailNotExist",
+	)
 	ErrUserCreateNoPermission = common.ErrNoPermission(
 		errors.New("Bạn không có quyền tạo người dùng mới"),
 	)

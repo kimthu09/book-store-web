@@ -1,6 +1,7 @@
 package userrepo
 
 import (
+	"book-store-management-backend/module/user/usermodel"
 	"context"
 )
 
@@ -15,14 +16,17 @@ func NewMailForgetPasswordRepo(
 	}
 }
 
-func (biz *mailForgetPasswordRepo) GetUserId(
+func (biz *mailForgetPasswordRepo) VerifyUser(
 	ctx context.Context,
-	email string) (*string, error) {
+	email string) error {
 	user, errUser := biz.userStore.FindUser(
 		ctx, map[string]interface{}{"email": email})
 	if errUser != nil {
-		return nil, errUser
+		return usermodel.ErrUserEmailNotExist
 	}
 
-	return &user.Id, nil
+	if !user.IsActive {
+		return usermodel.ErrUserInactive
+	}
+	return nil
 }

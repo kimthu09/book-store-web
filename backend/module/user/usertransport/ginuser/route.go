@@ -9,7 +9,11 @@ import (
 func SetupRoutes(router *gin.RouterGroup, appCtx appctx.AppContext) {
 	router.POST("/login", Login(appCtx))
 	router.POST("/refreshToken", RefreshToken(appCtx))
-	router.POST("/forgotPassword", MailForgotPassword(appCtx))
+	forgetPassword := router.Group("/forgetPassword")
+	{
+		forgetPassword.POST("", MailForgotPassword(appCtx))
+		forgetPassword.POST("/:token", VerifyForgetPassword(appCtx))
+	}
 	auth := router.Group("", middleware.RequireAuth(appCtx))
 	{
 		auth.GET("/profile", SeeProfile(appCtx), middleware.RequireAuth(appCtx))
