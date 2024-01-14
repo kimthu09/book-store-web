@@ -26,6 +26,9 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ToastAction } from "@/components/ui/toast";
+import PrintInvoice from "@/components/invoice/print-invoice";
+import { endPoint } from "@/constants";
+import { useSWRConfig } from "swr";
 export type FormValues = {
   customer: {
     customerId: string;
@@ -41,6 +44,7 @@ export type FormValues = {
   }[];
 };
 const SaleScreen = () => {
+  const { mutate } = useSWRConfig();
   const form = useForm<FormValues>({
     defaultValues: {
       customer: {},
@@ -102,16 +106,18 @@ const SaleScreen = () => {
         title: "Thành công",
         description: "Thêm mới hóa đơn thành công",
         action: (
-          <ToastAction
-            className="hover:bg-green-400/90"
-            altText="print"
-            onClick={() => router.push(`/invoice/${id}`)}
-          >
-            In hoá đơn
+          <ToastAction altText="print" className="p-0">
+            <PrintInvoice responseData={responseData.data} onPrint={() => {}} />
           </ToastAction>
         ),
       });
-      reset();
+      reset({
+        customer: {},
+        isUsePoint: false,
+        details: [],
+      });
+      mutate(`${endPoint}/v1/customers/all`);
+      router.refresh();
     }
   };
   const [open, setOpen] = useState(false);

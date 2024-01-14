@@ -36,4 +36,4 @@ function CustomerManage({
   );
 }
 
-export default withAuth(CustomerManage, ["CUS_VIEW"]);
+export default withAuth(CustomerManage, ["CUSTOMER_VIEW"]);

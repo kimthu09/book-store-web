@@ -66,6 +66,8 @@ function idToName(id: string) {
     return "Địa chỉ";
   } else if (id === "role") {
     return "Phân quyền";
+  } else if (id === "isActive") {
+    return "Trạng thái";
   } else {
     return id;
   }
@@ -278,7 +280,7 @@ export function StaffTable({
         search = `&search=${item.value}`;
       }
     });
-    router.push(`/staff?page=${Number(page)}${active}${search}`);
+    router.push(`/staff?page=1${active}${search}`);
   };
   const [openFilter, setOpenFilter] = useState(false);
   const [status, setStatus] = useState<boolean>();
@@ -375,7 +377,7 @@ export function StaffTable({
                 >
                   <div className="space-y-2">
                     <p className="text-sm text-muted-foreground">
-                      Hiển thị nhà cung cấp theo
+                      Hiển thị nhân viên theo
                     </p>
                   </div>
                   <div className="flex flex-col gap-4">

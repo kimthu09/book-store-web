@@ -118,12 +118,12 @@ export const columns: ColumnDef<ImportNote>[] = [
       return (
         <div className="flex justify-center min-w-0">
           <div
-            className={`leading-5 border rounded-full text-center px-2 w-[80%] max-w-[6rem] truncate whitespace-nowrap ${
+            className={`leading-5 rounded-full text-center px-2 w-[80%] max-w-[6rem] p-1 truncate whitespace-nowrap ${
               status === StatusNote.Done
-                ? "bg-green-200 text-green-600 border-green-500"
+                ? "bg-green-100 text-green-700 "
                 : status === StatusNote.Inprogress
-                ? "bg-blue-200 text-blue-600 border-blue-500"
-                : "bg-rose-100 text-rose-600 border-rose-500"
+                ? "bg-blue-200 text-blue-600 "
+                : "bg-rose-100 text-rose-600 "
             }`}
           >
             {status === StatusNote.Done
@@ -219,8 +219,8 @@ export function ImportTable({ supplierId }: { supplierId: string }) {
           isImport
         />
         <div className="flex items-center gap-2"></div>
-        <div className="rounded-md border">
-          <Table>
+        <div className="rounded-md border overflow-x-auto flex-1 min-w-full max-w-[20vw]">
+          <Table className="min-w-full w-max">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>

@@ -73,6 +73,15 @@ export type Invoice = {
   };
   id: string;
   totalPrice: number;
+  customer: {
+    id: string;
+    name: string;
+    phone: string;
+  };
+  amountReceived: number;
+  amountPriceUsePoint: number;
+  pointUse: number;
+  pointReceive: number;
 };
 export type ImportNote = {
   id: string;
