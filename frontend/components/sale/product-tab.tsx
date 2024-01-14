@@ -14,6 +14,7 @@ import { BookProps } from "@/types";
 import getAllBookForSale from "@/lib/book/getAllBookForSale";
 import { FormValues } from "@/app/sale/page-layout";
 import getAllCategoryList from "@/lib/book/getAllCategoryList";
+import ProductSkeleton from "../skeleton/product-skeleton";
 const ProductTab = ({
   append,
   fields,
@@ -141,7 +142,7 @@ const ProductTab = ({
   }, [books]);
   if (isError || isErrorBook) return <div>Failed to load</div>;
   if (isLoading || isLoadingBook) {
-    return <Loading />;
+    return <ProductSkeleton />;
   } else
     return (
       <div className="flex flex-col gap-6">
@@ -153,7 +154,7 @@ const ProductTab = ({
               setInputValue(e.target.value);
             }}
             className=" bg-white rounded-xl"
-            placeholder="Tìm kiếm sản phẩm"
+            placeholder="Tìm kiếm sản phẩm (F2)"
           ></Input>
         </div>
 
@@ -232,6 +233,7 @@ const ProductTab = ({
                   <h1 className="text-base font-medium text-center">
                     {prod.name}
                   </h1>
+                  <h1 className="font-light text-sm text-center">{prod.id}</h1>
                   <h1 className="text-base font-semibold text-primary text-center pb-1">
                     {toVND(prod.sellPrice)}
                   </h1>

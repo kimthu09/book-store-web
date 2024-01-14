@@ -11,6 +11,7 @@ import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import Loading from "./loading";
 import getAllStaff from "@/lib/staff/getAllStaffClient";
+import DropdownSkeleton from "./skeleton/dropdown-skeleton";
 
 const StaffList = ({ staff, setStaff }: StaffListProps) => {
   const [openRole, setOpenRole] = useState(false);
@@ -18,7 +19,7 @@ const StaffList = ({ staff, setStaff }: StaffListProps) => {
 
   if (isError) return <div>Failed to load</div>;
   if (!staffs) {
-    <Loading />;
+    return <DropdownSkeleton />;
   } else
     return (
       <DropdownMenu open={openRole} onOpenChange={setOpenRole}>

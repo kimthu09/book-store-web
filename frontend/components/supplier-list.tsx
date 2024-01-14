@@ -15,10 +15,8 @@ import {
   CommandItem,
 } from "./ui/command";
 import { cn } from "@/lib/utils";
-import { FaPlus } from "react-icons/fa";
-import { get } from "http";
-import { getApiKey } from "@/lib/auth/action";
 import getAllSupplier from "@/lib/supplier/getAllSupplier";
+import DropdownSkeleton from "./skeleton/dropdown-skeleton";
 
 export interface SupplierListProps {
   supplierId: string;
@@ -32,14 +30,9 @@ const SupplierList = ({
 }: SupplierListProps) => {
   const [open, setOpen] = useState(false);
   const { suppliers, isLoading, isError, mutate } = getAllSupplier();
-  const handlePublisherAdded = async (publisherId: string) => {
-    await mutate();
-    //TODO
-    // setPublisherId(publisherId);
-  };
   if (isError) return <div>Failed to load</div>;
   if (!suppliers) {
-    <Loading />;
+    return <DropdownSkeleton />;
   } else
     return (
       <div className="flex gap-1">

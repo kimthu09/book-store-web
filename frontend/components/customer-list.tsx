@@ -20,6 +20,7 @@ import { useCurrentUser } from "@/hooks/use-user";
 import CreateDialog from "./customer/create";
 import { FaPlus } from "react-icons/fa";
 import { IoPersonRemoveSharp } from "react-icons/io5";
+import DropdownSkeleton from "./skeleton/dropdown-skeleton";
 export interface SupplierListProps {
   customerId: string;
   setCustomerId: (id: string, point: number) => void;
@@ -40,8 +41,8 @@ const CustomerList = ({
   const { suppliers, isLoading, isError, mutate } = getAllCustomer();
   const { currentUser } = useCurrentUser();
   if (isError) return <div>Failed to load</div>;
-  if (!suppliers) {
-    <Loading />;
+  if (isLoading || !currentUser) {
+    return <DropdownSkeleton />;
   } else
     return (
       <div className="flex gap-1">
@@ -54,7 +55,7 @@ const CustomerList = ({
               className="justify-between w-full pl-2"
             >
               {customerId
-                ? suppliers.find((item: any) => item.id === customerId)?.name
+                ? suppliers?.find((item: any) => item.id === customerId)?.name
                 : "Chọn khách hàng"}
               <LuChevronsUpDown className="ml-1 h-4 w-4 shrink-0 opacity-50" />
             </Button>
@@ -69,7 +70,7 @@ const CustomerList = ({
                 <div className="text-sm">Không tìm thấy</div>
               </CommandEmpty>
               <CommandGroup className="max-h-48 overflow-y-auto">
-                {suppliers.map((item: any) => (
+                {suppliers?.map((item: any) => (
                   <CommandItem
                     value={item.phone}
                     key={item.id}
