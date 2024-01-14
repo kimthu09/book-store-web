@@ -22,6 +22,8 @@ import { useCurrentUser } from "@/hooks/use-user";
 import { isAdmin } from "@/lib/utils";
 import NoRole from "@/components/no-role";
 import { useLoading } from "@/hooks/loading-context";
+import DropdownSkeleton from "@/components/skeleton/dropdown-skeleton";
+import FeatureSkeleton from "@/components/skeleton/feature-skeleton";
 
 const FormSchema = z.object({
   name: required,
@@ -133,7 +135,29 @@ const RoleDetail = ({ params }: { params: { roleId: string } }) => {
   const { currentUser } = useCurrentUser();
   const isAdminRole = currentUser && isAdmin({ currentUser: currentUser });
   if (isLoading || !currentUser) {
-    return <Loading />;
+    return (
+      <div className="col items-center">
+        <div className="col xl:w-4/5 w-full xl:px-0 md:px-8 px-0">
+          <div className="flex flex-row justify-between">
+            <h1 className="font-medium text-xxl self-start flex-1">
+              Chi tiết phân quyền
+            </h1>
+          </div>
+          <div className="flex flex-col gap-4">
+            <Card>
+              <CardContent className="p-6">
+                <DropdownSkeleton />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-6">
+                <FeatureSkeleton />
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    );
   } else if (!isAdminRole) {
     return <NoRole />;
   } else if (isError) return <div>Failed to load</div>;
@@ -239,8 +263,6 @@ const RoleDetail = ({ params }: { params: { roleId: string } }) => {
       </div>
     );
   }
-
-  // <div>RoleDetail {params.roleId}</div>;
 };
 
 export default RoleDetail;
