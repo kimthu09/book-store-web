@@ -30,6 +30,7 @@ import { imageUpload } from "@/lib/staff/uploadImage";
 import { useCurrentUser } from "@/hooks/use-user";
 import { includesRoles } from "@/lib/utils";
 import NoRole from "@/components/no-role";
+import { useLoading } from "@/hooks/loading-context";
 
 const FormSchema = z.object({
   bookTitleId: z.string().min(1, "Vui lòng chọn một đầu sách"),
@@ -93,13 +94,14 @@ const InsertNewBook = () => {
     trigger("publisherId");
   };
   const { mutate } = useSWRConfig();
+  const { showLoading, hideLoading } = useLoading();
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     if (image) {
       let formData = new FormData();
 
       formData.append("file", image);
       formData.append("folderName", "images");
-
+      showLoading();
       const imgRes = await imageUpload(formData);
       if (imgRes.hasOwnProperty("errorKey")) {
         toast({
@@ -123,6 +125,7 @@ const InsertNewBook = () => {
       image: data.image,
     });
     const responseData = await response;
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",
@@ -135,6 +138,18 @@ const InsertNewBook = () => {
         title: "Thành công",
         description: "Thêm mới sách thành công",
       });
+      reset({
+        bookTitleId: data.bookTitleId,
+        idBook: "",
+        edition: 1,
+        publisherId: "",
+        listedPrice: 0,
+        sellPrice: 0,
+        image: "/no-image.jpg",
+      });
+      setPublisherId("");
+      setImage(null);
+
       mutate(`${endPoint}/v1/books/all`);
       router.refresh();
     }

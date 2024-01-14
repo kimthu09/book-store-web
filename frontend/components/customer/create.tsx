@@ -19,6 +19,7 @@ import { phoneRegex, required } from "@/constants";
 import { useCurrentUser } from "@/hooks/use-user";
 import { includesRoles } from "@/lib/utils";
 import createCustomer from "@/lib/customer/createCustomer";
+import { useLoading } from "@/hooks/loading-context";
 
 const SupplierSchema = z.object({
   id: z.string().max(12, "Tối đa 12 ký tự"),
@@ -44,14 +45,16 @@ const CreateDialog = ({
     resolver: zodResolver(SupplierSchema),
   });
   const router = useRouter();
+  const { showLoading, hideLoading } = useLoading();
   const onSubmit: SubmitHandler<z.infer<typeof SupplierSchema>> = async (
     data
   ) => {
     setOpen(false);
 
     const response: Promise<any> = createCustomer(data);
+    showLoading();
     const responseData = await response;
-
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",

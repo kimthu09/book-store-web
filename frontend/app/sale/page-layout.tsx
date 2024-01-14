@@ -29,6 +29,7 @@ import { ToastAction } from "@/components/ui/toast";
 import PrintInvoice from "@/components/invoice/print-invoice";
 import { endPoint } from "@/constants";
 import { useSWRConfig } from "swr";
+import { useLoading } from "@/hooks/loading-context";
 export type FormValues = {
   customer: {
     customerId: string;
@@ -66,6 +67,7 @@ const SaleScreen = () => {
     control: control,
     name: "details",
   });
+  const { showLoading, hideLoading } = useLoading();
   const onErrors: SubmitErrorHandler<FormValues> = (data) => {
     toast({
       variant: "destructive",
@@ -73,6 +75,7 @@ const SaleScreen = () => {
       description: "Vui lòng thử lại sau",
     });
   };
+
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     if (fields.length < 1) {
       toast({
@@ -92,7 +95,10 @@ const SaleScreen = () => {
         };
       }),
     });
+    showLoading();
     const responseData = await response;
+    hideLoading();
+
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",

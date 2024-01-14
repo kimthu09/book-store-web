@@ -32,6 +32,7 @@ import ExportDialog from "./export-dialog";
 import getAllSupplierDebt from "@/lib/supplier/getAllSupplierDebt";
 import { toast } from "../ui/use-toast";
 import { ExportDebtNote } from "./export-debt-note";
+import { useLoading } from "@/hooks/loading-context";
 
 export const columns: ColumnDef<SupplierDebt>[] = [
   {
@@ -200,7 +201,7 @@ export function DebtTable({
       rowSelection,
     },
   });
-
+  const { showLoading, hideLoading } = useLoading();
   const [exportOption, setExportOption] = useState("all");
   const handleExport = async () => {
     if (exportOption === "all") {
@@ -208,7 +209,9 @@ export function DebtTable({
         data: SupplierDebt[];
         paging: PagingProps;
       }> = getAllSupplierDebt({ idSupplier: supplierId });
+      showLoading();
       const notesToExport = await debtNoteData;
+      hideLoading();
       if (notesToExport.data.length < 1) {
         toast({
           variant: "destructive",

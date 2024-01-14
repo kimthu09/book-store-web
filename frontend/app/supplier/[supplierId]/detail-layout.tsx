@@ -28,6 +28,7 @@ import { withAuth } from "@/lib/role/withAuth";
 import { useCurrentUser } from "@/hooks/use-user";
 import { includesRoles } from "@/lib/utils";
 import NoRole from "@/components/no-role";
+import { useLoading } from "@/hooks/loading-context";
 const FormSchema = z.object({
   quantity: z.coerce.number().gte(1, "Giá trị phải lớn hơn 0"), // Force it to be a number
 });
@@ -49,7 +50,7 @@ const SupplierDetail = ({ params }: { params: { supplierId: string } }) => {
   } = getSupplier(params.supplierId);
 
   const { mutate } = useSWRConfig();
-
+  const { showLoading, hideLoading } = useLoading();
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (
     dataCreate
   ) => {
@@ -57,7 +58,9 @@ const SupplierDetail = ({ params }: { params: { supplierId: string } }) => {
       quantity: dataCreate.quantity,
       idSupplier: params.supplierId,
     });
+    showLoading();
     const responseData = await response;
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",

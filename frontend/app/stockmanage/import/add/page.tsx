@@ -23,6 +23,7 @@ import { includesRoles } from "@/lib/utils";
 import NoRole from "@/components/no-role";
 import ImportSheet from "@/components/book-manage/import-sheet";
 import getAllBookForSale from "@/lib/book/getAllBookForSale";
+import { useLoading } from "@/hooks/loading-context";
 
 export const FormSchema = z.object({
   id: z.string().max(12, "Tối đa 12 ký tự"),
@@ -72,6 +73,7 @@ const AddNote = () => {
     reset,
     formState: { errors },
   } = form;
+  const { showLoading, hideLoading } = useLoading();
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     const response: Promise<any> = createImportNote({
       details: data.details.map((item) => {
@@ -85,7 +87,9 @@ const AddNote = () => {
       id: data.id,
       supplierId: data.supplierId,
     });
+    showLoading();
     const responseData = await response;
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",
@@ -154,12 +158,9 @@ const AddNote = () => {
               }
               if (rowIndex > 2) {
                 const idBook = row.getCell(1).value.toString();
-                console.log(idBook);
                 const oldPrice = books?.data.find(
                   (ingre) => ingre.id === idBook
                 )?.importPrice;
-                console.log(oldPrice);
-
                 if (oldPrice) {
                   const detail = {
                     bookId: idBook,
@@ -181,7 +182,6 @@ const AddNote = () => {
                 }
               }
             });
-            console.log(importNote);
             reset({
               id: importNote.id,
               supplierId: importNote.supplierId,

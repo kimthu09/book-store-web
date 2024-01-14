@@ -55,7 +55,8 @@ import ChangeStatusDialog from "./change-status-dialog";
 import { toast } from "../ui/use-toast";
 import changeStaffStatus from "@/lib/staff/changeStaffStatus";
 import { useCurrentUser } from "@/hooks/use-user";
-import { includesRoles } from "@/lib/utils";
+import { includesRoles, isAdmin } from "@/lib/utils";
+import { useLoading } from "@/hooks/loading-context";
 
 function idToName(id: string) {
   if (id === "name") {
@@ -285,6 +286,7 @@ export function StaffTable({
   const [openFilter, setOpenFilter] = useState(false);
   const [status, setStatus] = useState<boolean>();
   const [statusToChange, setStatusToChange] = useState(false);
+  const { showLoading, hideLoading } = useLoading();
   const handleChangeStatus = async () => {
     if (table.getFilteredSelectedRowModel().rows.length < 1) {
       toast({
@@ -296,10 +298,12 @@ export function StaffTable({
       const userIds = table
         .getFilteredSelectedRowModel()
         .rows.map((item) => item.original.id);
+      showLoading();
       const responseData = await changeStaffStatus({
         userIds: userIds,
         isActive: statusToChange,
       });
+      hideLoading();
       if (responseData.hasOwnProperty("errorKey")) {
         toast({
           variant: "destructive",
@@ -337,18 +341,14 @@ export function StaffTable({
     }
   }, [active]);
   const { currentUser } = useCurrentUser();
-  const canChangeStatus =
-    currentUser &&
-    includesRoles({
-      currentUser: currentUser,
-      allowedFeatures: ["USER_UPDATE_STATE"],
-    });
+  const isAdminRole = currentUser && isAdmin({ currentUser: currentUser });
+
   return (
     <div className="w-full flex flex-col overflow-x-auto">
       <div className="flex items-start py-4 gap-2">
         <div className="flex-1">
           <div className="flex gap-2">
-            {canChangeStatus ? (
+            {isAdminRole ? (
               <ChangeStatusDialog
                 disabled={table.getFilteredSelectedRowModel().rows.length < 1}
                 status={statusToChange}

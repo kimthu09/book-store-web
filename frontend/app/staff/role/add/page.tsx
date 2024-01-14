@@ -14,6 +14,10 @@ import { required } from "@/constants";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "@/components/ui/use-toast";
 import createRole from "@/lib/staff/createRole";
+import { useCurrentUser } from "@/hooks/use-user";
+import { isAdmin } from "@/lib/utils";
+import NoRole from "@/components/no-role";
+import { useLoading } from "@/hooks/loading-context";
 
 const FormSchema = z.object({
   name: required,
@@ -46,14 +50,15 @@ const AddRole = () => {
       append({ idFeature: featureId, groupName: groupName });
     }
   };
-
+  const { showLoading, hideLoading } = useLoading();
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     const response: Promise<any> = createRole({
       name: data.name,
       features: data.features.map((item) => item.idFeature),
     });
+    showLoading();
     const responseData = await response;
-
+    hideLoading();
     if (responseData.hasOwnProperty("data")) {
       if (responseData.data) {
         toast({
@@ -76,8 +81,13 @@ const AddRole = () => {
       });
     }
   };
-
-  if (isError) return <div>Failed to load</div>;
+  const { currentUser } = useCurrentUser();
+  const isAdminRole = currentUser && isAdmin({ currentUser: currentUser });
+  if (isLoading || !currentUser) {
+    return <Loading />;
+  } else if (!isAdminRole) {
+    return <NoRole />;
+  } else if (isError) return <div>Failed to load</div>;
   else
     return (
       <div className="col items-center">

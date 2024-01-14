@@ -37,6 +37,7 @@ import StatusList from "@/components/status-list";
 import changeStaffStatus from "@/lib/staff/changeStaffStatus";
 import { useCurrentUser } from "@/hooks/use-user";
 import { includesRoles, isAdmin } from "@/lib/utils";
+import { useLoading } from "@/hooks/loading-context";
 
 const FormSchema = z.object({
   name: required,
@@ -49,6 +50,8 @@ const PasswordSchema = z.object({
 
 const EditStaff = ({ params }: { params: { staffId: string } }) => {
   const [role, setRole] = useState("");
+  const { showLoading, hideLoading } = useLoading();
+
   const [status, setStatus] = useState(true);
   const displayStatus = {
     trueText: "Đang làm việc",
@@ -92,6 +95,7 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
   const onSubmitPass: SubmitHandler<z.infer<typeof PasswordSchema>> = async (
     data
   ) => {
+    showLoading();
     const token = await getApiKey();
     const res = axios
       .patch(
@@ -115,6 +119,7 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
         return error.response.data;
       });
     const responseData = await res;
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",
@@ -132,7 +137,7 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
   };
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     setReadOnly(true);
-
+    showLoading();
     const response: Promise<any> = updateStaff({
       id: params.staffId,
       address: data.address,
@@ -140,6 +145,7 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
       name: data.name,
     });
     const responseData = await response;
+    hideLoading();
     if (data.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",
@@ -163,11 +169,14 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
   };
   const [image, setImage] = useState<any>();
   const handleImageSelected = async () => {
+    if (!image) {
+      return;
+    }
     let formData = new FormData();
 
     formData.append("file", image);
     formData.append("folderName", "avatars");
-
+    showLoading();
     const imgRes = await imageUpload(formData);
     if (imgRes.hasOwnProperty("errorKey")) {
       toast({
@@ -182,6 +191,8 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
         img: imgRes.data,
       });
       const data = await response;
+      hideLoading();
+
       if (data.hasOwnProperty("errorKey")) {
         toast({
           variant: "destructive",
@@ -238,11 +249,14 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
       mutate();
     }
   };
+
   const changeStatus = async () => {
+    showLoading();
     const responseData = await changeStaffStatus({
       userIds: [params.staffId],
       isActive: status,
     });
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",
@@ -265,12 +279,6 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
     includesRoles({
       currentUser: currentUser,
       allowedFeatures: ["USER_UPDATE_INFO"],
-    });
-  const canChangeStatus =
-    currentUser &&
-    includesRoles({
-      currentUser: currentUser,
-      allowedFeatures: ["USER_UPDATE_STATE"],
     });
   const isAdminRole = currentUser && isAdmin({ currentUser: currentUser });
   if (isLoading) {
@@ -482,7 +490,7 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
             </Card>
             <Card className="flex-1">
               <CardContent className="p-6 flex items-end justify-between gap-2">
-                {canChangeStatus ? (
+                {isAdminRole ? (
                   <>
                     <div className="flex-1">
                       <Label>Trạng thái</Label>

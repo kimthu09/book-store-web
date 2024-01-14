@@ -62,6 +62,7 @@ import SupplierList from "../supplier-list";
 import StatusList from "../status-list";
 import ExportDialog from "../supplier-manage/export-dialog";
 import StatusNoteList from "../status-note-list";
+import { useLoading } from "@/hooks/loading-context";
 
 export const columns: ColumnDef<ImportNote>[] = [
   {
@@ -354,6 +355,7 @@ export function ImportTable() {
       rowSelection,
     },
   });
+  const { showLoading, hideLoading } = useLoading();
   const [exportOption, setExportOption] = useState("all");
   const handleExport = async () => {
     if (exportOption === "all") {
@@ -361,7 +363,9 @@ export function ImportTable() {
         data: ImportNote[];
         paging: PagingProps;
       }> = getAllImportNoteForExcel({ page: "1", limit: 10000 });
+      showLoading();
       const notesToExport = await importNoteData;
+      hideLoading();
       if (notesToExport.data.length < 1) {
         toast({
           variant: "destructive",

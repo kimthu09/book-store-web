@@ -6,6 +6,7 @@ import { ExportImportNoteDetail } from "@/components/stock-manage/excel-import-d
 import { ImportDetailTable } from "@/components/stock-manage/import-detail-table";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+import { useLoading } from "@/hooks/loading-context";
 import { useCurrentUser } from "@/hooks/use-user";
 import { getApiKey } from "@/lib/auth/action";
 import updateStatus from "@/lib/import/changeStatus";
@@ -22,13 +23,15 @@ const ImportDetail = ({ params }: { params: { importId: string } }) => {
   const { data, isLoading, isError, mutate } = getImportNoteDetail({
     id: params.importId,
   });
+  const { showLoading, hideLoading } = useLoading();
   const changeStatus = async (status: StatusNote) => {
     const response: Promise<any> = updateStatus({
       id: params.importId,
       status: status,
     });
+    showLoading();
     const responseData = await response;
-
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",

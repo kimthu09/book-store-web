@@ -18,6 +18,10 @@ import Loading from "@/components/loading";
 import { useEffect, useState } from "react";
 import { toast } from "@/components/ui/use-toast";
 import updateRole from "@/lib/staff/updateRole";
+import { useCurrentUser } from "@/hooks/use-user";
+import { isAdmin } from "@/lib/utils";
+import NoRole from "@/components/no-role";
+import { useLoading } from "@/hooks/loading-context";
 
 const FormSchema = z.object({
   name: required,
@@ -49,6 +53,7 @@ const RoleDetail = ({ params }: { params: { roleId: string } }) => {
     control: control,
     name: "features",
   });
+  const { showLoading, hideLoading } = useLoading();
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     setReadOnly(true);
     const response: Promise<any> = updateRole({
@@ -56,8 +61,9 @@ const RoleDetail = ({ params }: { params: { roleId: string } }) => {
       name: data.name,
       features: data.features.map((item) => item.idFeature),
     });
+    showLoading();
     const responseData = await response;
-
+    hideLoading();
     if (responseData.hasOwnProperty("data")) {
       if (responseData.data) {
         toast({
@@ -124,10 +130,14 @@ const RoleDetail = ({ params }: { params: { roleId: string } }) => {
       });
     }
   }, [response]);
-  if (isError) return <div>Failed to load</div>;
-  else if (isLoading) {
+  const { currentUser } = useCurrentUser();
+  const isAdminRole = currentUser && isAdmin({ currentUser: currentUser });
+  if (isLoading || !currentUser) {
     return <Loading />;
-  } else {
+  } else if (!isAdminRole) {
+    return <NoRole />;
+  } else if (isError) return <div>Failed to load</div>;
+  else {
     return (
       <div className="col items-center">
         <form

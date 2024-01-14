@@ -16,6 +16,7 @@ import { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import createCategory from "@/lib/book/createCategory";
+import { useLoading } from "@/hooks/loading-context";
 const required = z.string().min(1, "Không để trống trường này");
 
 const SupplierSchema = z.object({
@@ -38,14 +39,16 @@ const CreateCategory = ({
     resolver: zodResolver(SupplierSchema),
   });
   const router = useRouter();
+  const { showLoading, hideLoading } = useLoading();
   const onSubmit: SubmitHandler<z.infer<typeof SupplierSchema>> = async (
     data
   ) => {
     setOpen(false);
 
     const response: Promise<any> = createCategory(data);
+    showLoading();
     const responseData = await response;
-
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",

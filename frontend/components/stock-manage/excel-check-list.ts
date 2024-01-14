@@ -43,7 +43,6 @@ export const ExportCheckNote = (excelData: CheckNote[], fileName: string) => {
     "Người tạo",
     "Ngày tạo",
   ];
-  console.log("hi......." + JSON.stringify(excelData));
   const values = excelData.map((note) => ({
     id: note.id,
     qtyDifferent: note.qtyDifferent,

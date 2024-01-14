@@ -23,6 +23,7 @@ import {
 import { FaPlus } from "react-icons/fa";
 import getAllAuthorList from "@/lib/book/getAllAuthorList";
 import getAllCategoryList from "@/lib/book/getAllCategoryList";
+import { useLoading } from "@/hooks/loading-context";
 
 const FormSchema = z.object({
   idBook: z.string().max(12, "Tối đa 12 ký tự"),
@@ -89,6 +90,7 @@ const CreateTitleDialog = ({
       });
     }
   };
+  const { showLoading, hideLoading } = useLoading();
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     const response: Promise<any> = createBookTitle({
       id: data.idBook,
@@ -97,7 +99,9 @@ const CreateTitleDialog = ({
       categoryIds: data.categoryIds.map((item) => item.idCate),
       authorIds: data.authorIds.map((item) => item.idAuthor),
     });
+    showLoading();
     const responseData = await response;
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",

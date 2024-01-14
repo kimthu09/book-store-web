@@ -22,6 +22,7 @@ import updateBookTitle from "@/lib/book/updateBookTitle";
 import ConfirmDialog from "../confirm-dialog";
 import { useCurrentUser } from "@/hooks/use-user";
 import { includesRoles } from "@/lib/utils";
+import { useLoading } from "@/hooks/loading-context";
 const FormSchema = z.object({
   idBook: z.string().max(12, "Tối đa 12 ký tự"),
   name: required,
@@ -75,6 +76,7 @@ const TitleEditInline = ({
   const onError: SubmitErrorHandler<z.infer<typeof FormSchema>> = async (
     data
   ) => {};
+  const { showLoading, hideLoading } = useLoading();
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     setIsEdit(false);
     const response: Promise<any> = updateBookTitle({
@@ -84,7 +86,9 @@ const TitleEditInline = ({
       categoryIds: data.categoryIds.map((item) => item.idCate),
       authorIds: data.authorIds.map((item) => item.idAuthor),
     });
+    showLoading();
     const responseData = await response;
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",

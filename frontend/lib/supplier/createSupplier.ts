@@ -13,7 +13,7 @@ export default async function createSupplier({
   name: string;
   email: string;
   phone: string;
-  debt: string;
+  debt: number;
 }) {
   const url = `${endPoint}/v1/suppliers`;
   const data = {

@@ -32,6 +32,7 @@ import ExportDialog from "./export-dialog";
 import { ExportImportNote } from "./export-import-note";
 import getAllSupplierNote from "@/lib/supplier/getAllSupplierNote";
 import { toast } from "../ui/use-toast";
+import { useLoading } from "@/hooks/loading-context";
 
 export const columns: ColumnDef<ImportNote>[] = [
   {
@@ -177,13 +178,16 @@ export function ImportTable({ supplierId }: { supplierId: string }) {
   });
 
   const [exportOption, setExportOption] = useState("all");
+  const { showLoading, hideLoading } = useLoading();
   const handleExport = async () => {
     if (exportOption === "all") {
       const importNoteData: Promise<{
         data: ImportNote[];
         paging: PagingProps;
       }> = getAllSupplierNote({ idSupplier: supplierId });
+      showLoading();
       const notesToExport = await importNoteData;
+      hideLoading();
       if (notesToExport.data.length < 1) {
         toast({
           variant: "destructive",

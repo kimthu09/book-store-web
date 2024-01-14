@@ -72,6 +72,7 @@ import { useCurrentUser } from "@/hooks/use-user";
 import Loading from "../loading";
 import { includesRoles } from "@/lib/utils";
 import NoRole from "../no-role";
+import { useLoading } from "@/hooks/loading-context";
 
 const columns: ColumnDef<Book>[] = [
   {
@@ -374,6 +375,8 @@ export function BookTable({
 
     router.push(`/product/books?page=1${filterString}`);
   };
+  const { showLoading, hideLoading } = useLoading();
+
   const [openFilter, setOpenFilter] = useState(false);
   const [statusToChange, setStatusToChange] = useState(false);
   const handleChangeStatus = async () => {
@@ -387,10 +390,13 @@ export function BookTable({
       const bookIds = table
         .getFilteredSelectedRowModel()
         .rows.map((item) => item.original.id);
+      showLoading();
       const responseData = await changeBookStatus({
         bookIds: bookIds,
         isActive: statusToChange,
       });
+      hideLoading();
+
       if (responseData.hasOwnProperty("errorKey")) {
         toast({
           variant: "destructive",
@@ -727,7 +733,7 @@ export function BookTable({
           </DropdownMenu>
         </div>
         <div className="rounded-md border overflow-x-auto flex-1 min-w-full max-w-[50vw]">
-          <Table className="min-w-full">
+          <Table className="min-w-full w-max">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
@@ -831,7 +837,7 @@ export function BookTable({
         <div className="flex items-center justify-end space-x-2 py-4">
           <div className="flex-1 text-sm text-muted-foreground">
             {table.getFilteredSelectedRowModel().rows.length} trong{" "}
-            {table.getFilteredRowModel().rows.length} dòng được chọn.{" "}
+            {table.getFilteredRowModel().rows.length} dòng được chọn.
           </div>
           <Paging
             page={page}

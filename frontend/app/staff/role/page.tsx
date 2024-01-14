@@ -1,8 +1,9 @@
 import { RoleTable } from "@/components/staff/role-table";
 import Link from "next/link";
 import React from "react";
-import { LuCheck } from "react-icons/lu";
 import { Metadata } from "next";
+import { withAuth } from "@/lib/role/withAuth";
+import { FaPlus } from "react-icons/fa";
 export const metadata: Metadata = {
   title: "Phân quyền nhân viên",
 };
@@ -17,7 +18,7 @@ const RoleSetting = () => {
             className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2"
           >
             <div className="flex flex-wrap gap-1 items-center">
-              <LuCheck />
+              <FaPlus />
               Thêm phân quyền
             </div>
           </Link>
@@ -31,4 +32,4 @@ const RoleSetting = () => {
   );
 };
 
-export default RoleSetting;
+export default withAuth(RoleSetting, [""], true);
