@@ -32,6 +32,7 @@ import { GiShamrock } from "react-icons/gi";
 import { toast } from "../ui/use-toast";
 import getCustomerInvoice from "@/lib/customer/getCustomerInvoice";
 import { Label } from "../ui/label";
+import TableSkeleton from "../skeleton/table-skeleton";
 
 export const columns: ColumnDef<CustomerInvoice>[] = [
   {
@@ -214,7 +215,37 @@ export function InvoiceTable({ customerId }: { customerId: string }) {
   });
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <TableSkeleton
+        isHasExtensionAction={false}
+        isHasFilter={true}
+        isHasSearch={true}
+        isHasChooseVisibleRow={true}
+        isHasCheckBox={false}
+        isHasPaging={true}
+        numberRow={5}
+        cells={[
+          {
+            percent: 1,
+          },
+          {
+            percent: 2,
+          },
+          {
+            percent: 1,
+          },
+          {
+            percent: 1,
+          },
+          {
+            percent: 1,
+          },
+          {
+            percent: 1,
+          },
+        ]}
+      ></TableSkeleton>
+    );
   } else {
     return (
       <div className="flex flex-col gap-4">

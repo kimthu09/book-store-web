@@ -1,6 +1,7 @@
 "use client";
 import Loading from "@/components/loading";
 import NoRole from "@/components/no-role";
+import InventoryCheckNoteDetailSkeleton from "@/components/skeleton/inventory-check-note-detail-skeleton";
 import { CheckDetailTable } from "@/components/stock-manage/check-detail-table";
 import {
   ExportCheckNoteDetail,
@@ -20,7 +21,7 @@ const CheckDetail = ({ params }: { params: { checkId: string } }) => {
   const { currentUser } = useCurrentUser();
   if (isError) return <div>Failed to load</div>;
   else if (!currentUser || isLoading) {
-    return <Loading />;
+    return <InventoryCheckNoteDetailSkeleton />;
   } else if (
     currentUser &&
     !includesRoles({
@@ -35,7 +36,7 @@ const CheckDetail = ({ params }: { params: { checkId: string } }) => {
         <div className="shadow-sm bg-white flex flex-col gap-6 md:px-8 px-4 pb-6">
           <div className="flex justify-between gap-6 font-bold text-lg border-b flex-1 py-2 pt-6">
             <div className="flex gap-4">
-              <span className="font-light">Mã phiếu nhập</span>
+              <span className="font-light">Mã phiếu kiểm kho</span>
               <span>{data.id}</span>
             </div>
             <div className="flex gap-2 flex-nowrap">

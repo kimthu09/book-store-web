@@ -61,6 +61,7 @@ import getAllCheckNote from "@/lib/check/getAllImport";
 import { ExportCheckNote } from "./excel-check-list";
 import getAllCheckNoteForExcel from "@/lib/import/getAllCheckNoteForExcel";
 import { useLoading } from "@/hooks/loading-context";
+import TableSkeleton from "../skeleton/table-skeleton";
 
 export const columns: ColumnDef<CheckNote>[] = [
   {
@@ -306,7 +307,31 @@ export function CheckTable() {
   };
   if (isError) return <div>Failed to load</div>;
   else if (isLoading) {
-    return <Loading />;
+    return (
+      <TableSkeleton
+        isHasExtensionAction={true}
+        isHasFilter={true}
+        isHasSearch={true}
+        isHasChooseVisibleRow={false}
+        isHasCheckBox={true}
+        isHasPaging={true}
+        numberRow={5}
+        cells={[
+          {
+            percent: 5,
+          },
+          {
+            percent: 2,
+          },
+          {
+            percent: 2,
+          },
+          {
+            percent: 2,
+          },
+        ]}
+      ></TableSkeleton>
+    );
   } else
     return (
       <div>

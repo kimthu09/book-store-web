@@ -8,6 +8,7 @@ import MonthReportHeader from "@/components/report/MonthReportHeader";
 import { toast } from "../ui/use-toast";
 import Loading from "../loading";
 import { ExportStockReport } from "./excel-export-stock-report";
+import TableSkeleton from "../skeleton/table-skeleton";
 
 const StockReport = () => {
   const [data, setData] = useState<StockReport>();
@@ -73,7 +74,41 @@ const StockReport = () => {
       <div>
         <Card className="p-[10px] my-[22px]">
           {isLoading ? (
-            <Loading />
+            <TableSkeleton
+              isHasExtensionAction={false}
+              isHasFilter={false}
+              isHasSearch={false}
+              isHasChooseVisibleRow={false}
+              isHasCheckBox={false}
+              isHasPaging={false}
+              numberRow={10}
+              cells={[
+                {
+                  percent: 2,
+                },
+                {
+                  percent: 2,
+                },
+                {
+                  percent: 5,
+                },
+                {
+                  percent: 2,
+                },
+                {
+                  percent: 2,
+                },
+                {
+                  percent: 2,
+                },
+                {
+                  percent: 2,
+                },
+                {
+                  percent: 2,
+                },
+              ]}
+            ></TableSkeleton>
           ) : (
             <StockReportTable
               data={

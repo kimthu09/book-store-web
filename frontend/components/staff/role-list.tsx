@@ -11,6 +11,7 @@ import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import getAllRole from "@/lib/staff/getAllRole";
 import Loading from "../loading";
+import ListSkeleton from "../skeleton/list_skeleton";
 
 const RoleList = ({ role, setRole }: RoleListProps) => {
   const [openRole, setOpenRole] = useState(false);
@@ -18,7 +19,7 @@ const RoleList = ({ role, setRole }: RoleListProps) => {
 
   if (isError) return <div>Failed to load</div>;
   if (!roles) {
-    <Loading />;
+    <ListSkeleton numberRow={5} />;
   } else
     return (
       <DropdownMenu open={openRole} onOpenChange={setOpenRole}>

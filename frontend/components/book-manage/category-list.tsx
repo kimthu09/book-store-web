@@ -22,6 +22,7 @@ import CreateCategory from "./create-category";
 import { FaPlus } from "react-icons/fa";
 import { useCurrentUser } from "@/hooks/use-user";
 import getAllCategoryList from "@/lib/book/getAllCategoryList";
+import ListSkeleton from "../skeleton/list_skeleton";
 
 const CategoryList = ({
   checkedCategory,
@@ -40,7 +41,7 @@ const CategoryList = ({
   const { currentUser } = useCurrentUser();
   if (isError) return <div>Failed to load</div>;
   if (isLoading) {
-    return <Loading />;
+    return <ListSkeleton numberRow={5} />;
   } else
     return (
       <div className="flex flex-col">

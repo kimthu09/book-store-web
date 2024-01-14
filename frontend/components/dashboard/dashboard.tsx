@@ -9,6 +9,8 @@ import DashboardTopFoodContainer from "./dashboard-top-food-container";
 import Loading from "../loading";
 import DashboardChartContainer from "./dashboard-chart-container";
 import React from "react";
+import { FaBook, FaChartLine, FaUserTag } from "react-icons/fa";
+import { GiShamrock } from "react-icons/gi";
 
 const DashboardComponent = () => {
   const [data, setData] = useState<Dashboard>({
@@ -78,22 +80,22 @@ const DashboardComponent = () => {
       cardInfos.push({
         title: "Doanh thu",
         value: totalSaleFormat,
-        icon: "",
+        icon: <FaChartLine className="h-6 w-6" />,
       });
       cardInfos.push({
         title: "Số điểm tích được",
         value: pointFormat,
-        icon: "",
+        icon: <GiShamrock className="h-6 w-6" />,
       });
       cardInfos.push({
         title: "Số khách đã mua",
         value: customerFormat,
-        icon: "",
+        icon: <FaUserTag className="h-6 w-6" />,
       });
       cardInfos.push({
         title: "Số sản phẩm bán được",
         value: totalSoldFormat,
-        icon: "",
+        icon: <FaBook className="h-6 w-6" />,
       });
     }
     return (
@@ -106,7 +108,7 @@ const DashboardComponent = () => {
         ) : (
           <div className="flex flex-col w-full lg:gap-[6] gap-4">
             <DashboardCardHolder cardInfos={cardInfos} />
-            <div className="flex lg:flex-row flex-col w-full lg:gap-[6] gap-4 h-auto basis-2/3">
+            <div className="flex lg:flex-row flex-col w-full lg:gap-[6] gap-4 h-auto basis-3/5">
               <DashboardChartContainer
                 price={data?.chartPriceComponents}
                 profit={data?.chartProfitComponents}
@@ -115,7 +117,7 @@ const DashboardComponent = () => {
                 chartType={chartType}
                 setChartType={setChartType}
               />
-              <div className="basis-1/3 flex h-full">
+              <div className="basis-2/5 flex h-full">
                 <DashboardTopFoodContainer foods={data?.topSoldBooks} />
               </div>
             </div>

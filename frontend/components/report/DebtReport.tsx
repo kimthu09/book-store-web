@@ -8,6 +8,7 @@ import MonthReportHeader from "@/components/report/MonthReportHeader";
 import { toast } from "../ui/use-toast";
 import Loading from "../loading";
 import { ExportDebtReport } from "./excel-export-debt-report";
+import TableSkeleton from "../skeleton/table-skeleton";
 
 const DebtReport = () => {
   const [data, setData] = useState<DebtReport>();
@@ -71,9 +72,40 @@ const DebtReport = () => {
       </div>
 
       <div>
-      <Card className="p-[10px] my-[22px]">
+        <Card className="p-[10px] my-[22px]">
           {isLoading ? (
-            <Loading />
+            <TableSkeleton
+              isHasExtensionAction={false}
+              isHasFilter={false}
+              isHasSearch={false}
+              isHasChooseVisibleRow={false}
+              isHasCheckBox={false}
+              isHasPaging={false}
+              numberRow={10}
+              cells={[
+                {
+                  percent: 1,
+                },
+                {
+                  percent: 1,
+                },
+                {
+                  percent: 5,
+                },
+                {
+                  percent: 1,
+                },
+                {
+                  percent: 1,
+                },
+                {
+                  percent: 1,
+                },
+                {
+                  percent: 1,
+                },
+              ]}
+            ></TableSkeleton>
           ) : (
             <DebtReportTable
               report={data}

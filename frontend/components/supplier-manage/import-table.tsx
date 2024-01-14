@@ -33,6 +33,7 @@ import { ExportImportNote } from "./export-import-note";
 import getAllSupplierNote from "@/lib/supplier/getAllSupplierNote";
 import { toast } from "../ui/use-toast";
 import { useLoading } from "@/hooks/loading-context";
+import TableSkeleton from "../skeleton/table-skeleton";
 
 export const columns: ColumnDef<ImportNote>[] = [
   {
@@ -213,7 +214,34 @@ export function ImportTable({ supplierId }: { supplierId: string }) {
     }
   };
   if (isLoading) {
-    return <Loading />;
+    return (
+      <TableSkeleton
+        isHasExtensionAction={false}
+        isHasFilter={false}
+        isHasSearch={false}
+        isHasChooseVisibleRow={false}
+        isHasCheckBox={false}
+        isHasPaging={true}
+        numberRow={5}
+        cells={[
+          {
+            percent: 1,
+          },
+          {
+            percent: 2,
+          },
+          {
+            percent: 1,
+          },
+          {
+            percent: 1,
+          },
+          {
+            percent: 1,
+          },
+        ]}
+      ></TableSkeleton>
+    );
   } else {
     return (
       <div className="flex flex-col">

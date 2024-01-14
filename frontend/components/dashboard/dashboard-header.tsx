@@ -16,10 +16,12 @@ const DashboardHeader = (props: any) => {
     to: new Date(),
   });
   const [selectedDateRangeType, setSelectedDateRangeType] =
-    React.useState<string>("DatePicker");
+    React.useState<string>("Today");
+
   useEffect(() => {
     onClick(getTimeRangeParams(date)); // Call the fetchData function on component mount
   }, []);
+
   const getTimeRangeParams = (range: DateRange | undefined) => {
     return {
       timeFrom: range?.from
@@ -51,6 +53,7 @@ const DashboardHeader = (props: any) => {
     setSelectedDateRangeType("ThisMonth");
     onClick(getTimeRangeParams(thisMonth));
   };
+
   const handleLastMonthClick = () => {
     const startOfLastMonth = new Date();
     startOfLastMonth.setDate(1);
@@ -69,10 +72,15 @@ const DashboardHeader = (props: any) => {
     setSelectedDateRangeType("LastMonth");
     onClick(getTimeRangeParams(lastMonth));
   };
+
+  const handlePickDateClick = () => {
+    setSelectedDateRangeType("PickDate");
+  };
+
   return (
     <div className="flex justify-between flex-row">
-      <div className="justify-between gap-1 flex flex-row flex-1">
-        <div className="flex gap-2 flex-wrap  rounded-full bg-white p-1">
+      <div className="gap-2 flex flex-row flex-1 items-center">
+        <div className="flex gap-2 flex-wrap rounded-full bg-white p-1">
           <Button
             variant={"ghost"}
             onClick={handleTodayClick}
@@ -106,70 +114,77 @@ const DashboardHeader = (props: any) => {
           >
             Tháng trước
           </Button>
+          <Button
+            variant={"ghost"}
+            onClick={handlePickDateClick}
+            className={`bg-white whitespace-nowrap rounded-full ${
+              selectedDateRangeType === "PickDate"
+                ? "bg-blue-200 hover:bg-blue-200/90 text-primary hover:text-primary"
+                : ""
+            }`}
+          >
+            Chọn thời điểm
+          </Button>
         </div>
-        <div className="flex flex-row gap-2">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                id="date"
-                variant={"outline"}
-                className={cn(
-                  `bg-white whitespace-nowrap ${
-                    selectedDateRangeType === "DatePicker"
-                      ? "border border-primary"
-                      : "border border-muted-foreground"
-                  } hover:text-primary justify-start items-center text-left font-normal",
-                  !date && "text-muted-foreground`
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {date?.from ? (
-                  date.to ? (
-                    <>
-                      {format(date.from, "dd/MM/yyyy")} -{" "}
-                      {format(date.to, "dd/MM/yyyy")}
-                    </>
-                  ) : (
-                    format(date.from, "dd/MM/yyyy")
-                  )
-                ) : (
-                  <span>Pick a date</span>
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                initialFocus
-                mode="range"
-                defaultMonth={date?.from}
-                selected={date}
-                onSelect={setDate}
-                numberOfMonths={2}
-              />
-            </PopoverContent>
-          </Popover>
-          {/* 1701388800 */}
+        {selectedDateRangeType === "PickDate" ? (
           <div className="flex flex-row gap-2">
-            <Button
-              onClick={() => {
-                setSelectedDateRangeType("DatePicker");
-
-                onClick({
-                  timeFrom: date?.from
-                    ? new Date(date.from.setHours(0, 0, 0, 0)).getTime() / 1000
-                    : 0,
-                  timeTo: date?.to
-                    ? new Date(date.to.setHours(23, 59, 59, 999)).getTime() /
-                      1000
-                    : 0,
-                });
-              }}
-              className="px-5"
-            >
-              Xem
-            </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  id="date"
+                  variant={"outline"}
+                  className={cn(
+                    `bg-white whitespace-nowrap border border-primary hover:text-primary justify-start items-center text-left font-normal",
+                  !date && "text-muted-foreground`
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {date?.from ? (
+                    date.to ? (
+                      <>
+                        {format(date.from, "dd/MM/yyyy")} -{" "}
+                        {format(date.to, "dd/MM/yyyy")}
+                      </>
+                    ) : (
+                      format(date.from, "dd/MM/yyyy")
+                    )
+                  ) : (
+                    <span>Pick a date</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  initialFocus
+                  mode="range"
+                  defaultMonth={date?.from}
+                  selected={date}
+                  onSelect={setDate}
+                  numberOfMonths={2}
+                />
+              </PopoverContent>
+            </Popover>
+            <div className="flex flex-row gap-2">
+              <Button
+                onClick={() => {
+                  onClick({
+                    timeFrom: date?.from
+                      ? new Date(date.from.setHours(0, 0, 0, 0)).getTime() /
+                        1000
+                      : 0,
+                    timeTo: date?.to
+                      ? new Date(date.to.setHours(23, 59, 59, 999)).getTime() /
+                        1000
+                      : 0,
+                  });
+                }}
+                className="px-5"
+              >
+                Xem
+              </Button>
+            </div>
           </div>
-        </div>
+        ):(<div></div>)}
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import { toast } from "../ui/use-toast";
 import Loading from "../loading";
 import { SaleReport, SaleReportDetail } from "@/types";
 import { ExportSaleReport } from "./excel-export-sale-report";
+import TableSkeleton from "../skeleton/table-skeleton";
 
 const SaleReport = () => {
   const [data, setData] = useState<SaleReport>();
@@ -73,7 +74,32 @@ const SaleReport = () => {
       <div>
         <Card className="p-[10px] my-[22px]">
           {isLoading ? (
-            <Loading />
+            <TableSkeleton
+              isHasExtensionAction={false}
+              isHasFilter={false}
+              isHasSearch={false}
+              isHasChooseVisibleRow={false}
+              isHasCheckBox={false}
+              isHasPaging={false}
+              numberRow={10}
+              cells={[
+                {
+                  percent: 1,
+                },
+                {
+                  percent: 1,
+                },
+                {
+                  percent: 5,
+                },
+                {
+                  percent: 1,
+                },
+                {
+                  percent: 1,
+                },
+              ]}
+            ></TableSkeleton>
           ) : (
             <SaleReportTable
               report={data}

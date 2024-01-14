@@ -2,6 +2,7 @@
 import ConfirmDialog from "@/components/confirm-dialog";
 import Loading from "@/components/loading";
 import NoRole from "@/components/no-role";
+import ImportNoteDetailSkeleton from "@/components/skeleton/import-note-detail-skeleton";
 import { ExportImportNoteDetail } from "@/components/stock-manage/excel-import-detail";
 import { ImportDetailTable } from "@/components/stock-manage/import-detail-table";
 import { Button } from "@/components/ui/button";
@@ -56,7 +57,7 @@ const ImportDetail = ({ params }: { params: { importId: string } }) => {
     });
   if (isError) return <div>Failed to load</div>;
   else if (!currentUser || isLoading) {
-    return <Loading />;
+    return <ImportNoteDetailSkeleton/>;
   } else if (
     currentUser &&
     !includesRoles({

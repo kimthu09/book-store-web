@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/use-toast";
 import { phoneRegex, required } from "@/constants";
 import { useLoading } from "@/hooks/loading-context";
@@ -13,6 +14,7 @@ import { useCurrentUser } from "@/hooks/use-user";
 import updateShop from "@/lib/shop-general/updateShop";
 import { isAdmin } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -101,7 +103,45 @@ const DetailLayout = () => {
     handleReset();
   }, [shop]);
   if (!shop) {
-    return <Loading />;
+    return (
+      <div className="col items-center">
+        <div className="col xl:w-3/5 w-full xl:px-0 md:px-8 px-0">
+          <div className="flex justify-between">
+            <h1 className="xl:text-3xl text-2xl">Thiết lập cửa hàng</h1>
+          </div>
+          <Card>
+            <CardContent className="p-6 flex flex-col gap-4">
+              <div className="flex gap-4  flex-col">
+                <div className="flex gap-4 lg:flex-row flex-col">
+                  <div className="basis-2/3">
+                    <Skeleton className="h-6 w-full" />
+                  </div>
+                  <div className="basis-1/3">
+                    <Skeleton className="h-6 w-full" />
+                  </div>
+                </div>
+                <div className="flex gap-4 lg:flex-row flex-col">
+                  <div className="basis-2/3">
+                    <Skeleton className="h-6 w-full" />
+                  </div>
+                  <div className="basis-1/3">
+                    <Skeleton className="h-6 w-full" />
+                  </div>
+                </div>
+                <div className="flex gap-4 lg:flex-row flex-col">
+                  <div className="basis-1/2">
+                    <Skeleton className="h-6 w-full" />
+                  </div>
+                  <div className="basis-1/2">
+                    <Skeleton className="h-6 w-full" />
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
   } else
     return (
       <div className="col items-center">
