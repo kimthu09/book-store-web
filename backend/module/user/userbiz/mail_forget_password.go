@@ -61,7 +61,7 @@ func (biz *mailForgetPasswordBiz) MailForgetPassword(
 	}
 
 	emailData := EmailData{
-		URL:       "http://localhost/resetpassword/" + token.Token,
+		URL:       "http://localhost/forgot-password/" + token.Token,
 		FirstName: data.Email,
 		Subject: "Your password reset token (valid for " +
 			strconv.Itoa(common.MinuteVerifyEmail) + " min)",
