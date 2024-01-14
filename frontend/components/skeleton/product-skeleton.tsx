@@ -1,7 +1,7 @@
 import { AspectRatio } from "../ui/aspect-ratio";
 import { Skeleton } from "../ui/skeleton";
 import DropdownSkeleton from "./dropdown-skeleton";
-const generateFields = (length: number): string[] => {
+export const generateFields = (length: number): string[] => {
   return Array.from({ length }, (_, index) => `Column ${index + 1}`);
 };
 

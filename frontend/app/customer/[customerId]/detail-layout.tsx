@@ -2,6 +2,7 @@
 import EditDialog from "@/components/customer/edit";
 import { InvoiceTable } from "@/components/customer/invoice-table";
 import Loading from "@/components/loading";
+import CustomerDetailSkeleton from "@/components/skeleton/customer-detail";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,7 +24,19 @@ const CustomerDetail = ({ params }: { params: { customerId: string } }) => {
   const { mutate } = useSWRConfig();
   if (isError) return <div>Failed to load</div>;
   else if (isLoading) {
-    return <Loading />;
+    return (
+      <div className="col items-center">
+        <div className="col xl:w-4/5 w-full xl:px-0 md:px-8 px-0">
+          <CustomerDetailSkeleton />
+          <Card>
+            <CardContent className="p-6 flex flex-col   gap-4">
+              {/* TODO: invoice table */}
+              <InvoiceTable customerId={params.customerId} />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
   } else
     return (
       <div className="col items-center">

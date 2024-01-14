@@ -38,6 +38,7 @@ import changeStaffStatus from "@/lib/staff/changeStaffStatus";
 import { useCurrentUser } from "@/hooks/use-user";
 import { includesRoles, isAdmin } from "@/lib/utils";
 import { useLoading } from "@/hooks/loading-context";
+import StaffDetailSkeleton from "@/components/skeleton/staff-detail";
 
 const FormSchema = z.object({
   name: required,
@@ -282,7 +283,7 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
     });
   const isAdminRole = currentUser && isAdmin({ currentUser: currentUser });
   if (isLoading) {
-    return <Loading />;
+    return <StaffDetailSkeleton />;
   } else {
     return (
       <div className="col items-center">
