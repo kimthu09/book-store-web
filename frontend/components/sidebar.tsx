@@ -48,7 +48,6 @@ export default function Sidebar() {
                   alt="logo"
                   width={50}
                   height={50}
-                  placeholder='blur'
                 ></Image>
               </div>
             </Link>

@@ -2,8 +2,8 @@
 
 import { auth, signIn, signOut } from "./auth";
 
-export const login = async (prevState, formData) => {
-    const { email, password } = Object.fromEntries(formData);
+export const login = async (props) => {
+    const { email, password } = props;
 
     try {
         await signIn("credentials", { email, password });
