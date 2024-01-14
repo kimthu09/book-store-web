@@ -67,11 +67,6 @@ func CreateInvoice(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		if err := db.Commit().Error; err != nil {
-			db.Rollback()
-			panic(err)
-		}
-
 		shopStore := shopgeneralstore.NewSQLStore(appCtx.GetMainDBConnection())
 
 		seeDetailRepo := invoicerepo.NewSeeInvoiceDetailRepo(invoiceDetailStore, invoiceStore)
@@ -84,6 +79,10 @@ func CreateInvoice(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
+		if err := db.Commit().Error; err != nil {
+			db.Rollback()
+			panic(err)
+		}
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(result))
 	}
 }
