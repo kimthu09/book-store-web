@@ -265,7 +265,7 @@ export function SupplierTable({
       }
     });
 
-    router.push(`/supplier?page=${Number(page)}${minDebt}${maxDebt}${search}`);
+    router.push(`/supplier?page=1${minDebt}${maxDebt}${search}`);
   };
   const [openFilter, setOpenFilter] = useState(false);
 

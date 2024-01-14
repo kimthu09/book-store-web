@@ -393,7 +393,7 @@ export function CustomerTable({
               return (
                 <div
                   key={item.type}
-                  className="rounded-xl flex self-start px-3 py-1 h-fit outline-none text-sm text-primary  bg-orange-100 items-center gap-1 group"
+                  className="rounded-xl flex self-start px-3 py-1 h-fit outline-none text-sm text-primary  bg-blue-100 items-center gap-1 group"
                 >
                   <span>
                     {name?.name}

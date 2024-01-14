@@ -19,7 +19,7 @@ const fetcher = async (url: string) => {
 };
 
 export default function getCustomer(idCustomer: string) {
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading, mutate } = useSWR(
     `${endPoint}/v1/customers/${idCustomer}`,
     fetcher
   );
@@ -28,5 +28,6 @@ export default function getCustomer(idCustomer: string) {
     data: data as Customer,
     isLoading,
     isError: error,
+    mutate,
   };
 }

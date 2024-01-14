@@ -13,7 +13,12 @@ import React from "react";
 import { useSWRConfig } from "swr";
 
 const CustomerDetail = ({ params }: { params: { customerId: string } }) => {
-  const { data, isLoading, isError } = getCustomer(params.customerId);
+  const {
+    data,
+    isLoading,
+    isError,
+    mutate: mutateCustomer,
+  } = getCustomer(params.customerId);
   const { currentUser } = useCurrentUser();
   const { mutate } = useSWRConfig();
   if (isError) return <div>Failed to load</div>;
@@ -29,12 +34,12 @@ const CustomerDetail = ({ params }: { params: { customerId: string } }) => {
             (currentUser &&
               includesRoles({
                 currentUser: currentUser,
-                allowedFeatures: ["CUS_UP_INFO"],
+                allowedFeatures: ["CUSTOMER_UPDATE_INFO"],
               })) ? (
               <EditDialog
                 customer={data}
                 refresh={() => {
-                  mutate(`${endPoint}/customers/${data.id}`);
+                  mutate(`${endPoint}/v1/customers/${data.id}`);
                 }}
               />
             ) : null}
@@ -46,33 +51,21 @@ const CustomerDetail = ({ params }: { params: { customerId: string } }) => {
                 <div className="flex gap-4 lg:flex-row flex-col">
                   <div className="basis-2/3">
                     <Label htmlFor="name">Mã khách hàng</Label>
-                    <Input id="name" readOnly defaultValue={data?.id}></Input>
+                    <Input id="name" readOnly value={data?.id}></Input>
                   </div>
                   <div className="basis-1/3">
                     <Label htmlFor="phone">Điện thoại</Label>
-                    <Input
-                      id="phone"
-                      readOnly
-                      defaultValue={data?.phone}
-                    ></Input>
+                    <Input id="phone" readOnly value={data?.phone}></Input>
                   </div>
                 </div>
                 <div className="flex gap-4 lg:flex-row flex-col">
                   <div className="basis-2/3">
                     <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      readOnly
-                      defaultValue={data?.email}
-                    ></Input>
+                    <Input id="email" readOnly value={data?.email}></Input>
                   </div>
                   <div className="basis-1/3">
                     <Label htmlFor="diem">Điểm tích luỹ</Label>
-                    <Input
-                      id="diem"
-                      readOnly
-                      defaultValue={data?.point}
-                    ></Input>
+                    <Input id="diem" readOnly value={data?.point}></Input>
                   </div>
                 </div>
               </div>

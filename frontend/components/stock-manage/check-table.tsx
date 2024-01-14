@@ -298,7 +298,7 @@ export function CheckTable() {
     data.filters.forEach((item) => {
       filterString = filterString.concat(`&${item.type}=${item.value}`);
     });
-    router.push(`/stockmanage/check?page=${Number(page)}${filterString}`);
+    router.push(`/stockmanage/check?page=1${filterString}`);
   };
   if (isError) return <div>Failed to load</div>;
   else if (isLoading) {
@@ -335,7 +335,7 @@ export function CheckTable() {
                   >
                     <div className="space-y-2">
                       <p className="text-sm text-muted-foreground">
-                        Hiển thị phiếu nhập theo
+                        Hiển thị phiếu kiểm kho theo
                       </p>
                     </div>
                     <div className="flex flex-col gap-4">

@@ -48,6 +48,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import StaffList from "../staff-list";
+import { GiShamrock } from "react-icons/gi";
 
 type FormValues = {
   filters: {
@@ -64,8 +65,15 @@ function idToName(id: string) {
     return "Người tạo";
   } else if (id === "totalPrice") {
     return "Tổng tiền";
+  } else if (id === "customer") {
+    return "Khách hàng";
+  } else if (id === "amountPriceUsePoint") {
+    return "Giảm từ điểm tích luỹ";
+  } else if (id === "amountReceived") {
+    return "Thành tiền";
+  } else {
+    return id;
   }
-  return id;
 }
 export const columns: ColumnDef<Invoice>[] = [
   {
@@ -76,9 +84,113 @@ export const columns: ColumnDef<Invoice>[] = [
     cell: ({ row }) => <div>{row.getValue("id")}</div>,
   },
   {
-    accessorKey: "createdAt",
-    accessorFn: (row) => new Date(row.createdAt).toLocaleDateString("vi-VN"),
+    accessorKey: "customer",
+    header: () => {
+      return <div className="font-semibold">Khách hàng</div>;
+    },
+    cell: ({ row }) => {
+      if (row.original.customer) {
+        return (
+          <div className="leading-6 flex flex-col text-left">
+            <span>{row.original.customer.name}</span>
+            <span className="font-light">{row.original.customer.phone}</span>
+          </div>
+        );
+      } else {
+        return <></>;
+      }
+    },
+  },
+  {
+    accessorKey: "totalPrice",
+    header: ({ column }) => (
+      <div className=" flex justify-end">
+        <Button
+          className="p-1"
+          variant={"ghost"}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <span className="font-semibold">Tổng tiền</span>
 
+          <CaretSortIcon className="ml-1 h-4 w-4" />
+        </Button>
+      </div>
+    ),
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("totalPrice"));
+      const formatted = toVND(amount);
+      return <div className="text-right font-medium">{formatted}</div>;
+    },
+  },
+  {
+    accessorKey: "amountPriceUsePoint",
+    header: ({ column }) => (
+      <div className="flex justify-end">
+        <Button
+          variant={"ghost"}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="p-1"
+        >
+          <CaretSortIcon className="h-4 w-4" />
+          <span className="font-semibold">Dùng điểm</span>
+        </Button>
+      </div>
+    ),
+    cell: ({ row }) => {
+      const amount = row.original.amountPriceUsePoint;
+
+      // Format the amount as a dollar amount
+      const formatted = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(amount);
+
+      return (
+        <div className="text-right font-medium flex flex-col items-end gap-1">
+          -{formatted}
+          <div className="flex items-center gap-1 text-rose-700">
+            -{row.original.pointUse} <GiShamrock className="h-5 w-5" />
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "amountReceived",
+    header: ({ column }) => (
+      <div className="flex justify-end">
+        <Button
+          variant={"ghost"}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="p-1"
+        >
+          <span className="font-semibold">Thành tiền</span>
+
+          <CaretSortIcon className="h-4 w-4" />
+        </Button>
+      </div>
+    ),
+    cell: ({ row }) => {
+      const amount = row.original.amountReceived;
+
+      // Format the amount as a dollar amount
+      const formatted = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(amount);
+
+      return (
+        <div className="text-right font-medium flex flex-col items-end gap-1">
+          {formatted}
+          <div className="flex items-center gap-1 text-green-700">
+            {row.original.pointReceive} <GiShamrock className="h-5 w-5" />
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "createdAt",
     header: ({ column }) => {
       return (
         <div className="flex justify-end">
@@ -98,38 +210,10 @@ export const columns: ColumnDef<Invoice>[] = [
         <span>
           {new Date(row.original.createdAt).toLocaleDateString("vi-VN")}
         </span>
+        <span className="font-light">{row.original.createdBy.name}</span>
       </div>
     ),
     sortingFn: "datetime",
-  },
-  {
-    accessorKey: "createdBy",
-    accessorFn: (row) => row.createdBy.name,
-    header: () => {
-      return <div className="font-semibold">Người tạo</div>;
-    },
-    cell: ({ row }) => <span>{row.getValue("createdBy")}</span>,
-  },
-  {
-    accessorKey: "totalPrice",
-    header: ({ column }) => (
-      <div className=" flex justify-end">
-        <Button
-          className="p-1"
-          variant={"ghost"}
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <span className="font-semibold">Tổng đơn</span>
-
-          <CaretSortIcon className="ml-1 h-4 w-4" />
-        </Button>
-      </div>
-    ),
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("totalPrice"));
-      const formatted = toVND(amount);
-      return <div className="text-right font-medium">{formatted}</div>;
-    },
   },
 ];
 const InvoiceTable = ({
@@ -251,9 +335,7 @@ const InvoiceTable = ({
       }
     });
 
-    router.push(
-      `/invoice?page=${Number(page)}${minPrice}${maxPrice}${search}${createdBy}`
-    );
+    router.push(`/invoice?page=1${minPrice}${maxPrice}${search}${createdBy}`);
   };
   const [openFilter, setOpenFilter] = useState(false);
 
@@ -286,7 +368,7 @@ const InvoiceTable = ({
                 >
                   <div className="space-y-2">
                     <p className="text-sm text-muted-foreground">
-                      Hiển thị nhà cung cấp theo
+                      Hiển thị hóa đơn theo
                     </p>
                   </div>
                   <div className="flex flex-col gap-4">

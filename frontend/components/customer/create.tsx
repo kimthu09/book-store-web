@@ -77,7 +77,7 @@ const CreateDialog = ({
     (currentUser &&
       !includesRoles({
         currentUser: currentUser,
-        allowedFeatures: ["CUS_CREATE"],
+        allowedFeatures: ["CUSTOMER_CREATE"],
       }))
   ) {
     return null;

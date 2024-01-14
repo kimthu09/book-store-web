@@ -41,7 +41,12 @@ const SupplierDetail = ({ params }: { params: { supplierId: string } }) => {
     control,
     formState: { errors },
   } = form;
-  const { data, isLoading, isError } = getSupplier(params.supplierId);
+  const {
+    data,
+    isLoading,
+    isError,
+    mutate: mutateSupplier,
+  } = getSupplier(params.supplierId);
 
   const { mutate } = useSWRConfig();
 
@@ -66,6 +71,7 @@ const SupplierDetail = ({ params }: { params: { supplierId: string } }) => {
         description: "Lập phiếu chi thành công",
       });
       mutate(`${endPoint}/v1/suppliers/${data.id}/debts?page=${pageIndex}`);
+      mutateSupplier();
     }
     setOpenDialog(false);
   };
