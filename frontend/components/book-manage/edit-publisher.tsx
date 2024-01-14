@@ -16,6 +16,7 @@ import { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { Publisher } from "@/types";
 import updatePubliser from "@/lib/book/updatePublisher";
+import { useLoading } from "@/hooks/loading-context";
 const required = z.string().min(1, "Không để trống trường này");
 
 const SupplierSchema = z.object({
@@ -39,6 +40,7 @@ const EditPublisher = ({
   } = useForm<z.infer<typeof SupplierSchema>>({
     resolver: zodResolver(SupplierSchema),
   });
+  const { showLoading, hideLoading } = useLoading();
   const onSubmit: SubmitHandler<z.infer<typeof SupplierSchema>> = async (
     data
   ) => {
@@ -48,8 +50,9 @@ const EditPublisher = ({
       idPub: publisher.id,
       name: data.name,
     });
+    showLoading();
     const responseData = await response;
-
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",

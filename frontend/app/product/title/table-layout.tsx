@@ -8,7 +8,6 @@ import { useCurrentUser } from "@/hooks/use-user";
 import { getUser } from "@/lib/auth/action";
 import { includesRoles } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useSWRConfig } from "swr";
 
 export const getFilterString = () => {
@@ -51,7 +50,6 @@ const TableLayout = () => {
 
   const { filters, stringToFilter } = getFilterString();
   const page = searchParams.get("page") ?? "1";
-
   const handleTitleAdded = async (titleId: string) => {
     mutate(
       `${endPoint}/v1/booktitles?page=${page ?? 1}&limit=10${

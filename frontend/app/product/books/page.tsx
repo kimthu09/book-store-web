@@ -3,9 +3,9 @@ import Loading from "@/components/loading";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React, { Suspense } from "react";
-import { AiOutlinePlus } from "react-icons/ai";
 import { Metadata } from "next";
 import { withAuth } from "@/lib/role/withAuth";
+import { FaPlus } from "react-icons/fa";
 export const metadata: Metadata = {
   title: "Sách",
 };
@@ -22,7 +22,7 @@ function BookManagement({
           <Link href="/product/books/add">
             <Button className="p-2">
               <div className="flex flex-wrap gap-1 items-center">
-                <AiOutlinePlus />
+                <FaPlus />
                 Thêm sách mới
               </div>
             </Button>

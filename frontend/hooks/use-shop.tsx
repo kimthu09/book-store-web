@@ -13,7 +13,6 @@ export const useShop = () => {
       try {
         const user = await getShopGeneral();
         setShop(user.data);
-        console.log("hi..." + JSON.stringify(user.data));
       } catch (error) {
         console.error("Error fetching user data:", error);
       } finally {

@@ -17,6 +17,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { FaPlus } from "react-icons/fa";
 import createAuthor from "@/lib/book/createAuthor";
+import { useLoading } from "@/hooks/loading-context";
 const required = z.string().min(1, "Không để trống trường này");
 
 const SupplierSchema = z.object({
@@ -38,6 +39,7 @@ const CreateAuthor = ({
   } = useForm<z.infer<typeof SupplierSchema>>({
     resolver: zodResolver(SupplierSchema),
   });
+  const { showLoading, hideLoading } = useLoading();
   const router = useRouter();
   const onSubmit: SubmitHandler<z.infer<typeof SupplierSchema>> = async (
     data
@@ -45,8 +47,9 @@ const CreateAuthor = ({
     setOpen(false);
 
     const response: Promise<any> = createAuthor(data);
+    showLoading();
     const responseData = await response;
-
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",

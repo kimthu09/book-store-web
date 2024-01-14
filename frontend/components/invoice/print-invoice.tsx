@@ -26,7 +26,7 @@ const PrintInvoice = ({
   return (
     <Card>
       <CardContent className="flex flex-col p-0 gap-4 relative">
-        <button
+        <div
           className="whitespace-nowrap text-primary-foreground shadow py-2 inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-green-500 px-3 text-sm font-medium   disabled:pointer-events-none disabled:opacity-50 hover:bg-green-500/90 boder-none"
           onClick={() => {
             handlePrint();
@@ -34,7 +34,7 @@ const PrintInvoice = ({
           }}
         >
           In hóa đơn
-        </button>
+        </div>
         <div ref={componentRef} className="printScreen">
           <div className="p-6">
             <div className="flex flex-col gap-2 items-center mb-6">

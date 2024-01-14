@@ -19,13 +19,19 @@ import { useRouter } from "next/navigation";
 import { phoneRegex, required } from "@/constants";
 import { useCurrentUser } from "@/hooks/use-user";
 import { includesRoles } from "@/lib/utils";
+import { useLoading } from "@/hooks/loading-context";
 
 const SupplierSchema = z.object({
   id: z.string().max(12, "Tối đa 12 ký tự"),
   name: required,
   email: z.string().email("Email không hợp lệ"),
   phone: z.string().regex(phoneRegex, "Số điện thoại không hợp lệ"),
-  debt: z.string(),
+  debt: z.coerce
+    .number({ invalid_type_error: "Nợ ban đầu phải là một số" })
+    .gte(0, "Nợ ban đầu phải lớn hơn hoặc bằng 0")
+    .refine((value) => Number.isInteger(value), {
+      message: "Nợ ban đầu phải là số nguyên",
+    }),
 });
 
 const CreateDialog = () => {
@@ -37,16 +43,24 @@ const CreateDialog = () => {
     formState: { errors },
   } = useForm<z.infer<typeof SupplierSchema>>({
     resolver: zodResolver(SupplierSchema),
+    defaultValues: {
+      id: "",
+      name: "",
+      phone: "",
+      debt: 0,
+    },
   });
   const router = useRouter();
+  const { showLoading, hideLoading } = useLoading();
   const onSubmit: SubmitHandler<z.infer<typeof SupplierSchema>> = async (
     data
   ) => {
     setOpen(false);
 
     const response: Promise<any> = createSupplier(data);
+    showLoading();
     const responseData = await response;
-
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",
@@ -79,7 +93,12 @@ const CreateDialog = () => {
         open={open}
         onOpenChange={(open) => {
           if (open) {
-            reset();
+            reset({
+              id: "",
+              name: "",
+              phone: "",
+              debt: 0,
+            });
           }
           setOpen(open);
         }}
@@ -134,11 +153,7 @@ const CreateDialog = () => {
                 </div>
                 <div className="flex-1">
                   <Label htmlFor="noBanDau">Công nợ</Label>
-                  <Input
-                    id="noBanDau"
-                    type="number"
-                    {...register("debt")}
-                  ></Input>
+                  <Input id="noBanDau" {...register("debt")}></Input>
                   {errors.debt && (
                     <span className="error___message">
                       {errors.debt.message}

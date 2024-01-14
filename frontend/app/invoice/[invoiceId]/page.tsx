@@ -30,8 +30,6 @@ const InvoiceDetails = async ({
     if (responseData.hasOwnProperty("errorKey")) {
       return <RecordNotFound />;
     } else {
-      // console.log(responseData.details);
-
       return (
         <div className="col items-center">
           <div className="col xl:w-4/5 w-full xl:px-0 md:px-8 px-0">

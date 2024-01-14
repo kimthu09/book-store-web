@@ -10,11 +10,8 @@ import { endPoint, required } from "@/constants";
 import { Button } from "@/components/ui/button";
 import { LuCheck } from "react-icons/lu";
 import { FiTrash2 } from "react-icons/fi";
-import SupplierList from "@/components/supplier-list";
 import { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
-import createImportNote from "@/lib/import/createImportNote";
-import { Switch } from "@/components/ui/switch";
 import { useSWRConfig } from "swr";
 import CheckInsert from "@/components/stock-manage/check-insert";
 import createCheckNote from "@/lib/check/createCheckNote";
@@ -24,6 +21,7 @@ import { includesRoles } from "@/lib/utils";
 import NoRole from "@/components/no-role";
 import ImportSheet from "@/components/book-manage/import-sheet";
 import getAllBookForSale from "@/lib/book/getAllBookForSale";
+import { useLoading } from "@/hooks/loading-context";
 
 export const FormSchema = z.object({
   id: z.string().max(12, "Tối đa 12 ký tự"),
@@ -68,6 +66,8 @@ const AddNote = () => {
     formState: { errors, isDirty },
   } = form;
   const { mutate: mutateAllBook } = useSWRConfig();
+  const { showLoading, hideLoading } = useLoading();
+
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     const response: Promise<any> = createCheckNote({
       id: data.id,
@@ -78,7 +78,9 @@ const AddNote = () => {
         };
       }),
     });
+    showLoading();
     const responseData = await response;
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",
@@ -130,11 +132,9 @@ const AddNote = () => {
             }
             if (rowIndex > 2) {
               const idBook = row.getCell(1).value.toString();
-              console.log(idBook);
               const oldQty = books?.data.find(
                 (ingre) => ingre.id === idBook
               )?.quantity;
-              console.log(oldQty);
 
               if (oldQty) {
                 const detail = {
@@ -155,7 +155,6 @@ const AddNote = () => {
               }
             }
           });
-          console.log(importNote);
           reset({
             id: importNote.id,
             details: importNote.details.filter(
@@ -219,7 +218,6 @@ const AddNote = () => {
               <div className="flex md:justify-end justify-stretch gap-2">
                 <Button
                   className="px-4 bg-white md:flex-none flex-1"
-                  disabled={!isDirty}
                   variant={"outline"}
                   type="button"
                   onClick={() => {

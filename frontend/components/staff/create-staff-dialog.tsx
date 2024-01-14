@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { imageUpload } from "@/lib/staff/uploadImage";
 import { useCurrentUser } from "@/hooks/use-user";
 import { isAdmin } from "@/lib/utils";
+import { useLoading } from "@/hooks/loading-context";
 
 const StaffSchema = z.object({
   name: required,
@@ -52,15 +53,18 @@ const CreateStaffDialog = () => {
       img: "/avatar.png",
     },
   });
+  const { showLoading, hideLoading } = useLoading();
   const router = useRouter();
   const onSubmit: SubmitHandler<z.infer<typeof StaffSchema>> = async (data) => {
     setOpen(false);
-
+    if (!image) {
+      return;
+    }
     let formData = new FormData();
 
     formData.append("file", image);
     formData.append("folderName", "avatars");
-
+    showLoading();
     const imgRes = await imageUpload(formData);
     if (imgRes.hasOwnProperty("errorKey")) {
       toast({
@@ -74,7 +78,7 @@ const CreateStaffDialog = () => {
     data.img = imgRes.data;
     const response: Promise<any> = createStaff({ staff: data });
     const responseData = await response;
-
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",

@@ -29,8 +29,6 @@ import Paging, { PagingProps } from "../paging";
 import getSupplierImportNote from "@/lib/supplier/getSupplierImportNote";
 import Loading from "../loading";
 import { GiShamrock } from "react-icons/gi";
-// import ExportDialog from "./export-dialog";
-// import { ExportImportNote } from "./export-import-note";
 import { toast } from "../ui/use-toast";
 import getCustomerInvoice from "@/lib/customer/getCustomerInvoice";
 import { Label } from "../ui/label";

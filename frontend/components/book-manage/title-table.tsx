@@ -15,7 +15,6 @@ import {
 } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table,
   TableBody,
@@ -168,7 +167,7 @@ export function TitleTable() {
     data.filters.forEach((item) => {
       filterString = filterString.concat(`&${item.type}=${item.value}`);
     });
-    router.push(`/product/title?page=${Number(page)}${filterString}`);
+    router.push(`/product/title?page=1${filterString}`);
   };
   const { currentUser } = useCurrentUser();
 

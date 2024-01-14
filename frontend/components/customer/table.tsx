@@ -104,7 +104,7 @@ export const columns: ColumnDef<Customer>[] = [
       return <div className="font-semibold">Email</div>;
     },
     cell: ({ row }) => (
-      <div className="lg:max-w-[16rem] max-w-[4rem] truncate">
+      <div className="lg:max-w-[24rem] max-w-[8rem] truncate">
         {row.getValue("email")}
       </div>
     ),
@@ -203,23 +203,6 @@ export function CustomerTable({
   });
 
   const [exportOption, setExportOption] = useState("all");
-  const handleExport = () => {
-    //TODO
-    // if (exportOption === "all") {
-    //   ExportSupplierList(data, "Suppliers.xlsx");
-    // } else if (table.getFilteredSelectedRowModel().rows.length < 1) {
-    //   toast({
-    //     variant: "destructive",
-    //     title: "Có lỗi",
-    //     description: "Không có nhà cung cấp nào",
-    //   });
-    // } else {
-    //   const values = table
-    //     .getFilteredSelectedRowModel()
-    //     .rows.map((row) => row.original);
-    //   ExportSupplierList(values, "Suppliers.xlsx");
-    // }
-  };
 
   const [latestFilter, setLatestFilter] = useState("");
   const filterValues = [
@@ -277,10 +260,6 @@ export function CustomerTable({
   return (
     <div className="w-full">
       <div className="flex items-start py-4 gap-2">
-        {/* <DialogSupplierExport
-          handleExport={handleExport}
-          setExportOption={setExportOption}
-        /> */}
         <div className="flex-1">
           <div className="flex gap-2">
             <Popover
@@ -435,7 +414,7 @@ export function CustomerTable({
         </DropdownMenu>
       </div>
       <div className="rounded-md border overflow-x-auto min-w-full max-w-[50vw]">
-        <Table>
+        <Table className="w-max min-w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

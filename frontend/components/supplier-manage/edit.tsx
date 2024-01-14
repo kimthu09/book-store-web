@@ -16,6 +16,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { Supplier } from "@/types";
 import updateSupplier from "@/lib/supplier/updateSupplier";
+import { useLoading } from "@/hooks/loading-context";
 const phoneRegex = new RegExp(/(0[3|5|7|8|9])+([0-9]{8})\b/g);
 const required = z.string().min(1, "Không để trống trường này");
 
@@ -46,6 +47,7 @@ const EditDialog = ({
     },
   });
   const router = useRouter();
+  const { showLoading, hideLoading } = useLoading();
   const onSubmit: SubmitHandler<z.infer<typeof SupplierSchema>> = async (
     data
   ) => {
@@ -57,8 +59,9 @@ const EditDialog = ({
       email: data.email,
       idSupplier: supplier.id,
     });
+    showLoading();
     const responseData = await response;
-
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",

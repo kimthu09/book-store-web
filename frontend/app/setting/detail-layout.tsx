@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
 import { phoneRegex, required } from "@/constants";
+import { useLoading } from "@/hooks/loading-context";
 import { useShop } from "@/hooks/use-shop";
 import { useCurrentUser } from "@/hooks/use-user";
 import updateShop from "@/lib/shop-general/updateShop";
@@ -71,15 +72,16 @@ const DetailLayout = () => {
       });
     }
   };
+  const { showLoading, hideLoading } = useLoading();
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     setReadOnly(true);
-    console.log(data);
     if (!data.email) {
       data.email = "";
     }
     const response: Promise<any> = updateShop(data);
+    showLoading();
     const responseData = await response;
-    console.log(responseData);
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",

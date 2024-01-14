@@ -16,6 +16,7 @@ import { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import createPublisher from "@/lib/book/createPublisher";
+import { useLoading } from "@/hooks/loading-context";
 const required = z.string().min(1, "Không để trống trường này");
 
 const FormSchema = z.object({
@@ -38,12 +39,14 @@ const CreatePublisher = ({
     resolver: zodResolver(FormSchema),
   });
   const router = useRouter();
+  const { showLoading, hideLoading } = useLoading();
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
     setOpen(false);
 
     const response: Promise<any> = createPublisher(data);
+    showLoading();
     const responseData = await response;
-
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",

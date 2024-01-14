@@ -60,6 +60,7 @@ import StatusNoteList from "../status-note-list";
 import getAllCheckNote from "@/lib/check/getAllImport";
 import { ExportCheckNote } from "./excel-check-list";
 import getAllCheckNoteForExcel from "@/lib/import/getAllCheckNoteForExcel";
+import { useLoading } from "@/hooks/loading-context";
 
 export const columns: ColumnDef<CheckNote>[] = [
   {
@@ -261,6 +262,7 @@ export function CheckTable() {
       rowSelection,
     },
   });
+  const { showLoading, hideLoading } = useLoading();
   const [exportOption, setExportOption] = useState("all");
   const handleExport = async () => {
     if (exportOption === "all") {
@@ -268,7 +270,9 @@ export function CheckTable() {
         data: CheckNote[];
         paging: PagingProps;
       }> = getAllCheckNoteForExcel({ page: "1", limit: 10000 });
+      showLoading();
       const notesToExport = await importNoteData;
+      hideLoading();
       if (notesToExport.data.length < 1) {
         toast({
           variant: "destructive",

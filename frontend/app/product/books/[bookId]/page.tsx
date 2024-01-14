@@ -36,6 +36,7 @@ import ChangeImage from "@/components/staff/change-image";
 import updateBook from "@/lib/book/updateBook";
 import { BookTitle } from "@/types";
 import BookTitleSelectEdit from "@/components/book-manage/book-title-select-edit";
+import { useLoading } from "@/hooks/loading-context";
 
 const FormSchema = z.object({
   bookTitleId: z.string().min(1, "Vui lòng chọn một đầu sách"),
@@ -97,7 +98,9 @@ const EditBook = ({ params }: { params: { bookId: string } }) => {
     setValue("publisherId", idPublisher, { shouldDirty: true });
     trigger("publisherId");
   };
+  const { showLoading, hideLoading } = useLoading();
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
+    showLoading();
     if (image) {
       let formData = new FormData();
 
@@ -118,6 +121,7 @@ const EditBook = ({ params }: { params: { bookId: string } }) => {
     }
     const response: Promise<any> = updateBook(data, params.bookId);
     const responseData = await response;
+    hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
       toast({
         variant: "destructive",
@@ -131,6 +135,7 @@ const EditBook = ({ params }: { params: { bookId: string } }) => {
         description: "Chỉnh sửa sách thành công",
       });
       mutateBook();
+      setReadOnly(true);
       router.refresh();
     }
   };
@@ -288,6 +293,7 @@ const EditBook = ({ params }: { params: { bookId: string } }) => {
                       )}
                     </div>
                     <Input
+                      disabled={readOnly}
                       className="w-32"
                       id="img"
                       type="file"
