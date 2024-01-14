@@ -144,10 +144,10 @@ export const columns: ColumnDef<SupplierDebt>[] = [
       return (
         <div className="flex justify-center min-w-0">
           <div
-            className={`leading-5 rounded-full text-center px-2 w-[80%] max-w-[5rem] truncate whitespace-nowrap border ${
+            className={`leading-5 rounded-full text-center px-2 w-[80%] max-w-[5rem] truncate whitespace-nowrap p-1 ${
               status === "Pay"
-                ? "bg-green-200 border-green-500 text-green-600"
-                : "bg-blue-200 border-blue-500 text-blue-600"
+                ? "bg-green-100 text-green-700"
+                : "bg-blue-200  text-blue-600"
             }`}
           >
             {status === "Pay" ? "Trả nợ" : "Nhập"}
@@ -244,8 +244,8 @@ export function DebtTable({
           isImport={false}
         />
         <div className="flex items-center gap-2"></div>
-        <div className="rounded-md border">
-          <Table>
+        <div className="rounded-md border overflow-x-auto flex-1 min-w-full max-w-[20vw]">
+          <Table className="min-w-full w-max">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>

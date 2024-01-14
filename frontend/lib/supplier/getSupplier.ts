@@ -19,7 +19,7 @@ const fetcher = async (url: string) => {
 };
 
 export default function getSupplier(idSupplier: string) {
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading, mutate } = useSWR(
     `${endPoint}/v1/suppliers/${idSupplier}`,
     fetcher
   );
@@ -28,5 +28,6 @@ export default function getSupplier(idSupplier: string) {
     data: data as Supplier,
     isLoading,
     isError: error,
+    mutate,
   };
 }

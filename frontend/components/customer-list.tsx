@@ -66,7 +66,7 @@ const CustomerList = ({
                 // onValueChange={(str) => setNewCategory(str)}
               />
               <CommandEmpty className="py-2 px-6">
-                <div className="text-sm">Không tìm thấy nhà cung cấp</div>
+                <div className="text-sm">Không tìm thấy</div>
               </CommandEmpty>
               <CommandGroup className="max-h-48 overflow-y-auto">
                 {suppliers.map((item: any) => (
@@ -115,7 +115,7 @@ const CustomerList = ({
           currentUser &&
           includesRoles({
             currentUser: currentUser,
-            allowedFeatures: ["CUS_CREATE"],
+            allowedFeatures: ["CUSTOMER_CREATE"],
           }) ? (
             <CreateDialog handleCustomerAdded={handleCustomerAdded}>
               <Button type="button" size={"icon"} className="px-3">

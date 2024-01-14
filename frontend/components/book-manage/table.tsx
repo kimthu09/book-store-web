@@ -111,7 +111,6 @@ const columns: ColumnDef<Book>[] = [
           className="object-contain h-14 w-14 min-w-[3rem]"
           width={56}
           height={56}
-          placeholder='blur'
         ></Image>
       </div>
     ),
@@ -373,7 +372,7 @@ export function BookTable({
       filterString = filterString.concat(`&${item.type}=${item.value}`);
     });
 
-    router.push(`/product/books?page=${Number(page)}${filterString}`);
+    router.push(`/product/books?page=1${filterString}`);
   };
   const [openFilter, setOpenFilter] = useState(false);
   const [statusToChange, setStatusToChange] = useState(false);
@@ -483,10 +482,9 @@ export function BookTable({
                                               (cate) => cate === idCate
                                             );
                                           if (selectedIndex > -1) {
+                                            checkedIds.splice(selectedIndex, 1);
                                             field.onChange(
-                                              checkedIds
-                                                .splice(selectedIndex, 1)
-                                                .join("|")
+                                              checkedIds.join("|")
                                             );
                                           } else {
                                             checkedIds.push(idCate);
@@ -496,11 +494,8 @@ export function BookTable({
                                           }
                                         }}
                                         onRemove={(index) => {
-                                          field.onChange(
-                                            checkedIds
-                                              .splice(index, 1)
-                                              .join("|")
-                                          );
+                                          checkedIds.splice(index, 1);
+                                          field.onChange(checkedIds.join("|"));
                                         }}
                                       />
                                     );
@@ -575,10 +570,9 @@ export function BookTable({
                                               (author) => author === id
                                             );
                                           if (selectedIndex > -1) {
+                                            checkedIds.splice(selectedIndex, 1);
                                             field.onChange(
-                                              checkedIds
-                                                .splice(selectedIndex, 1)
-                                                .join("|")
+                                              checkedIds.join("|")
                                             );
                                           } else {
                                             checkedIds.push(id);
@@ -588,11 +582,8 @@ export function BookTable({
                                           }
                                         }}
                                         onRemove={(index) => {
-                                          field.onChange(
-                                            checkedIds
-                                              .splice(index, 1)
-                                              .join("|")
-                                          );
+                                          checkedIds.splice(index, 1);
+                                          field.onChange(checkedIds.join("|"));
                                         }}
                                       />
                                     );

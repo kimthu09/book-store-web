@@ -198,7 +198,7 @@ const BillTab = ({
                         }}
                         canRemove
                         handleCustomerAdded={(customerId) => {
-                          mutate(`${endPoint}/customers/all`);
+                          mutate(`${endPoint}/v1/customers/all`);
                           field.onChange({
                             customerId: customerId,
                             customerPoint: 0,

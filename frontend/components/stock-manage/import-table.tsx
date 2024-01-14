@@ -391,7 +391,7 @@ export function ImportTable() {
     data.filters.forEach((item) => {
       filterString = filterString.concat(`&${item.type}=${item.value}`);
     });
-    router.push(`/stockmanage/import?page=${Number(page)}${filterString}`);
+    router.push(`/stockmanage/import?page=1${filterString}`);
   };
   if (isError) return <div>Failed to load</div>;
   else if (isLoading) {

@@ -72,8 +72,8 @@ const EditDialog = ({
         title: "Thành công",
         description: "Chỉnh sửa thành công",
       });
-      router.refresh();
       refresh();
+      router.refresh();
     }
   };
 
