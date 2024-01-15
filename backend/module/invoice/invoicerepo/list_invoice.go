@@ -32,7 +32,7 @@ func (repo *listInvoiceRepo) ListInvoice(
 		filter,
 		[]string{"Invoice.id"},
 		paging,
-		"CreatedByUser")
+		"CreatedByUser", "Customer")
 
 	if err != nil {
 		return nil, err
