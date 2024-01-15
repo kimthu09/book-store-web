@@ -20,6 +20,7 @@ import { FaPlus } from "react-icons/fa";
 import CreateTitleDialog from "./create-title-dialog";
 import { useCurrentUser } from "@/hooks/use-user";
 import getAllTitleList from "@/lib/book/getAllTitleList";
+import ListSkeleton from "../skeleton/list_skeleton";
 
 const BookTitleSelect = ({ handleTitleSet }: TitleListProps) => {
   const [open, setOpen] = useState(false);
@@ -38,7 +39,7 @@ const BookTitleSelect = ({ handleTitleSet }: TitleListProps) => {
   const { currentUser } = useCurrentUser();
   if (isError) return <div>Failed to load</div>;
   if (!titles || isLoading) {
-    <Loading />;
+    <ListSkeleton numberRow={5} />;
   } else
     return (
       <div className="flex flex-col gap-3">
