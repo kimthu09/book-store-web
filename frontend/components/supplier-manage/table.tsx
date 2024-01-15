@@ -430,7 +430,7 @@ export function SupplierTable({
         </DropdownMenu>
       </div>
       <div className="rounded-md border overflow-x-auto min-w-full max-w-[50vw]">
-        <Table>
+        <Table className="min-w-full w-max">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

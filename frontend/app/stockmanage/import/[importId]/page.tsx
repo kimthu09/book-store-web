@@ -57,7 +57,7 @@ const ImportDetail = ({ params }: { params: { importId: string } }) => {
     });
   if (isError) return <div>Failed to load</div>;
   else if (!currentUser || isLoading) {
-    return <ImportNoteDetailSkeleton/>;
+    return <ImportNoteDetailSkeleton />;
   } else if (
     currentUser &&
     !includesRoles({
@@ -75,7 +75,7 @@ const ImportDetail = ({ params }: { params: { importId: string } }) => {
               <span className="font-light">Mã phiếu nhập</span>
               <span>{data.id}</span>
             </div>
-            <div className="flex gap-2 flex-nowrap">
+            <div className="flex gap-2 flex-wrap justify-end">
               <Button
                 variant={"outline"}
                 className="p-2"

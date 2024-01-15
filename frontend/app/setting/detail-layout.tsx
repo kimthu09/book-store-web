@@ -1,6 +1,5 @@
 "use client";
 import ConfirmDialog from "@/components/confirm-dialog";
-import Loading from "@/components/loading";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -254,6 +253,20 @@ const DetailLayout = () => {
                       </span>
                     )}
                   </div>
+                </div>
+                <div className="basis-2/3">
+                  <Label htmlFor="add">Địa chỉ</Label>
+                  <Input
+                    id="add"
+                    readOnly={readOnly}
+                    defaultValue={shop?.address ?? ""}
+                    {...register("address")}
+                  ></Input>
+                  {errors.address && (
+                    <span className="error___message">
+                      {errors.address.message}
+                    </span>
+                  )}
                 </div>
                 <div className="flex gap-4 lg:flex-row flex-col">
                   <div className="basis-1/2">
