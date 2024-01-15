@@ -123,6 +123,7 @@ const SaleScreen = () => {
         details: [],
       });
       mutate(`${endPoint}/v1/customers/all`);
+      mutate(`${endPoint}/v1/books/all`);
       router.refresh();
     }
   };

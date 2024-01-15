@@ -125,6 +125,8 @@ const CreateStaffDialog = () => {
         });
         console.log("file không hợp lệ");
       }
+    } else {
+      setImage(null);
     }
   };
 

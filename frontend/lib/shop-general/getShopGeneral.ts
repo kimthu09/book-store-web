@@ -3,7 +3,6 @@ import { getApiKey } from "../auth/action";
 
 export default async function getShopGeneral() {
   const url = `${endPoint}/v1/shop`;
-  console.log(url);
   const token = await getApiKey();
   const res = await fetch(url, {
     headers: {

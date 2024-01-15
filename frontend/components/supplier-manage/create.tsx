@@ -34,7 +34,13 @@ const SupplierSchema = z.object({
     }),
 });
 
-const CreateDialog = () => {
+const CreateDialog = ({
+  children,
+  handleSupplierAdded,
+}: {
+  children: React.ReactNode;
+  handleSupplierAdded?: (supplierId: string) => void;
+}) => {
   const { currentUser } = useCurrentUser();
   const {
     register,
@@ -55,8 +61,6 @@ const CreateDialog = () => {
   const onSubmit: SubmitHandler<z.infer<typeof SupplierSchema>> = async (
     data
   ) => {
-    setOpen(false);
-
     const response: Promise<any> = createSupplier(data);
     showLoading();
     const responseData = await response;
@@ -73,6 +77,10 @@ const CreateDialog = () => {
         title: "Thành công",
         description: "Thêm nhà cung cấp thành công",
       });
+      setOpen(false);
+      if (handleSupplierAdded) {
+        handleSupplierAdded(responseData.data);
+      }
       router.refresh();
     }
   };
@@ -103,16 +111,12 @@ const CreateDialog = () => {
           setOpen(open);
         }}
       >
-        <DialogTrigger asChild>
-          <Button className="lg:px-4 px-2 whitespace-nowrap">
-            Thêm nhà cung cấp
-          </Button>
-        </DialogTrigger>
+        <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent className="xl:max-w-[720px] max-w-[472px] p-0 bg-white">
           <DialogHeader>
             <DialogTitle className="p-6 pb-0">Thêm nhà cung cấp</DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form>
             <div className="p-6 flex flex-col gap-4 border-y-[1px]">
               <div>
                 <Label htmlFor="idNcc">Mã nhà cung cấp</Label>
@@ -172,7 +176,9 @@ const CreateDialog = () => {
                   Huỷ
                 </Button>
 
-                <Button type="submit">Thêm</Button>
+                <Button type="button" onClick={() => handleSubmit(onSubmit)()}>
+                  Thêm
+                </Button>
               </div>
             </div>
           </form>

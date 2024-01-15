@@ -255,7 +255,11 @@ const BillTab = ({
                           field.value.customerId !== "" &&
                           shop && (
                             <Label>
-                              Dùng {field.value.customerPoint} điểm (giảm{" "}
+                              Dùng{" "}
+                              {field.value.customerPoint.toLocaleString(
+                                "vi-VN"
+                              )}{" "}
+                              điểm (giảm{" "}
                               {toVND(
                                 field.value.customerPoint *
                                   (shop?.usePointPercent ?? 0)

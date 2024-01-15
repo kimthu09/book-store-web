@@ -56,10 +56,12 @@ export const columns: ColumnDef<InvoiceDetailProps>[] = [
   {
     accessorKey: "name",
     header: () => {
-      return <span className="font-semibold">Tên sách</span>;
+      return <span className="font-semibold ">Tên sách</span>;
     },
     cell: ({ row }) => (
-      <div className="leading-6 flex flex-col">{row.original.book.name}</div>
+      <div className="leading-6 flex flex-col 2xl:max-w-[20rem] xl:max-w-[14rem] max-w-[8rem]">
+        {row.original.book.name}
+      </div>
     ),
     size: 4,
   },
@@ -67,7 +69,7 @@ export const columns: ColumnDef<InvoiceDetailProps>[] = [
     accessorKey: "amountImport",
     header: ({ column }) => (
       <div className="flex justify-end whitespace-normal">
-        <span className="font-semibold">Số lượng</span>
+        <span className="font-semibold">SL</span>
       </div>
     ),
     cell: ({ row }) => {
@@ -145,8 +147,8 @@ export function InvoiceDetailTable({
     },
   });
   return (
-    <div className="rounded-md border w-full">
-      <Table>
+    <div className="rounded-md border overflow-x-auto min-w-full max-w-[40vw]">
+      <Table className="min-w-full w-max">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
