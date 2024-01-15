@@ -45,6 +45,8 @@ const ChangeImage = ({
         });
         console.log("file không hợp lệ");
       }
+    } else {
+      setImage(null);
     }
   };
   const [open, setOpen] = useState(false);

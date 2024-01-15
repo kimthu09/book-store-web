@@ -66,15 +66,12 @@ const CreateDialog = ({
     const responseData = await response;
     hideLoading();
     if (responseData.hasOwnProperty("errorKey")) {
-      console.log("hi");
       toast({
         variant: "destructive",
         title: "Có lỗi",
         description: responseData.message,
       });
     } else {
-      console.log("there");
-
       toast({
         variant: "success",
         title: "Thành công",

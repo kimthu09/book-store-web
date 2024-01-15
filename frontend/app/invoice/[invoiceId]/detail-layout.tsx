@@ -43,31 +43,59 @@ const DetailLayout = (responseData: any) => {
                 width={36}
                 height={36}
               ></Image>
-              <h1 className="text-3xl uppercase font-medium">{shop.name}</h1>
+              <h1 className="xl:text-3xl text-2xl uppercase font-medium">
+                {shop.name}
+              </h1>
             </div>
             {shop.address && shop.address !== "" ? (
-              <span className="text-lg uppercase font-medium">
+              <span className="text-base uppercase font-medium printScreen">
                 Địa chỉ: {shop.address}
               </span>
             ) : null}
             {shop.phone && shop.phone !== "" ? (
-              <span className="text-base font-medium">
+              <span className="text-base font-medium printScreen">
                 Số điện thoại: {shop.phone}
               </span>
             ) : null}
             {shop.wifiPass && shop.wifiPass !== "" ? (
-              <span className="text-base font-light">
+              <span className="text-base font-light printScreen">
                 Wifi: {shop.wifiPass}
               </span>
             ) : null}
           </div>
 
           <div className="flex flex-row justify-between p-4 mb-6 border rounded-md">
-            <div className="flex flex-col items-end gap-2 text-sm">
+            <div className="flex flex-col items-stretch gap-2 text-sm">
               <div className="flex gap-2">
-                <span className="font-light">Mã hóa đơn:</span>
+                <span className="font-light w-[6rem]">Mã hóa đơn:</span>
                 <span className="font-semibold">{responseData.invoice.id}</span>
               </div>
+              {responseData.invoice.customer && (
+                <>
+                  <div className="flex gap-2">
+                    <span className="font-light w-[6rem] whitespace-nowrap">
+                      Khách hàng:
+                    </span>
+                    <div className="font-semibold flex flex-col">
+                      {responseData.invoice.customer.name}
+                      <span className="font-normal">
+                        ({responseData.invoice.customer.phone})
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <span className="font-light w-[6rem] whitespace-nowrap">
+                      Điểm:
+                    </span>
+                    <div className="font-semibold flex gap-2 text-green-700">
+                      +{" "}
+                      {responseData.invoice.pointReceive.toLocaleString(
+                        "vi-VN"
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="flex flex-col items-end gap-2 text-sm">
@@ -90,19 +118,21 @@ const DetailLayout = (responseData: any) => {
           <div className="flex flex-col gap-4">
             <InvoiceDetailTable details={details} />
             <div className="flex flex-col gap-2">
-              <div className="grid grid-cols-2  space-x-2 font-semibold">
-                <span className="min-w-[6rem]">Tổng tiền: </span>
-                <span className="text-right">
-                  {toVND(responseData.invoice.totalPrice)}
-                </span>
-              </div>
               {responseData.invoice.amountPriceUsePoint !== 0 ? (
-                <div className="grid grid-cols-2  space-x-2 font-semibold">
-                  <span className="min-w-[6rem]">Giảm: </span>
-                  <span className="text-right">
-                    - {toVND(responseData.invoice.amountPriceUsePoint)}
-                  </span>
-                </div>
+                <>
+                  <div className="grid grid-cols-2  space-x-2 font-semibold">
+                    <span className="min-w-[6rem]">Tổng tiền: </span>
+                    <span className="text-right">
+                      {toVND(responseData.invoice.totalPrice)}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2  space-x-2 font-semibold">
+                    <span className="min-w-[6rem]">Giảm: </span>
+                    <span className="text-right">
+                      - {toVND(responseData.invoice.amountPriceUsePoint)}
+                    </span>
+                  </div>
+                </>
               ) : null}
               <div className="grid grid-cols-2  space-x-2 font-semibold">
                 <span className="min-w-[6rem]">Thành tiền: </span>

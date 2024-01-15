@@ -22,7 +22,6 @@ const TableLayout = async ({
       search: search?.toString(),
     });
   const staffs = await staffsData;
-  console.log(staffs);
   const totalPage = Math.ceil(staffs.paging.total / staffs.paging.limit);
   return <InvoiceTable data={staffs.data} totalPage={totalPage} />;
 };
