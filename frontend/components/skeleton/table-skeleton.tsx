@@ -10,7 +10,7 @@ type TableSkeletonProps = {
   isHasSearch: boolean;
   isHasChooseVisibleRow: boolean;
   isHasCheckBox: boolean;
-  isHasPaging:boolean;
+  isHasPaging: boolean;
   numberRow: number;
   cells: TableSkeletonCell[];
 };
@@ -33,7 +33,7 @@ const TableSkeleton: React.FC<TableSkeletonProps> = ({
         {isHasSearch && <Skeleton className="w-full h-8 flex-1" />}
         {isHasChooseVisibleRow && <Skeleton className="w-24 h-8" />}
       </div>
-      <div className="flex flex-col rounded-md border">
+      <div className="flex flex-col rounded-md border overflow-x-auto">
         {[...Array(numberRow + 1)].map((_, index) => (
           <div
             key={index}
@@ -63,7 +63,7 @@ const TableSkeleton: React.FC<TableSkeletonProps> = ({
           <div className="flex flex-row gap-2">
             <Skeleton className="w-8 h-8" />
             <Skeleton className="w-8 h-8" />
-            <Skeleton className="w-24 h-8" />
+            <Skeleton className="flex-1 h-8" />
             <Skeleton className="w-8 h-8" />
             <Skeleton className="w-8 h-8" />
           </div>

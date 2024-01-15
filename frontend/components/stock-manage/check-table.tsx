@@ -40,7 +40,6 @@ import { Input } from "../ui/input";
 import { statusNoteToString } from "@/lib/utils";
 import { toast } from "../ui/use-toast";
 import { useRouter, useSearchParams } from "next/navigation";
-import Loading from "../loading";
 import Paging, { PagingProps } from "../paging";
 import {
   Controller,
@@ -53,10 +52,7 @@ import { Label } from "../ui/label";
 import { AiOutlineClose } from "react-icons/ai";
 import { FilterDatePicker } from "./date-picker";
 import StaffList from "../staff-list";
-import getAllImportNoteForExcel from "@/lib/import/getAllImportNoteForExcel";
-import SupplierList from "../supplier-list";
 import ExportDialog from "../supplier-manage/export-dialog";
-import StatusNoteList from "../status-note-list";
 import getAllCheckNote from "@/lib/check/getAllImport";
 import { ExportCheckNote } from "./excel-check-list";
 import getAllCheckNoteForExcel from "@/lib/import/getAllCheckNoteForExcel";
@@ -385,13 +381,6 @@ export function CheckTable() {
                                 type="text"
                                 required
                               ></Input>
-                            ) : item.type.includes("Price") ? (
-                              <Input
-                                {...register(`filters.${index}.value`)}
-                                className="flex-1"
-                                type="number"
-                                required
-                              ></Input>
                             ) : item.type.includes("At") ? (
                               <Controller
                                 control={control}
@@ -438,32 +427,6 @@ export function CheckTable() {
                                   });
                                 }}
                               />
-                            ) : item.type === "supplier" ? (
-                              <div className="flex-1">
-                                <SupplierList
-                                  supplierId={supplierId}
-                                  setSupplierId={(value) => {
-                                    setSupplierId(value);
-                                    update(index, {
-                                      type: item.type,
-                                      value: value,
-                                    });
-                                  }}
-                                />
-                              </div>
-                            ) : item.type === "status" ? (
-                              <div className="flex-1">
-                                <StatusNoteList
-                                  status={status}
-                                  setStatus={(value) => {
-                                    setStatus(value);
-                                    update(index, {
-                                      type: item.type,
-                                      value: value,
-                                    });
-                                  }}
-                                />
-                              </div>
                             ) : null}
                             <Button
                               variant={"ghost"}

@@ -18,13 +18,12 @@ import createImportNote from "@/lib/import/createImportNote";
 import { Switch } from "@/components/ui/switch";
 import { useSWRConfig } from "swr";
 import { useCurrentUser } from "@/hooks/use-user";
-import Loading from "@/components/loading";
 import { includesRoles } from "@/lib/utils";
 import NoRole from "@/components/no-role";
 import ImportSheet from "@/components/book-manage/import-sheet";
 import getAllBookForSale from "@/lib/book/getAllBookForSale";
 import { useLoading } from "@/hooks/loading-context";
-import InventoryCheckNoteAddSkeleton from "@/components/skeleton/inventory-check-note-add-skeleton";
+import ImportNoteAddSkeleton from "@/components/skeleton/import-note-add-skeleton";
 
 export const FormSchema = z.object({
   id: z.string().max(12, "Tối đa 12 ký tự"),
@@ -128,7 +127,7 @@ const AddNote = () => {
 
   const { currentUser } = useCurrentUser();
   if (!currentUser) {
-    return <InventoryCheckNoteAddSkeleton />;
+    return <ImportNoteAddSkeleton />;
   } else if (
     currentUser &&
     !includesRoles({
@@ -225,8 +224,13 @@ const AddNote = () => {
                     <div className="flex-1">
                       <Label>Nhà cung cấp</Label>
                       <SupplierList
+                        canAdd
                         supplierId={supplierId}
                         setSupplierId={handleSupplierIdSet}
+                        handleSupplierAdded={(supplierId) => {
+                          mutate(`${endPoint}/v1/suppliers/all`);
+                          handleSupplierIdSet(supplierId);
+                        }}
                       />
                       {errors.supplierId && (
                         <span className="error___message">

@@ -17,16 +17,20 @@ import {
 import { cn } from "@/lib/utils";
 import getAllSupplier from "@/lib/supplier/getAllSupplier";
 import DropdownSkeleton from "./skeleton/dropdown-skeleton";
+import CreateDialog from "./supplier-manage/create";
+import { FaPlus } from "react-icons/fa";
 
 export interface SupplierListProps {
   supplierId: string;
   setSupplierId: (id: string) => void;
   canAdd?: boolean;
+  handleSupplierAdded?: (customerId: string) => void;
 }
 const SupplierList = ({
   supplierId,
   setSupplierId,
   canAdd,
+  handleSupplierAdded,
 }: SupplierListProps) => {
   const [open, setOpen] = useState(false);
   const { suppliers, isLoading, isError, mutate } = getAllSupplier();
@@ -87,13 +91,13 @@ const SupplierList = ({
             </Command>
           </DropdownMenuContent>
         </DropdownMenu>
-        {/* {canAdd ? (
-          <CreatePublisher handlePublisherAdded={handlePublisherAdded}>
+        {canAdd ? (
+          <CreateDialog handleSupplierAdded={handleSupplierAdded}>
             <Button type="button" size={"icon"} className="px-3">
               <FaPlus />
             </Button>
-          </CreatePublisher>
-        ) : null} */}
+          </CreateDialog>
+        ) : null}
       </div>
     );
 };

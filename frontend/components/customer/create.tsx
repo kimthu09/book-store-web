@@ -49,8 +49,6 @@ const CreateDialog = ({
   const onSubmit: SubmitHandler<z.infer<typeof SupplierSchema>> = async (
     data
   ) => {
-    setOpen(false);
-
     const response: Promise<any> = createCustomer(data);
     showLoading();
     const responseData = await response;
@@ -67,6 +65,8 @@ const CreateDialog = ({
         title: "Thành công",
         description: "Thêm khách hàng thành công",
       });
+      setOpen(false);
+
       if (handleCustomerAdded) {
         handleCustomerAdded(responseData.data);
       }

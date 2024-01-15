@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import { Metadata } from "next";
 import { withAuth } from "@/lib/role/withAuth";
 import { includesRoles } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 export const metadata: Metadata = {
   title: "Quản lý nhà cung cấp",
 };
@@ -19,7 +20,11 @@ function SupplierManage({
       <div className="flex flex-row justify-between ">
         <h1>Danh sách nhà cung cấp</h1>
         <div className="flex gap-4">
-          <CreateDialog />
+          <CreateDialog>
+            <Button className="lg:px-4 px-2 whitespace-nowrap">
+              Thêm nhà cung cấp
+            </Button>
+          </CreateDialog>
         </div>
       </div>
 
