@@ -63,6 +63,7 @@ import StatusList from "../status-list";
 import ExportDialog from "../supplier-manage/export-dialog";
 import StatusNoteList from "../status-note-list";
 import { useLoading } from "@/hooks/loading-context";
+import TableSkeleton from "../skeleton/table-skeleton";
 
 export const columns: ColumnDef<ImportNote>[] = [
   {
@@ -397,9 +398,37 @@ export function ImportTable() {
     });
     router.push(`/stockmanage/import?page=1${filterString}`);
   };
+  
   if (isError) return <div>Failed to load</div>;
   else if (isLoading) {
-    return <Loading />;
+    return (
+      <TableSkeleton
+        isHasExtensionAction={true}
+        isHasFilter={true}
+        isHasSearch={true}
+        isHasChooseVisibleRow={false}
+        isHasCheckBox={true}
+        isHasPaging={true}
+        numberRow={5}
+        cells={[
+          {
+            percent: 5,
+          },
+          {
+            percent: 2,
+          },
+          {
+            percent: 2,
+          },
+          {
+            percent: 2,
+          },
+          {
+            percent: 2,
+          },
+        ]}
+      ></TableSkeleton>
+    );
   } else
     return (
       <div>

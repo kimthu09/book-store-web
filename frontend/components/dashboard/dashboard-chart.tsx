@@ -1,5 +1,4 @@
 import { CharComponent } from "@/types";
-import { DashboardTopFoodTable } from "./dashboard-top-food-table";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,9 +8,10 @@ import {
   Title,
   Tooltip,
   Legend,
+  ScriptableContext,
+  Filler,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { Card } from "../ui/card";
 import { toDateString, toLocalDateTime } from "@/lib/utils";
 
 ChartJS.register(
@@ -21,7 +21,8 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler
 );
 
 export const options = {
@@ -93,25 +94,43 @@ const DashboardChart = (props: any) => {
     costAmount = groupAndSumByDayOfWeek(profit);
   }
 
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: "Doanh thu bán được",
-        data: priceAmount,
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-      },
-      {
-        label: "Số tiền vốn",
-        data: costAmount,
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
-      },
-    ],
+  const data = () => {
+    return {
+      labels,
+      datasets: [
+        {
+          label: "Doanh thu bán được",
+          data: priceAmount,
+          fill: "start",
+          borderColor: "rgb(53, 162, 235)",
+          backgroundColor: (context: ScriptableContext<"line">) => {
+            const ctx = context.chart.ctx;
+            const gradient = ctx.createLinearGradient(0, 0, 0, 450);
+            gradient.addColorStop(0, "rgba(53, 162, 235, 1)");
+            gradient.addColorStop(1, "rgba(53, 162, 235, 0)");
+            return gradient;
+          },
+          tension: 0.3,
+        },
+        {
+          label: "Số tiền vốn",
+          data: costAmount,
+          fill: "start",
+          borderColor: "rgb(255, 99, 132)",
+          backgroundColor: (context: ScriptableContext<"line">) => {
+            const ctx = context.chart.ctx;
+            const gradient = ctx.createLinearGradient(0, 0, 0, 450);
+            gradient.addColorStop(0, "rgba(255, 99, 132, 1)");
+            gradient.addColorStop(1, "rgba(255, 99, 132, 0)");
+            return gradient;
+          },
+          tension: 0.3,
+        },
+      ],
+    };
   };
 
-  return <Line options={options} data={data} className="aspect-square" />;
+  return <Line options={options} data={data()} className="aspect-square" />;
 };
 
 function groupAndSumByHour(charComponents: CharComponent[]): number[] {

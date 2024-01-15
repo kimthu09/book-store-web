@@ -20,6 +20,7 @@ import CreatePublisher from "./create-publisher";
 import { FaPlus } from "react-icons/fa";
 import getAllPublisherList from "@/lib/book/getAllPublisherList";
 import { useCurrentUser } from "@/hooks/use-user";
+import ListSkeleton from "../skeleton/list_skeleton";
 
 const PublisherList = ({
   publisherId,
@@ -37,7 +38,7 @@ const PublisherList = ({
 
   if (isError) return <div>Failed to load</div>;
   if (!publishers) {
-    <Loading />;
+    <ListSkeleton numberRow={5} />;
   } else
     return (
       <div className="flex gap-1">

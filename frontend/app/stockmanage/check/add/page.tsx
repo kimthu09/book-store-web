@@ -22,6 +22,7 @@ import NoRole from "@/components/no-role";
 import ImportSheet from "@/components/book-manage/import-sheet";
 import getAllBookForSale from "@/lib/book/getAllBookForSale";
 import { useLoading } from "@/hooks/loading-context";
+import ImportNoteAddSkeleton from "@/components/skeleton/import-note-add-skeleton";
 
 export const FormSchema = z.object({
   id: z.string().max(12, "Tối đa 12 ký tự"),
@@ -167,7 +168,7 @@ const AddNote = () => {
   };
   const { currentUser } = useCurrentUser();
   if (!currentUser) {
-    return <Loading />;
+    return <ImportNoteAddSkeleton />;
   } else if (
     currentUser &&
     !includesRoles({

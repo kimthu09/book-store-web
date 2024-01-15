@@ -35,27 +35,9 @@ import Loading from "../loading";
 import { useRouter } from "next/navigation";
 import { LuChevronsLeft, LuChevronsRight } from "react-icons/lu";
 import Paging from "../paging";
+import TableSkeleton from "../skeleton/table-skeleton";
 
 export const columns: ColumnDef<Role>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
   {
     accessorKey: "id",
     header: () => {
@@ -111,7 +93,25 @@ export function RoleTable() {
   });
   if (isError) return <div>Failed to load</div>;
   if (!data) {
-    return <Loading />;
+    return (
+      <TableSkeleton
+        isHasExtensionAction={false}
+        isHasFilter={false}
+        isHasSearch={true}
+        isHasChooseVisibleRow={false}
+        isHasCheckBox={false}
+        isHasPaging={true}
+        numberRow={5}
+        cells={[
+          {
+            percent: 2,
+          },
+          {
+            percent: 5,
+          },
+        ]}
+      />
+    );
   } else
     return (
       <div className="w-full">
@@ -182,10 +182,7 @@ export function RoleTable() {
           </Table>
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
-          <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} trong{" "}
-            {table.getFilteredRowModel().rows.length} dòng được chọn.
-          </div>
+          <div className="flex-1"></div>
           <Paging
             totalPage={table.getPageCount()}
             page={(table.options.state.pagination?.pageIndex! + 1).toString()}

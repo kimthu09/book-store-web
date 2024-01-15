@@ -143,7 +143,27 @@ const AddRole = () => {
             <Card>
               <CardContent className="p-6">
                 {!roleFunctions ? (
-                  <Loading />
+                  <div className="col items-center">
+                    <div className="col xl:w-4/5 w-full xl:px-0 md:px-8 px-0">
+                      <div className="flex flex-row justify-between">
+                        <h1 className="font-medium text-xxl self-start flex-1">
+                          Chi tiết phân quyền
+                        </h1>
+                      </div>
+                      <div className="flex flex-col gap-4">
+                        <Card>
+                          <CardContent className="p-6">
+                            <DropdownSkeleton />
+                          </CardContent>
+                        </Card>
+                        <Card>
+                          <CardContent className="p-6">
+                            <FeatureSkeleton />
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </div>
+                  </div>
                 ) : (
                   <div className="grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-2 grid-cols-1 gap-y-6 gap-x-4">
                     {Array.from(

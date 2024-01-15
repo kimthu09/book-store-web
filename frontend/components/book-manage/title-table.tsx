@@ -55,6 +55,7 @@ import { getFilterString } from "@/app/product/title/table-layout";
 import TitleEditInline from "./title-edit-inline";
 import { includesRoles } from "@/lib/utils";
 import { useCurrentUser } from "@/hooks/use-user";
+import TableSkeleton from "../skeleton/table-skeleton";
 
 export const columns: ColumnDef<BookTitle>[] = [
   {
@@ -173,7 +174,28 @@ export function TitleTable() {
 
   if (isError) return <div>Failed to load</div>;
   else if (isLoading) {
-    return <Loading />;
+    return (
+      <TableSkeleton
+        isHasExtensionAction={false}
+        isHasFilter={true}
+        isHasSearch={true}
+        isHasChooseVisibleRow={false}
+        isHasCheckBox={false}
+        isHasPaging={true}
+        numberRow={5}
+        cells={[
+          {
+            percent: 1,
+          },
+          {
+            percent: 5,
+          },
+          {
+            percent: 1,
+          },
+        ]}
+      ></TableSkeleton>
+    );
   } else {
     return (
       <div className="flex flex-col">
@@ -205,7 +227,7 @@ export function TitleTable() {
                   >
                     <div className="space-y-2">
                       <p className="text-sm text-muted-foreground">
-                        Hiển thị phiếu nhập theo
+                        Hiển thị đầu sách theo
                       </p>
                     </div>
                     <div className="flex flex-col gap-4">

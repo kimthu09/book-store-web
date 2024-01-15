@@ -38,6 +38,7 @@ import EditCategory from "./edit-category";
 import { useSWRConfig } from "swr";
 import { endPoint } from "@/constants";
 import { includesRoles } from "@/lib/utils";
+import TableSkeleton from "../skeleton/table-skeleton";
 
 export const columns: ColumnDef<Category>[] = [
   {
@@ -120,7 +121,25 @@ export function CategoryTable({
   };
   if (isError) return <div>Failed to load</div>;
   if (isLoading) {
-    return <Loading />;
+    return (
+      <TableSkeleton
+        isHasExtensionAction={false}
+        isHasFilter={false}
+        isHasSearch={true}
+        isHasChooseVisibleRow={false}
+        isHasCheckBox={false}
+        isHasPaging={true}
+        numberRow={5}
+        cells={[
+          {
+            percent: 5,
+          },
+          {
+            percent: 1,
+          },
+        ]}
+      ></TableSkeleton>
+    );
   } else
     return (
       <div className="w-full">

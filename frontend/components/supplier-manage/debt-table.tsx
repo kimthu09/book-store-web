@@ -33,6 +33,7 @@ import getAllSupplierDebt from "@/lib/supplier/getAllSupplierDebt";
 import { toast } from "../ui/use-toast";
 import { ExportDebtNote } from "./export-debt-note";
 import { useLoading } from "@/hooks/loading-context";
+import TableSkeleton from "../skeleton/table-skeleton";
 
 export const columns: ColumnDef<SupplierDebt>[] = [
   {
@@ -237,7 +238,37 @@ export function DebtTable({
     }
   };
   if (isLoading) {
-    return <Loading />;
+    return (
+      <TableSkeleton
+        isHasExtensionAction={false}
+        isHasFilter={false}
+        isHasSearch={false}
+        isHasChooseVisibleRow={false}
+        isHasCheckBox={false}
+        isHasPaging={true}
+        numberRow={5}
+        cells={[
+          {
+            percent: 1,
+          },
+          {
+            percent: 2,
+          },
+          {
+            percent: 1,
+          },
+          {
+            percent: 1,
+          },
+          {
+            percent: 1,
+          },
+          {
+            percent: 1,
+          },
+        ]}
+      ></TableSkeleton>
+    );
   } else {
     return (
       <div className="flex flex-col">

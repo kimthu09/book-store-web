@@ -413,7 +413,7 @@ export type Dashboard = {
 export type CardDashboardInfo = {
   title: string;
   value: string;
-  icon: string;
+  icon: any;
 };
 
 export type TopSoldFood = {

@@ -29,7 +29,7 @@ export const columns: ColumnDef<TopSoldFood>[] = [
   {
     id: "stt",
     header: ({ table }) => (
-      <div className="flex justify-center font-semibold">STT</div>
+      <div className="justify-center font-semibold">STT</div>
     ),
     cell: ({ row }) => (
       <div className="flex justify-center">{row.index + 1}</div>
@@ -42,7 +42,7 @@ export const columns: ColumnDef<TopSoldFood>[] = [
     accessorKey: "name",
     accessorFn: (row) => row.name,
     header: ({ column }) => (
-      <div className="flex-[5] justify-start">
+      <div className="flex justify-start">
         <span className="font-semibold">Tên sản phẩm</span>
       </div>
     ),
@@ -52,7 +52,7 @@ export const columns: ColumnDef<TopSoldFood>[] = [
     accessorKey: "qty",
     header: ({ column }) => (
       <div className="flex justify-end">
-        <span className="font-semibold">Số lượng</span>
+        <span className="font-semibold text-right min-w-[70px]">Số lượng</span>
       </div>
     ),
     cell: ({ row }) => {
@@ -67,7 +67,7 @@ export const columns: ColumnDef<TopSoldFood>[] = [
     accessorKey: "sale",
     header: ({ column }) => (
       <div className="flex justify-end">
-        <span className="font-semibold">Tiền hàng</span>
+        <span className="font-semibold text-right min-w-[70px]">Tiền hàng</span>
       </div>
     ),
     cell: ({ row }) => {
