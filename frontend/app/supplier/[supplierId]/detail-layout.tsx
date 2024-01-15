@@ -15,7 +15,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import getSupplier from "@/lib/supplier/getSupplier";
-import Loading from "@/components/loading";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -29,6 +28,8 @@ import { useCurrentUser } from "@/hooks/use-user";
 import { includesRoles } from "@/lib/utils";
 import NoRole from "@/components/no-role";
 import { useLoading } from "@/hooks/loading-context";
+import { Skeleton } from "@/components/ui/skeleton";
+import DropdownSkeleton from "@/components/skeleton/dropdown-skeleton";
 const FormSchema = z.object({
   quantity: z.coerce.number().gte(1, "Giá trị phải lớn hơn 0"), // Force it to be a number
 });
@@ -87,7 +88,66 @@ const SupplierDetail = ({ params }: { params: { supplierId: string } }) => {
   const { currentUser } = useCurrentUser();
   if (isError) return <div>Failed to load</div>;
   else if (isLoading) {
-    return <Loading />;
+    return (
+      <div className="col items-center">
+        <div className="col xl:w-4/5 w-full xl:px-0 md:px-8 px-0">
+          <div className="flex justify-between">
+            <Skeleton className="h-10 w-20" />
+            <Skeleton className="h-10 w-28" />
+          </div>
+
+          <Card>
+            <CardContent className="p-6 flex flex-col gap-4">
+              <div className="flex gap-4 lg:flex-row flex-col">
+                <div className="flex-1">
+                  <DropdownSkeleton />
+                </div>
+                <div className="flex-1">
+                  <DropdownSkeleton />
+                </div>
+              </div>
+              <div className="flex gap-4 lg:flex-row flex-col">
+                <div className="flex-1">
+                  <DropdownSkeleton />
+                </div>
+                <div className="flex-1">
+                  <DropdownSkeleton />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6 flex flex-col gap-4 relative">
+              <Tabs
+                defaultValue={tab}
+                onValueChange={onTabChange}
+                className="flex flex-col gap-4"
+              >
+                <TabsList className="inline-flex w-full  h-9 items-center text-muted-foreground justify-start rounded-none bg-transparent p-0">
+                  <TabsTrigger className="tab___trigger" value="import">
+                    Lịch sử nhập hàng
+                  </TabsTrigger>
+                  <TabsTrigger className="tab___trigger" value="debt">
+                    Công nợ
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent value="import">
+                  <ImportTable supplierId={params.supplierId}></ImportTable>
+                </TabsContent>
+                <TabsContent value="debt">
+                  <DebtTable
+                    supplierId={params.supplierId}
+                    pageIndex={pageIndex}
+                    setPageIndex={setPageIndex}
+                  />
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
   } else
     return (
       <div className="col items-center">

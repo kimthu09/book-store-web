@@ -11,17 +11,12 @@ import {
 
 import { AiOutlineClose } from "react-icons/ai";
 import { CiBoxes } from "react-icons/ci";
-import { IoMdInformationCircleOutline } from "react-icons/io";
 import { z } from "zod";
 import { BookProps } from "@/types";
-import { toVND } from "@/lib/utils";
-import { toast } from "../ui/use-toast";
-import Loading from "../loading";
-import { getApiKey } from "@/lib/auth/action";
 import { AutoComplete } from "../ui/autocomplete";
-import getAllBookList from "@/lib/book/getAllBookList";
 import getAllBookForSale from "@/lib/book/getAllBookForSale";
 import { FormSchema } from "@/app/stockmanage/check/add/page";
+import DropdownSkeleton from "../skeleton/dropdown-skeleton";
 
 const Final = ({
   control,
@@ -75,7 +70,7 @@ const CheckInsert = ({
   if (isError) {
     return "Failed to fetch";
   } else if (isLoading || !data) {
-    return <Loading />;
+    return <DropdownSkeleton />;
   } else {
     return (
       <div className="flex flex-col">
