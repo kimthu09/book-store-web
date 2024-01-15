@@ -37,6 +37,7 @@ import updateBook from "@/lib/book/updateBook";
 import { BookTitle } from "@/types";
 import BookTitleSelectEdit from "@/components/book-manage/book-title-select-edit";
 import { useLoading } from "@/hooks/loading-context";
+import BookDetailSkeleton from "@/components/skeleton/book-detail-skeleton";
 
 const FormSchema = z.object({
   bookTitleId: z.string().min(1, "Vui lòng chọn một đầu sách"),
@@ -193,7 +194,7 @@ const EditBook = ({ params }: { params: { bookId: string } }) => {
 
   const { currentUser } = useCurrentUser();
   if (!currentUser || isLoading) {
-    return <Loading></Loading>;
+    return <BookDetailSkeleton/>;
   } else if (
     currentUser &&
     !includesRoles({

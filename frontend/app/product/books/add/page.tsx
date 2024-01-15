@@ -31,6 +31,7 @@ import { useCurrentUser } from "@/hooks/use-user";
 import { includesRoles } from "@/lib/utils";
 import NoRole from "@/components/no-role";
 import { useLoading } from "@/hooks/loading-context";
+import BookAddSkeleton from "@/components/skeleton/book-add-skeleton";
 
 const FormSchema = z.object({
   bookTitleId: z.string().min(1, "Vui lòng chọn một đầu sách"),
@@ -182,7 +183,7 @@ const InsertNewBook = () => {
   };
   const { currentUser } = useCurrentUser();
   if (!currentUser) {
-    return <Loading />;
+    return <BookAddSkeleton />;
   } else if (
     currentUser &&
     !includesRoles({

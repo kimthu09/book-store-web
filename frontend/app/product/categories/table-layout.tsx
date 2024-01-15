@@ -2,6 +2,7 @@
 import { CategoryTable } from "@/components/book-manage/category-table";
 import CreateCategory from "@/components/book-manage/create-category";
 import Loading from "@/components/loading";
+import TableSkeleton from "@/components/skeleton/table-skeleton";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { endPoint } from "@/constants";
@@ -81,7 +82,27 @@ const TableLayout = ({
       </div>
       <div className="flex flex-row flex-wrap gap-2"></div>
       <div className="mb-4 p-3 sha bg-white shadow-[0_1px_3px_0_rgba(0,0,0,0.2)]">
-        <Suspense fallback={<Loading />}>
+        <Suspense
+          fallback={
+            <TableSkeleton
+              isHasExtensionAction={false}
+              isHasFilter={false}
+              isHasSearch={true}
+              isHasChooseVisibleRow={false}
+              isHasCheckBox={false}
+              isHasPaging={true}
+              numberRow={5}
+              cells={[
+                {
+                  percent: 5,
+                },
+                {
+                  percent: 1,
+                },
+              ]}
+            />
+          }
+        >
           <CategoryTable
             searchParams={searchParams}
             currentUser={currentUser}

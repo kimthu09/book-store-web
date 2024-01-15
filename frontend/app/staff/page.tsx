@@ -1,4 +1,5 @@
 import Loading from "@/components/loading";
+import TableSkeleton from "@/components/skeleton/table-skeleton";
 import CreateStaffDialog from "@/components/staff/create-staff-dialog";
 import TableLayout from "@/components/staff/table-layout";
 import { withAuth } from "@/lib/role/withAuth";
@@ -20,7 +21,42 @@ const StaffManage = ({
         <CreateStaffDialog />
       </div>
       <div className="mb-4 p-3 sha bg-white shadow-[0_1px_3px_0_rgba(0,0,0,0.2)]">
-        <Suspense fallback={<Loading />}>
+        <Suspense
+          fallback={
+            <TableSkeleton
+              isHasExtensionAction={true}
+              isHasFilter={true}
+              isHasSearch={true}
+              isHasChooseVisibleRow={true}
+              isHasCheckBox={true}
+              isHasPaging={true}
+              numberRow={5}
+              cells={[
+                {
+                  percent: 1,
+                },
+                {
+                  percent: 2,
+                },
+                {
+                  percent: 2,
+                },
+                {
+                  percent: 1,
+                },
+                {
+                  percent: 2,
+                },
+                {
+                  percent: 1,
+                },
+                {
+                  percent: 1,
+                },
+              ]}
+            />
+          }
+        >
           <TableLayout searchParams={searchParams} />
         </Suspense>
       </div>
