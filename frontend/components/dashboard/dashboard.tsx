@@ -73,59 +73,52 @@ const DashboardComponent = () => {
 
   const totalSoldFormat = data.totalSold.toLocaleString("vi-VN");
 
-  if (!data) {
-    return <Loading />;
-  } else {
-    if (data != undefined) {
-      cardInfos.push({
-        title: "Doanh thu",
-        value: totalSaleFormat,
-        icon: <FaChartLine className="h-6 w-6" />,
-      });
-      cardInfos.push({
-        title: "Số điểm tích được",
-        value: pointFormat,
-        icon: <GiShamrock className="h-6 w-6" />,
-      });
-      cardInfos.push({
-        title: "Số khách đã mua",
-        value: customerFormat,
-        icon: <FaUserTag className="h-6 w-6" />,
-      });
-      cardInfos.push({
-        title: "Số sản phẩm bán được",
-        value: totalSoldFormat,
-        icon: <FaBook className="h-6 w-6" />,
-      });
-    }
-    return (
-      <div className="flex flex-col lg:gap-[6] gap-4">
-        <div>
-          <DashboardHeader onClick={onGetDashboard} />
-        </div>
-        {isLoading ? (
-          <Loading></Loading>
-        ) : (
-          <div className="flex flex-col w-full lg:gap-[6] gap-4">
-            <DashboardCardHolder cardInfos={cardInfos} />
-            <div className="flex lg:flex-row flex-col w-full lg:gap-[6] gap-4 h-auto basis-3/5">
-              <DashboardChartContainer
-                price={data?.chartPriceComponents}
-                profit={data?.chartProfitComponents}
-                timeFrom={data?.timeFrom}
-                timeTo={data?.timeTo}
-                chartType={chartType}
-                setChartType={setChartType}
-              />
-              <div className="basis-2/5 flex h-full">
-                <DashboardTopFoodContainer foods={data?.topSoldBooks} />
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    );
+  if (data != undefined) {
+    cardInfos.push({
+      title: "Doanh thu",
+      value: totalSaleFormat,
+      icon: <FaChartLine className="h-6 w-6" />,
+    });
+    cardInfos.push({
+      title: "Số điểm tích được",
+      value: pointFormat,
+      icon: <GiShamrock className="h-6 w-6" />,
+    });
+    cardInfos.push({
+      title: "Số khách đã mua",
+      value: customerFormat,
+      icon: <FaUserTag className="h-6 w-6" />,
+    });
+    cardInfos.push({
+      title: "Số sản phẩm bán được",
+      value: totalSoldFormat,
+      icon: <FaBook className="h-6 w-6" />,
+    });
   }
+  return (
+    <div className="flex flex-col lg:gap-[6] gap-4">
+      <div>
+        <DashboardHeader onClick={onGetDashboard} />
+      </div>
+      <div className="flex flex-col w-full lg:gap-[6] gap-4">
+        <DashboardCardHolder cardInfos={cardInfos} isLoading={isLoading} />
+        <div className="flex lg:flex-row flex-col w-full lg:gap-[6] gap-4 h-auto basis-3/5">
+          <DashboardChartContainer
+            price={data?.chartPriceComponents}
+            profit={data?.chartProfitComponents}
+            timeFrom={data?.timeFrom}
+            timeTo={data?.timeTo}
+            chartType={chartType}
+            setChartType={setChartType}
+            isLoading={isLoading}
+          />
+          <div className="basis-2/5 flex h-full">
+            <DashboardTopFoodContainer foods={data?.topSoldBooks} isLoading={isLoading} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default DashboardComponent;

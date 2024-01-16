@@ -33,5 +33,8 @@ func (b *ReqUpdateBook) Validate() error {
 	if b.SellPrice != nil && !common.ValidatePositiveNumber(*b.SellPrice) {
 		return ErrBookSellPriceInvalid
 	}
+	if b.Image != nil || !common.ValidateImage(b.Image, common.DefaultImageBook) {
+		return ErrBookImageInvalid
+	}
 	return nil
 }

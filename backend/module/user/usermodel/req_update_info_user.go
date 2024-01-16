@@ -20,7 +20,7 @@ func (data *ReqUpdateInfoUser) Validate() error {
 	if data.Phone != nil && len(*data.Phone) != 0 && !common.ValidatePhone(*data.Phone) {
 		return ErrUserPhoneInvalid
 	}
-	if data.ImgUrl != nil && !common.ValidateUrl(*data.ImgUrl) {
+	if data.ImgUrl != nil && !common.ValidateImage(data.ImgUrl, common.DefaultImageAvatar) {
 		return ErrUserImageInvalid
 	}
 	return nil

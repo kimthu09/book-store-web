@@ -33,7 +33,7 @@ func (data *ReqCreateUser) Validate() error {
 	if !common.ValidateNotNilId(&data.RoleId) {
 		return ErrUserRoleInvalid
 	}
-	if !common.ValidateUrl(data.ImgUrl) {
+	if !common.ValidateImage(&data.ImgUrl, common.DefaultImageAvatar) {
 		return ErrUserImageInvalid
 	}
 	return nil
