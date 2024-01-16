@@ -28,8 +28,16 @@ func ValidateEmail(s string) bool {
 	return err == nil
 }
 
-func ValidateUrl(s string) bool {
-	u, err := url.ParseRequestURI(s)
+func ValidateUrl(s *string, defaultValue string) bool {
+	if s == nil {
+		s = &defaultValue
+		return true
+	}
+	if *s == "" {
+		*s = defaultValue
+		return true
+	}
+	u, err := url.ParseRequestURI(*s)
 
 	if err != nil || u.Scheme == "" {
 		return false
@@ -37,6 +45,19 @@ func ValidateUrl(s string) bool {
 
 	if u.Host == "" {
 		return false
+	}
+
+	return true
+}
+
+func ValidateImage(s *string, defaultValue string) bool {
+	if s == nil {
+		s = &defaultValue
+		return true
+	}
+	if *s == "" {
+		*s = defaultValue
+		return true
 	}
 
 	return true

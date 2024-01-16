@@ -66,7 +66,11 @@ var (
 		"Giá bán không hợp lệ",
 		"ErrBookSellPriceInvalid",
 	)
-
+	ErrBookImageInvalid = common.NewCustomError(
+		errors.New("image of book is invalid"),
+		"Ảnh của sách không hợp lệ",
+		"ErrBookImageInvalid",
+	)
 	ErrBookIdDuplicate = common.ErrDuplicateKey(
 		errors.New("Sách đã tồn tại"),
 	)

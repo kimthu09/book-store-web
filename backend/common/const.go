@@ -90,3 +90,8 @@ const DefaultPass = "app123"
 const CurrentUserStr = "current_user"
 
 const MinuteVerifyEmail = 15
+
+const (
+	DefaultImageBook   string = "https://firebasestorage.googleapis.com/v0/b/coffee-shop-web.appspot.com/o/Default%2Fbook.jpg?alt=media"
+	DefaultImageAvatar string = "https://firebasestorage.googleapis.com/v0/b/coffee-shop-web.appspot.com/o/Default%2Favatar.jpg?alt=media"
+)
