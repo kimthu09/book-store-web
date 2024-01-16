@@ -222,7 +222,7 @@ export function ImportTable({ supplierId }: { supplierId: string }) {
         isHasChooseVisibleRow={false}
         isHasCheckBox={false}
         isHasPaging={true}
-        numberRow={5}
+        numberRow={4}
         cells={[
           {
             percent: 1,

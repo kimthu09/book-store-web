@@ -16,12 +16,10 @@ import { z } from "zod";
 import { FormSchema } from "@/app/stockmanage/import/add/page";
 import { BookProps } from "@/types";
 import { toVND } from "@/lib/utils";
-import { toast } from "../ui/use-toast";
-import Loading from "../loading";
-import { getApiKey } from "@/lib/auth/action";
+
 import { AutoComplete } from "../ui/autocomplete";
-import getAllBookList from "@/lib/book/getAllBookList";
 import getAllBookForSale from "@/lib/book/getAllBookForSale";
+import DropdownSkeleton from "../skeleton/dropdown-skeleton";
 const Total = ({
   control,
 }: {
@@ -92,7 +90,7 @@ const BookInsert = ({
   if (isError) {
     return "Failed to fetch";
   } else if (isLoading || !data) {
-    return <Loading />;
+    return <DropdownSkeleton />;
   } else {
     return (
       <div className="flex flex-col">

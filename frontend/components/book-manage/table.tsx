@@ -69,10 +69,9 @@ import changeBookStatus from "@/lib/book/changeBookStatus";
 import { FaPen } from "react-icons/fa";
 import Link from "next/link";
 import { useCurrentUser } from "@/hooks/use-user";
-import Loading from "../loading";
 import { includesRoles } from "@/lib/utils";
-import NoRole from "../no-role";
 import { useLoading } from "@/hooks/loading-context";
+import TableSkeleton from "../skeleton/table-skeleton";
 
 const columns: ColumnDef<Book>[] = [
   {
@@ -415,7 +414,40 @@ export function BookTable({
   };
   const { currentUser } = useCurrentUser();
   if (!currentUser) {
-    return <Loading></Loading>;
+    return (
+      <TableSkeleton
+        isHasExtensionAction={true}
+        isHasFilter={true}
+        isHasSearch={true}
+        isHasChooseVisibleRow={true}
+        isHasCheckBox={true}
+        isHasPaging={true}
+        numberRow={5}
+        cells={[
+          {
+            percent: 1,
+          },
+          {
+            percent: 5,
+          },
+          {
+            percent: 1,
+          },
+          {
+            percent: 1,
+          },
+          {
+            percent: 1,
+          },
+          {
+            percent: 1,
+          },
+          {
+            percent: 1,
+          },
+        ]}
+      />
+    );
   } else
     return (
       <div className="w-full">

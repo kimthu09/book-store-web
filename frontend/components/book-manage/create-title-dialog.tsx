@@ -24,6 +24,7 @@ import { FaPlus } from "react-icons/fa";
 import getAllAuthorList from "@/lib/book/getAllAuthorList";
 import getAllCategoryList from "@/lib/book/getAllCategoryList";
 import { useLoading } from "@/hooks/loading-context";
+import DropdownSkeleton from "../skeleton/dropdown-skeleton";
 
 const FormSchema = z.object({
   idBook: z.string().max(12, "Tối đa 12 ký tự"),
@@ -132,7 +133,7 @@ const CreateTitleDialog = ({
         <DialogTrigger asChild>{children}</DialogTrigger>
         {!categories || !authors ? (
           <DialogContent>
-            <Loading />
+            <DropdownSkeleton />
           </DialogContent>
         ) : (
           <DialogContent className="p-0 bg-white">
