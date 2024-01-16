@@ -46,6 +46,7 @@ const ImportDetail = ({ params }: { params: { importId: string } }) => {
         description: "Chuyển trạng thái thành công",
       });
       mutate();
+      router.refresh();
     }
   };
   const { currentUser } = useCurrentUser();

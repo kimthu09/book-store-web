@@ -9,7 +9,7 @@ const BookDetailSkeleton = () => {
           <h1 className="flex flex-row font-medium text-2xl self-start">
             Sách:{" "}
             <span>
-              <Skeleton className="w-16 h-6" />,
+              <Skeleton className="w-16 h-6" />
             </span>
           </h1>
         </div>

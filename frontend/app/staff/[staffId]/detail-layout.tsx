@@ -39,6 +39,7 @@ import { useCurrentUser } from "@/hooks/use-user";
 import { includesRoles, isAdmin } from "@/lib/utils";
 import { useLoading } from "@/hooks/loading-context";
 import StaffDetailSkeleton from "@/components/skeleton/staff-detail";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   name: required,
@@ -50,6 +51,7 @@ const PasswordSchema = z.object({
 });
 
 const EditStaff = ({ params }: { params: { staffId: string } }) => {
+  const router = useRouter();
   const [role, setRole] = useState("");
   const { showLoading, hideLoading } = useLoading();
 
@@ -134,6 +136,7 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
         description: "Đặt lại mật khẩu nhân viên thành công",
       });
       setOpen(false);
+      router.refresh();
     }
   };
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (data) => {
@@ -160,6 +163,7 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
         description: "Chỉnh sửa thông tin nhân viên thành công",
       });
       mutate();
+      router.refresh();
     }
   };
   const handleOpen = (value: boolean) => {
@@ -207,6 +211,7 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
           description: "Thay đổi ảnh nhân viên thành công",
         });
         mutate();
+        router.refresh();
       }
     }
   };
@@ -248,6 +253,7 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
       });
       setOpen(false);
       mutate();
+      router.refresh();
     }
   };
 
@@ -272,6 +278,7 @@ const EditStaff = ({ params }: { params: { staffId: string } }) => {
       });
       setOpen(false);
       mutate();
+      router.refresh();
     }
   };
   const { currentUser } = useCurrentUser();

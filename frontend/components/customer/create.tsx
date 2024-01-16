@@ -24,7 +24,15 @@ import { useLoading } from "@/hooks/loading-context";
 const SupplierSchema = z.object({
   id: z.string().max(12, "Tối đa 12 ký tự"),
   name: required,
-  email: z.string().email("Email không hợp lệ"),
+  email: z
+    .string()
+    .refine(
+      (value) =>
+        value === "" || /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value),
+      {
+        message: "Email không hợp lệ",
+      }
+    ),
   phone: z.string().regex(phoneRegex, "Số điện thoại không hợp lệ"),
 });
 

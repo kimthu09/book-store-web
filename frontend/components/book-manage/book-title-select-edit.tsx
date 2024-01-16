@@ -31,13 +31,16 @@ const BookTitleSelect = ({ handleTitleSet, titleId, readOnly }: Props) => {
   const [title, setTitle] = useState<BookTitle>();
   const { titles, isLoading, isError, mutate } = getAllTitleList();
   useEffect(() => {
-    if (titles) {
+    if (titles && titleId && titleId !== "") {
       onSetTitle(titles.data.find((item: BookTitle) => item.id === titleId));
     }
   }, [titles, titleId]);
   const onSetTitle = (title: BookTitle) => {
-    setTitle(title);
-    handleTitleSet(title.id);
+    if (title) {
+      setTitle(title);
+      //loi ne
+      handleTitleSet(title.id);
+    }
   };
   const handleTitleAdded = async (value: string) => {
     const newTitleList = await mutate();

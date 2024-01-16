@@ -27,7 +27,7 @@ const ExportDialog = ({
           Xuất file
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-0">
+      <DialogContent className="p-0 bg-white">
         <DialogTitle className="p-6 pb-0">Xuất danh sách</DialogTitle>
         <div className="flex flex-col border-y-[1px] p-6 gap-4">
           <Label>Giới hạn kết quả xuất</Label>
@@ -44,7 +44,7 @@ const ExportDialog = ({
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="comfortable" id="r2" />
               <Label className="font-normal" htmlFor="r2">
-                Các phiếu trong trang này
+                Các phiếu được chọn trong trang này
               </Label>
             </div>
           </RadioGroup>

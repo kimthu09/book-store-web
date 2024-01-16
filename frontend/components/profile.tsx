@@ -106,7 +106,7 @@ const Profile = () => {
       toast({
         variant: "success",
         title: "Thành công",
-        description: "Đặt lại mật khẩu nhân viên thành công",
+        description: "Đổi mật khẩu thành công",
       });
       setOpen(false);
     }
