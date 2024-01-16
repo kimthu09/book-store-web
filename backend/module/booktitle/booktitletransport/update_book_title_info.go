@@ -6,6 +6,7 @@ import (
 	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/author/authorrepo"
 	"book-store-management-backend/module/author/authorstore"
+	"book-store-management-backend/module/book/bookstore"
 	"book-store-management-backend/module/booktitle/booktitlebiz"
 	"book-store-management-backend/module/booktitle/booktitlemodel"
 	"book-store-management-backend/module/booktitle/booktitlerepo"
@@ -48,11 +49,12 @@ func UpdateBookTitleInfo(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		db := appCtx.GetMainDBConnection().Begin()
 
-		store := booktitlestore.NewSQLStore(db)
+		bookTitleStore := booktitlestore.NewSQLStore(db)
+		bookStore := bookstore.NewSQLStore(db)
 		authorStore := authorstore.NewSQLStore(db)
 		categoryStore := categorystore.NewSQLStore(db)
 
-		repo := booktitlerepo.NewUpdateBookRepo(store)
+		repo := booktitlerepo.NewUpdateBookRepo(bookStore, bookTitleStore)
 		authorRepo := authorrepo.NewAuthorPublicRepo(authorStore)
 		categoryRepo := categoryrepo.NewCategoryPublicRepo(categoryStore)
 

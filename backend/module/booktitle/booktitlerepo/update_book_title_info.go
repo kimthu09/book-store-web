@@ -7,20 +7,22 @@ import (
 	"strings"
 )
 
-type UpdateBookTitleRepo interface {
-	UpdateBookTitle(ctx context.Context, id string, data *booktitlemodel.BookTitle) error
-}
-
-type updateBookStore interface {
+type updateBookTitleStore interface {
 	UpdateBookTitle(ctx context.Context, id string, data *booktitlestore.BookTitleDBModel) error
 }
 
-type updateBookRepo struct {
-	store updateBookStore
+type UpdateBookStore interface {
+	UpdateName(ctx context.Context, bookTitleId string, name *string) error
 }
 
-func NewUpdateBookRepo(store updateBookStore) *updateBookRepo {
-	return &updateBookRepo{store: store}
+type updateBookRepo struct {
+	bookTitleStore updateBookTitleStore
+	bookStore      UpdateBookStore
+}
+
+func NewUpdateBookRepo(
+	bookStore UpdateBookStore, bookTitleStore updateBookTitleStore) *updateBookRepo {
+	return &updateBookRepo{bookTitleStore: bookTitleStore, bookStore: bookStore}
 }
 
 func (repo *updateBookRepo) UpdateBookTitle(ctx context.Context, id string, data *booktitlemodel.BookTitle) error {
@@ -36,6 +38,13 @@ func (repo *updateBookRepo) UpdateBookTitle(ctx context.Context, id string, data
 		dbCategoryIDs = &tmp
 	}
 
+	if data.Name != nil {
+		errBook := repo.bookStore.UpdateName(ctx, id, data.Name)
+		if errBook != nil {
+			return errBook
+		}
+	}
+
 	dbData := booktitlestore.BookTitleDBModel{
 		ID:          nil,
 		Name:        data.Name,
@@ -43,6 +52,6 @@ func (repo *updateBookRepo) UpdateBookTitle(ctx context.Context, id string, data
 		AuthorIDs:   dbAuthorIDs,
 		CategoryIDs: dbCategoryIDs,
 	}
-	err := repo.store.UpdateBookTitle(ctx, id, &dbData)
+	err := repo.bookTitleStore.UpdateBookTitle(ctx, id, &dbData)
 	return err
 }
