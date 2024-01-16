@@ -2,7 +2,6 @@ package common
 
 import (
 	"net/mail"
-	"net/url"
 	"regexp"
 	"time"
 )
@@ -26,28 +25,6 @@ func ValidatePhone(s string) bool {
 func ValidateEmail(s string) bool {
 	_, err := mail.ParseAddress(s)
 	return err == nil
-}
-
-func ValidateUrl(s *string, defaultValue string) bool {
-	if s == nil {
-		s = &defaultValue
-		return true
-	}
-	if *s == "" {
-		*s = defaultValue
-		return true
-	}
-	u, err := url.ParseRequestURI(*s)
-
-	if err != nil || u.Scheme == "" {
-		return false
-	}
-
-	if u.Host == "" {
-		return false
-	}
-
-	return true
 }
 
 func ValidateImage(s *string, defaultValue string) bool {
