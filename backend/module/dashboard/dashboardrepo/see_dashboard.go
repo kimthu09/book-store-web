@@ -123,7 +123,10 @@ func (repo *seeDashboardRepo) SeeDashboard(
 	sort.Sort(details)
 
 	listBook := make([]bookmodel.BookForDashboard, 0)
-	for _, v := range details {
+	for i, v := range details {
+		if i >= dashboardmodel.NumberNearestInvoice {
+			break
+		}
 		book := bookmodel.BookForDashboard{
 			Id:   v.Book.ID,
 			Name: v.Book.Name,
