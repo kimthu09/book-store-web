@@ -113,7 +113,7 @@ const DashboardChart = (props: any) => {
           tension: 0.3,
         },
         {
-          label: "Số tiền vốn",
+          label: "Số tiền lời",
           data: costAmount,
           fill: "start",
           borderColor: "rgb(255, 99, 132)",
