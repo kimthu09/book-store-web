@@ -25,6 +25,7 @@ import getAllAuthorList from "@/lib/book/getAllAuthorList";
 import getAllCategoryList from "@/lib/book/getAllCategoryList";
 import { useLoading } from "@/hooks/loading-context";
 import DropdownSkeleton from "../skeleton/dropdown-skeleton";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   idBook: z.string().max(12, "Tối đa 12 ký tự"),
@@ -46,6 +47,7 @@ const CreateTitleDialog = ({
   children: React.ReactNode;
 }) => {
   const { toast } = useToast();
+  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
@@ -116,6 +118,8 @@ const CreateTitleDialog = ({
         description: "Thêm đầu sách mới thành công",
       });
       handleTitleAdded(responseData.data);
+      router.refresh();
+
       setOpen(false);
     }
   };

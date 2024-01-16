@@ -139,10 +139,7 @@ export const columns: ColumnDef<Customer>[] = [
       const amount = parseFloat(row.getValue("point"));
 
       // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("vi-VN", {
-        style: "currency",
-        currency: "VND",
-      }).format(amount);
+      const formatted = amount.toLocaleString("vi-VN");
 
       return <div className="text-right font-medium">{formatted}</div>;
     },

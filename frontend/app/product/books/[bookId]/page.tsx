@@ -15,7 +15,12 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
+import {
+  Controller,
+  SubmitErrorHandler,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
 import { LuCheck } from "react-icons/lu";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -38,6 +43,7 @@ import { BookTitle } from "@/types";
 import BookTitleSelectEdit from "@/components/book-manage/book-title-select-edit";
 import { useLoading } from "@/hooks/loading-context";
 import BookDetailSkeleton from "@/components/skeleton/book-detail-skeleton";
+import { NumericFormat } from "react-number-format";
 
 const FormSchema = z.object({
   bookTitleId: z.string().min(1, "Vui lòng chọn một đầu sách"),
@@ -194,7 +200,7 @@ const EditBook = ({ params }: { params: { bookId: string } }) => {
 
   const { currentUser } = useCurrentUser();
   if (!currentUser || isLoading) {
-    return <BookDetailSkeleton/>;
+    return <BookDetailSkeleton />;
   } else if (
     currentUser &&
     !includesRoles({
@@ -335,10 +341,26 @@ const EditBook = ({ params }: { params: { bookId: string } }) => {
                     <div className="flex lg:gap-4 gap-3 xl:flex-col sm:flex-row flex-col">
                       <div className="flex-1">
                         <Label>Giá niêm yết (VNĐ)</Label>
-                        <Input
-                          type="number"
-                          readOnly={readOnly}
-                          {...register("listedPrice")}
+                        <Controller
+                          name="listedPrice"
+                          control={control}
+                          render={({ field }) => (
+                            <NumericFormat
+                              value={field.value}
+                              onValueChange={(values) => {
+                                const numericValue = parseFloat(
+                                  values.value.replace(/,/g, "")
+                                );
+
+                                field.onChange(numericValue);
+                              }}
+                              readOnly={readOnly}
+                              thousandSeparator="."
+                              decimalSeparator=","
+                              valueIsNumericString
+                              customInput={Input}
+                            />
+                          )}
                         />
                         {errors.listedPrice && (
                           <span className="error___message">
@@ -348,10 +370,25 @@ const EditBook = ({ params }: { params: { bookId: string } }) => {
                       </div>
                       <div className="flex-1">
                         <Label>Đơn giá (VNĐ)</Label>
-                        <Input
-                          type="number"
-                          {...register("sellPrice")}
-                          readOnly={readOnly}
+                        <Controller
+                          name="sellPrice"
+                          control={control}
+                          render={({ field }) => (
+                            <NumericFormat
+                              value={field.value}
+                              onValueChange={(values) => {
+                                const numericValue = parseFloat(
+                                  values.value.replace(/,/g, "")
+                                );
+                                field.onChange(numericValue);
+                              }}
+                              readOnly={readOnly}
+                              thousandSeparator="."
+                              decimalSeparator=","
+                              valueIsNumericString
+                              customInput={Input}
+                            />
+                          )}
                         />
                         {errors.sellPrice && (
                           <span className="error___message">

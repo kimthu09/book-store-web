@@ -28,7 +28,7 @@ const StaffSchema = z.object({
   name: required,
   email: z.string().email("Email không hợp lệ"),
   phone: z.string().regex(phoneRegex, "Số điện thoại không hợp lệ"),
-  address: required,
+  address: z.string(),
   roleId: z.string().min(1, "Không để trống trường này"),
   img: z.string(),
 });
@@ -56,26 +56,25 @@ const CreateStaffDialog = () => {
   const { showLoading, hideLoading } = useLoading();
   const router = useRouter();
   const onSubmit: SubmitHandler<z.infer<typeof StaffSchema>> = async (data) => {
-    setOpen(false);
-    if (!image) {
-      return;
-    }
-    let formData = new FormData();
+    if (image) {
+      let formData = new FormData();
 
-    formData.append("file", image);
-    formData.append("folderName", "avatars");
-    showLoading();
-    const imgRes = await imageUpload(formData);
-    if (imgRes.hasOwnProperty("errorKey")) {
-      toast({
-        variant: "destructive",
-        title: "Có lỗi",
-        description: imgRes.message,
-      });
-      return;
+      formData.append("file", image);
+      formData.append("folderName", "avatars");
+      showLoading();
+      const imgRes = await imageUpload(formData);
+      if (imgRes.hasOwnProperty("errorKey")) {
+        toast({
+          variant: "destructive",
+          title: "Có lỗi",
+          description: imgRes.message,
+        });
+        return;
+      } else {
+        data.img = imgRes.data;
+      }
     }
 
-    data.img = imgRes.data;
     const response: Promise<any> = createStaff({ staff: data });
     const responseData = await response;
     hideLoading();
@@ -91,6 +90,8 @@ const CreateStaffDialog = () => {
         title: "Thành công",
         description: "Thêm nhân viên thành công",
       });
+      setOpen(false);
+
       router.refresh();
     }
   };

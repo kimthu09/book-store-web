@@ -4,6 +4,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import {
   Control,
+  Controller,
   UseFormReturn,
   useFieldArray,
   useWatch,
@@ -20,6 +21,7 @@ import { toVND } from "@/lib/utils";
 import { AutoComplete } from "../ui/autocomplete";
 import getAllBookForSale from "@/lib/book/getAllBookForSale";
 import DropdownSkeleton from "../skeleton/dropdown-skeleton";
+import { NumericFormat } from "react-number-format";
 const Total = ({
   control,
 }: {
@@ -135,10 +137,25 @@ const BookInsert = ({
                       <span className="text-sm text-light">({value.id})</span>
                     </div>
                     <div className="relative col-span-1">
-                      <Input
-                        defaultValue={book.price}
-                        {...register(`details.${index}.price` as const)}
-                      ></Input>
+                      <Controller
+                        name={`details.${index}.price`}
+                        control={control}
+                        render={({ field }) => (
+                          <NumericFormat
+                            value={field.value}
+                            onValueChange={(values) => {
+                              const numericValue = parseFloat(
+                                values.value.replace(/,/g, "")
+                              );
+                              field.onChange(numericValue);
+                            }}
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            valueIsNumericString
+                            customInput={Input}
+                          />
+                        )}
+                      />
                       {errors &&
                       errors.details &&
                       errors.details[index] &&
@@ -163,10 +180,27 @@ const BookInsert = ({
                       </div>
                     </div>
                     <div className="col-span-1">
-                      <Input
-                        defaultValue={book.qtyImport}
-                        {...register(`details.${index}.qtyImport` as const)}
-                      ></Input>
+                      <Controller
+                        name={`details.${index}.qtyImport`}
+                        control={control}
+                        render={({ field }) => (
+                          <NumericFormat
+                            value={field.value}
+                            onValueChange={(values) => {
+                              const numericValue = parseFloat(
+                                values.value.replace(/,/g, "")
+                              );
+
+                              field.onChange(numericValue);
+                            }}
+                            defaultValue={book.qtyImport}
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            valueIsNumericString
+                            customInput={Input}
+                          />
+                        )}
+                      />
                       {errors &&
                       errors.details &&
                       errors.details[index] &&

@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { ChangeEvent, forwardRef, useEffect, useRef, useState } from "react";
 import { ImportTable } from "@/components/supplier-manage/import-table";
 import { DebtTable } from "@/components/supplier-manage/debt-table";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,7 @@ import {
 import getSupplier from "@/lib/supplier/getSupplier";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "@/components/ui/use-toast";
 import paySupplier from "@/lib/supplier/paySupplier";
 import EditDialog from "@/components/supplier-manage/edit";
@@ -25,22 +25,33 @@ import { useSWRConfig } from "swr";
 import { endPoint } from "@/constants";
 import { withAuth } from "@/lib/role/withAuth";
 import { useCurrentUser } from "@/hooks/use-user";
-import { includesRoles } from "@/lib/utils";
-import NoRole from "@/components/no-role";
+import { includesRoles, toVND } from "@/lib/utils";
 import { useLoading } from "@/hooks/loading-context";
 import { Skeleton } from "@/components/ui/skeleton";
 import DropdownSkeleton from "@/components/skeleton/dropdown-skeleton";
+import { useRouter } from "next/navigation";
+import { NumericFormat } from "react-number-format";
+import React from "react";
+
 const FormSchema = z.object({
-  quantity: z.coerce.number().gte(1, "Giá trị phải lớn hơn 0"), // Force it to be a number
+  quantity: z.coerce
+    .number({ invalid_type_error: "Giá trị phải là một số" })
+    .gte(1, "Giá trị phải lớn hơn 0")
+    .refine((value) => Number.isInteger(value), {
+      message: "Giá trị phải là số nguyên",
+    }), // Force it to be a number
 });
+
 const SupplierDetail = ({ params }: { params: { supplierId: string } }) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: { quantity: 0 },
   });
   const {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = form;
   const {
@@ -49,7 +60,9 @@ const SupplierDetail = ({ params }: { params: { supplierId: string } }) => {
     isError,
     mutate: mutateSupplier,
   } = getSupplier(params.supplierId);
+  const inputRef = useRef<HTMLInputElement>(null);
 
+  const router = useRouter();
   const { mutate } = useSWRConfig();
   const { showLoading, hideLoading } = useLoading();
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (
@@ -76,6 +89,7 @@ const SupplierDetail = ({ params }: { params: { supplierId: string } }) => {
       });
       mutate(`${endPoint}/v1/suppliers/${data.id}/debts?page=${pageIndex}`);
       mutateSupplier();
+      router.refresh();
     }
     setOpenDialog(false);
   };
@@ -169,7 +183,15 @@ const SupplierDetail = ({ params }: { params: { supplierId: string } }) => {
                 />
               ) : null}
 
-              <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+              <Dialog
+                open={openDialog}
+                onOpenChange={(open) => {
+                  if (open) {
+                    reset({ quantity: 0 });
+                  }
+                  setOpenDialog(open);
+                }}
+              >
                 <DialogTrigger asChild>
                   {!currentUser ||
                   (currentUser &&
@@ -207,11 +229,26 @@ const SupplierDetail = ({ params }: { params: { supplierId: string } }) => {
                       <div className="flex gap-4">
                         <div className="flex-1">
                           <Label htmlFor="price">Giá trị</Label>
-                          <Input
-                            id="price"
-                            type="number"
-                            {...register("quantity")}
-                          ></Input>
+                          <Controller
+                            name="quantity"
+                            control={control}
+                            render={({ field }) => (
+                              <NumericFormat
+                                value={field.value}
+                                onValueChange={(values) => {
+                                  const numericValue = parseFloat(
+                                    values.value.replace(/,/g, "")
+                                  );
+                                  field.onChange(numericValue);
+                                }}
+                                thousandSeparator="."
+                                decimalSeparator=","
+                                valueIsNumericString
+                                customInput={Input}
+                              />
+                            )}
+                          />
+
                           {errors.quantity && (
                             <span className="error___message">
                               {errors.quantity.message}
@@ -255,7 +292,7 @@ const SupplierDetail = ({ params }: { params: { supplierId: string } }) => {
                 </div>
                 <div className="flex-1">
                   <Label>Nợ hiện tại</Label>
-                  <Input type="number" value={data.debt} readOnly></Input>
+                  <Input value={toVND(data.debt)} readOnly></Input>
                 </div>
               </div>
             </CardContent>

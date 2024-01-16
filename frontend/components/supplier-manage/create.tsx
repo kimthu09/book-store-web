@@ -1,5 +1,5 @@
 "use client";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -20,11 +20,20 @@ import { phoneRegex, required } from "@/constants";
 import { useCurrentUser } from "@/hooks/use-user";
 import { includesRoles } from "@/lib/utils";
 import { useLoading } from "@/hooks/loading-context";
+import { NumericFormat } from "react-number-format";
 
 const SupplierSchema = z.object({
   id: z.string().max(12, "Tối đa 12 ký tự"),
   name: required,
-  email: z.string().email("Email không hợp lệ"),
+  email: z
+    .string()
+    .refine(
+      (value) =>
+        value === "" || /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value),
+      {
+        message: "Email không hợp lệ",
+      }
+    ),
   phone: z.string().regex(phoneRegex, "Số điện thoại không hợp lệ"),
   debt: z.coerce
     .number({ invalid_type_error: "Nợ ban đầu phải là một số" })
@@ -46,6 +55,7 @@ const CreateDialog = ({
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm<z.infer<typeof SupplierSchema>>({
     resolver: zodResolver(SupplierSchema),
@@ -157,7 +167,25 @@ const CreateDialog = ({
                 </div>
                 <div className="flex-1">
                   <Label htmlFor="noBanDau">Công nợ</Label>
-                  <Input id="noBanDau" {...register("debt")}></Input>
+                  <Controller
+                    name="debt"
+                    control={control}
+                    render={({ field }) => (
+                      <NumericFormat
+                        value={field.value}
+                        onValueChange={(values) => {
+                          const numericValue = parseFloat(
+                            values.value.replace(/,/g, "")
+                          );
+                          field.onChange(numericValue);
+                        }}
+                        thousandSeparator="."
+                        decimalSeparator=","
+                        valueIsNumericString
+                        customInput={Input}
+                      />
+                    )}
+                  />
                   {errors.debt && (
                     <span className="error___message">
                       {errors.debt.message}

@@ -15,7 +15,12 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import { useState } from "react";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import {
+  Controller,
+  SubmitHandler,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import { LuCheck } from "react-icons/lu";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -32,6 +37,7 @@ import { includesRoles } from "@/lib/utils";
 import NoRole from "@/components/no-role";
 import { useLoading } from "@/hooks/loading-context";
 import BookAddSkeleton from "@/components/skeleton/book-add-skeleton";
+import { NumericFormat } from "react-number-format";
 
 const FormSchema = z.object({
   bookTitleId: z.string().min(1, "Vui lòng chọn một đầu sách"),
@@ -80,6 +86,7 @@ const InsertNewBook = () => {
     setValue,
     reset,
     trigger,
+    clearErrors,
     formState: { errors },
   } = form;
 
@@ -139,20 +146,23 @@ const InsertNewBook = () => {
         title: "Thành công",
         description: "Thêm mới sách thành công",
       });
+      router.refresh();
+
+      setPublisherId("");
+
       reset({
         bookTitleId: data.bookTitleId,
         idBook: "",
         edition: 1,
         publisherId: "",
-        listedPrice: 0,
-        sellPrice: 0,
+        listedPrice: 1,
+        sellPrice: 1,
         image: "/no-image.jpg",
       });
-      setPublisherId("");
+      clearErrors();
       setImage(null);
 
       mutate(`${endPoint}/v1/books/all`);
-      router.refresh();
     }
   };
 
@@ -264,7 +274,25 @@ const InsertNewBook = () => {
                   <div className="flex lg:gap-4 gap-3 xl:flex-col sm:flex-row flex-col">
                     <div className="flex-1">
                       <Label>Giá niêm yết (VNĐ)</Label>
-                      <Input {...register("listedPrice")} />
+                      <Controller
+                        name="listedPrice"
+                        control={control}
+                        render={({ field }) => (
+                          <NumericFormat
+                            value={field.value}
+                            onValueChange={(values) => {
+                              const numericValue = parseFloat(
+                                values.value.replace(/,/g, "")
+                              );
+                              field.onChange(numericValue);
+                            }}
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            valueIsNumericString
+                            customInput={Input}
+                          />
+                        )}
+                      />
                       {errors.listedPrice && (
                         <span className="error___message">
                           {errors.listedPrice.message}
@@ -273,7 +301,25 @@ const InsertNewBook = () => {
                     </div>
                     <div className="flex-1">
                       <Label>Đơn giá (VNĐ)</Label>
-                      <Input {...register("sellPrice")} />
+                      <Controller
+                        name="sellPrice"
+                        control={control}
+                        render={({ field }) => (
+                          <NumericFormat
+                            value={field.value}
+                            onValueChange={(values) => {
+                              const numericValue = parseFloat(
+                                values.value.replace(/,/g, "")
+                              );
+                              field.onChange(numericValue);
+                            }}
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            valueIsNumericString
+                            customInput={Input}
+                          />
+                        )}
+                      />
                       {errors.sellPrice && (
                         <span className="error___message">
                           {errors.sellPrice.message}
