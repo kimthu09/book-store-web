@@ -5,20 +5,23 @@ import (
 	"book-store-management-backend/middleware"
 	"book-store-management-backend/module/author/authorrepo"
 	"book-store-management-backend/module/booktitle/booktitlemodel"
-	"book-store-management-backend/module/booktitle/booktitlerepo"
 	"book-store-management-backend/module/category/categoryrepo"
 	"context"
 )
 
+type UpdateBookTitleRepo interface {
+	UpdateBookTitle(ctx context.Context, id string, data *booktitlemodel.BookTitle) error
+}
+
 type updateBookTitleBiz struct {
-	repo         booktitlerepo.UpdateBookTitleRepo
+	repo         UpdateBookTitleRepo
 	authorRepo   authorrepo.AuthorPublicRepo
 	categoryRepo categoryrepo.CategoryPublicRepo
 	requester    middleware.Requester
 }
 
 func NewUpdateBookBiz(
-	repo booktitlerepo.UpdateBookTitleRepo,
+	repo UpdateBookTitleRepo,
 	authorRepo authorrepo.AuthorPublicRepo,
 	categoryRepo categoryrepo.CategoryPublicRepo,
 	requester middleware.Requester,
