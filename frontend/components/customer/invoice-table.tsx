@@ -134,7 +134,8 @@ export const columns: ColumnDef<CustomerInvoice>[] = [
         <div className="text-right font-medium flex flex-col items-end gap-1">
           -{formatted}
           <div className="flex items-center gap-1 text-rose-700">
-            -{row.original.pointUse} <GiShamrock className="h-5 w-5" />
+            -{row.original.pointUse.toLocaleString("vi-VN")}{" "}
+            <GiShamrock className="h-5 w-5" />
           </div>
         </div>
       );
@@ -168,7 +169,8 @@ export const columns: ColumnDef<CustomerInvoice>[] = [
         <div className="text-right font-medium flex flex-col items-end gap-1">
           {formatted}
           <div className="flex items-center gap-1 text-green-700">
-            {row.original.pointReceive} <GiShamrock className="h-5 w-5" />
+            {row.original.pointReceive.toLocaleString("vi-VN")}{" "}
+            <GiShamrock className="h-5 w-5" />
           </div>
         </div>
       );
