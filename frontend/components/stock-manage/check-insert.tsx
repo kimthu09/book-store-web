@@ -15,7 +15,7 @@ import { z } from "zod";
 import { BookProps } from "@/types";
 import { AutoComplete } from "../ui/autocomplete";
 import getAllBookForSale from "@/lib/book/getAllBookForSale";
-import { FormSchema } from "@/app/stockmanage/check/add/page";
+import { FormSchema } from "@/app/(normal)/stockmanage/check/add/page";
 import DropdownSkeleton from "../skeleton/dropdown-skeleton";
 
 const Final = ({

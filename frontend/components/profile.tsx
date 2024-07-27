@@ -16,11 +16,12 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { endPoint, required } from "@/constants";
 import { z } from "zod";
-import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MdOutlineLock } from "react-icons/md";
 import axios from "axios";
 import { toast } from "./ui/use-toast";
+import { useRouter } from "next/navigation";
 const PasswordSchema = z
   .object({
     oldPassword: z.string().min(6, "Ít nhất 6 ký tự"),
@@ -35,6 +36,7 @@ const Profile = () => {
   const { currentUser } = useCurrentUser();
   const [open, setOpen] = useState(false);
   const [openPass, setOpenPass] = useState(false);
+  const router = useRouter();
 
   const [avatar, setAvatar] = useState(null);
   const [name, setName] = useState({ name: "", id: "" });
@@ -119,6 +121,20 @@ const Profile = () => {
     }
     setOpenPass(value);
   };
+
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      router.push("/login");
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Có lỗi",
+        description: "Đăng xuất thất bại",
+      });
+    }
+  };
+
   return (
     <div>
       <Popover open={open} onOpenChange={setOpen}>
@@ -211,7 +227,7 @@ const Profile = () => {
               </form>
             </DialogContent>
           </Dialog>
-          <form action={logOut} className="w-full">
+          <form action={handleLogout} className="w-full">
             <Button
               variant={"ghost"}
               className="rounded-none w-full justify-start"

@@ -1,10 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { logOut } from "@/lib/auth/action";
-import { Button } from "./ui/button";
-import { LuLogOut } from "react-icons/lu";
 import Profile from "./profile";
 
 const Header = () => {

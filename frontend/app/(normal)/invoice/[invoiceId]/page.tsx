@@ -2,10 +2,10 @@ import RecordNotFound from "@/components/record-notfound";
 
 import getInvoiceDetail from "@/lib/invoice/getInvoiceDetail";
 
-import DetailLayout from "./detail-layout";
 import { getUser } from "@/lib/auth/action";
 import { includesRoles } from "@/lib/utils";
 import NoRole from "@/components/no-role";
+import DetailLayout from "./detail-layout";
 
 export type InvoiceDetailProps = {
   book: { id: string; name: string };

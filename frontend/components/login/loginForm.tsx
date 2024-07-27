@@ -34,11 +34,12 @@ const LoginForm = () => {
     password: string;
   }) => {
     setIsLoading(true);
-    const responseData = await login({
-      email: email,
-      password: password,
-    });
-    if (responseData?.error) {
+    try {
+      await login({
+        email: email,
+        password: password,
+      });
+    } catch (e) {
       toast({
         variant: "destructive",
         title: "Đăng nhập thất bại",
@@ -89,6 +90,3 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
-function setIsLoading(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}

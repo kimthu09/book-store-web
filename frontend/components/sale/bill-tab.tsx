@@ -31,7 +31,7 @@ import { toast } from "../ui/use-toast";
 import { IoRemoveOutline } from "react-icons/io5";
 import { PiClipboardTextLight } from "react-icons/pi";
 import { CurrentDate } from "../ui/date-context";
-import { FormValues } from "@/app/sale/page-layout";
+import { FormValues } from "@/app/(normal)/sale/page-layout";
 import { useSWRConfig } from "swr";
 import { useShop } from "@/hooks/use-shop";
 import { Checkbox } from "../ui/checkbox";

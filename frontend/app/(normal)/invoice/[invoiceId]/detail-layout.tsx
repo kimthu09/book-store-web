@@ -7,9 +7,9 @@ import { toVND } from "@/lib/utils";
 import Image from "next/image";
 import { useRef } from "react";
 import ReactToPrint from "react-to-print";
-import { InvoiceDetailProps } from "./page";
 import { FaPrint } from "react-icons/fa";
 import { ShopGeneral } from "@/types";
+import { InvoiceDetailProps } from "./page";
 const DetailLayout = (responseData: any) => {
   const componentRef = useRef(null);
   const details = responseData.invoice.details as InvoiceDetailProps[];
