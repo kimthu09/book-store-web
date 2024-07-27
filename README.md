@@ -21,3 +21,8 @@
 ```bash
 docker-compose up -d
 ```
+
+> [!IMPORTANT]
+> *Tài khoản admin*:
+> - *email*: admin@gmail.com
+> - *password*: app123
