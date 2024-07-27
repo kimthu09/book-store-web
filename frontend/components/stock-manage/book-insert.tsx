@@ -14,7 +14,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { CiBoxes } from "react-icons/ci";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { z } from "zod";
-import { FormSchema } from "@/app/stockmanage/import/add/page";
+import { FormSchema } from "@/app/(normal)/stockmanage/import/add/page";
 import { BookProps } from "@/types";
 import { toVND } from "@/lib/utils";
 

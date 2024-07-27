@@ -51,7 +51,7 @@ import { Label } from "../ui/label";
 import { AiOutlineClose } from "react-icons/ai";
 import getAllTitle from "@/lib/book/getAllTitle";
 import { FilterDatePicker } from "../date-picker";
-import { getFilterString } from "@/app/product/title/table-layout";
+import { getFilterString } from "@/app/(normal)/product/title/table-layout";
 import TitleEditInline from "./title-edit-inline";
 import { includesRoles } from "@/lib/utils";
 import { useCurrentUser } from "@/hooks/use-user";

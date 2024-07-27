@@ -12,7 +12,7 @@ import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import Loading from "../loading";
 import { BookProps } from "@/types";
 import getAllBookForSale from "@/lib/book/getAllBookForSale";
-import { FormValues } from "@/app/sale/page-layout";
+import { FormValues } from "@/app/(normal)/sale/page-layout";
 import getAllCategoryList from "@/lib/book/getAllCategoryList";
 import ProductSkeleton from "../skeleton/product-skeleton";
 const ProductTab = ({
