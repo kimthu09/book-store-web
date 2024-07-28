@@ -23,6 +23,10 @@ docker-compose up -d
 ```
 
 > [!IMPORTANT]
-> *Tài khoản admin*:
+> *Admin account*:
 > - *email*: admin@gmail.com
 > - *password*: app123
+
+> [!NOTE]
+> - *FE*: http://localhost:80
+> - *Swagger*: http://localhost:8080/v1/docs/index.html
